@@ -22,3 +22,6 @@ This is a WordPress site for Alberici. It's built so that we can use it on more 
 - Grab the Migrate DB Pro key from the site on WP Engine & pull to get the latest content
 - Run `npm install` to get all dependencies
 - Run `gulp` to start compiling Sass and JS
+
+## ACF
+We're source controlling the fields from ACF. Fields are split into separate PHP files that go into `theme_infrastructure` in the theme directory.

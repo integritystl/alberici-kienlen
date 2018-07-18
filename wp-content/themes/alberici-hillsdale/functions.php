@@ -6,6 +6,17 @@
  *
  * @package alberici-hillsdale
  */
+require_once ( __DIR__ . '/theme_infrastructure/ACF/ACFTemplateFields.php');
+require_once ( __DIR__ . '/theme_infrastructure/ACF/ACFOptionsPage.php');
+
+//Add the ACF fields and custom post types
+if( ! function_exists('alberici_hillsdale_theme_infrastructure_setup')){
+	function americas_farmers_theme_infrastructure_setup(){
+		\AlbericiHillsdale\ACFTemplateFields::setupTemplateFields();
+		\AlbericiHillsdale\ACFOptionsPage::setupOptionsPage();
+	}
+}
+add_action('init', 'alberici_hillsdale_theme_infrastructure_setup');
 
 if ( ! function_exists( 'alberici_hillsdale_setup' ) ) :
 	/**
@@ -162,3 +173,12 @@ remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
 remove_action( 'admin_print_scripts', 'print_emoji_detection_script' );
 remove_action( 'wp_print_styles', 'print_emoji_styles' );
 remove_action( 'admin_print_styles', 'print_emoji_styles' );
+
+//SVG Support in Media Uploader
+function add_file_types_to_uploads($file_types){
+	$new_filetypes = array();
+	$new_filetypes['svg'] = 'image/svg+xml';
+	$file_types = array_merge($file_types, $new_filetypes );
+	return $file_types;
+}
+add_action('upload_mimes', 'add_file_types_to_uploads');
