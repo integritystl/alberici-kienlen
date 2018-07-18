@@ -44,7 +44,7 @@ sitemap.xml.gz
 node_modules/*
 
 #codeship stuff
-integritystl_americas-farmers-integrity.aes
+integritystl_alberici-hillsdale.aes
 keyfile.rsa
 codeship.aes
 production.env
