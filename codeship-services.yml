@@ -1,0 +1,5 @@
+app_build:
+  build:
+    image: integritystl/alberici-hillsdale
+    dockerfile_path: Dockerfile
+  encrypted_env_file: production.env.encrypted
