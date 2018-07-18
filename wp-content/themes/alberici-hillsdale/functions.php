@@ -6,12 +6,14 @@
  *
  * @package alberici-hillsdale
  */
+
+//Add the ACF fields and custom post types
 require_once ( __DIR__ . '/theme_infrastructure/ACF/ACFTemplateFields.php');
 require_once ( __DIR__ . '/theme_infrastructure/ACF/ACFOptionsPage.php');
 
-//Add the ACF fields and custom post types
+//Add our ACF template fields and custom post types and what not
 if( ! function_exists('alberici_hillsdale_theme_infrastructure_setup')){
-	function americas_farmers_theme_infrastructure_setup(){
+	function alberici_hillsdale_theme_infrastructure_setup(){
 		\AlbericiHillsdale\ACFTemplateFields::setupTemplateFields();
 		\AlbericiHillsdale\ACFOptionsPage::setupOptionsPage();
 	}
@@ -55,7 +57,9 @@ if ( ! function_exists( 'alberici_hillsdale_setup' ) ) :
 
 		// This theme uses wp_nav_menu() in one location.
 		register_nav_menus( array(
-			'menu-1' => esc_html__( 'Primary', 'alberici-hillsdale' ),
+			'primary-menu' => esc_html__( 'Primary Menu', 'alberici-hillsdale' ),
+			'utility-menu' => esc_html__( 'Utility Menu', 'alberici-hillsdale' ),
+			'footer-menu' => esc_html__( 'Footer Menu', 'alberici-hillsdale' ),
 		) );
 
 		/*
@@ -167,6 +171,8 @@ require get_template_directory() . '/inc/customizer.php';
 if ( defined( 'JETPACK__VERSION' ) ) {
 	require get_template_directory() . '/inc/jetpack.php';
 }
+
+
 
 //Remove emojis to call fewer scripts/styles for performance
 remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
