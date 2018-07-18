@@ -1,0 +1,1 @@
+{"version":3,"sources":["header.js"],"names":["console","log"],"mappings":"aACAA,QAAQC,IAAI","file":"app.js","sourcesContent":["//Header javascript lives here\nconsole.log('hi');\n"]}

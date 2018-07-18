@@ -7,6 +7,19 @@
  * @package alberici-hillsdale
  */
 
+//Add the ACF fields and custom post types
+require_once ( __DIR__ . '/theme_infrastructure/ACF/ACFTemplateFields.php');
+require_once ( __DIR__ . '/theme_infrastructure/ACF/ACFOptionsPage.php');
+
+//Add our ACF template fields and custom post types and what not
+if( ! function_exists('alberici_hillsdale_theme_infrastructure_setup')){
+	function alberici_hillsdale_theme_infrastructure_setup(){
+		\AlbericiHillsdale\ACFTemplateFields::setupTemplateFields();
+		\AlbericiHillsdale\ACFOptionsPage::setupOptionsPage();
+	}
+}
+add_action('init', 'alberici_hillsdale_theme_infrastructure_setup');
+
 if ( ! function_exists( 'alberici_hillsdale_setup' ) ) :
 	/**
 	 * Sets up theme defaults and registers support for various WordPress features.
@@ -44,7 +57,9 @@ if ( ! function_exists( 'alberici_hillsdale_setup' ) ) :
 
 		// This theme uses wp_nav_menu() in one location.
 		register_nav_menus( array(
-			'menu-1' => esc_html__( 'Primary', 'alberici-hillsdale' ),
+			'primary-menu' => esc_html__( 'Primary Menu', 'alberici-hillsdale' ),
+			'utility-menu' => esc_html__( 'Utility Menu', 'alberici-hillsdale' ),
+			'footer-menu' => esc_html__( 'Footer Menu', 'alberici-hillsdale' ),
 		) );
 
 		/*
@@ -120,11 +135,9 @@ add_action( 'widgets_init', 'alberici_hillsdale_widgets_init' );
  * Enqueue scripts and styles.
  */
 function alberici_hillsdale_scripts() {
-	wp_enqueue_style( 'alberici-hillsdale-style', get_stylesheet_uri() );
+	wp_enqueue_style( 'alberici-hillsdale-style', get_stylesheet_uri(), array(), time() );
 
-	wp_enqueue_script( 'alberici-hillsdale-navigation', get_template_directory_uri() . '/js/navigation.js', array(), '20151215', true );
-
-	wp_enqueue_script( 'alberici-hillsdale-skip-link-focus-fix', get_template_directory_uri() . '/js/skip-link-focus-fix.js', array(), '20151215', true );
+	wp_register_script('alberici-hillsdale-scripts', get_template_directory_uri() . '/js/app.js', array('jquery'), time(), true);
 
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
 		wp_enqueue_script( 'comment-reply' );
@@ -159,3 +172,19 @@ if ( defined( 'JETPACK__VERSION' ) ) {
 	require get_template_directory() . '/inc/jetpack.php';
 }
 
+
+
+//Remove emojis to call fewer scripts/styles for performance
+remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
+remove_action( 'admin_print_scripts', 'print_emoji_detection_script' );
+remove_action( 'wp_print_styles', 'print_emoji_styles' );
+remove_action( 'admin_print_styles', 'print_emoji_styles' );
+
+//SVG Support in Media Uploader
+function add_file_types_to_uploads($file_types){
+	$new_filetypes = array();
+	$new_filetypes['svg'] = 'image/svg+xml';
+	$file_types = array_merge($file_types, $new_filetypes );
+	return $file_types;
+}
+add_action('upload_mimes', 'add_file_types_to_uploads');
