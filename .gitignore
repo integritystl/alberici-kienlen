@@ -39,6 +39,8 @@ readme.html
 sitemap.xml
 sitemap.xml.gz
 
+!wp-content/themes/alberici-hillsdale/index.php
+
 
 #Node Junk
 node_modules/*
