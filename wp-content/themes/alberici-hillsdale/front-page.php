@@ -55,5 +55,5 @@ get_header('critical');
 	</div><!-- #primary -->
 
 <?php
-get_sidebar();
+
 get_footer();

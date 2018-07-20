@@ -39,6 +39,11 @@ readme.html
 sitemap.xml
 sitemap.xml.gz
 
+#Plugin Junk
+s/*
+wp-content/plugins/psn-pagespeed-ninja/admin/sessions/*
+wp-content/plugins/psn-pagespeed-ninja/ress/cache/*
+
 !wp-content/themes/alberici-hillsdale/index.php
 
 
