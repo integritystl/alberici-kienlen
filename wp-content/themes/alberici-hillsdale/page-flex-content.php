@@ -16,7 +16,7 @@ get_header();
 		<?php
 			if(have_rows('flexible_content', get_the_ID())):
 				while(have_rows('flexible_content')): the_row();
-				//	include(locate_template('template-parts/flex-content/content-' . get_row_layout() . '.php'));
+					include(locate_template('template-parts/flex-content/content-' . get_row_layout() . '.php'));
 				endwhile;
 			endif;
 		?>
