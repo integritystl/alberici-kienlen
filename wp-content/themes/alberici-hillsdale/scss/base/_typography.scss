@@ -3,6 +3,7 @@ html {
   font-family: $base-font-family;
   font-size: 100%;
   line-height: $base-line-height;
+  box-sizing: border-box;
 }
 
 h1,
@@ -42,4 +43,14 @@ hr {
   border-right: 0;
   border-top: 0;
   margin: $base-spacing 0;
+}
+
+// https://webaim.org/techniques/css/invisiblecontent/
+.screen-reader-text {
+  position: absolute;
+  left:-10000px;
+  top:auto;
+  width:1px;
+  height:1px;
+  overflow:hidden;
 }
