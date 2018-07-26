@@ -13,7 +13,11 @@ class CardGroup extends React.Component {
     if (this.props.posts && this.props.posts.length) {
 
       postComponents = this.props.posts.map((item, index) => {
-        let imageSrc = item._embedded['wp:featuredmedia'][0].media_details.sizes.medium.source_url;
+        let imageSrc = '';
+        if (item._embedded['wp:featuredmedia']) {
+          imageSrc = item._embedded['wp:featuredmedia'][0].media_details.sizes.medium.source_url;
+        }
+
         return <Card
                   key={index}
                   id={item.id}

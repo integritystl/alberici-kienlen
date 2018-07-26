@@ -46,14 +46,20 @@ class NewsPosts extends React.Component {
     render() {
       console.log(this.state);
       let postGroup = <div className="loading-spinner">Loading...</div>;
+      let loadMoreBtn = '';
       if (!this.state.loading) {
         postGroup = <CardGroup posts = {this.state.posts} />
+      }
+
+      if (this.state.posts && this.state.posts.length > 6) {
+        loadMoreBtn = <button className="btn-load-more">View More Posts</button>;
       }
 
       return(
         <div className="news-posts-container">
           <FilterBar />
           {postGroup}
+          {loadMoreBtn}
         </div>
       );
     }
