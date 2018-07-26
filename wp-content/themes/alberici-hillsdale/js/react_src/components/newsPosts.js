@@ -45,15 +45,15 @@ class NewsPosts extends React.Component {
 
     render() {
       console.log(this.state);
-
-    //  let group = <CardGroup key = {index} posts = {this.state.posts} />
-
-
+      let postGroup = <div className="loading-spinner">Loading...</div>;
+      if (!this.state.loading) {
+        postGroup = <CardGroup posts = {this.state.posts} />
+      }
 
       return(
         <div className="news-posts-container">
           <FilterBar />
-          <CardGroup posts = {this.state.posts} />
+          {postGroup}
         </div>
       );
     }
