@@ -112,6 +112,13 @@ function alberici_hillsdale_scripts() {
 	wp_enqueue_style( 'alberici-hillsdale-style', get_stylesheet_uri(), array(), time() );
 
 	wp_register_script('alberici-hillsdale-scripts', get_template_directory_uri() . '/js/app.js', array('jquery'), time(), true);
+	if (is_page_template('page-news.php')) {
+			wp_enqueue_script('alberici-hillsdale-news', get_template_directory_uri() . '/js/react_src/dist/news.js', array(), time(), true );
+	}
+	// if (is_page_template('page-projects.php')) {
+	// 		wp_enqueue_script('alberici-hillsdale-news', get_template_directory_uri() . '/js/react_src/dist/projects.js', array(), time(), true );
+	// }
+
 
 }
 add_action( 'wp_enqueue_scripts', 'alberici_hillsdale_scripts' );

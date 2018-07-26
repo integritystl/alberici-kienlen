@@ -1,0 +1,43 @@
+import React from 'react';
+
+//components
+import Card from './card.js';
+
+class CardGroup extends React.Component {
+
+
+  render() {
+    let postComponents = '';
+    console.log('posts?', this.props.posts);
+    console.log('beef length', this.props.posts.length);
+    if (this.props.posts && this.props.posts.length) {
+
+      postComponents = this.props.posts.map((item, index) => {
+        let imageSrc = item._embedded['wp:featuredmedia'][0].media_details.sizes.medium.source_url;
+        return <Card
+                  key={index}
+                  id={item.id}
+                  image={imageSrc}
+                  title={item.title.rendered}
+                  link={item.link}
+                />
+
+      });
+    } else {
+      console.log('no beef', this.props.posts);
+      postComponents = (
+        <h3>Sorry, no posts.</h3>
+      );
+    }
+
+
+    return(
+      <div className="card-group">
+        {postComponents}
+
+      </div>
+    );
+  }
+}
+
+module.exports = CardGroup;
