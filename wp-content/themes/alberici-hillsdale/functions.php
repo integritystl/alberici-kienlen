@@ -20,6 +20,32 @@ if( ! function_exists('alberici_hillsdale_theme_infrastructure_setup')){
 }
 add_action('init', 'alberici_hillsdale_theme_infrastructure_setup');
 
+//Add Market Custom Taxonomy for Posts (also use on Projects?)
+function add_market_taxonomy() {
+	$args = array (
+		'labels' => array(
+			'name' => 'Markets',
+			'singular_name' => 'Market',
+			'all_items' => 'All Market Categories',
+			'edit_item' => 'Edit Market Categories',
+			'view_item' => 'View Market Category',
+			'update_item' => 'Update Market Category',
+			'add_new_item' => 'Add New Market Category',
+		),
+		'show_ui' => true,
+		'hierarchical' => true,
+		'show_in_rest' => true,
+		'show_admin_column' => true,
+		'capabilities' => array(
+			'manage_terms', 'edit_terms', 'delete_terms', 'assign_terms'
+		),
+
+	);
+	register_taxonomy('market_category', array('post'), $args);
+
+}
+add_action('init', 'add_market_taxonomy', 10);
+
 if ( ! function_exists( 'alberici_hillsdale_setup' ) ) :
 	/**
 	 * Sets up theme defaults and registers support for various WordPress features.
@@ -29,13 +55,6 @@ if ( ! function_exists( 'alberici_hillsdale_setup' ) ) :
 	 * as indicating support for post thumbnails.
 	 */
 	function alberici_hillsdale_setup() {
-		/*
-		 * Make theme available for translation.
-		 * Translations can be filed in the /languages/ directory.
-		 * If you're building a theme based on alberici-hillsdale, use a find and replace
-		 * to change 'alberici-hillsdale' to the name of your theme in all the template files.
-		 */
-		load_theme_textdomain( 'alberici-hillsdale', get_template_directory() . '/languages' );
 
 		// Add default posts and comments RSS feed links to head.
 		add_theme_support( 'automatic-feed-links' );
@@ -55,7 +74,7 @@ if ( ! function_exists( 'alberici_hillsdale_setup' ) ) :
 		 */
 		add_theme_support( 'post-thumbnails' );
 
-		// This theme uses wp_nav_menu() in one location.
+		// This theme uses wp_nav_menu() in 3 locations.
 		register_nav_menus( array(
 			'primary-menu' => esc_html__( 'Primary Menu', 'alberici-hillsdale' ),
 			'utility-menu' => esc_html__( 'Utility Menu', 'alberici-hillsdale' ),
@@ -140,7 +159,7 @@ if ( defined( 'JETPACK__VERSION' ) ) {
 	require get_template_directory() . '/inc/jetpack.php';
 }
 
-//Remove sections we don't use
+//Hide sections we don't use
 function remove_menus(){
   remove_menu_page( 'edit-comments.php' );          //Comments
 }
@@ -148,6 +167,8 @@ add_action( 'admin_menu', 'remove_menus' );
 
 function remove_sub_menus(){
   remove_submenu_page( 'themes.php', 'widgets.php' );    //Appearance - Widgets
+	remove_submenu_page('edit.php', 'edit-tags.php?taxonomy=post_tag');   //Posts - Tags
+	unregister_taxonomy_for_object_type( 'post_tag', 'post' );
 }
 add_action( 'admin_menu', 'remove_sub_menus' );
 

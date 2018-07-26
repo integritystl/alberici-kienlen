@@ -9,11 +9,14 @@ class NewsPosts extends React.Component {
       this.setState({
         loading: true,
         posts: [],
-        categories: [],
+        market_categories: [],
         isFiltered: false,
+        filteredMarket: '',
+        filteredService: ''
       })
 
       this.getNews();
+      this.getMarketCats();
     }
 
     //Fetch posts
@@ -31,7 +34,6 @@ class NewsPosts extends React.Component {
       let headers = new Headers({'Authorization': 'Basic 3100cedbe991'});
       fetch(apiLink, {headers: headers})
         .then( response => {
-          console.log(response);
           return(response.json());
         })
         .then(json => {
@@ -43,6 +45,20 @@ class NewsPosts extends React.Component {
     }
 
 
+    getMarketCats() {
+      let marketCatApi = '/wp-json/wp/v2/market_category';
+      fetch(marketCatApi)
+        .then( response => {
+          console.log(response);
+          return(response.json());
+        })
+        .then(json => {
+          this.setState({
+            market_categories: json,
+          })
+        });
+    }
+
     render() {
       console.log(this.state);
       let postGroup = <div className="loading-spinner">Loading...</div>;
@@ -51,13 +67,13 @@ class NewsPosts extends React.Component {
         postGroup = <CardGroup posts = {this.state.posts} />
       }
 
-      if (this.state.posts && this.state.posts.length > 6) {
+      if (this.state.posts && this.state.posts.length > 6 && this.state.posts.length % 6 != 0) {
         loadMoreBtn = <button className="btn-load-more">View More Posts</button>;
       }
 
       return(
         <div className="news-posts-container">
-          <FilterBar />
+          <FilterBar markets = {this.state.market_categories}/>
           {postGroup}
           {loadMoreBtn}
         </div>

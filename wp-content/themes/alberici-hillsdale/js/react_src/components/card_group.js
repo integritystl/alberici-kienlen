@@ -8,8 +8,7 @@ class CardGroup extends React.Component {
 
   render() {
     let postComponents = '';
-    console.log('posts?', this.props.posts);
-    console.log('beef length', this.props.posts.length);
+
     if (this.props.posts && this.props.posts.length) {
 
       postComponents = this.props.posts.map((item, index) => {
@@ -28,7 +27,6 @@ class CardGroup extends React.Component {
 
       });
     } else {
-      console.log('no beef', this.props.posts);
       postComponents = (
         <h3>Sorry, no posts.</h3>
       );
@@ -38,7 +36,6 @@ class CardGroup extends React.Component {
     return(
       <div className="card-group">
         {postComponents}
-
       </div>
     );
   }
