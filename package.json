@@ -4,7 +4,9 @@
   "description": "WordPress Site for Alberici Hillsdale",
   "main": "gulpfile.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack --config webpack.config.js",
+    "build": "webpack -p --config webpack.config.js"
   },
   "repository": {
     "type": "git",
@@ -18,8 +20,11 @@
   "homepage": "https://github.com/integritystl/alberici-hillsdale#readme",
   "devDependencies": {
     "autoprefixer": "^8.5.1",
+    "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.4",
     "babel-preset-env": "^1.7.0",
+    "babel-preset-latest": "^6.24.1",
     "gulp": "^3.9.1",
     "gulp-babel": "^7.0.1",
     "gulp-concat": "^2.6.1",
@@ -30,5 +35,17 @@
     "gulp-sourcemaps": "^2.6.4",
     "gulp-uglify": "^3.0.0",
     "pump": "^3.0.0"
+  },
+  "dependencies": {
+    "babel-preset-react": "^6.24.1",
+    "html-webpack-plugin": "^2.28.0",
+    "path": "^0.12.7",
+    "prop-types": "^15.5.6",
+    "query-string": "^4.3.2",
+    "react": "^15.5.3",
+    "react-dom": "^15.5.3",
+    "webpack": "^2.3.3",
+    "webpack-dev-server": "^2.4.2",
+    "whatwg-fetch": "^2.0.3"
   }
 }
