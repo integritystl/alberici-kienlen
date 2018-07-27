@@ -6,23 +6,20 @@ class FilterBar extends React.Component {
   constructor(props) {
     super(props);
     this.filterMarkets = this.filterMarkets.bind(this);
+    this.filterServices = this.filterServices.bind(this);
   }
 
   filterMarkets(id){
-    console.log('market select', id);
     this.props.marketChange(id);
+  }
+
+  filterServices(id){
+    this.props.serviceChange(id);
   }
 
 
   render() {
-    console.log('filter state', this.state);
-    console.log('filter props', this.props);
-    let marketOptions = this.props.markets.map((item, index) => {
-      let value = item.value ? item.value : item.id;
-      return (
-        <option value={value} key={index} label={item.name}>{item.name}</option>
-      )
-    });
+
 
     return(
       <div className="filterbar">
@@ -34,9 +31,10 @@ class FilterBar extends React.Component {
         />
 
 
-        <select>
-          <option>Service</option>
-        </select>
+        <Select label="Service"
+          options={this.props.services}
+          onFilterChange={this.filterServices}
+        />
       </div>
     );
 

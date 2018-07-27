@@ -13,8 +13,6 @@ class Select extends React.Component {
   }
 
   changeSelect(e){
-    console.log('changeSelect', event.target.value)
-    console.log('change select props', this.props)
     this.props.onFilterChange(e.target.value);
   }
 

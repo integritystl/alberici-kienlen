@@ -20,7 +20,7 @@ if( ! function_exists('alberici_hillsdale_theme_infrastructure_setup')){
 }
 add_action('init', 'alberici_hillsdale_theme_infrastructure_setup');
 
-//Add Market Custom Taxonomy for Posts (also use on Projects?)
+//Add Market Custom Taxonomy for Posts (also use on Projects)
 function add_market_taxonomy() {
 	$args = array (
 		'labels' => array(
@@ -45,6 +45,31 @@ function add_market_taxonomy() {
 
 }
 add_action('init', 'add_market_taxonomy', 10);
+
+//Add Service Custom Taxonomy for Posts (also use on Projects)
+function add_service_taxonomy() {
+	$args = array (
+		'labels' => array(
+			'name' => 'Services',
+			'singular_name' => 'Service',
+			'all_items' => 'All Service Categories',
+			'edit_item' => 'Edit Service Categories',
+			'view_item' => 'View Service Category',
+			'update_item' => 'Update Service Category',
+			'add_new_item' => 'Add New Service Category',
+		),
+		'show_ui' => true,
+		'hierarchical' => true,
+		'show_in_rest' => true,
+		'show_admin_column' => true,
+		'capabilities' => array(
+			'manage_terms', 'edit_terms', 'delete_terms', 'assign_terms'
+		),
+
+	);
+	register_taxonomy('service_category', array('post'), $args);
+}
+add_action('init', 'add_service_taxonomy', 10);
 
 if ( ! function_exists( 'alberici_hillsdale_setup' ) ) :
 	/**

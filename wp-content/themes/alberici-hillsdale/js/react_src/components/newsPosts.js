@@ -10,6 +10,7 @@ class NewsPosts extends React.Component {
         loading: true,
         posts: [],
         market_categories: [],
+        service_categories: [],
         isFiltered: false,
         filteredMarket: '',
         filteredService: ''
@@ -17,6 +18,7 @@ class NewsPosts extends React.Component {
 
       this.getNews();
       this.getMarketCats();
+      this.getServiceCats();
     }
 
     //Fetch posts
@@ -44,12 +46,12 @@ class NewsPosts extends React.Component {
         })
     }
 
-
+    //Fetch our Market Categories
     getMarketCats() {
       let marketCatApi = '/wp-json/wp/v2/market_category';
       fetch(marketCatApi)
         .then( response => {
-          console.log(response);
+          //console.log(response);
           return(response.json());
         })
         .then(json => {
@@ -58,19 +60,42 @@ class NewsPosts extends React.Component {
           })
         });
     }
-
+    //Handles Market Filter
     handleMarketChange(id) {
-      console.log('news market change', id);
+      if (id === 'Market') {
+        id = ''
+      }
+
       this.setState({
-        filteredMarket: id
+        filteredMarket: id,
+        isFiltered: true
       });
     }
 
-    // handleServiceChange(id) {
-    //   this.setState({
-    //     filteredService: id
-    //   });
-    // }
+    //Fetch our Services Categories
+    getServiceCats() {
+      let serviceCatApi = '/wp-json/wp/v2/service_category';
+      fetch(serviceCatApi)
+        .then( response => {
+          return(response.json());
+        })
+        .then(json => {
+          this.setState({
+            service_categories: json,
+          })
+        });
+    }
+
+    //Handles Service Filter
+    handleServiceChange(id) {
+      if (id === 'Service') {
+        id = ''
+      }
+      this.setState({
+        filteredService: id,
+        isFiltered: true
+      });
+    }
 
     render() {
       console.log('news posts state', this.state);
@@ -90,8 +115,9 @@ class NewsPosts extends React.Component {
             markets = {this.state.market_categories}
             marketFilter = {this.state.filteredMarket}
             marketChange = {this.handleMarketChange.bind(this)}
-        //    serviceFilter = {this.state.filteredService}
-        //    serviceChange = {this.handleServiceChange.bind(this)}
+            services = {this.state.service_categories}
+            serviceFilter = {this.state.filteredService}
+            serviceChange = {this.handleServiceChange.bind(this)}
           />
           {postGroup}
           {loadMoreBtn}
