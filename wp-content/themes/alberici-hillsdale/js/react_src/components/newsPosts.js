@@ -59,8 +59,21 @@ class NewsPosts extends React.Component {
         });
     }
 
+    handleMarketChange(id) {
+      console.log('news market change', id);
+      this.setState({
+        filteredMarket: id
+      });
+    }
+
+    // handleServiceChange(id) {
+    //   this.setState({
+    //     filteredService: id
+    //   });
+    // }
+
     render() {
-      console.log(this.state);
+      console.log('news posts state', this.state);
       let postGroup = <div className="loading-spinner">Loading...</div>;
       let loadMoreBtn = '';
       if (!this.state.loading) {
@@ -73,7 +86,13 @@ class NewsPosts extends React.Component {
 
       return(
         <div className="news-posts-container">
-          <FilterBar markets = {this.state.market_categories}/>
+          <FilterBar
+            markets = {this.state.market_categories}
+            marketFilter = {this.state.filteredMarket}
+            marketChange = {this.handleMarketChange.bind(this)}
+        //    serviceFilter = {this.state.filteredService}
+        //    serviceChange = {this.handleServiceChange.bind(this)}
+          />
           {postGroup}
           {loadMoreBtn}
         </div>
