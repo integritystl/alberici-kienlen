@@ -12,10 +12,13 @@ class NewsPosts extends React.Component {
         market_categories: [],
         service_categories: [],
         isFiltered: false,
+        filteredPosts: [],
         filteredMarket: '',
         filteredService: ''
       })
+    }
 
+    componentDidMount() {
       this.getNews();
       this.getMarketCats();
       this.getServiceCats();
@@ -24,13 +27,9 @@ class NewsPosts extends React.Component {
     //Fetch posts
     buildAPILink() {
       let baseLink = "/wp-json/wp/v2/posts?_embed";
-
-      //Add in stuff for Filtering here later
-      //search, markets, services
-
       return baseLink;
     }
-
+    //Get All news
     getNews(){
       let apiLink = this.buildAPILink();
       let headers = new Headers({'Authorization': 'Basic 3100cedbe991'});
@@ -44,6 +43,31 @@ class NewsPosts extends React.Component {
             loading: false
           })
         })
+    }
+
+    getFilteredNews() {
+      let apiLink = this.buildAPILink();
+
+      if (this.state.isFiltered) {
+        //check for both
+        if (this.state.filteredMarket && this.state.filteredService) {
+          apiLink += `&market_category=${this.state.filteredMarket}&service_category=${this.state.filteredService}`;
+          console.log('both filters ' + apiLink);
+        } else if (this.state.filteredService) {
+          apiLink += `&service_category=${this.state.filteredService}`;
+          console.log('just service filter ' + apiLink);
+        } else if (this.state.filteredMarket) {
+          //it's just markets
+          apiLink += `&market_category=${this.state.filteredMarket}`;
+          console.log('just market filter ' + apiLink);
+        } else {
+          //We're not filtered anymore, reset isFiltered
+          this.setState({
+            isFiltered: false
+          })
+        }
+      }
+
     }
 
     //Fetch our Market Categories
@@ -70,6 +94,9 @@ class NewsPosts extends React.Component {
         filteredMarket: id,
         isFiltered: true
       });
+      setTimeout(() => {
+        this.getFilteredNews();
+      }, 200);
     }
 
     //Fetch our Services Categories
@@ -95,17 +122,36 @@ class NewsPosts extends React.Component {
         filteredService: id,
         isFiltered: true
       });
+      setTimeout(() => {
+        this.getFilteredNews();
+      }, 200);
     }
 
     render() {
-      console.log('news posts state', this.state);
+      //console.log('news posts state', this.state);
       let postGroup = <div className="loading-spinner">Loading...</div>;
       let loadMoreBtn = '';
+
+      let allPosts = this.state.posts;
+      let filterPosts = this.state.filterPosts;
+
       if (!this.state.loading) {
         postGroup = <CardGroup posts = {this.state.posts} />
       }
 
-      if (this.state.posts && this.state.posts.length > 6 && this.state.posts.length % 6 != 0) {
+      if (allPosts && this.state.isFiltered === false) {
+        postGroup = <CardGroup posts = {this.state.posts} />
+      } else if ( filterPosts && this.state.isFiltered === true ) {
+        postGroup = <CardGroup
+                      posts = {this.state.filterPosts}
+                      markets = {this.state.market_categories}
+                      services = {this.state.service_categories}
+                    />
+      } else if (filterPosts === 0 && this.state.isFiltered === true) {
+        postGroup = 'No results';
+      }
+
+      if (allPosts && allPosts.length > 6 && allPosts.length % 6 != 0) {
         loadMoreBtn = <button className="btn-load-more">View More Posts</button>;
       }
 
