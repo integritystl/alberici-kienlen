@@ -52,22 +52,30 @@ class NewsPosts extends React.Component {
         //check for both
         if (this.state.filteredMarket && this.state.filteredService) {
           apiLink += `&market_category=${this.state.filteredMarket}&service_category=${this.state.filteredService}`;
-          console.log('both filters ' + apiLink);
         } else if (this.state.filteredService) {
           apiLink += `&service_category=${this.state.filteredService}`;
-          console.log('just service filter ' + apiLink);
         } else if (this.state.filteredMarket) {
           //it's just markets
           apiLink += `&market_category=${this.state.filteredMarket}`;
-          console.log('just market filter ' + apiLink);
         } else {
           //We're not filtered anymore, reset isFiltered
           this.setState({
-            isFiltered: false
+            isFiltered: false,
+            loading: false
           })
+          return;
         }
       }
-
+      //set loading somewhere around here?
+      fetch(apiLink)
+        .then( response => {
+          return(response.json());
+        }).then(json => {
+          this.setState({
+            filteredPosts: json,
+            loading: false
+          })
+        })
     }
 
     //Fetch our Market Categories
@@ -75,7 +83,6 @@ class NewsPosts extends React.Component {
       let marketCatApi = '/wp-json/wp/v2/market_category';
       fetch(marketCatApi)
         .then( response => {
-          //console.log(response);
           return(response.json());
         })
         .then(json => {
@@ -92,7 +99,8 @@ class NewsPosts extends React.Component {
 
       this.setState({
         filteredMarket: id,
-        isFiltered: true
+        isFiltered: true,
+        loading: true
       });
       setTimeout(() => {
         this.getFilteredNews();
@@ -120,7 +128,8 @@ class NewsPosts extends React.Component {
       }
       this.setState({
         filteredService: id,
-        isFiltered: true
+        isFiltered: true,
+        loading: true
       });
       setTimeout(() => {
         this.getFilteredNews();
@@ -128,22 +137,19 @@ class NewsPosts extends React.Component {
     }
 
     render() {
-      //console.log('news posts state', this.state);
-      let postGroup = <div className="loading-spinner">Loading...</div>;
+      let postGroup = '';
       let loadMoreBtn = '';
 
       let allPosts = this.state.posts;
-      let filterPosts = this.state.filterPosts;
+      let filterPosts = this.state.filteredPosts;
 
-      if (!this.state.loading) {
-        postGroup = <CardGroup posts = {this.state.posts} />
-      }
-
-      if (allPosts && this.state.isFiltered === false) {
+      if (this.state.loading) {
+        postGroup = <div className="loading-spinner">Loading...</div>;
+      } else if (allPosts && this.state.isFiltered === false) {
         postGroup = <CardGroup posts = {this.state.posts} />
       } else if ( filterPosts && this.state.isFiltered === true ) {
         postGroup = <CardGroup
-                      posts = {this.state.filterPosts}
+                      posts = {this.state.filteredPosts}
                       markets = {this.state.market_categories}
                       services = {this.state.service_categories}
                     />
