@@ -136,6 +136,17 @@ class NewsPosts extends React.Component {
       }, 200);
     }
 
+    //Reset filter
+    resetFilter(){
+      this.setState({
+        isFiltered: false,
+        filteredPosts: [],
+        filterMarket: '',
+        filterServices: ''
+      })
+      this.getNews();
+    }
+
     render() {
       let postGroup = '';
       let loadMoreBtn = '';
@@ -170,6 +181,7 @@ class NewsPosts extends React.Component {
             services = {this.state.service_categories}
             serviceFilter = {this.state.filteredService}
             serviceChange = {this.handleServiceChange.bind(this)}
+            resetFilter = {this.resetFilter.bind(this)}
           />
           {postGroup}
           {loadMoreBtn}

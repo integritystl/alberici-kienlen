@@ -7,6 +7,7 @@ class FilterBar extends React.Component {
     super(props);
     this.filterMarkets = this.filterMarkets.bind(this);
     this.filterServices = this.filterServices.bind(this);
+    this.resetFilter = this.resetFilter.bind(this);
   }
 
   filterMarkets(id){
@@ -16,7 +17,9 @@ class FilterBar extends React.Component {
   filterServices(id){
     this.props.serviceChange(id);
   }
-
+  resetFilter() {
+    this.props.resetFilter();
+  }
 
   render() {
 
@@ -35,6 +38,10 @@ class FilterBar extends React.Component {
           options={this.props.services}
           onFilterChange={this.filterServices}
         />
+        <div className="filter-info">
+          <span>Filter By:</span>
+          <button onClick={() => this.resetFilter() }>Clear Filters</button>
+        </div>
       </div>
     );
 

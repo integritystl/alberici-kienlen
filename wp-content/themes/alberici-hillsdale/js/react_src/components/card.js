@@ -7,7 +7,7 @@ class Card extends React.Component {
 
     if(this.props.market) {
       postMarkets = this.props.market.map((item, index) => {
-        console.log('post market', item)
+        //console.log('post market', item)
       })
     }
 
