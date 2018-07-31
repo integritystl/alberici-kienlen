@@ -39,7 +39,7 @@ class FilterBar extends React.Component {
           onFilterChange={this.filterServices}
         />
         <div className="filter-info">
-          <span>Filter By:</span>
+          <span>Filter By: {this.props.serviceFilterName} {this.props.marketFilterName}</span>
           <button onClick={() => this.resetFilter() }>Clear Filters</button>
         </div>
       </div>

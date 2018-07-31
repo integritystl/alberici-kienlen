@@ -14,7 +14,7 @@ class NewsPosts extends React.Component {
         isFiltered: false,
         filteredPosts: [],
         filteredMarket: '',
-        filteredService: ''
+        filteredService: '',
       })
     }
 
@@ -98,7 +98,7 @@ class NewsPosts extends React.Component {
       }
 
       this.setState({
-        filteredMarket: id,
+        filteredMarket: parseInt(id),
         isFiltered: true,
         loading: true
       });
@@ -127,13 +127,22 @@ class NewsPosts extends React.Component {
         id = ''
       }
       this.setState({
-        filteredService: id,
+        filteredService: parseInt(id),
         isFiltered: true,
         loading: true
       });
       setTimeout(() => {
         this.getFilteredNews();
       }, 200);
+    }
+
+    //Get name of filtered category from object
+    getCatName(filteredCatId, categories){
+      let catObj = categories.filter( (item) => {
+        return item.id === filteredCatId;
+      });
+      let filteredCatName = catObj[0].name;
+      return filteredCatName;
     }
 
     //Reset filter
@@ -144,6 +153,7 @@ class NewsPosts extends React.Component {
         filterMarket: '',
         filterServices: ''
       })
+      //TODO set the selects back to default value
       this.getNews();
     }
 
@@ -154,6 +164,9 @@ class NewsPosts extends React.Component {
       let allPosts = this.state.posts;
       let filterPosts = this.state.filteredPosts;
 
+      let filteredServiceName = '';
+      let filteredMarketName = '';
+
       if (this.state.loading) {
         postGroup = <div className="loading-spinner">Loading...</div>;
       } else if (allPosts && this.state.isFiltered === false) {
@@ -163,7 +176,19 @@ class NewsPosts extends React.Component {
                       posts = {this.state.filteredPosts}
                       markets = {this.state.market_categories}
                       services = {this.state.service_categories}
+                      filteredService = {this.state.filteredService}
+                      filteredMarket = {this.state.filteredMarket}
                     />
+
+        //Get the names of filtered service categories for display purposes
+        if (this.state.service_categories && this.state.filteredService) {
+          filteredServiceName = this.getCatName(this.state.filteredService, this.state.service_categories);
+        }
+        //Get the names of filtered markets for display purposes
+        if (this.state.market_categories && this.state.filteredMarket) {
+          filteredMarketName = this.getCatName(this.state.filteredMarket, this.state.market_categories);
+        }
+
       } else if (filterPosts === 0 && this.state.isFiltered === true) {
         postGroup = 'No results';
       }
@@ -172,14 +197,17 @@ class NewsPosts extends React.Component {
         loadMoreBtn = <button className="btn-load-more">View More Posts</button>;
       }
 
+
       return(
         <div className="news-posts-container">
           <FilterBar
             markets = {this.state.market_categories}
             marketFilter = {this.state.filteredMarket}
+            marketFilterName = {filteredMarketName}
             marketChange = {this.handleMarketChange.bind(this)}
             services = {this.state.service_categories}
             serviceFilter = {this.state.filteredService}
+            serviceFilterName = {filteredServiceName}
             serviceChange = {this.handleServiceChange.bind(this)}
             resetFilter = {this.resetFilter.bind(this)}
           />

@@ -8,9 +8,11 @@ class CardGroup extends React.Component {
 
   render() {
     let postComponents = '';
+    console.log('group props ', this.props);
     if (this.props.posts && this.props.posts.length) {
 
       postComponents = this.props.posts.map((item, index) => {
+      //  console.log('group', item.service_category);
         let imageSrc = '';
         if (item._embedded['wp:featuredmedia']) {
           imageSrc = item._embedded['wp:featuredmedia'][0].media_details.sizes.medium.source_url;
@@ -21,8 +23,8 @@ class CardGroup extends React.Component {
                   id={item.id}
                   image={imageSrc}
                   title={item.title.rendered}
-                   market={item.market_category}
-                   service={item.service_category}
+                  market={item.market_category}
+                  service={item.service_category}
                   link={item.link}
                 />
 
