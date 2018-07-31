@@ -66,7 +66,6 @@ class NewsPosts extends React.Component {
           return;
         }
       }
-      //set loading somewhere around here?
       fetch(apiLink)
         .then( response => {
           return(response.json());
@@ -170,12 +169,18 @@ class NewsPosts extends React.Component {
       if (this.state.loading) {
         postGroup = <div className="loading-spinner">Loading...</div>;
       } else if (allPosts && this.state.isFiltered === false) {
-        postGroup = <CardGroup posts = {this.state.posts} />
+        postGroup = <CardGroup
+                      posts = {this.state.posts}
+                      markets = {this.state.market_categories}
+                      services = {this.state.service_categories}
+                      getCatName = {this.getCatName.bind(this)}
+                      />
       } else if ( filterPosts && this.state.isFiltered === true ) {
         postGroup = <CardGroup
                       posts = {this.state.filteredPosts}
                       markets = {this.state.market_categories}
                       services = {this.state.service_categories}
+                      getCatName = {this.getCatName.bind(this)}
                       filteredService = {this.state.filteredService}
                       filteredMarket = {this.state.filteredMarket}
                     />
