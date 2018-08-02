@@ -162,6 +162,11 @@ class CardList extends React.Component {
       return filteredCatName;
     }
 
+    //Load More functionality
+    loadMorePosts() {
+      console.log('load more click');
+    }
+
     //Reset filter
     resetFilter(){
       this.setState({
@@ -177,6 +182,7 @@ class CardList extends React.Component {
     render() {
       let postGroup = '';
       let loadMoreBtn = '';
+      let loadMoreLabel = 'View More Posts'; //TODO: If postData is Projects, this label should read 'View More Projects'
 
       let allPosts = this.state.posts;
       let filterPosts = this.state.filteredPosts;
@@ -217,7 +223,7 @@ class CardList extends React.Component {
       }
 
       if (allPosts && allPosts.length > 6 && allPosts.length % 6 != 0) {
-        loadMoreBtn = <button className="btn-load-more">View More Posts</button>;
+        loadMoreBtn = <button onClick={this.loadMorePosts.bind(this)} className="btn-load-more">{loadMoreLabel}</button>;
       }
 
 
