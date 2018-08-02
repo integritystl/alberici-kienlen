@@ -19,7 +19,7 @@ class NewsPosts extends React.Component {
     }
 
     componentDidMount() {
-      this.getNews();
+      this.getPosts();
       this.getMarketCats();
       this.getServiceCats();
     }
@@ -30,7 +30,7 @@ class NewsPosts extends React.Component {
       return baseLink;
     }
     //Get All news
-    getNews(){
+    getPosts(){
       let apiLink = this.buildAPILink();
       let headers = new Headers({'Authorization': 'Basic 3100cedbe991'});
       fetch(apiLink, {headers: headers})
@@ -45,7 +45,7 @@ class NewsPosts extends React.Component {
         })
     }
 
-    getFilteredNews() {
+    getFilteredPosts() {
       let apiLink = this.buildAPILink();
 
       if (this.state.isFiltered) {
@@ -102,7 +102,7 @@ class NewsPosts extends React.Component {
         loading: true
       });
       setTimeout(() => {
-        this.getFilteredNews();
+        this.getFilteredPosts();
       }, 200);
     }
 
@@ -131,7 +131,7 @@ class NewsPosts extends React.Component {
         loading: true
       });
       setTimeout(() => {
-        this.getFilteredNews();
+        this.getFilteredPosts();
       }, 200);
     }
 
@@ -153,7 +153,7 @@ class NewsPosts extends React.Component {
         filterServices: ''
       })
       //TODO set the selects back to default value
-      this.getNews();
+      this.getPosts();
     }
 
     render() {
