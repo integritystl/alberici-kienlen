@@ -4,7 +4,7 @@ import React from 'react';
 import FilterBar from './filterbar.js'
 import CardGroup from './card_group.js'
 
-class NewsPosts extends React.Component {
+class CardList extends React.Component {
   componentWillMount() {
       this.setState({
         loading: true,
@@ -21,13 +21,14 @@ class NewsPosts extends React.Component {
     componentDidMount() {
       this.getPosts();
       this.getMarketCats();
-      this.getServiceCats();
+      this.setFilterCats();
+      //this.getServiceCats();
     }
 
     //Fetch posts
     buildAPILink() {
       let baseLink = '';
-      let postDataType = document.getElementById('news_app').getAttribute('data-post');
+      let postDataType = document.getElementById('cardList_app').getAttribute('data-post');
       if (postDataType === 'news') {
         baseLink = wpObj.posts_endpoint;
       } else {
@@ -86,7 +87,7 @@ class NewsPosts extends React.Component {
 
     //Fetch our Market Categories
     getMarketCats() {
-      let marketCatApi = '/wp-json/wp/v2/market_category';
+      let marketCatApi = wpObj.marketCat_endpoint;
       fetch(marketCatApi)
         .then( response => {
           return(response.json());
@@ -113,9 +114,19 @@ class NewsPosts extends React.Component {
       }, 200);
     }
 
+    //Check to see what's set for our data-filter attribute and call the appropriate custom taxonomy endpoint
+    setFilterCats() {
+      let filterDataType = document.getElementById('cardList_app').getAttribute('data-filter');
+      if (filterDataType === 'service') {
+        this.getServiceCats();
+      } else {
+        //TODO: add a getLocationCats function here once that category exists
+      }
+    }
+
     //Fetch our Services Categories
     getServiceCats() {
-      let serviceCatApi = '/wp-json/wp/v2/service_category';
+      let serviceCatApi = wpObj.serviceCat_endpoint;
       fetch(serviceCatApi)
         .then( response => {
           return(response.json());
@@ -231,4 +242,4 @@ class NewsPosts extends React.Component {
 }
 
 
-module.exports = NewsPosts;
+module.exports = CardList;

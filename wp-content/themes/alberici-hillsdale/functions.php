@@ -157,13 +157,14 @@ function alberici_hillsdale_scripts() {
 
 	wp_register_script('alberici-hillsdale-scripts', get_template_directory_uri() . '/js/app.js', array('jquery'), time(), true);
 	if (is_page_template('page-card-list.php')) {
-			wp_register_script('alberici-hillsdale-news', get_template_directory_uri() . '/js/react_src/dist/news.js', array(), time(), true );
-			wp_enqueue_script('alberici-hillsdale-news', get_template_directory_uri() . '/js/react_src/dist/news.js', array(), time(), true );
+			wp_register_script('alberici-hillsdale-news', get_template_directory_uri() . '/js/react_src/dist/card-list-view.js', array(), time(), true );
+			wp_enqueue_script('alberici-hillsdale-news', get_template_directory_uri() . '/js/react_src/dist/card-list-view.js', array(), time(), true );
 			wp_localize_script('alberici-hillsdale-news', 'wpObj', array(
 				'posts_endpoint' => home_url('/wp-json/wp/v2/posts?_embed'),
 				'projects_endpoint' => home_url('/wp-json/wp/v2/projects?_embed'), //TODO: Update this with the actual CPT for Projects when they exist
 				'marketCat_endpoint' => home_url('/wp-json/wp/v2/market_category'),
 				'serviceCat_endpoint' => home_url('/wp-json/wp/v2/service_category'),
+				//TODO: add the endpoint for Location Categories here too;
 			));
 	}
 	// if (is_page_template('page-projects.php')) {

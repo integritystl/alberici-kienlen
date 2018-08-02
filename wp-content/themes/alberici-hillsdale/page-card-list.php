@@ -17,7 +17,7 @@ get_header();
 <div class="page_container">
 	<div id="primary" class="content-area">
 			<?php
-			//if flag is news, use a news-based data-att value. Otherwise add different one.
+			//If flag is news, use a news-based data-att value. Otherwise add different one.
 			//Market as a custom taxonomy is on both Projects and News. The other filter varies.
 			if ($postDataType === 'is_news') {
 				$postData = 'news';
@@ -28,7 +28,7 @@ get_header();
 				$filterCat = 'location';
 			}
 			?>
-			<div id="news_app" data-post="<?php echo $postData; ?>" data-filter="<?php echo $filterCat; ?>" data-market="market"></div>
+			<div id="cardList_app" data-post="<?php echo $postData; ?>" data-filter="<?php echo $filterCat; ?>" data-market="market"></div>
 	</div>
 </div>
 
