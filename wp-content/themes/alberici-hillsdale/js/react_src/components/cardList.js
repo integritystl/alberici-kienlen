@@ -9,6 +9,7 @@ class CardList extends React.Component {
       this.setState({
         loading: true,
         posts: [],
+        postsPerPage: 6,
         market_categories: [],
         service_categories: [],
         isFiltered: false,
@@ -37,9 +38,12 @@ class CardList extends React.Component {
       }
       return baseLink;
     }
-    //Get All news
+    //Get All Posts
+    //TODO: edit this so we're only adding either Posts or Projects to state.
     getPosts(){
       let apiLink = this.buildAPILink();
+      apiLink += `&per_page=${this.state.postsPerPage}`
+      console.log('getposts link', apiLink);
       let headers = new Headers({'Authorization': 'Basic 3100cedbe991'});
       fetch(apiLink, {headers: headers})
         .then( response => {
@@ -164,7 +168,12 @@ class CardList extends React.Component {
 
     //Load More functionality
     loadMorePosts() {
-      console.log('load more click');
+      let apiLink = this.buildAPILink();
+      console.log('load more link', apiLink);
+      let offset = 0;
+      if (this.state.posts) {
+
+      }
     }
 
     //Reset filter
@@ -199,6 +208,9 @@ class CardList extends React.Component {
                       services = {this.state.service_categories}
                       getCatName = {this.getCatName.bind(this)}
                       />
+        if (allPosts && allPosts.length > this.state.postsPerPage && allPosts.length % this.state.postsPerPage != 0) {
+          loadMoreBtn = <button onClick={this.loadMorePosts.bind(this)}  className="btn-load-more">{loadMoreLabel}</button>;
+        }
       } else if ( filterPosts && this.state.isFiltered === true ) {
         postGroup = <CardGroup
                       posts = {this.state.filteredPosts}
@@ -217,15 +229,10 @@ class CardList extends React.Component {
         if (this.state.market_categories && this.state.filteredMarket) {
           filteredMarketName = this.getCatName(this.state.filteredMarket, this.state.market_categories);
         }
-
       } else if (filterPosts === 0 && this.state.isFiltered === true) {
         postGroup = 'No results';
+        loadMoreBtn = '';
       }
-
-      if (allPosts && allPosts.length > 6 && allPosts.length % 6 != 0) {
-        loadMoreBtn = <button onClick={this.loadMorePosts.bind(this)} className="btn-load-more">{loadMoreLabel}</button>;
-      }
-
 
       return(
         <div className="news-posts-container">
