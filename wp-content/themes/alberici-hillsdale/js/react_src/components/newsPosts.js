@@ -26,7 +26,14 @@ class NewsPosts extends React.Component {
 
     //Fetch posts
     buildAPILink() {
-      let baseLink = "/wp-json/wp/v2/posts?_embed";
+      let baseLink = '';
+      let postDataType = document.getElementById('news_app').getAttribute('data-post');
+      if (postDataType === 'news') {
+        baseLink = wpObj.posts_endpoint;
+      } else {
+        //need to make Projects CPT and change this
+        baseLink = wpObj.projects_endpoint;
+      }
       return baseLink;
     }
     //Get All news
