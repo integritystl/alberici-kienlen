@@ -112,10 +112,7 @@ class CardList extends React.Component {
         filteredMarket: parseInt(id),
         isFiltered: true,
         loading: true
-      });
-      setTimeout(() => {
-        this.getFilteredPosts();
-      }, 200);
+      }, this.getFilteredPosts());
     }
 
     //Check to see what's set for our data-filter attribute and call the appropriate custom taxonomy endpoint
@@ -151,10 +148,7 @@ class CardList extends React.Component {
         filteredService: parseInt(id),
         isFiltered: true,
         loading: true
-      });
-      setTimeout(() => {
-        this.getFilteredPosts();
-      }, 200);
+      },this.getFilteredPosts());
     }
 
     //Get name of filtered category from object
