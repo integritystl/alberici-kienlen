@@ -1,16 +1,16 @@
 import React from 'react';
 import {render} from 'react-dom';
 
-import NewsPosts from './components/newsPosts.js'
+import CardList from './components/cardList.js'
 
 
 class AppInitializer {
   run() {
     render(
       <div>
-        <NewsPosts />
+        <CardList />
       </div>,
-      document.getElementById('news_app')
+      document.getElementById('cardList_app')
     )
   }
 }
