@@ -35,6 +35,7 @@ This is a WordPress site for Alberici Hillsdale Fabricators. It's built so that 
 1. Pull from Migrate DB Pro in the WPAdmin of your local to get the latest Database from Staging
 1. Run `npm install` (this will install all node dependencies)
 1. When this is done, run `gulp` and it will watch for SASS/JS file changes
+1. If you're working on a React component, run `webpack --watch` for compiling those changes.
 1. Start coding!
 
 
@@ -47,6 +48,8 @@ This is a WordPress site for Alberici Hillsdale Fabricators. It's built so that 
 ## ACF
 We're source controlling the fields from ACF. Fields are split into separate PHP files that go into `theme_infrastructure` in the theme directory.
 
+## React
+We have some small React-powered sections of the site for filtering of Posts and Custom Posts.
 ---
 ### :memo: Resources / Documentation
 - [Wireframes](https://drive.google.com/open?id=1ZdQqsbJduhIipOJydXcZeBZRqI3E-m2i)

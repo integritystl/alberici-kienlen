@@ -7,6 +7,7 @@ class ACFTemplateFields
   {
     self::setupHomePageFields();
     self::setupFlexContentFields();
+    self::setupCardListFields();
   }
 
   private static function setupHomePageFields()
@@ -16,6 +17,59 @@ class ACFTemplateFields
 
       endif;
   }
+
+  private static function setupCardListFields() {
+    if( function_exists('acf_add_local_field_group') ):
+      acf_add_local_field_group(array(
+      	'key' => 'group_5b6309729fab3',
+      	'title' => 'Post List Data Type',
+      	'fields' => array(
+      		array(
+      			'key' => 'field_5b63097da4a9c',
+      			'label' => 'Post List Data Type',
+      			'name' => 'post_list_data_type',
+      			'type' => 'radio',
+      			'instructions' => 'Select the type of data this Page will display.',
+      			'required' => 0,
+      			'conditional_logic' => 0,
+      			'wrapper' => array(
+      				'width' => '',
+      				'class' => '',
+      				'id' => '',
+      			),
+      			'choices' => array(
+      				'is_news' => 'Lists News Posts',
+      				'is_projects' => 'Lists Project Posts',
+      			),
+      			'allow_null' => 0,
+      			'other_choice' => 0,
+      			'default_value' => '',
+      			'layout' => 'vertical',
+      			'return_format' => 'value',
+      			'save_other_choice' => 0,
+      		),
+      	),
+      	'location' => array(
+      		array(
+      			array(
+      				'param' => 'page_template',
+      				'operator' => '==',
+      				'value' => 'page-card-list.php',
+      			),
+      		),
+      	),
+      	'menu_order' => 0,
+      	'position' => 'side',
+      	'style' => 'default',
+      	'label_placement' => 'top',
+      	'instruction_placement' => 'label',
+      	'hide_on_screen' => '',
+      	'active' => 1,
+      	'description' => '',
+      ));
+
+      endif;
+  } //end CardList fields
 
   private static function setupFlexContentFields()
   {
