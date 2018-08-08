@@ -15,16 +15,14 @@ $FooterCalloutBackImage = get_field('footer_callout_background_image');
 ?>
 
 <?php if ($FooterCalloutContent || $FooterCalloutHeadline) : ?>
-<div class="footer-callout container" style="background-image: url(<?php echo $FooterCalloutBackImage; ?>); background-color:">
+<div class="footer-callout container" style="background-image: url(<?php echo $FooterCalloutBackImage; ?>);">
     <h2><?php echo $FooterCalloutHeadline; ?></h2>
-    <div calss="footer-callout-content">
+    <div class="footer-callout-content">
         <?php echo $FooterCalloutContent; ?>
     </div>
 
     <?php if ($FooterCalloutText) : ?>
-    <div class="footer-callout-button">
         <a href="<?php echo $FooterCalloutLink; ?>" class="btn"><?php echo $FooterCalloutText; ?></a>
-    </div>
     <?php endif; ?>
 </div>
 <?php endif; ?>
