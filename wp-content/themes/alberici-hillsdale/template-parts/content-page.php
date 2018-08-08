@@ -10,9 +10,6 @@
 ?>
 
 <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
-	<header class="entry-header">
-		<?php the_title( '<h1 class="entry-title">', '</h1>' ); ?>
-	</header><!-- .entry-header -->
 
 	<?php alberici_hillsdale_post_thumbnail(); ?>
 
@@ -24,6 +21,11 @@
 		</div><!-- .entry-content -->
 	<?php } ?>
 
+	<?php 
+	
+	get_template_part( 'template-parts/flex-content/content-fifty_fifty_callout' );
+	get_template_part( 'template-parts/flex-content/content-full_width_callout' );
+	?>
 
 
 </article><!-- #post-<?php the_ID(); ?> -->
