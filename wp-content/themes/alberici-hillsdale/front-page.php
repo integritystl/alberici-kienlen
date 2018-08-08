@@ -12,7 +12,7 @@
  * @package alberici-hillsdale
  */
 
-get_header('critical');
+get_header();
 ?>
 
 	<div id="primary" class="content-area">
