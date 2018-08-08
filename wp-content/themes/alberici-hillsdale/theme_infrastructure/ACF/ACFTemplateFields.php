@@ -7,15 +7,136 @@ class ACFTemplateFields
   {
     self::setupHomePageFields();
     self::setupFlexContentFields();
-    self::setupCardListFields();
+	self::setupCardListFields();
+	self::setupGeneralHeroFields();
   }
 
   private static function setupHomePageFields()
   {
-    if( function_exists('acf_add_local_field_group') ):
+	if( function_exists('acf_add_local_field_group') ):
 
-
-      endif;
+		acf_add_local_field_group(array(
+			'key' => 'group_5b6b4b8f6329a',
+			'title' => 'Homepage Hero Area',
+			'fields' => array(
+				array(
+					'key' => 'field_5b6b4bbe542d3',
+					'label' => 'Featured Image',
+					'name' => 'homepage_hero_featured_image',
+					'type' => 'image',
+					'instructions' => '',
+					'required' => 0,
+					'conditional_logic' => 0,
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'return_format' => 'url',
+					'preview_size' => 'thumbnail',
+					'library' => 'all',
+					'min_width' => '',
+					'min_height' => '',
+					'min_size' => '',
+					'max_width' => '',
+					'max_height' => '',
+					'max_size' => '',
+					'mime_types' => '',
+				),
+				array(
+					'key' => 'field_5b6b4bde542d4',
+					'label' => 'Title',
+					'name' => 'homepage_hero_title',
+					'type' => 'text',
+					'instructions' => '',
+					'required' => 0,
+					'conditional_logic' => 0,
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'default_value' => '',
+					'placeholder' => '',
+					'prepend' => '',
+					'append' => '',
+					'maxlength' => '',
+				),
+				array(
+					'key' => 'field_5b6b4bf2542d5',
+					'label' => 'Content',
+					'name' => 'homepage_hero_content',
+					'type' => 'textarea',
+					'instructions' => '',
+					'required' => 0,
+					'conditional_logic' => 0,
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'default_value' => '',
+					'placeholder' => '',
+					'maxlength' => '',
+					'rows' => '',
+					'new_lines' => '',
+				),
+				array(
+					'key' => 'field_5b6b4c06542d6',
+					'label' => 'Button Text',
+					'name' => 'homepage_hero_button_text',
+					'type' => 'text',
+					'instructions' => '',
+					'required' => 0,
+					'conditional_logic' => 0,
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'default_value' => '',
+					'placeholder' => '',
+					'prepend' => '',
+					'append' => '',
+					'maxlength' => '',
+				),
+				array(
+					'key' => 'field_5b6b4c1d542d7',
+					'label' => 'Button Link',
+					'name' => 'homepage_hero_button_link',
+					'type' => 'url',
+					'instructions' => '',
+					'required' => 0,
+					'conditional_logic' => 0,
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'default_value' => '',
+					'placeholder' => '',
+				),
+			),
+			'location' => array(
+				array(
+					array(
+						'param' => 'page_type',
+						'operator' => '==',
+						'value' => 'front_page',
+					),
+				),
+			),
+			'menu_order' => 0,
+			'position' => 'normal',
+			'style' => 'default',
+			'label_placement' => 'top',
+			'instruction_placement' => 'label',
+			'hide_on_screen' => '',
+			'active' => 1,
+			'description' => '',
+		));
+		
+		endif;
   }
 
   private static function setupCardListFields() {
@@ -301,5 +422,78 @@ class ACFTemplateFields
       //end Flex Fields
     endif;
   }
+
+	private static function setupGeneralHeroFields() {
+		if( function_exists('acf_add_local_field_group') ):
+	
+			acf_add_local_field_group(array(
+			'key' => 'group_5b6b503fb8695',
+			'title' => 'Hero Area',
+			'fields' => array(
+			array(
+				'key' => 'field_5b6b504bf2308',
+				'label' => 'Featured Image',
+				'name' => 'general_hero_featured_image',
+				'type' => 'image',
+				'instructions' => '',
+				'required' => 0,
+				'conditional_logic' => 0,
+				'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+				),
+				'return_format' => 'url',
+				'preview_size' => 'thumbnail',
+				'library' => 'all',
+				'min_width' => '',
+				'min_height' => '',
+				'min_size' => '',
+				'max_width' => '',
+				'max_height' => '',
+				'max_size' => '',
+				'mime_types' => '',
+			),
+			array(
+				'key' => 'field_5b6b5061f2309',
+				'label' => 'Title',
+				'name' => 'general_hero_title',
+				'type' => 'text',
+				'instructions' => '',
+				'required' => 0,
+				'conditional_logic' => 0,
+				'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+				),
+				'default_value' => '',
+				'placeholder' => '',
+				'prepend' => '',
+				'append' => '',
+				'maxlength' => '',
+			),
+			),
+			'location' => array(
+			array(
+				array(
+				'param' => 'page_type',
+				'operator' => '!=',
+				'value' => 'front_page',
+				),
+			),
+			),
+			'menu_order' => 0,
+			'position' => 'normal',
+			'style' => 'default',
+			'label_placement' => 'top',
+			'instruction_placement' => 'label',
+			'hide_on_screen' => '',
+			'active' => 1,
+			'description' => '',
+			));
+		
+		endif;
+	}
 
 }
