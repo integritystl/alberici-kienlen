@@ -1,0 +1,20 @@
+// The 50/50 callout with image alignment option.
+.flex_fifty_fifty {
+  .fifty-fifty_img {
+    &.img-left {
+      border: 1px solid tomato;
+    }
+    &.img-right {
+      border: 1px solid blue;
+    }
+  }
+}
+
+.flex_full_width {
+  .full_width_img {
+
+  }
+  .full_width_content {
+    
+  }
+}
