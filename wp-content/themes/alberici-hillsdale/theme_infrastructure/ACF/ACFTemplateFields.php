@@ -9,6 +9,7 @@ class ACFTemplateFields
     self::setupFlexContentFields();
 	self::setupCardListFields();
 	self::setupGeneralHeroFields();
+    self::setupFooterCalloutFields();
   }
 
   private static function setupHomePageFields()
@@ -495,5 +496,132 @@ class ACFTemplateFields
 		
 		endif;
 	}
+    private static function setupFooterCalloutFields() {
+        if( function_exists('acf_add_local_field_group') ):
+            
+            acf_add_local_field_group(array(
+                                            'key' => 'group_5b6b1789744b2',
+                                            'title' => 'Footer Callout',
+                                            'fields' => array(
+                                                              array(
+                                                                    'key' => 'field_5b6b17914c683',
+                                                                    'label' => 'Header',
+                                                                    'name' => 'footer_callout_header',
+                                                                    'type' => 'text',
+                                                                    'instructions' => '',
+                                                                    'required' => 0,
+                                                                    'conditional_logic' => 0,
+                                                                    'wrapper' => array(
+                                                                                       'width' => '',
+                                                                                       'class' => '',
+                                                                                       'id' => '',
+                                                                                       ),
+                                                                    'default_value' => '',
+                                                                    'placeholder' => '',
+                                                                    'prepend' => '',
+                                                                    'append' => '',
+                                                                    'maxlength' => '',
+                                                                    ),
+                                                              array(
+                                                                    'key' => 'field_5b6b17a04c684',
+                                                                    'label' => 'Content',
+                                                                    'name' => 'footer_callout_content',
+                                                                    'type' => 'textarea',
+                                                                    'instructions' => '',
+                                                                    'required' => 0,
+                                                                    'conditional_logic' => 0,
+                                                                    'wrapper' => array(
+                                                                                       'width' => '',
+                                                                                       'class' => '',
+                                                                                       'id' => '',
+                                                                                       ),
+                                                                    'default_value' => '',
+                                                                    'placeholder' => '',
+                                                                    'maxlength' => '',
+                                                                    'rows' => '',
+                                                                    'new_lines' => '',
+                                                                    ),
+                                                              array(
+                                                                    'key' => 'field_5b6b17b04c685',
+                                                                    'label' => 'Button Text',
+                                                                    'name' => 'footer_callout_button_text',
+                                                                    'type' => 'text',
+                                                                    'instructions' => '',
+                                                                    'required' => 0,
+                                                                    'conditional_logic' => 0,
+                                                                    'wrapper' => array(
+                                                                                       'width' => '',
+                                                                                       'class' => '',
+                                                                                       'id' => '',
+                                                                                       ),
+                                                                    'default_value' => '',
+                                                                    'placeholder' => '',
+                                                                    'prepend' => '',
+                                                                    'append' => '',
+                                                                    'maxlength' => '',
+                                                                    ),
+                                                              array(
+                                                                    'key' => 'field_5b6b17c04c686',
+                                                                    'label' => 'Button Link',
+                                                                    'name' => 'footer_callout_button_link',
+                                                                    'type' => 'url',
+                                                                    'instructions' => '',
+                                                                    'required' => 0,
+                                                                    'conditional_logic' => 0,
+                                                                    'wrapper' => array(
+                                                                                       'width' => '',
+                                                                                       'class' => '',
+                                                                                       'id' => '',
+                                                                                       ),
+                                                                    'default_value' => '',
+                                                                    'placeholder' => '',
+                                                                    ),
+                                                              array(
+                                                                    'key' => 'field_5b6b23e30a94d',
+                                                                    'label' => 'Background Image',
+                                                                    'name' => 'footer_callout_background_image',
+                                                                    'type' => 'image',
+                                                                    'instructions' => '',
+                                                                    'required' => 0,
+                                                                    'conditional_logic' => 0,
+                                                                    'wrapper' => array(
+                                                                                       'width' => '',
+                                                                                       'class' => '',
+                                                                                       'id' => '',
+                                                                                       ),
+                                                                    'return_format' => 'url',
+                                                                    'preview_size' => 'thumbnail',
+                                                                    'library' => 'all',
+                                                                    'min_width' => '',
+                                                                    'min_height' => '',
+                                                                    'min_size' => '',
+                                                                    'max_width' => '',
+                                                                    'max_height' => '',
+                                                                    'max_size' => '',
+                                                                    'mime_types' => '',
+                                                                    ),
+                                                              ),
+                                            'location' => array(
+                                                                array(
+                                                                      array(
+                                                                            'param' => 'page_template',
+                                                                            'operator' => '==',
+                                                                            'value' => 'default',
+                                                                            ),
+                                                                      ),
+                                                                ),
+                                            'menu_order' => 0,
+                                            'position' => 'normal',
+                                            'style' => 'default',
+                                            'label_placement' => 'top',
+                                            'instruction_placement' => 'label',
+                                            'hide_on_screen' => '',
+                                            'active' => 1,
+                                            'description' => '',
+                                            ));
+        
+        endif;
+    }
+
 
 }

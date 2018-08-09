@@ -33,6 +33,7 @@ $HeroButtonLink = get_field('homepage_hero_button_link');
 					</div>
 				</div>
 			<?php endif; ?>
+            <?php get_template_part( 'template-parts/footer-callout' ); ?>
 		</main><!-- #main -->
 	</div><!-- #primary -->
 
