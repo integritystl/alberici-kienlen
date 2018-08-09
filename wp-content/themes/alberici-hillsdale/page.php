@@ -26,7 +26,7 @@ get_header();
 
 
 
-		endwhile; // End of the loop.
+		endwhile; // End of the loop.		
 		?>
 
 		</main><!-- #main -->
