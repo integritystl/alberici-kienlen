@@ -33,7 +33,27 @@ $HeroButtonLink = get_field('homepage_hero_button_link');
 					</div>
 				</div>
 			<?php endif; ?>
-            <?php get_template_part( 'template-parts/footer-callout' ); ?>
+			<?php get_template_part( 'template-parts/footer-callout' ); ?>
+			
+			
+			<?php $the_query = new WP_Query( 'posts_per_page=3' ); ?>
+			<?php while ($the_query -> have_posts()) : $the_query -> the_post(); ?>
+			<div class="news container">
+				<ul class="blog-content_posts">
+					<li class="post" style="background-image:url('<?php the_post_thumbnail_url(); ?>');">
+						<a href="<?php the_permalink() ?>" style="text-decoration: none;">
+						<span class="news-meta">
+							<span class="news-category"><?php $category = get_the_category(); echo $category[0]->cat_name; ?></span>
+							<h3 class="news-name"><?php the_title();?></h3>
+						</a>
+					</li>
+				</ul>
+			</div>
+			<?php
+			endwhile;
+			wp_reset_postdata();
+			?>
+				
 		</main><!-- #main -->
 	</div><!-- #primary -->
 
