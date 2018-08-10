@@ -54,7 +54,7 @@ $HeroButtonLink = get_field('homepage_hero_button_link');
 			endwhile;
 			wp_reset_postdata();
 			?>
-			<a href="<?php echo get_home_url(); ?>/news">VIEW MORE NEWS </a>
+			<a href="<?php the_field('news_link_url') ?>">VIEW MORE NEWS </a>
 		</main><!-- #main -->
 	</div><!-- #primary -->
 

@@ -138,6 +138,56 @@ class ACFTemplateFields
 		));
 		
 		endif;
+
+		if( function_exists('acf_add_local_field_group') ):
+
+			acf_add_local_field_group(array(
+				'key' => 'group_5b6de33d151d1',
+				'title' => 'News Link',
+				'fields' => array(
+					array(
+						'key' => 'field_5b6de3485ce9c',
+						'label' => 'News Link',
+						'name' => 'news_link_url',
+						'type' => 'page_link',
+						'instructions' => '',
+						'required' => 0,
+						'conditional_logic' => 0,
+						'wrapper' => array(
+							'width' => '',
+							'class' => '',
+							'id' => '',
+						),
+						'post_type' => array(
+							0 => 'page',
+						),
+						'taxonomy' => array(
+						),
+						'allow_null' => 0,
+						'allow_archives' => 1,
+						'multiple' => 0,
+					),
+				),
+				'location' => array(
+					array(
+						array(
+							'param' => 'page_type',
+							'operator' => '==',
+							'value' => 'front_page',
+						),
+					),
+				),
+				'menu_order' => 0,
+				'position' => 'normal',
+				'style' => 'default',
+				'label_placement' => 'top',
+				'instruction_placement' => 'label',
+				'hide_on_screen' => '',
+				'active' => 1,
+				'description' => '',
+			));
+			
+			endif;
   }
 
   private static function setupCardListFields() {
