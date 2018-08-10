@@ -33,9 +33,27 @@ $HeroButtonLink = get_field('homepage_hero_button_link');
 					</div>
 				</div>
 			<?php endif; ?>
-			<?php get_template_part( 'template-parts/footer-callout' ); ?>
+
+			<?php 
 			
-			
+			if( have_rows('flexible_content') ): ?>
+				<div class="full-width-callout container">
+				<?php
+				while ( have_rows('flexible_content') ) : the_row();
+					if( get_row_layout() == 'full_width_callout' ): ?>
+						<?php 
+						$image = get_sub_field('image'); 
+						$size = 'full';
+						echo wp_get_attachment_image( $image, $size );
+						?>
+						<h2><?php the_sub_field('header'); ?></h2>
+						<p><?php the_sub_field('content'); ?></p>
+						<a href="<?php the_sub_field('button_link'); ?>"><?php the_sub_field('button_text'); ?></a>
+					<?php
+					endif;
+				endwhile;
+			endif; ?>
+
 			<?php $the_query = new WP_Query( 'posts_per_page=3' ); ?>
 			<?php while ($the_query -> have_posts()) : $the_query -> the_post(); ?>
 			<div class="news container">
@@ -55,6 +73,8 @@ $HeroButtonLink = get_field('homepage_hero_button_link');
 			wp_reset_postdata();
 			?>
 			<a href="<?php the_field('news_link_url') ?>">VIEW MORE NEWS </a>
+
+			<?php get_template_part( 'template-parts/footer-callout' ); ?>
 		</main><!-- #main -->
 	</div><!-- #primary -->
 
