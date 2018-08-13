@@ -68,7 +68,7 @@ $HeroButtonLink = get_field('homepage_hero_button_link');
 			wp_reset_postdata();
 			endif;
 			?>
-			<a href="<?php the_field('news_link_url') ?>">VIEW MORE NEWS </a>
+			<a href="<?php echo get_permalink( get_option( 'page_for_posts' ) ); ?>">VIEW MORE NEWS </a>
 
 			<?php get_template_part( 'template-parts/footer-callout' ); ?>
 		</main><!-- #main -->
