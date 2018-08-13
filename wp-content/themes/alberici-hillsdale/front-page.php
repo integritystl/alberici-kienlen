@@ -44,6 +44,7 @@ $HeroButtonLink = get_field('homepage_hero_button_link');
 
 
 			<?php $the_query = new WP_Query( 'posts_per_page=3' ); ?>
+			<?php if ( $the_query -> have_posts() ): ?>
 			<?php while ($the_query -> have_posts()) : $the_query -> the_post(); ?>
 			<div class="news container">
 				<ul class="blog-content_posts">
@@ -65,6 +66,7 @@ $HeroButtonLink = get_field('homepage_hero_button_link');
 			<?php
 			endwhile;
 			wp_reset_postdata();
+			endif;
 			?>
 			<a href="<?php the_field('news_link_url') ?>">VIEW MORE NEWS </a>
 
