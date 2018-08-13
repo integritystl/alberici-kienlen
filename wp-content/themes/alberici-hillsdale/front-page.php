@@ -34,34 +34,28 @@ $HeroButtonLink = get_field('homepage_hero_button_link');
 				</div>
 			<?php endif; ?>
 
-			<?php 
-			
-			if( have_rows('flexible_content') ): ?>
-				<div class="full-width-callout container">
-				<?php
-				while ( have_rows('flexible_content') ) : the_row();
-					if( get_row_layout() == 'full_width_callout' ): ?>
-						<?php 
-						$image = get_sub_field('image'); 
-						$size = 'full';
-						echo wp_get_attachment_image( $image, $size );
-						?>
-						<h2><?php the_sub_field('header'); ?></h2>
-						<p><?php the_sub_field('content'); ?></p>
-						<a href="<?php the_sub_field('button_link'); ?>"><?php the_sub_field('button_text'); ?></a>
-					<?php
-					endif;
+		<?php
+			if(have_rows('flexible_content', get_the_ID())):
+				while(have_rows('flexible_content')): the_row();
+					include(locate_template('template-parts/flex-content/content-' . get_row_layout() . '.php'));
 				endwhile;
-			endif; ?>
+			endif;
+		?>
+
 
 			<?php $the_query = new WP_Query( 'posts_per_page=3' ); ?>
 			<?php while ($the_query -> have_posts()) : $the_query -> the_post(); ?>
 			<div class="news container">
 				<ul class="blog-content_posts">
 					<li class="post" style="background-image:url('<?php the_post_thumbnail_url(); ?>');">
-						<a href="<?php the_permalink() ?>" style="text-decoration: none;">
+						<a href="<?php the_permalink() ?>" >
 						<span class="news-meta">
-							<span class="news-category"><?php $category = get_the_category(); echo $category[0]->cat_name; ?></span>
+							<span class="news-category">
+								<?php 
+								$category = get_the_category(); 
+								echo $category[0]->cat_name; 
+							?>
+							</span>
 							<h3 class="news-name"><?php the_title();?></h3>
 						</a>
 					</li>
