@@ -9,7 +9,8 @@ class ACFTemplateFields
     self::setupFlexContentFields();
 	self::setupCardListFields();
 	self::setupGeneralHeroFields();
-    self::setupFooterCalloutFields();
+	self::setupFooterCalloutFields();
+	self::setupJobsCalloutFields();
   }
 
   private static function setupHomePageFields()
@@ -717,128 +718,231 @@ class ACFTemplateFields
         if( function_exists('acf_add_local_field_group') ):
             
             acf_add_local_field_group(array(
-                                            'key' => 'group_5b6b1789744b2',
-                                            'title' => 'Footer Callout',
-                                            'fields' => array(
-                                                              array(
-                                                                    'key' => 'field_5b6b17914c683',
-                                                                    'label' => 'Header',
-                                                                    'name' => 'footer_callout_header',
-                                                                    'type' => 'text',
-                                                                    'instructions' => '',
-                                                                    'required' => 0,
-                                                                    'conditional_logic' => 0,
-                                                                    'wrapper' => array(
-                                                                                       'width' => '',
-                                                                                       'class' => '',
-                                                                                       'id' => '',
-                                                                                       ),
-                                                                    'default_value' => '',
-                                                                    'placeholder' => '',
-                                                                    'prepend' => '',
-                                                                    'append' => '',
-                                                                    'maxlength' => '',
-                                                                    ),
-                                                              array(
-                                                                    'key' => 'field_5b6b17a04c684',
-                                                                    'label' => 'Content',
-                                                                    'name' => 'footer_callout_content',
-                                                                    'type' => 'textarea',
-                                                                    'instructions' => '',
-                                                                    'required' => 0,
-                                                                    'conditional_logic' => 0,
-                                                                    'wrapper' => array(
-                                                                                       'width' => '',
-                                                                                       'class' => '',
-                                                                                       'id' => '',
-                                                                                       ),
-                                                                    'default_value' => '',
-                                                                    'placeholder' => '',
-                                                                    'maxlength' => '',
-                                                                    'rows' => '',
-                                                                    'new_lines' => '',
-                                                                    ),
-                                                              array(
-                                                                    'key' => 'field_5b6b17b04c685',
-                                                                    'label' => 'Button Text',
-                                                                    'name' => 'footer_callout_button_text',
-                                                                    'type' => 'text',
-                                                                    'instructions' => '',
-                                                                    'required' => 0,
-                                                                    'conditional_logic' => 0,
-                                                                    'wrapper' => array(
-                                                                                       'width' => '',
-                                                                                       'class' => '',
-                                                                                       'id' => '',
-                                                                                       ),
-                                                                    'default_value' => '',
-                                                                    'placeholder' => '',
-                                                                    'prepend' => '',
-                                                                    'append' => '',
-                                                                    'maxlength' => '',
-                                                                    ),
-                                                              array(
-                                                                    'key' => 'field_5b6b17c04c686',
-                                                                    'label' => 'Button Link',
-                                                                    'name' => 'footer_callout_button_link',
-                                                                    'type' => 'url',
-                                                                    'instructions' => '',
-                                                                    'required' => 0,
-                                                                    'conditional_logic' => 0,
-                                                                    'wrapper' => array(
-                                                                                       'width' => '',
-                                                                                       'class' => '',
-                                                                                       'id' => '',
-                                                                                       ),
-                                                                    'default_value' => '',
-                                                                    'placeholder' => '',
-                                                                    ),
-                                                              array(
-                                                                    'key' => 'field_5b6b23e30a94d',
-                                                                    'label' => 'Background Image',
-                                                                    'name' => 'footer_callout_background_image',
-                                                                    'type' => 'image',
-                                                                    'instructions' => '',
-                                                                    'required' => 0,
-                                                                    'conditional_logic' => 0,
-                                                                    'wrapper' => array(
-                                                                                       'width' => '',
-                                                                                       'class' => '',
-                                                                                       'id' => '',
-                                                                                       ),
-                                                                    'return_format' => 'url',
-                                                                    'preview_size' => 'thumbnail',
-                                                                    'library' => 'all',
-                                                                    'min_width' => '',
-                                                                    'min_height' => '',
-                                                                    'min_size' => '',
-                                                                    'max_width' => '',
-                                                                    'max_height' => '',
-                                                                    'max_size' => '',
-                                                                    'mime_types' => '',
-                                                                    ),
-                                                              ),
-                                            'location' => array(
-                                                                array(
-                                                                      array(
-                                                                            'param' => 'page_template',
-                                                                            'operator' => '==',
-                                                                            'value' => 'default',
-                                                                            ),
-                                                                      ),
-                                                                ),
-                                            'menu_order' => 0,
-                                            'position' => 'normal',
-                                            'style' => 'default',
-                                            'label_placement' => 'top',
-                                            'instruction_placement' => 'label',
-                                            'hide_on_screen' => '',
-                                            'active' => 1,
-                                            'description' => '',
-                                            ));
+                'key' => 'group_5b6b1789744b2',
+                'title' => 'Footer Callout',
+                'fields' => array(
+                array(
+					'key' => 'field_5b6b17914c683',
+					'label' => 'Header',
+					'name' => 'footer_callout_header',
+					'type' => 'text',
+					'instructions' => '',
+					'required' => 0,
+					'conditional_logic' => 0,
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'default_value' => '',
+					'placeholder' => '',
+					'prepend' => '',
+					'append' => '',
+					'maxlength' => '',
+				),
+				array(
+					'key' => 'field_5b6b17a04c684',
+					'label' => 'Content',
+					'name' => 'footer_callout_content',
+					'type' => 'textarea',
+					'instructions' => '',
+					'required' => 0,
+					'conditional_logic' => 0,
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'default_value' => '',
+					'placeholder' => '',
+					'maxlength' => '',
+					'rows' => '',
+					'new_lines' => '',
+				),
+				array(
+					'key' => 'field_5b6b17b04c685',
+					'label' => 'Button Text',
+					'name' => 'footer_callout_button_text',
+					'type' => 'text',
+					'instructions' => '',
+					'required' => 0,
+					'conditional_logic' => 0,
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'default_value' => '',
+					'placeholder' => '',
+					'prepend' => '',
+					'append' => '',
+					'maxlength' => '',
+				),
+				array(
+					'key' => 'field_5b6b17c04c686',
+					'label' => 'Button Link',
+					'name' => 'footer_callout_button_link',
+					'type' => 'url',
+					'instructions' => '',
+					'required' => 0,
+					'conditional_logic' => 0,
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+						),
+					'default_value' => '',
+					'placeholder' => '',
+					),
+				array(
+					'key' => 'field_5b6b23e30a94d',
+					'label' => 'Background Image',
+					'name' => 'footer_callout_background_image',
+					'type' => 'image',
+					'instructions' => '',
+					'required' => 0,
+					'conditional_logic' => 0,
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+						),
+					'return_format' => 'url',
+					'preview_size' => 'thumbnail',
+					'library' => 'all',
+					'min_width' => '',
+					'min_height' => '',
+					'min_size' => '',
+					'max_width' => '',
+					'max_height' => '',
+					'max_size' => '',
+					'mime_types' => '',
+					),
+				),
+				'location' => array(
+					array(
+						array(
+							'param' => 'page_type',
+							'operator' => '!=',
+							'value' => 'front_page',
+						),
+					),
+				),
+				'menu_order' => 0,
+				'position' => 'normal',
+				'style' => 'default',
+				'label_placement' => 'top',
+				'instruction_placement' => 'label',
+				'hide_on_screen' => '',
+				'active' => 1,
+				'description' => '',
+			));
         
         endif;
-    }
+	}
 
+	private static function setupJobsCalloutFields()
+  {
+	if( function_exists('acf_add_local_field_group') ):
+
+		acf_add_local_field_group(array(
+			'key' => 'group_5b72e8c40b6b9',
+			'title' => 'Jobs Callout',
+			'fields' => array(
+				array(
+					'key' => 'field_5b72e8c611836',
+					'label' => 'Header',
+					'name' => 'jobs_callout_header',
+					'type' => 'text',
+					'instructions' => '',
+					'required' => 0,
+					'conditional_logic' => 0,
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'default_value' => '',
+					'placeholder' => '',
+					'prepend' => '',
+					'append' => '',
+					'maxlength' => '',
+				),
+				array(
+					'key' => 'field_5b72e8e611837',
+					'label' => 'Content',
+					'name' => 'jobs_callout_content',
+					'type' => 'textarea',
+					'instructions' => '',
+					'required' => 0,
+					'conditional_logic' => 0,
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'default_value' => '',
+					'placeholder' => '',
+					'maxlength' => '',
+					'rows' => '',
+					'new_lines' => '',
+				),
+				array(
+					'key' => 'field_5b72e8fd11838',
+					'label' => 'Job Posts Link',
+					'name' => 'jobs_callout_post_link',
+					'type' => 'url',
+					'instructions' => '',
+					'required' => 0,
+					'conditional_logic' => 0,
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'default_value' => '',
+					'placeholder' => '',
+				),
+				array(
+					'key' => 'field_5b72e91b11839',
+					'label' => 'Careers Form',
+					'name' => 'jobs_callout_careers_form',
+					'type' => 'wysiwyg',
+					'instructions' => '',
+					'required' => 0,
+					'conditional_logic' => 0,
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'default_value' => '',
+					'tabs' => 'all',
+					'toolbar' => 'full',
+					'media_upload' => 1,
+					'delay' => 0,
+				),
+			),
+			'location' => array(
+				array(
+					array(
+						'param' => 'page_template',
+						'operator' => '==',
+						'value' => 'page-careers.php',
+					),
+				),
+			),
+			'menu_order' => 0,
+			'position' => 'normal',
+			'style' => 'default',
+			'label_placement' => 'top',
+			'instruction_placement' => 'label',
+			'hide_on_screen' => '',
+			'active' => 1,
+			'description' => '',
+		));
+		
+		endif;
+  }
 
 }
