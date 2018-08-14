@@ -13,13 +13,27 @@
  */
 
 get_header();
+$HeroImage = get_field('homepage_hero_featured_image');
+$HeroHeadline = get_field('homepage_hero_title');
+$HeroContent = get_field('homepage_hero_content');
+$HeroButtonText = get_field('homepage_hero_button_text');
+$HeroButtonLink = get_field('homepage_hero_button_link');
 ?>
 
 	<div id="primary" class="content-area">
 		<main id="main" class="site-main">
-		
-		<?php get_template_part( 'template-parts/footer-callout' ); ?>
-
+			<?php if ($HeroHeadline): ?>
+				<div class="homepage-hero hero-image" style="background-image: url(<?php if ($HeroImage): echo $HeroImage; endif; ?>);">
+					<div class="container">
+						<h1><?php echo $HeroHeadline; ?></h1>
+						<p><?php echo $HeroContent; ?></p>
+						<?php if ($HeroButtonText): ?>
+							<a href="<?php echo $HeroButtonLink; ?>"/><?php echo $HeroButtonText; ?> </a>
+						<?php endif; ?>
+					</div>
+				</div>
+			<?php endif; ?>
+            <?php get_template_part( 'template-parts/footer-callout' ); ?>
 		</main><!-- #main -->
 	</div><!-- #primary -->
 
