@@ -52,16 +52,16 @@ $HeroButtonLink = get_field('homepage_hero_button_link');
 						<a href="<?php the_permalink() ?>" >
 						<span class="news-meta">
 							<span class="news-category">
-								<?php 
-								$category = get_the_category(); 
-								echo $category[0]->cat_name; 
+								<?php
+								$category = get_the_category();
+								echo $category[0]->cat_name;
 							?>
 							</span>
 							<h3 class="news-name"><?php the_title();?></h3>
 						</a>
 					</li>
 				</ul>
-				
+
 			</div>
 			<?php
 			endwhile;
@@ -70,7 +70,6 @@ $HeroButtonLink = get_field('homepage_hero_button_link');
 			?>
 			<a href="<?php echo get_permalink( get_option( 'page_for_posts' ) ); ?>">VIEW MORE NEWS </a>
 
-			<?php get_template_part( 'template-parts/footer-callout' ); ?>
 		</main><!-- #main -->
 	</div><!-- #primary -->
 
