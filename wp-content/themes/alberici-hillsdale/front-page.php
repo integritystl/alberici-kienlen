@@ -33,7 +33,43 @@ $HeroButtonLink = get_field('homepage_hero_button_link');
 					</div>
 				</div>
 			<?php endif; ?>
-            <?php get_template_part( 'template-parts/footer-callout' ); ?>
+
+		<?php
+			if(have_rows('flexible_content', get_the_ID())):
+				while(have_rows('flexible_content')): the_row();
+					include(locate_template('template-parts/flex-content/content-' . get_row_layout() . '.php'));
+				endwhile;
+			endif;
+		?>
+
+
+			<?php $the_query = new WP_Query( 'posts_per_page=3' ); ?>
+			<?php if ( $the_query -> have_posts() ): ?>
+			<?php while ($the_query -> have_posts()) : $the_query -> the_post(); ?>
+			<div class="news container">
+				<ul class="blog-content_posts">
+					<li class="post" style="background-image:url('<?php the_post_thumbnail_url(); ?>');">
+						<a href="<?php the_permalink() ?>" >
+						<span class="news-meta">
+							<span class="news-category">
+								<?php
+								$category = get_the_category();
+								echo $category[0]->cat_name;
+							?>
+							</span>
+							<h3 class="news-name"><?php the_title();?></h3>
+						</a>
+					</li>
+				</ul>
+
+			</div>
+			<?php
+			endwhile;
+			wp_reset_postdata();
+			endif;
+			?>
+			<a href="<?php echo get_permalink( get_option( 'page_for_posts' ) ); ?>">VIEW MORE NEWS </a>
+
 		</main><!-- #main -->
 	</div><!-- #primary -->
 
