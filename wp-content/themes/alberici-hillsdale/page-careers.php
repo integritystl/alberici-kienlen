@@ -11,7 +11,6 @@ get_header();
 $jobsCalloutHeader = get_field('jobs_callout_header');
 $jobsCalloutContent = get_field('jobs_callout_content');
 $jobsCalloutLink = get_field('jobs_callout_post_link');
-$jobsCalloutgform = get_field('jobs_callout_careers_form');
 ?>
 <div id="primary" class="content-area">
 	<main id="main" class="site-main">
@@ -34,13 +33,13 @@ $jobsCalloutgform = get_field('jobs_callout_careers_form');
 				endwhile;
 			endif;
         ?>
-        
+        <?php if ($jobsCalloutLink): ?>
         <div class="job-callout container">
             <h3><?php echo $jobsCalloutHeader; ?></h3>
             <p><?php echo $jobsCalloutContent; ?></p>
             <a href="<?php echo $jobsCalloutLink; ?>">VIEW JOB POSTS</a>
-            <?php echo do_shortcode($jobsCalloutgform); ?>
         </div>
+        <?php endif; ?>
         <?php get_template_part( 'template-parts/footer-callout' );?>
 
         
