@@ -13,7 +13,7 @@ get_header();
 <main id="main" class="site-main">
 	<div class="container">
 		<div id="primary" class="content-area">
-			<p class="breadcrumb"><a class="arrow-link left-arrow" href="<?php echo get_permalink('259'); ?>">Back to News</a></p>
+			<p class="breadcrumb"><a class="arrow-link left-arrow" href="<?php echo get_permalink( get_option( 'page_for_posts' ) ); ?>">Back to News</a></p>
 			<?php
 			if ( have_posts() ) :
 				/* Start the Loop */
