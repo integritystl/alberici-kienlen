@@ -69,7 +69,7 @@
 				</nav><!-- #site-navigation -->
 			</div>
 		</div>
-		<div class="breadcrumbs">
+		<nav class="breadcrumbs" aria-label="Breadcrumb navigation">
 			<?php
 			if ( function_exists('yoast_breadcrumb') ) {
 				yoast_breadcrumb( '
@@ -77,7 +77,7 @@
 				' );
 			}
 			?>
-		</div>
+		</nav>
 		
 	</header><!-- #masthead -->
 
