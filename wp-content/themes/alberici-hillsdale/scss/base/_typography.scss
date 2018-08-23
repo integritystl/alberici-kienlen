@@ -47,10 +47,5 @@ hr {
 
 // https://webaim.org/techniques/css/invisiblecontent/
 .screen-reader-text {
-  position: absolute;
-  left:-10000px;
-  top:auto;
-  width:1px;
-  height:1px;
-  overflow:hidden;
+  @include hide-visually; //Bourbon mixin to hide things
 }
