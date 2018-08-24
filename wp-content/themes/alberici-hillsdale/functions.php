@@ -156,6 +156,13 @@ function alberici_hillsdale_scripts() {
 	wp_enqueue_style( 'alberici-hillsdale-style', get_stylesheet_uri(), array(), time() );
 
 	wp_register_script('alberici-hillsdale-scripts', get_template_directory_uri() . '/js/app.js', array('jquery'), time(), true);
+
+	wp_enqueue_script( 'jquery-sidr', get_template_directory_uri() . '/js/jquery.sidr.min.js', array(), time(), true );
+
+	wp_enqueue_script( 'alberici-hillsdale-main', get_template_directory_uri() . '/js/main.js', array(), time(), true );
+
+	wp_enqueue_script( 'alberici-hillsdale-header', get_template_directory_uri() . '/js/src/header.js', array(), time(), true );
+
 	if (is_page_template('page-card-list.php')) {
 			wp_register_script('alberici-hillsdale-news', get_template_directory_uri() . '/js/react_src/dist/card-list-view.js', array(), time(), true );
 			wp_enqueue_script('alberici-hillsdale-news', get_template_directory_uri() . '/js/react_src/dist/card-list-view.js', array(), time(), true );

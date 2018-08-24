@@ -15,20 +15,21 @@
 
 	<footer id="colophon" class="site-footer">
 		<div class="site-info">
-			<div class="site-copyright">
-				<p class="copyright">Copyright <?php echo date('Y'); ?> <?php the_field('footer_copyright_message', 'option'); ?> | <a href="tel:+1 <?php the_field('footer_phone_number','option');?>"><?php the_field('footer_phone_number','option')?></a></p>
-			</div>
+				<div class="container">
+				<div class="site-copyright">
+					<p class="copyright">Copyright <?php echo date('Y'); ?> <?php the_field('footer_copyright_message', 'option'); ?> | <a href="tel:+1 <?php the_field('footer_phone_number','option');?>"><?php the_field('footer_phone_number','option')?></a></p>
+				</div>
 
-			<div class="site-footer-menus">
-				<nav class="footer-navigation menu" role="navigation">
-					<?php wp_nav_menu( array( 'theme_location' => 'footer-menu', 'menu_id' => 'footer-menu', 'container' => ''  ) ); ?>
-				</nav>
+				<div class="site-footer-menus">
+					<nav class="footer-navigation menu" role="navigation">
+						<?php wp_nav_menu( array( 'theme_location' => 'footer-menu', 'menu_id' => 'footer-menu', 'container' => ''  ) ); ?>
+					</nav>
+				</div>
 			</div>
 		</div><!-- .site-info -->
 	</footer><!-- #colophon -->
 </div><!-- #page -->
 
 <?php wp_footer(); ?>
-
 </body>
 </html>

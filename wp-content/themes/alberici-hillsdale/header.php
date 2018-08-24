@@ -27,17 +27,19 @@
 	<header id="masthead" class="site-header">
 
 		<div class="utility-bar">
-			<nav class="utility-bar_menu">
-				<?php 
-				wp_nav_menu( array(
-					'theme_location' => 'utility-menu',
-					'menu_id' => 'utility-menu',
-				) ); 
-				?>
-			</nav>
+			<div class="container">
+				<nav class="utility-bar_menu">
+					<?php 
+					wp_nav_menu( array(
+						'theme_location' => 'utility-menu',
+						'menu_id' => 'utility-menu',
+					) ); 
+					?>
+				</nav>
+			</div>
 		</div>
 
-		<div class="main-header">
+		<div id="stickyHeader" class="main-header">
 			<div class="container">
 				<div class="site-branding">
 						<?php
@@ -67,9 +69,17 @@
 					) );
 					?>
 				</nav><!-- #site-navigation -->
+
+				<div class="mobile-navigation">
+					<div id="mobile-menu-toggle" class="menu-toggle" aria-controls="primary-menu" aria-expanded="false">
+						<span></span>
+						<span></span>
+						<span></span>
+					</div>
+				</div>
 			</div>
 		</div>
-		<nav class="breadcrumbs" aria-label="Breadcrumb navigation">
+		<nav class="breadcrumbs container" aria-label="Breadcrumb navigation">
 			<?php
 			if ( function_exists('yoast_breadcrumb') ) {
 				yoast_breadcrumb( '
