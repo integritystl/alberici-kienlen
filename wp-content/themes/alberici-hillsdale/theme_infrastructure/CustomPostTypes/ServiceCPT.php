@@ -17,14 +17,13 @@ class ServiceCPT
             'name' => __( 'Services' ),
             'singular_name' => __( 'Service' )
           ),
-          'exclude_from_search' => true,
-          'publicly_queryable' => false,
+          'public' => true,
           'show_ui' => true,
           'show_in_nav_menus' => false,
           'show_in_menu' => true,
-          'show_in_rest' => true,
           'has_archive' => false,
-          'menu_icon' => 'dashicons-cart',
+          'menu_icon' => 'dashicons-portfolio',
+          'taxonomies' => array( 'service-type' ),
           'supports' => array( 'title', 'editor', 'custom-fields','thumbnail' ),
         )
       );
