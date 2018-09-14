@@ -1,0 +1,11 @@
+.container {
+    width: 96%;
+    margin: 0 2%;
+    @include grid-media($medium-min) {
+      margin: 0 auto;
+    }
+    @include grid-media($large-min) {
+      max-width: 1200px;
+      width: 100%;
+    }
+  }
