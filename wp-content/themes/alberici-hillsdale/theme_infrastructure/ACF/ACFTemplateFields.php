@@ -695,13 +695,23 @@ class ACFTemplateFields
 			),
 			),
 			'location' => array(
-			array(
 				array(
-				'param' => 'page_type',
-				'operator' => '!=',
-				'value' => 'front_page',
+					array(
+					'param' => 'page_type',
+					'operator' => '!=',
+					'value' => 'front_page',
+					),
+					array(
+						'param' => 'post_type',
+						'operator' => '!=',
+						'value' => 'post',
+					),
+					array(
+						'param' => 'post_type',
+						'operator' => '!=',
+						'value' => 'service',
+					),
 				),
-			),
 			),
 			'menu_order' => 0,
 			'position' => 'normal',
@@ -826,6 +836,16 @@ class ACFTemplateFields
 							'param' => 'page_type',
 							'operator' => '!=',
 							'value' => 'front_page',
+						),
+						array(
+							'param' => 'post_type',
+							'operator' => '!=',
+							'value' => 'post',
+						),
+						array(
+							'param' => 'post_type',
+							'operator' => '!=',
+							'value' => 'service',
 						),
 					),
 				),
