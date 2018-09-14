@@ -62,14 +62,14 @@ $HeroButtonLink = get_field('homepage_hero_button_link');
 					</li>
 				</ul>
 
-			</div>
+			
 			<?php
 			endwhile;
 			wp_reset_postdata();
 			endif;
 			?>
 			<a href="<?php echo get_permalink( get_option( 'page_for_posts' ) ); ?>">VIEW MORE NEWS </a>
-
+			</div>
 		</main><!-- #main -->
 	</div><!-- #primary -->
 
