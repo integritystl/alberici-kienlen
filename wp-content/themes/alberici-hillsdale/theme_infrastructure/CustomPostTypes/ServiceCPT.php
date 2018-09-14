@@ -24,7 +24,7 @@ class ServiceCPT
           'has_archive' => false,
           'menu_icon' => 'dashicons-portfolio',
           'taxonomies' => array( 'service-type' ),
-          'supports' => array( 'title', 'editor', 'custom-fields','thumbnail' ),
+          'supports' => array( 'title', 'editor', 'custom-fields','thumbnail', 'page-attributes' ),
         )
       );
     }
