@@ -701,16 +701,6 @@ class ACFTemplateFields
 					'operator' => '!=',
 					'value' => 'front_page',
 					),
-					array(
-						'param' => 'post_type',
-						'operator' => '!=',
-						'value' => 'post',
-					),
-					array(
-						'param' => 'post_type',
-						'operator' => '!=',
-						'value' => 'service',
-					),
 				),
 			),
 			'menu_order' => 0,
