@@ -56,3 +56,6 @@ keyfile.rsa
 codeship.aes
 production.env
 .DS_Store
+
+#Code Editor Junk
+idea/*
