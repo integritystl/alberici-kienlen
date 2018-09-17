@@ -16,18 +16,11 @@ $HeroImage = get_field('general_hero_featured_image');
 			<div class="container">
 			<?php
 			if ( have_posts() ) :
-				/* Start the Loop */
 				while ( have_posts() ) : 
 					the_post();?>
 					<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 					<div class="hero-area" style="background-image: url(<?php if ($HeroImage): echo $HeroImage; endif; ?>);">
-						<?php
-						if ( is_singular() && 'post' === get_post_type() ) :
-							the_title( '<h1 class="entry-title">', '</h1>' ); ?>
-						<?php 
-						else :
-							the_title( '<h2 class="entry-title" ><a href="' . esc_url( get_permalink() ) . '" rel="bookmark">', '</a></h2>' ); ?>
-						<?php endif; ?>
+						<h2 class="entry-title"><?php the_title(); ?></h2>
 					</div><!-- .hero-area -->
 					<nav class="breadcrumbs container" aria-label="Breadcrumb navigation">
 						<?php
@@ -41,35 +34,14 @@ $HeroImage = get_field('general_hero_featured_image');
 					<?php alberici_hillsdale_post_thumbnail(); ?>
 				
 					<div class="entry-content">
-						<?php
-						if ( is_single() ) :
-							the_content( sprintf(
-								/* translators: %s: Name of current post. */
-								wp_kses( __( 'Continue reading %s <span class="meta-nav">&rarr;</span>', '_s' ), array( 'span' => array( 'class' => array() ) ) ),
-								the_title( '<span class="screen-reader-text">"', '"</span>', false )
-							) );
-						else:
-							the_excerpt();
-						endif;
-				
-				
-							wp_link_pages( array(
-								'before' => '<div class="page-links">' . esc_html__( 'Pages:', '_s' ),
-								'after'  => '</div>',
-							) );
-						?>
+						<?php the_content(); ?>
 					</div><!-- .entry-content -->
 				</article><!-- #post-<?php the_ID(); ?> -->
 				
 
 				<?php endwhile;
-
-				the_posts_navigation();
-
 			else :
-
 				get_template_part( 'template-parts/content', 'none' );
-
 			endif;
 			?>
 		
@@ -98,7 +70,7 @@ $HeroImage = get_field('general_hero_featured_image');
 				//Default: Show Latest 3 Posts
 				if(empty($latest_args)) {
 					$latest_args = array(
-					'post_type' =>  'service',
+					'post_type' =>  '', //Add the post type after Project CPT is created
 					'posts_per_page' => 3,
 					);
 				}
