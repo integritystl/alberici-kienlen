@@ -79,15 +79,6 @@
 				</div>
 			</div>
 		</div>
-		<nav class="breadcrumbs container" aria-label="Breadcrumb navigation">
-			<?php
-			if ( function_exists('yoast_breadcrumb') ) {
-				yoast_breadcrumb( '
-				<p id="breadcrumbs">','</p>
-				' );
-			}
-			?>
-		</nav>
 		
 	</header><!-- #masthead -->
 

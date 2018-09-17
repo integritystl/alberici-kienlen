@@ -695,13 +695,13 @@ class ACFTemplateFields
 			),
 			),
 			'location' => array(
-			array(
 				array(
-				'param' => 'page_type',
-				'operator' => '!=',
-				'value' => 'front_page',
+					array(
+					'param' => 'page_type',
+					'operator' => '!=',
+					'value' => 'front_page',
+					),
 				),
-			),
 			),
 			'menu_order' => 0,
 			'position' => 'normal',

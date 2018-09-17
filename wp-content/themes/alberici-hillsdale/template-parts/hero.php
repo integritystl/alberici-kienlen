@@ -16,3 +16,12 @@ $GlobalHeroHeadline = get_field('general_hero_title');
         <h1><?php echo $GlobalHeroHeadline; ?></h1>
     </div>
 <?php endif; ?>
+<nav class="breadcrumbs container" aria-label="Breadcrumb navigation">
+    <?php
+    if ( function_exists('yoast_breadcrumb') ) {
+        yoast_breadcrumb( '
+        <p id="breadcrumbs">','</p>
+        ' );
+    }
+    ?>
+</nav>
