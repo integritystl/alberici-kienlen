@@ -10,12 +10,17 @@
 //Add the ACF fields and custom post types
 require_once ( __DIR__ . '/theme_infrastructure/ACF/ACFTemplateFields.php');
 require_once ( __DIR__ . '/theme_infrastructure/ACF/ACFOptionsPage.php');
+require_once ( __DIR__ . '/theme_infrastructure/CustomPostTypes/ServiceCPT.php');
+require_once ( __DIR__ . '/theme_infrastructure/CustomPostTypes/MarketCPT.php');
 
 //Add our ACF template fields and custom post types and what not
 if( ! function_exists('alberici_hillsdale_theme_infrastructure_setup')){
 	function alberici_hillsdale_theme_infrastructure_setup(){
 		\AlbericiHillsdale\ACFTemplateFields::setupTemplateFields();
 		\AlbericiHillsdale\ACFOptionsPage::setupOptionsPage();
+		\AlbericiHillsdale\ServiceCPT::setupServices();
+		\AlbericiHillsdale\MarketCPT::setupMarkets();
+
 	}
 }
 add_action('init', 'alberici_hillsdale_theme_infrastructure_setup');
