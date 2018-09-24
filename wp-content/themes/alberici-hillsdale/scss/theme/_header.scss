@@ -1,0 +1,336 @@
+.site-header {
+    //Utility menu
+    top:0;
+    // transition: $base-transition;
+    z-index: 999999;
+    position: relative;
+    width: 100%;
+    .utility-bar {
+      display: none;
+      @include grid-media($headerMenu-min) {
+        display: block;
+      }
+      &_menu {
+        @extend .container;
+        padding: 14px 0;
+        ul {
+          margin: 0;
+          padding: 0;
+          display: flex;
+          flex-direction: row;
+          list-style-type: none;
+          justify-content: flex-end;
+          li {
+            font-size: 14px;
+            margin-left: 30px;
+            a {
+              position: relative;
+              text-transform: uppercase;
+              text-decoration: none;
+              &:hover {
+                opacity: 1;
+              }
+              &:before {
+                font-family: "Font Awesome 5 Pro";
+                font-weight: 300;
+                position: absolute;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .main-header {
+        background: white;
+        padding-top: 12px;
+        padding-bottom: 12px;
+    
+        .container {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+    
+        .site-branding {
+          max-width: 125px;
+          max-height: 46px;
+          flex-basis: 50%;
+        //   transition: $base-transition;
+          @include grid-media($headerMenu-min) {
+            max-width: 175px;
+            max-height: 65px;
+            flex-basis: 25%;
+          }
+          a {
+            display: block;
+          }
+        }
+    
+        .main-navigation {
+          flex-basis: 85%;
+          display: none;
+    
+          @include grid-media($headerMenu-min) {
+            display: block;
+          }
+    
+          .menu {
+            display: flex;
+            justify-content: flex-end;
+            li {
+              margin-left: 5%;
+              padding: 10px 0 10px;
+              a {
+                font-size: 14px;
+                text-decoration: none;
+                font-weight: 600;
+                -webkit-font-smoothing: auto;
+                &:hover {
+                //   color: $red;
+                  opacity: 1;
+                }
+              }
+            }
+          }
+        }
+    }
+}
+.fixed {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+  
+.admin-bar {
+  .fixed {
+    top: 46px;
+    @include grid-media($small-min) {
+      top: 32px;
+    }
+  }
+  
+  .fixed-margin {
+    margin-top: 70px;
+    @include grid-media($small-min) {
+      margin-top: 87px;
+    }
+  }
+}
+  
+.fixed-margin {
+  margin-top: 57px;
+  @include grid-media($headerMenu-min) {
+    margin-top: 87px;
+  }
+}
+
+.mobile-navigation {
+  display: flex;
+  align-items: center;
+  ul {
+    margin: 0 10px 0 0;
+    padding: 0;
+  }
+  li {
+    a {
+      position: relative;
+      width: 32px;
+      text-indent: 32px;
+      display: block;
+      overflow: hidden;
+      // color: $red;
+      height: 40px;
+    }
+    display: block;
+    a:before {
+      font-family: "Font Awesome 5 Pro";
+      font-weight: 300;
+      position: absolute;
+      content: "\f041";
+      font-size: 32px;
+      top: -9px;
+      left: -28px;
+    }
+  }
+  li.utility-blog,
+  li.utility-franchise {
+    display: none;
+  }
+  @include grid-media($headerMenu-min) {
+    display: none;
+  }
+  
+  .menu-toggle.menu-open {
+    span {
+      display: none;
+      height: 3px;
+      width: 30px;
+      top: 10px;
+      background: darkred; //color should be changed in the future
+      position: relative;
+      transform: rotate(45deg);
+      &:first-of-type {
+        display: flex;
+        top: 10px;
+        transform: rotate(45deg);
+      }
+      &:last-of-type {
+        display: flex;
+        top: 7px;
+        transform: rotate(-45deg);
+      }
+    }
+  }
+  
+  .menu-toggle {
+    display: block;
+    height: 30px;
+    box-sizing: border-box;
+    padding: 5px 0 5px 10px;
+    @include grid-media($headerMenu-min) {
+      display: none;
+    }
+    span {
+      display: flex;
+      flex-direction: column;
+      height: 3px;
+      width: 30px;
+      top: 7px;
+      background: darkred;
+      position: relative;
+      transition: all .2s ease-in-out;
+      &:first-of-type {
+        top: 0px;
+      }
+      &:last-of-type {
+        top: 14px;
+      }
+    }
+  }
+}
+  
+.admin-bar {
+  .sidr {
+    top: 47px;
+    @include grid-media($small-min) {
+      top: 32px;
+    }
+  }
+  #wpadminbar {
+    position: fixed;
+  }
+}
+  
+  
+.sidr-open,
+.sidr-animating {
+  left: 0!important;
+  top: 0;
+  position: static!important;
+}
+  
+.sidr {
+  display: block;
+  position: fixed;
+  top: 0;
+  height: 100%;
+  z-index: 999999;
+  width: calc(100% - 70px);
+  background: white;
+  color: grey;
+  box-shadow: 2px 2px 8px rgba(0,0,0,.15);
+  .site-branding {
+    display: none;
+  }
+  .sidr-inner {
+    ul {
+      margin: 0 0 0 0;
+      padding: 0;
+    }
+    a {
+      // color: $base-font-color;
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+  }
+
+  &.left {
+    right: auto;
+    left: calc(-100% + 70px);
+  }
+  .menu-item {
+    display: block;
+    text-align: left;
+    // border-bottom: $base-border;
+    -webkit-font-smoothing: initial;
+    &:before {
+      content: '';
+    }
+    a {
+      display: block;
+      padding: 22px 25px;
+      font-size: 14px;
+      font-weight: 700;
+      &:hover {
+        // color: $red;
+      }
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+
+
+
+  .menu-item-has-children {
+    // border-bottom: transparent;
+    position: relative;
+    &:before {
+      color: #425464;
+      position: absolute;
+      top: 25px;
+      right: 28px;
+      font-size: 12px;
+      font-family: "Font Awesome 5 Pro";
+      font-weight: 600;
+      // color: $base-font-color;
+      content: '\f078';
+      cursor: pointer;
+    }
+    ul {
+      margin: -10px 0 20px!important;
+      transition: none;
+      li {
+        border-bottom: transparent;
+      }
+      display: none;
+      background: white;
+      a {
+        padding: 8px 25px;
+        font-size: 14px;
+        font-weight: 600;
+        text-transform: none;
+        &:hover {
+          background: white;
+          // color: $red;
+        }
+      }
+    }
+  }
+}
+  
+.mobile-menu-overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(255,255,255,.8);
+  z-index: 99;
+}
+
+.lock-scroll {
+  top: 60px;
+  overflow: hidden;
+}
