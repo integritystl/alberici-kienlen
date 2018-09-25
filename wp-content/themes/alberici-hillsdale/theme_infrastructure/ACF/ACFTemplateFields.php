@@ -12,6 +12,7 @@ class ACFTemplateFields
 	self::setupFooterCalloutFields();
 	self::setupJobsCalloutFields();
 	self::setupContactPeopleFields();
+	self::setupMarketCalloutsFields();
   }
 
   private static function setupHomePageFields()
@@ -1119,6 +1120,102 @@ class ACFTemplateFields
 						'param' => 'page_template',
 						'operator' => '==',
 						'value' => 'page-contact.php',
+					),
+				),
+			),
+			'menu_order' => 0,
+			'position' => 'normal',
+			'style' => 'default',
+			'label_placement' => 'top',
+			'instruction_placement' => 'label',
+			'hide_on_screen' => '',
+			'active' => 1,
+			'description' => '',
+		));
+		
+		endif;
+  }
+  private static function setupMarketCalloutsFields() {
+	if( function_exists('acf_add_local_field_group') ):
+
+		acf_add_local_field_group(array(
+			'key' => 'group_5ba5222faf982',
+			'title' => 'Market Callouts',
+			'fields' => array(
+				array(
+					'key' => 'field_5ba52236c8122',
+					'label' => 'Market Callouts',
+					'name' => 'market_callouts',
+					'type' => 'repeater',
+					'instructions' => '',
+					'required' => 0,
+					'conditional_logic' => 0,
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'collapsed' => '',
+					'min' => 0,
+					'max' => 0,
+					'layout' => 'table',
+					'button_label' => '',
+					'sub_fields' => array(
+						array(
+							'key' => 'field_5ba52243c8123',
+							'label' => 'Image',
+							'name' => 'market_callouts_image',
+							'type' => 'image',
+							'instructions' => '',
+							'required' => 0,
+							'conditional_logic' => 0,
+							'wrapper' => array(
+								'width' => '',
+								'class' => '',
+								'id' => '',
+							),
+							'return_format' => 'id',
+							'preview_size' => 'thumbnail',
+							'library' => 'all',
+							'min_width' => '',
+							'min_height' => '',
+							'min_size' => '',
+							'max_width' => '',
+							'max_height' => '',
+							'max_size' => '',
+							'mime_types' => '',
+						),
+						array(
+							'key' => 'field_5ba52275c8124',
+							'label' => 'Market',
+							'name' => 'market_callouts_market',
+							'type' => 'post_object',
+							'instructions' => '',
+							'required' => 0,
+							'conditional_logic' => 0,
+							'wrapper' => array(
+								'width' => '',
+								'class' => '',
+								'id' => '',
+							),
+							'post_type' => array(
+								0 => 'market',
+							),
+							'taxonomy' => '',
+							'allow_null' => 0,
+							'multiple' => 0,
+							'return_format' => 'object',
+							'ui' => 1,
+						),
+					),
+				),
+			),
+			'location' => array(
+				array(
+					array(
+						'param' => 'page_template',
+						'operator' => '==',
+						'value' => 'page-market.php',
 					),
 				),
 			),
