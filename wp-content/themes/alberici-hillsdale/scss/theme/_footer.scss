@@ -1,0 +1,19 @@
+footer {
+  padding-top: 10px;
+  background-color: $blue;
+  color: #fff;
+}
+.site-copyright {
+   grid-column: span 6;
+}
+
+.site-footer-menus {
+   grid-column: span 6;
+   place-self: stretch end;
+   .footer-navigation {
+     li {
+       display: inline-grid;
+     }
+
+   }
+}

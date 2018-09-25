@@ -15,7 +15,7 @@
 
 	<footer id="colophon" class="site-footer">
 		<div class="site-info">
-				<div class="container">
+				<div class="container grid-container">
 				<div class="site-copyright">
 					<p class="copyright">Copyright <?php echo date('Y'); ?> <?php the_field('footer_copyright_message', 'option'); ?> | <a href="tel:+1 <?php the_field('footer_phone_number','option');?>"><?php the_field('footer_phone_number','option')?></a></p>
 				</div>
