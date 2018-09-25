@@ -35,7 +35,7 @@ get_header();
                         <?php 
                         $size = 'thumbnail'; // (thumbnail, medium, large, full or custom size)
                         if( $market_callout_image ) {
-                            echo wp_get_attachment_image( $market_callout_image, $size );
+                            echo wp_get_attachment_image( $market_callout_image, $size, false, 'market-icon' );
                         }
                         if( $market_callout_post ): 
                             // override $post
