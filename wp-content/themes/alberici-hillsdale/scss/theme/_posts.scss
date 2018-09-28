@@ -1,0 +1,19 @@
+//For the News container on the homepage
+//TODO see if we can just use this on the News page as well.
+
+.news {
+//  @extend .grid-container;
+}
+
+.blog-content_posts {
+  @extend .grid-container;
+
+  .post {
+    grid-column: span 4;
+
+    a {
+      @extend .inverse-link;
+    }
+
+  }
+}

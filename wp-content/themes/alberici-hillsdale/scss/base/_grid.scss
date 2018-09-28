@@ -12,3 +12,10 @@ $small-min: (columns: 12, gutter: 0, media: $small + 1);
 $medium-min: (columns: 12, gutter: 20px, media: $medium + 1);
 $large-min: (columns: 12, gutter: 20px, media: $large + 1);
 $headerMenu-min: (columns: 12, gutter: 20px, media: $headerMenu + 1);
+
+//Define main areas with CSS grid
+.grid-container {
+  display: grid;
+  grid-gap: 10px;
+  grid-template-columns: repeat(12, 1fr);
+}
