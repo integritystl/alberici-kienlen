@@ -7,13 +7,10 @@
     width: 100%;
     .utility-bar {
       display: none;
+
       @include grid-media($headerMenu-min) {
         display: block;
         background-color: $red;
-        a {
-          color: #fff;
-        }
-
       }
       &_menu {
         @extend .container;
@@ -29,9 +26,10 @@
             font-size: 14px;
             margin-left: 30px;
             a {
+              @extend .inverse-link;
               position: relative;
               text-transform: uppercase;
-              text-decoration: none;
+
               &:hover {
                 opacity: 1;
               }

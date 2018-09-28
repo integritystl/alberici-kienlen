@@ -37,6 +37,15 @@ a {
   }
 }
 
+//For links on dark backgrounds
+.inverse-link {
+  color: #fff;
+  text-decoration: none;
+  &:hover {
+    color: $medium-gray;
+  }
+}
+
 hr {
   border-bottom: $base-border;
   border-left: 0;
