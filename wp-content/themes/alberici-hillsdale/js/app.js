@@ -1,2 +1,2 @@
-"use strict";console.log("hi");
+jQuery(function(e){e(document).ready(function(){e(window).bind("scroll",function(){e(window).width()<=850?0<e(window).scrollTop()?(e("#stickyHeader").addClass("fixed"),e(".site-content").addClass("fixed-margin")):(e("#stickyHeader").removeClass("fixed"),e(".site-content").removeClass("fixed-margin")):50<e(window).scrollTop()?(e("#stickyHeader").addClass("fixed"),e(".site-content").addClass("fixed-margin")):(e("#stickyHeader").removeClass("fixed"),e(".site-content").removeClass("fixed-margin"))})})});
 //# sourceMappingURL=app.js.map

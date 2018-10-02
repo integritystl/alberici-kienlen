@@ -13,14 +13,17 @@ $small-spacing: $base-spacing / 2;
 $base-z-index: 0;
 
 // Colors
-$blue: #1565c0;
-$dark-gray: #333;
-$medium-gray: #999;
-$light-gray: #ddd;
+$blue: #505f7a;
+$dark-blue: #1d232b;
+$dark-gray: #383838;
+$medium-gray: #727272;
+$light-gray: #f2f2f2;
+$red: #ce3b3e;
+$overlay: rgba($dark-gray, 0.6); //to use on hero areas / possibly on Card components
 
 // Font Colors
-$base-font-color: $dark-gray;
-$action-color: $blue;
+$base-font-color: $medium-gray;
+$action-color: $dark-blue;
 
 // Border
 $base-border-color: $light-gray;
