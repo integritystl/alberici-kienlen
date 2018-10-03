@@ -29,6 +29,15 @@ get_header();
 				endwhile; // End of the loop.		
 				?>
 			</div>
+
+			<?php
+			if(have_rows('flexible_content', get_the_ID())):
+				while(have_rows('flexible_content')): the_row();
+					include(locate_template('template-parts/flex-content/content-' . get_row_layout() . '.php'));
+				endwhile;
+			endif;
+			?>
+			
 			<?php get_template_part( 'template-parts/footer-callout' ); ?>
 
 		</main><!-- #main -->

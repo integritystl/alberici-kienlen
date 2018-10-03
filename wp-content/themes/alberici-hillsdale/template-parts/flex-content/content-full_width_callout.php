@@ -13,16 +13,14 @@ $fullWidthBtnLink =   get_sub_field('button_link');
 
 ?>
 <div class="flex_full_width">
-  <div class="container">
-    <div class="full_width_img">
-      <?php echo wp_get_attachment_image($fullWidthImg, 'large');  ?>
-    </div>
-    <div class="full_width_content">
-      <h2><?php echo $fullWidthHeader; ?></h2>
-      <?php echo $fullWidthContent;?>
-       <?php if ($fullWidthBtnText) { ?>
-         <a href="<?php echo $fullWidthBtnLink; ?>"><?php echo $fullWidthBtnText; ?></a>
-       <?php } ?>
-     </div>
- </div>
+  <div class="full_width_img">
+    <?php echo wp_get_attachment_image($fullWidthImg, 'large');  ?>
+  </div>
+  <div class="full_width_content">
+    <h2><?php echo $fullWidthHeader; ?></h2>
+    <?php echo $fullWidthContent;?>
+      <?php if ($fullWidthBtnText) { ?>
+        <a href="<?php echo $fullWidthBtnLink; ?>"><?php echo $fullWidthBtnText; ?></a>
+      <?php } ?>
+  </div>
 </div>

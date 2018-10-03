@@ -24,7 +24,6 @@ $HeroButtonLink = get_field('homepage_hero_button_link');
 		<main id="main" class="site-main">
 			<?php if ($HeroHeadline): ?>
 				<div class="homepage-hero hero-image" style="background-image: url(<?php if ($HeroImage): echo $HeroImage; endif; ?>);">
-					<div class="container">
 						<h1><?php echo $HeroHeadline; ?></h1>
 						<div class="hero-content">
 							<p><?php echo $HeroContent; ?></p>
@@ -32,7 +31,6 @@ $HeroButtonLink = get_field('homepage_hero_button_link');
 								<a href="<?php echo $HeroButtonLink; ?>"/><?php echo $HeroButtonText; ?> </a>
 							<?php endif; ?>
 						</div>
-					</div>
 				</div>
 			<?php endif; ?>
 
