@@ -70,7 +70,7 @@ $HeroImage = get_field('general_hero_featured_image');
 				//Default: Show Latest 3 Posts
 				if(empty($latest_args)) {
 					$latest_args = array(
-					'post_type' =>  '', //Add the post type after Project CPT is created
+					'post_type' =>  'project',
 					'posts_per_page' => 3,
 					);
 				}
@@ -97,7 +97,7 @@ $HeroImage = get_field('general_hero_featured_image');
 				<?php endwhile; ?>
 				</ul>
 				<?php endif; wp_reset_postdata(); ?>
-				<a href="<?php echo get_home_url(); ?>/project"> VIEW PROJECTS </a>
+				<a href="<?php echo get_home_url(); ?>/projects"> VIEW PROJECTS </a>
 			</div>
 			 <?php get_template_part( 'template-parts/footer-callout' ); ?>
 			<div><!-- container -->
