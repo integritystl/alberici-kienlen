@@ -45,9 +45,10 @@
     }
 
     .main-header {
-        background: white;
+        background: $overlay;
         padding-top: 12px;
         padding-bottom: 12px;
+        transition: all $base-duration $base-timing;
 
         .container {
           display: flex;
@@ -85,10 +86,12 @@
               margin-left: 5%;
               padding: 10px 0 10px;
               a {
+                color: white;
                 font-size: 14px;
                 text-decoration: none;
-                font-weight: 600;
-                -webkit-font-smoothing: auto;
+                font-weight: 500;
+                -webkit-font-smoothing: antialiased;
+                transition: all $base-duration $base-timing;
                 &:hover {
                 //   color: $red;
                   opacity: 1;
@@ -99,12 +102,17 @@
         }
     }
 }
-.fixed {
+.main-header.fixed {
     position: fixed;
     width: 100%;
     top: 0;
     left: 0;
     right: 0;
+    background: white;
+
+    .main-navigation .menu li a {
+      color: $dark-gray;
+    }
 }
 
 .admin-bar {
