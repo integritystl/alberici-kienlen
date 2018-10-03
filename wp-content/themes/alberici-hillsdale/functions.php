@@ -12,6 +12,7 @@ require_once ( __DIR__ . '/theme_infrastructure/ACF/ACFTemplateFields.php');
 require_once ( __DIR__ . '/theme_infrastructure/ACF/ACFOptionsPage.php');
 require_once ( __DIR__ . '/theme_infrastructure/CustomPostTypes/ServiceCPT.php');
 require_once ( __DIR__ . '/theme_infrastructure/CustomPostTypes/MarketCPT.php');
+require_once ( __DIR__ . '/theme_infrastructure/CustomPostTypes/ProjectCPT.php');
 
 //Add our ACF template fields and custom post types and what not
 if( ! function_exists('alberici_hillsdale_theme_infrastructure_setup')){
@@ -20,6 +21,7 @@ if( ! function_exists('alberici_hillsdale_theme_infrastructure_setup')){
 		\AlbericiHillsdale\ACFOptionsPage::setupOptionsPage();
 		\AlbericiHillsdale\ServiceCPT::setupServices();
 		\AlbericiHillsdale\MarketCPT::setupMarkets();
+		\AlbericiHillsdale\ProjectCPT::setupProjects();
 
 	}
 }
@@ -46,7 +48,7 @@ function add_market_taxonomy() {
 		),
 
 	);
-	register_taxonomy('market_category', array('post'), $args);
+	register_taxonomy('market_category', array('post', 'project'), $args);
 
 }
 add_action('init', 'add_market_taxonomy', 10);
@@ -72,9 +74,34 @@ function add_service_taxonomy() {
 		),
 
 	);
-	register_taxonomy('service_category', array('post'), $args);
+	register_taxonomy('service_category', array('post', 'project'), $args);
 }
 add_action('init', 'add_service_taxonomy', 10);
+
+//Add Location Custom Taxonomy for Posts (use on Projects)
+function add_location_taxonomy() {
+	$args = array (
+		'labels' => array(
+			'name' => 'Locations',
+			'singular_name' => 'Location',
+			'all_items' => 'All Location Categories',
+			'edit_item' => 'Edit Location Categories',
+			'view_item' => 'View Location Category',
+			'update_item' => 'Update Location Category',
+			'add_new_item' => 'Add New Location Category',
+		),
+		'show_ui' => true,
+		'hierarchical' => true,
+		'show_in_rest' => true,
+		'show_admin_column' => true,
+		'capabilities' => array(
+			'manage_terms', 'edit_terms', 'delete_terms', 'assign_terms'
+		),
+
+	);
+	register_taxonomy('location_category', array('project'), $args);
+}
+add_action('init', 'add_location_taxonomy', 10);
 
 if ( ! function_exists( 'alberici_hillsdale_setup' ) ) :
 	/**
