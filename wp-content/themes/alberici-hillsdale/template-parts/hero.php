@@ -12,8 +12,8 @@ $GlobalHeroHeadline = get_field('general_hero_title');
 ?>
 
 <?php if ($GlobalHeroHeadline): ?>
-    <div class="hero-area container" style="background-image: url( <?php if ($GlobalHeroImage): echo $GlobalHeroImage; endif; ?> );">
-        <h1><?php echo $GlobalHeroHeadline; ?></h1>
+    <div class="hero-area" style="background-image: url( <?php if ($GlobalHeroImage): echo $GlobalHeroImage; endif; ?> );">
+            <h1><?php echo $GlobalHeroHeadline; ?></h1>
     </div>
 <?php endif; ?>
 <nav class="breadcrumbs container" aria-label="Breadcrumb navigation">
