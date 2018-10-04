@@ -31,11 +31,13 @@ $HeroImage = get_field('general_hero_featured_image');
 						}
 						?>
 					</nav>
-					<?php alberici_hillsdale_post_thumbnail(); ?>
-				
-					<div class="entry-content">
-						<?php the_content(); ?>
-					</div><!-- .entry-content -->
+					<div class="market-detail">
+						<?php alberici_hillsdale_post_thumbnail(); ?>
+					
+						<div class="market-content">
+							<?php the_content(); ?>
+						</div><!-- .market-content -->
+					</div>
 				</article><!-- #post-<?php the_ID(); ?> -->
 				
 

@@ -1,0 +1,15 @@
+.market-detail {
+    display: flex;
+    margin-top: 40px;
+    .post-thumbnail {
+        float: left;
+        img {
+            height: auto;
+        }
+    }
+    .market-content {
+        float: right;
+        width: calc(77.33% - 79.33333px);
+        margin: 100px 0 0 50px;
+    }
+}
