@@ -9,6 +9,9 @@ module.exports = {
     filename: 'card-list-view.js',
     publicPath: '/wp-content/themes/alberici-hillsdale/js/react_src/dist/'
   },
+  resolve: {
+   modules: ['wp-content', 'node_modules']
+  },
   module: {
     rules: [
       { test: /\.js$/, loader: 'babel-loader', exclude: /node_modules/ },

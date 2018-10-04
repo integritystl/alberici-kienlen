@@ -5,6 +5,7 @@ WP Site for Alberici company - Hillsdale
 
 ## Team
 - Dev Lead: Lindsay Hornsby
+- Devsigner: Jordan Fautley
 - Dev: Laura Kong
 - PM: Jamal Mclaughlin
 
@@ -50,10 +51,14 @@ This is a WordPress site for Alberici Hillsdale Fabricators. It's built so that 
 We're source controlling the fields from ACF. Fields are split into separate PHP files that go into `theme_infrastructure` in the theme directory.
 
 ## React
-We have some small React-powered sections of the site for filtering of Posts and Custom Posts.
+We have some small React-powered sections of the site for filtering of Posts and Custom Posts. These files live in `themes/alberici-hillsdale/js/react_src` and are compiled using Webpack.
+
+
+
 ---
 ### :memo: Resources / Documentation
 - [Wireframes](https://drive.google.com/open?id=1ZdQqsbJduhIipOJydXcZeBZRqI3E-m2i)
+- [Ticket Board in Axosoft](https://integritystl.axosoft.com/)
 - [Basecamp](https://basecamp.com/1771322/projects/15334547)
 - [Google Drive](https://drive.google.com/drive/folders/167tGb1-gzrTDeE2krt5lSgczEEhsNTtJ)
 - [Cost Summary](https://docs.google.com/spreadsheets/d/1OiuAjvElrhwzCJ_entVzQn-115cSZRV92oel30lpIUY/edit#gid=1352354711)
