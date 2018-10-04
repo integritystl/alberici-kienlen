@@ -15,6 +15,47 @@
 
   }
   .full_width_content {
-    
+
+  }
+}
+
+.flex_stacked_tile {
+  max-width: 1450px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 20px;
+  @extend .grid-container;
+  grid-gap: 10px;
+  .stacked_tile_single {
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: repeat(6, 1fr);
+    grid-column: span 6;
+    grid-template-rows: 400px 25%;
+
+    .single_tile_img {
+      grid-column: span 6;
+      overflow: hidden;
+      height: 400px;
+      img {
+        width: 100%;
+        height: auto;
+      }
+
+    }
+    .single_tile_content {
+        margin: 0 20px;
+      grid-column: span 4;
+      grid-column-start: 3;
+      grid-column-end: 7;
+      max-width: 490px;
+       justify-self: end;
+    }
+    &:nth-child(2) {
+      .single_tile_content {
+        grid-column-start: 1;
+        grid-column-end: 5;
+      }
+    }
   }
 }

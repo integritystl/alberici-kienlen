@@ -1,10 +1,10 @@
 // Breakpoints
 $small: 480px;
 $medium: 800px;
-$large: 1225px;
+$large: 980px;
 
 //Menu-specific Breakpoints
-$headerMenu: 1200px;
+$headerMenu: 940px;
 
 // Use case: @include grid-media($small-min)
 // http://neat.bourbon.io/docs/2.0.0/#grid-media
@@ -16,6 +16,6 @@ $headerMenu-min: (columns: 12, gutter: 20px, media: $headerMenu + 1);
 //Define main areas with CSS grid
 .grid-container {
   display: grid;
-  grid-gap: 10px;
+  grid-gap: 20px;
   grid-template-columns: repeat(12, 1fr);
 }
