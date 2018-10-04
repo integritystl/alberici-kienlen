@@ -4,10 +4,10 @@
     }
 }
 .market-callouts {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    @include grid-media($small-min) {
+    display: block;
+    @include grid-media($medium-min) {
+        display: flex;
+        justify-content: space-between;
         flex-wrap: nowrap;
     }
     .market-item {

@@ -1,38 +1,8 @@
-.btn,
-button,
-input[type="reset"],
-input[type="submit"],
-input.button {
-	background-color: $red;
-	color: #ffffff;
-	border: 2px solid $red;
-	// border-radius: 25px;
-	display: table;
-	font-size: 16px;
-	// font-weight: 600;
-	text-decoration: none;
-	text-transform: uppercase;
-	line-height: 1;
-	padding: 15px 20px;
-  -webkit-appearance: none;
-	// transition: $base-transition;
-	&:hover {
-		border-color: darken($red,10%);
-		background-color: darken($red,10%);
-		color: #ffffff;
-		opacity: 1;
-	}
-
-	&:active,
-	&:focus {
-
-	}
-}
-
 $_button-background-color: $primary-action-color;
 $_button-background-color-hover: shade($primary-action-color, 20%);
 
-#{$all-buttons} {
+#{$all-buttons}, 
+.btn {
   appearance: none;
   background-color: $_button-background-color;
   border: 0;
