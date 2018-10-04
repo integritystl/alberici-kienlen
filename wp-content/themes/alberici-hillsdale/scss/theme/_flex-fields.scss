@@ -1,11 +1,48 @@
 // The 50/50 callout with image alignment option.
 .flex_fifty_fifty {
-  .fifty-fifty_img {
-    &.img-left {
-      border: 1px solid tomato;
+  margin-bottom: 80px;
+  &.img-left {
+    // border: 1px solid tomato;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    .fifty-fifty_img {
+      float:left;
+      img {
+        // width: calc(69.33333% - -79.33333px);
+        height: auto;
+      }
     }
-    &.img-right {
-      border: 1px solid blue;
+    .fifty-fifty_content {
+      width: calc(65.33333% - -43.33333px);
+      margin-top: 50px;
+      margin-left: 50px;
+      h2 {
+        color: $medium-gray;
+      }
+    }
+  }
+  &.img-right {
+    // border: 1px solid blue;
+        display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    .fifty-fifty_img {
+      order: 1;
+      float:left;
+      img {
+        // width: calc(69.33333% - -79.33333px);
+        height: auto;
+      }
+    }
+    .fifty-fifty_content {
+      order: 0;
+      width: calc(70.33333% - 94.33333px);
+      margin-right: 50px;
+      margin-top: 50px;
+      h2 {
+        color: $medium-gray;
+      }
     }
   }
 }

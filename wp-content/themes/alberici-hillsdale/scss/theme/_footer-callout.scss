@@ -1,0 +1,26 @@
+.footer-callout {
+    display: flex;
+    min-height: 400px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    margin-top: 150px;
+    .footer-callout-content {
+        float:left;
+        margin: 150px 0 0 400px;
+        h2 {
+            font-size: 36px;
+            font-weight: 400;
+        }
+    }
+    a {
+        margin: 170px 0 0 100px;
+        // width: calc(21.33% - 79.33333px);
+        &:after {
+            font-family: "Font Awesome 5 Pro";
+            font-weight: 300;
+            content: '\f178';
+            margin-left: 68px;
+            transition: all 0.2s ease-in-out;
+        }
+    }
+}
