@@ -1,29 +1,32 @@
 // Typography
-$base-font-family: $font-stack-system;
+$base-font-family: 'Roboto', sans-serif;
 $heading-font-family: $base-font-family;
 
 // Line height
+$base-font-size: 16px;
 $base-line-height: 1.5;
 $heading-line-height: 1.2;
 
 // Other Sizes
-$base-border-radius: 3px;
+$base-border-radius: 0px;
 $base-spacing: 1.5em;
 $small-spacing: $base-spacing / 2;
 $base-z-index: 0;
 
 // Colors
-$blue: #505f7a;
-$dark-blue: #1d232b;
+$blue: #526079;
+$dark-blue: #1D232B;
 $dark-gray: #383838;
-$medium-gray: #727272;
+$medium-gray: #707070;
 $light-gray: #f2f2f2;
-$red: #ce3b3e;
-$overlay: rgba($dark-gray, 0.6); //to use on hero areas / possibly on Card components
+$red: #E2373F;
+$overlay: rgba(#403B37, 0.55); //to use on hero areas / possibly on Card components
 
 // Font Colors
-$base-font-color: $medium-gray;
-$action-color: $dark-blue;
+$base-font-color: $dark-gray;
+$primary-action-color: $red;
+$secondary-action-color: $blue;
+
 
 // Border
 $base-border-color: $light-gray;
@@ -33,7 +36,7 @@ $base-border: 1px solid $base-border-color;
 $viewport-background-color: #fff;
 
 // Focus
-$focus-outline-color: transparentize($action-color, 0.4);
+$focus-outline-color: transparentize($secondary-action-color, 0.4);
 $focus-outline-width: 3px;
 $focus-outline: $focus-outline-width solid $focus-outline-color;
 $focus-outline-offset: 2px;
