@@ -10017,7 +10017,6 @@ var CardList = function (_React$Component) {
 
     var apiLink = this.buildAPILink();
     apiLink += '&per_page=' + this.state.postsPerPage;
-    console.log('getposts link', apiLink);
     var headers = new Headers({ 'Authorization': 'Basic alberici' });
     fetch(apiLink, { headers: headers }).then(function (response) {
       return response.json();
@@ -10033,8 +10032,8 @@ var CardList = function (_React$Component) {
     var _this3 = this;
 
     fetch(apiLink).then(function (response) {
-      console.log('fetch', apiLink);
-      console.log(response);
+      // console.log('fetch', apiLink);
+      // console.log(response);
       return response.json();
     }).then(function (json) {
       _this3.setState({
@@ -10248,6 +10247,7 @@ var CardList = function (_React$Component) {
         serviceFilter: this.state.filteredService,
         serviceFilterName: filteredServiceName,
         serviceChange: this.handleServiceChange.bind(this),
+        isFiltered: this.state.isFiltered,
         filterSearch: this.handleSearch.bind(this),
         resetFilter: this.resetFilter.bind(this)
       }),
@@ -23446,22 +23446,18 @@ var Card = function (_React$Component) {
     return _react2.default.createElement(
       "article",
       { className: "card-post card-news post" },
+      _react2.default.createElement("img", {
+        src: this.props.image,
+        srcSet: this.props.imageSrcset,
+        sizes: "(max-width: 1400px) 100vw, 1400px" }),
       _react2.default.createElement(
         "a",
         { href: this.props.link },
-        _react2.default.createElement("img", {
-          src: this.props.image,
-          srcSet: this.props.imageSrcset,
-          sizes: "(max-width: 1400px) 100vw, 1400px" }),
         _react2.default.createElement(
-          "span",
-          { className: "card-post--market" },
-          this.props.marketName
-        ),
-        _react2.default.createElement(
-          "span",
-          { className: "card-post--service" },
-          this.props.serviceName
+          "div",
+          { className: "news-meta" },
+          _react2.default.createElement("span", { className: "card-post--market", dangerouslySetInnerHTML: { __html: this.props.marketName } }),
+          _react2.default.createElement("span", { className: "card-post--service", dangerouslySetInnerHTML: { __html: this.props.serviceName } })
         ),
         _react2.default.createElement("h3", { dangerouslySetInnerHTML: { __html: this.props.title } })
       )
@@ -23631,11 +23627,7 @@ var Select = function (_React$Component) {
   Select.prototype.render = function render() {
     var options = this.props.options.map(function (item, index) {
       var value = item.value ? item.value : item.id;
-      return _react2.default.createElement(
-        'option',
-        { value: value, key: index, label: item.name },
-        item.name
-      );
+      return _react2.default.createElement('option', { value: value, key: index, dangerouslySetInnerHTML: { __html: item.name } });
     });
 
     return _react2.default.createElement(
@@ -23714,6 +23706,34 @@ var FilterBar = function (_React$Component) {
   FilterBar.prototype.render = function render() {
     var _this2 = this;
 
+    var currentServiceFilter = '';
+    var currentMarketFilter = '';
+    var filterTerms = '';
+    var resetBtn = '';
+    if (this.props.serviceFilterName) {
+      currentServiceFilter = _react2.default.createElement('span', { className: 'filter-info--term', dangerouslySetInnerHTML: { __html: this.props.serviceFilterName } });
+    }
+    if (this.props.marketFilterName) {
+      currentMarketFilter = _react2.default.createElement('span', { className: 'filter-info--term', dangerouslySetInnerHTML: { __html: this.props.marketFilterName } });
+    }
+    if (this.props.isFiltered) {
+      filterTerms = _react2.default.createElement(
+        'span',
+        null,
+        'Filter By: ',
+        currentServiceFilter,
+        ' ',
+        currentMarketFilter
+      );
+      resetBtn = _react2.default.createElement(
+        'button',
+        { onClick: function onClick() {
+            return _this2.resetFilter();
+          }, className: 'btn-reset-filter' },
+        'Clear Filters'
+      );
+    }
+
     return _react2.default.createElement(
       'div',
       { className: 'filterbar' },
@@ -23734,21 +23754,8 @@ var FilterBar = function (_React$Component) {
       _react2.default.createElement(
         'div',
         { className: 'filter-info' },
-        _react2.default.createElement(
-          'span',
-          null,
-          'Filter By: ',
-          this.props.serviceFilterName,
-          ' ',
-          this.props.marketFilterName
-        ),
-        _react2.default.createElement(
-          'button',
-          { onClick: function onClick() {
-              return _this2.resetFilter();
-            } },
-          'Clear Filters'
-        )
+        filterTerms,
+        resetBtn
       )
     );
   };

@@ -60,7 +60,6 @@ class CardList extends React.Component {
     getPosts(){
       let apiLink = this.buildAPILink();
       apiLink += `&per_page=${this.state.postsPerPage}`
-      console.log('getposts link', apiLink);
       let headers = new Headers({'Authorization': 'Basic alberici'});
       fetch(apiLink, {headers: headers})
         .then( response => {
@@ -77,8 +76,8 @@ class CardList extends React.Component {
     getFilteredPosts(apiLink) {
       fetch(apiLink)
         .then( response => {
-          console.log('fetch', apiLink);
-          console.log(response);
+          // console.log('fetch', apiLink);
+          // console.log(response);
           return(response.json());
         }).then(json => {
           this.setState({
@@ -252,6 +251,7 @@ class CardList extends React.Component {
             serviceFilter = {this.state.filteredService}
             serviceFilterName = {filteredServiceName}
             serviceChange = {this.handleServiceChange.bind(this)}
+            isFiltered = {this.state.isFiltered}
             filterSearch = {this.handleSearch.bind(this)}
             resetFilter = {this.resetFilter.bind(this)}
           />

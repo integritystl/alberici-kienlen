@@ -28,7 +28,20 @@ class FilterBar extends React.Component {
   }
 
   render() {
-
+    let currentServiceFilter = '';
+    let currentMarketFilter = '';
+    let filterTerms = '';
+    let resetBtn = '';
+    if (this.props.serviceFilterName) {
+      currentServiceFilter = <span className="filter-info--term" dangerouslySetInnerHTML={{__html:this.props.serviceFilterName}} />;
+    }
+    if (this.props.marketFilterName) {
+      currentMarketFilter = <span className="filter-info--term" dangerouslySetInnerHTML={{__html:this.props.marketFilterName}} />;
+    }
+    if (this.props.isFiltered) {
+      filterTerms =  <span>Filter By: {currentServiceFilter} {currentMarketFilter}</span>;
+      resetBtn = <button onClick={() => this.resetFilter() } className="btn-reset-filter">Clear Filters</button>;
+    }
 
     return(
       <div className="filterbar">
@@ -42,14 +55,13 @@ class FilterBar extends React.Component {
           onFilterChange={this.filterMarkets}
         />
 
-
         <Select label="Service"
           options={this.props.services}
           onFilterChange={this.filterServices}
         />
         <div className="filter-info">
-          <span>Filter By: {this.props.serviceFilterName} {this.props.marketFilterName}</span>
-          <button onClick={() => this.resetFilter() }>Clear Filters</button>
+          {filterTerms}
+          {resetBtn}
         </div>
       </div>
     );
