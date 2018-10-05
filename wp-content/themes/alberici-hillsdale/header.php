@@ -42,7 +42,15 @@
 			<div class="container">
 				<div class="site-branding">
 						<?php
-						the_custom_logo();
+						//get_theme_mod( 'custom_logo_scroll' );
+						the_custom_logo(); ?>
+
+						<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="scroll-logo" title="<?php echo esc_attr( get_bloginfo( 'name', 'display' ) ); ?>" rel="home">
+				 			 <img src="<?php echo get_theme_mod( 'custom_logo_scroll' ); ?>" alt="<?php echo esc_attr( get_bloginfo( 'name', 'display' ) ); ?>">
+				 	  </a>
+
+					  <?php
+
 						if ( is_front_page() && is_home() ) :
 							?>
 							<h1 class="site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></h1>

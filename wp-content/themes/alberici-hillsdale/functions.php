@@ -167,6 +167,19 @@ if ( ! function_exists( 'alberici_hillsdale_setup' ) ) :
 endif;
 add_action( 'after_setup_theme', 'alberici_hillsdale_setup' );
 
+
+function custom_second_logo( $wp_customize ) {
+ $wp_customize->add_setting( 'custom_logo_scroll' ); // Add setting for logo uploader
+
+		 // Add control for logo uploader (actual uploader)
+		 $wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'custom_logo_scroll', array(
+				 'label'    => __( 'Upload Secondary Logo', 'alberici' ),
+				 'section'  => 'title_tagline',
+				 'settings' => 'custom_logo_scroll',
+		 ) ) );
+ }
+ add_action( 'customize_register', 'custom_second_logo' );
+
 /**
  * Set the content width in pixels, based on the theme's design and stylesheet.
  *
