@@ -10,17 +10,17 @@ $imageTextContent = get_sub_field('content');
 $imageTextButtonText = get_sub_field('button_text');
 $imageTextButtonLink = get_sub_field('button_link');
 ?>
-<div class="flex_image_text container">
-    <div class="image-text_header">
-        <?php echo $imageTextHeader; ?>
-    </div>
-    <div calss="image-text_img">
-        <?php echo wp_get_attachment_image($imageTextImage, 'large'); ?>
-    </div>
-    <div class="image-text-content">
+<div class="flex_image_text">
+  <div class="container">
+    <div class="image-text_content">
+        <h2><?php echo $imageTextHeader; ?></h2>
         <?php echo $imageTextContent; ?>
+        <?php if ($imageTextButtonText): ?>
+            <a href="<?php echo $imageTextButtonLink; ?>" class="btn"><?php echo $imageTextButtonText; ?></a>
+        <?php endif; ?>
     </div>
-    <?php if ($imageTextButtonText): ?>
-        <a href="<?php echo $imageTextButtonLink; ?>"><?php echo $imageTextButtonText; ?></a>
-    <?php endif; ?>
+  </div>
+  <div class="image-text_img">
+      <?php echo wp_get_attachment_image($imageTextImage, 'full'); ?>
+  </div>
 </div>
