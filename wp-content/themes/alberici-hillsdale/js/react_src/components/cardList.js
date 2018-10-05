@@ -16,6 +16,8 @@ class CardList extends React.Component {
         filteredPosts: [],
         filteredMarket: '',
         filteredService: '',
+        hasSearchTerm: false,
+        searchTerm: '',
       })
     }
 
@@ -33,8 +35,23 @@ class CardList extends React.Component {
       if (postDataType === 'news') {
         baseLink = wpObj.posts_endpoint;
       } else {
-        //need to make Projects CPT and change this
         baseLink = wpObj.projects_endpoint;
+      }
+      if (this.state.isFiltered) {
+        if (this.state.hasSearchTerm) {
+          baseLink += `&search=${this.state.searchTerm}`;
+        }
+        if (this.state.filteredMarket && this.state.filteredService) {
+          baseLink += `&market_category=${this.state.filteredMarket}&service_category=${this.state.filteredService}`;
+        } else if (this.state.filteredService) {
+          baseLink += `&service_category=${this.state.filteredService}`;
+          console.log('service baselink', baseLink);
+        } else if (this.state.filteredMarket) {
+          //it's just markets
+          baseLink += `&market_category=${this.state.filteredMarket}`;
+        } else {
+          return baseLink;
+        }
       }
       return baseLink;
     }
@@ -43,8 +60,7 @@ class CardList extends React.Component {
     getPosts(){
       let apiLink = this.buildAPILink();
       apiLink += `&per_page=${this.state.postsPerPage}`
-      console.log('getposts link', apiLink);
-      let headers = new Headers({'Authorization': 'Basic 3100cedbe991'});
+      let headers = new Headers({'Authorization': 'Basic alberici'});
       fetch(apiLink, {headers: headers})
         .then( response => {
           return(response.json());
@@ -57,29 +73,11 @@ class CardList extends React.Component {
         })
     }
 
-    getFilteredPosts() {
-      let apiLink = this.buildAPILink();
-
-      if (this.state.isFiltered) {
-        //check for both
-        if (this.state.filteredMarket && this.state.filteredService) {
-          apiLink += `&market_category=${this.state.filteredMarket}&service_category=${this.state.filteredService}`;
-        } else if (this.state.filteredService) {
-          apiLink += `&service_category=${this.state.filteredService}`;
-        } else if (this.state.filteredMarket) {
-          //it's just markets
-          apiLink += `&market_category=${this.state.filteredMarket}`;
-        } else {
-          //We're not filtered anymore, reset isFiltered
-          this.setState({
-            isFiltered: false,
-            loading: false
-          })
-          return;
-        }
-      }
+    getFilteredPosts(apiLink) {
       fetch(apiLink)
         .then( response => {
+          // console.log('fetch', apiLink);
+          // console.log(response);
           return(response.json());
         }).then(json => {
           this.setState({
@@ -112,7 +110,7 @@ class CardList extends React.Component {
         filteredMarket: parseInt(id),
         isFiltered: true,
         loading: true
-      }, this.getFilteredPosts());
+      }, () => this.getFilteredPosts(this.buildAPILink() ));
     }
 
     //Check to see what's set for our data-filter attribute and call the appropriate custom taxonomy endpoint
@@ -139,6 +137,18 @@ class CardList extends React.Component {
         });
     }
 
+
+    //Search Input Filter
+    handleSearch(term) {
+      console.log('search term', term);
+      this.setState({
+        searchTerm: term,
+        hasSearchTerm: true,
+        isFiltered: true,
+        loading: true
+      },() => this.getFilteredPosts(this.buildAPILink() ));
+    }
+
     //Handles Service Filter
     handleServiceChange(id) {
       if (id === 'Service') {
@@ -148,7 +158,7 @@ class CardList extends React.Component {
         filteredService: parseInt(id),
         isFiltered: true,
         loading: true
-      },this.getFilteredPosts());
+      }, () => this.getFilteredPosts(this.buildAPILink()) );
     }
 
     //Get name of filtered category from object
@@ -172,17 +182,19 @@ class CardList extends React.Component {
 
     //Reset filter
     resetFilter(){
+      //TODO set the selects back to default value
       this.setState({
         isFiltered: false,
         filteredPosts: [],
         filterMarket: '',
-        filterServices: ''
-      })
-      //TODO set the selects back to default value
-      this.getPosts();
+        filterServices: '',
+        hasSearchTerm: false,
+        searchTerm: ''
+      }, () => this.getPosts())
     }
 
     render() {
+
       let postGroup = '';
       let loadMoreBtn = '';
       let loadMoreLabel = 'View More Posts'; //TODO: If postData is Projects, this label should read 'View More Projects'
@@ -239,6 +251,8 @@ class CardList extends React.Component {
             serviceFilter = {this.state.filteredService}
             serviceFilterName = {filteredServiceName}
             serviceChange = {this.handleServiceChange.bind(this)}
+            isFiltered = {this.state.isFiltered}
+            filterSearch = {this.handleSearch.bind(this)}
             resetFilter = {this.resetFilter.bind(this)}
           />
           {postGroup}
