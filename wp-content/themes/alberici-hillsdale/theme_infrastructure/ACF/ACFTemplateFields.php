@@ -139,7 +139,7 @@ class ACFTemplateFields
 			'active' => 1,
 			'description' => '',
 		));
-		
+
 		endif;
   }
 
@@ -452,7 +452,7 @@ class ACFTemplateFields
 									'key' => 'field_5b71d13c1f595',
 									'label' => 'Content',
 									'name' => 'content',
-									'type' => 'textarea',
+									'type' => 'wysiwyg',
 									'instructions' => '',
 									'required' => 0,
 									'conditional_logic' => 0,
@@ -646,7 +646,7 @@ class ACFTemplateFields
 
 	private static function setupGeneralHeroFields() {
 		if( function_exists('acf_add_local_field_group') ):
-	
+
 			acf_add_local_field_group(array(
 			'key' => 'group_5b6b503fb8695',
 			'title' => 'Hero Area',
@@ -713,12 +713,12 @@ class ACFTemplateFields
 			'active' => 1,
 			'description' => '',
 			));
-		
+
 		endif;
 	}
     private static function setupFooterCalloutFields() {
         if( function_exists('acf_add_local_field_group') ):
-            
+
             acf_add_local_field_group(array(
                 'key' => 'group_5b6b1789744b2',
                 'title' => 'Footer Callout',
@@ -839,7 +839,7 @@ class ACFTemplateFields
 				'active' => 1,
 				'description' => '',
 			));
-        
+
         endif;
 	}
 
@@ -943,7 +943,7 @@ class ACFTemplateFields
 			'active' => 1,
 			'description' => '',
 		));
-		
+
 		endif;
   }
   private static function setupContactPeopleFields()
@@ -1132,7 +1132,7 @@ class ACFTemplateFields
 			'active' => 1,
 			'description' => '',
 		));
-		
+
 		endif;
   }
   private static function setupMarketCalloutsFields() {
@@ -1228,7 +1228,7 @@ class ACFTemplateFields
 			'active' => 1,
 			'description' => '',
 		));
-		
+
 		endif;
   }
 

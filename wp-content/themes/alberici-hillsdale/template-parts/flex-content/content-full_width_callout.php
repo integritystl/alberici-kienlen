@@ -20,7 +20,7 @@ $fullWidthBtnLink =   get_sub_field('button_link');
     <h2><?php echo $fullWidthHeader; ?></h2>
     <?php echo $fullWidthContent;?>
       <?php if ($fullWidthBtnText) { ?>
-        <a href="<?php echo $fullWidthBtnLink; ?>"><?php echo $fullWidthBtnText; ?></a>
+        <a href="<?php echo $fullWidthBtnLink; ?>" class="btn-secondary"><?php echo $fullWidthBtnText; ?></a>
       <?php } ?>
   </div>
 </div>

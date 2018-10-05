@@ -62,10 +62,192 @@
 }
 
 .flex_full_width {
-  .full_width_img {
+   background: $dark-blue;
+   display: block;
+   padding: 15px 10px 10px;
 
+   .full_width_img {
+     position: relative;
+     img {
+       width: 100%;
+       height: auto;
+       max-width: none;
+       position: relative;
+       display: block;
+     }
+   }
+   .full_width_content {
+     color: white;
+     padding: 30px 0;
+     a {
+       margin-top: 30px;
+       min-width: 100%;
+     }
+   }
+
+   @include grid-media($medium-min) {
+     display: flex;
+     justify-content: flex-start;
+     align-items: center;
+     padding: 0;
+
+     .full_width_img {
+       flex-basis: 50%;
+       position: relative;
+       img {
+         //float: right;
+         width: 100%;
+         height: auto;
+         max-width: none;
+         position: relative;
+         top: -40px;
+         right: 20px;
+       }
+     }
+     .full_width_content {
+       flex-basis: 50%;
+       max-width: 400px;
+       margin-left: 20px;
+       color: white;
+       padding: 0;
+
+       a {
+         margin-top: 50px;
+       }
+     }
   }
-  .full_width_content {
-    
+}
+
+.flex_stacked_tile {
+  max-width: 1450px;
+  width: 100%;
+  margin: 0 auto 40px;
+  padding: 0 10px;
+  display: grid;
+  grid-gap: 10px;
+  grid-template-columns: repeat(12, 1fr);
+  grid-column: span 12;
+
+  @include grid-media($medium-min) {
+    margin: 0 auto 130px;
+  }
+
+
+  .stacked_tile_single {
+    display: flex;
+    flex-direction: column;
+    grid-column: span 12;
+    margin: 10px 0 0;
+    position: relative;
+
+    @include grid-media($medium-min) {
+      grid-column: span 6;
+      align-items: flex-end;
+    }
+
+
+    .single_tile_img {
+      width: 100%;
+      img {
+        height: 100%;
+        width: 100%;
+      }
+    }
+    .single_tile_content {
+      height: 100%;
+      margin: 20px 0px 0;
+
+      @include grid-media($medium-min) {
+        margin: 20px 20px 0;
+        float: left;
+      }
+      @include grid-media($headerMenu-min) {
+        margin: 50px 20px 0;
+        max-width: 400px;
+      }
+
+      h2 {
+        margin-bottom: 10px;
+        @include grid-media($headerMenu-min) {
+        margin-bottom: 30px;
+        }
+      }
+    }
+
+    a {
+      margin: 15px 0px 0;
+      width: 100%;
+      min-width: auto;
+
+      @include grid-media($medium-min) {
+        margin: 15px 20px 0;
+        width: calc(100% - 40px);
+      }
+      @include grid-media($headerMenu-min) {
+        max-width: 400px;
+        margin: 40px 20px 0;
+        width: calc(100% - 40px);
+      }
+    }
+
+    &:nth-child(2) {
+      align-items: flex-start;
+      margin-top: 30px;
+      @include grid-media($medium-min) {
+        margin-top: 10px;
+      }
+      .single_tile_content,
+      a {
+        float: left;
+      }
+    }
+  }
+}
+
+.flex_image_text {
+  padding: 30px 0 0;
+  position: relative;
+  @include grid-media($medium-min) {
+    padding: 100px 0;
+  }
+  .container {
+    display: block;
+    @include grid-media($medium-min) {
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: flex-start;
+    }
+  }
+
+  .image-text_content {
+    a {
+      margin-top: 15px;
+      min-width: 100%;
+    }
+
+    @include grid-media($medium-min) {
+      flex-basis: 50%;
+      max-width: 400px;
+      a {
+        margin-top: 30px;
+      }
+    }
+  }
+
+  .image-text_img {
+    position: relative;
+    right: 0px;
+    img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    @include grid-media($medium-min) {
+      position: absolute;
+      bottom: 0px;
+      left: 40%;
+      right: 0px;
+    }
   }
 }

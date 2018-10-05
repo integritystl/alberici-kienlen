@@ -5,6 +5,7 @@
     z-index: 999999;
     position: relative;
     width: 100%;
+    z-index: 10;
     .utility-bar {
       display: none;
 
@@ -14,7 +15,7 @@
       }
       &_menu {
         @extend .container;
-        padding: 14px 0;
+        padding: 13px 0;
         ul {
           margin: 0;
           padding: 0;
@@ -23,8 +24,9 @@
           list-style-type: none;
           justify-content: flex-end;
           li {
-            font-size: 14px;
+            font-size: 12px;
             margin-left: 30px;
+            font-weight: 300;
             a {
               @extend .inverse-link;
               position: relative;
