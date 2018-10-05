@@ -19,8 +19,11 @@ h6 {
 }
 
 .home h1 {
-  font-size: 72px;
+  font-size: 48px;
   font-weight: 300;
+  @include grid-media($medium-min) {
+    font-size: 72px;
+  }
 }
 
 h1 {
@@ -31,6 +34,7 @@ h1 {
 h2 {
   font-size: 28px;
   font-weight: 300;
+  margin-bottom: 15px;
 }
 
 

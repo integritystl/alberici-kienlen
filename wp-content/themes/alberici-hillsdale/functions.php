@@ -131,6 +131,8 @@ if ( ! function_exists( 'alberici_hillsdale_setup' ) ) :
 		 */
 		add_theme_support( 'post-thumbnails' );
 
+		add_image_size( 'tile-image', 700, 400, true );
+
 		// This theme uses wp_nav_menu() in 3 locations.
 		register_nav_menus( array(
 			'primary-menu' => esc_html__( 'Primary Menu', 'alberici-hillsdale' ),
@@ -186,6 +188,8 @@ add_action( 'after_setup_theme', 'alberici_hillsdale_content_width', 0 );
  */
 function alberici_hillsdale_scripts() {
 	wp_enqueue_style( 'alberici-hillsdale-style', get_stylesheet_uri(), array(), time() );
+
+	wp_enqueue_style( 'alberici-fontawesome',  get_template_directory_uri() . '/fonts/css/all.css');
 
 	wp_register_script('alberici-hillsdale-scripts', get_template_directory_uri() . '/js/app.js', array('jquery'), time(), true);
 
