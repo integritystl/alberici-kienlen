@@ -4,16 +4,16 @@
     .post-thumbnail img {
             height: auto;
     }
-    .market-content {
-        margin: 0  20px;
-    }
+    // .market-content {
+    //     margin: 0  20px;
+    // }
     @include grid-media($medium-min) {
         display: flex;
-        margin-bottom: 40px;
-        .market-content {
-            margin: 60px 0 0 50px;
-            width: calc(77.33% - 79.33333px);
-        }
+        // margin-bottom: 40px;
+        // .market-content {
+        //     // margin: 60px 0 0 50px;
+        //     width: calc(77.33% - 79.33333px);
+        // }
     }
 }
 .markets-latest-3 {
@@ -70,14 +70,14 @@
         &:after {
             font-family: "Font Awesome 5 Pro";
             font-weight: 300;
-            content: '\f178';
-            margin-left: 103px;
+            content: '\f061';
+            float: right;
             transition: all 0.2s ease-in-out;
         }
         @include grid-media($medium-min) {
             margin: 0 27%;
             &:after {
-                margin-left: 220px;
+                // margin-left: 220px;
             }
         }
     }
