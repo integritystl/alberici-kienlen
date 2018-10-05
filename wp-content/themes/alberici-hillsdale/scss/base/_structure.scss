@@ -5,7 +5,7 @@
       margin: 0 auto;
     }
     @include grid-media($large-min) {
-      max-width: 1200px;
+      max-width: 840px;
       width: 100%;
     }
   }

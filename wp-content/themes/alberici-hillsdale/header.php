@@ -16,7 +16,6 @@
 	<meta charset="<?php bloginfo( 'charset' ); ?>">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="profile" href="https://gmpg.org/xfn/11">
-
 	<?php wp_head(); ?>
 </head>
 
@@ -29,11 +28,11 @@
 		<div class="utility-bar">
 			<div class="container">
 				<nav class="utility-bar_menu">
-					<?php 
+					<?php
 					wp_nav_menu( array(
 						'theme_location' => 'utility-menu',
 						'menu_id' => 'utility-menu',
-					) ); 
+					) );
 					?>
 				</nav>
 			</div>
@@ -60,7 +59,7 @@
 						<?php endif; ?>
 				</div><!-- .site-branding -->
 
-				
+
 				<nav id="site-navigation" class="main-navigation">
 					<?php
 					wp_nav_menu( array(
@@ -79,7 +78,7 @@
 				</div>
 			</div>
 		</div>
-		
+
 	</header><!-- #masthead -->
 
 	<div id="content" class="site-content">
