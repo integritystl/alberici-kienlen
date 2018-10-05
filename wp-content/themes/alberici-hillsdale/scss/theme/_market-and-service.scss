@@ -1,0 +1,36 @@
+.market-content {
+    p{
+        margin: 45px 0;
+    }
+}
+.market-callouts {
+    display: block;
+    @include grid-media($medium-min) {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: nowrap;
+    }
+    .market-item {
+        margin-bottom: 50px;
+
+    }
+}
+.headline-lines {
+    margin-bottom: 50px;
+    &:after {
+        display: block;
+        content: " ";
+        // position: absolute;
+        // top: 48%;
+        background-color: $blue;
+        opacity: 0.5;
+        height: 1px;
+        width: 100%;
+    }
+
+}
+
+.services-title {
+    margin-bottom: 30px;
+    font-weight: 400;
+}
