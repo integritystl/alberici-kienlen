@@ -37,7 +37,7 @@ This is a WordPress site for Alberici Hillsdale Fabricators. It's built so that 
 1. Pull from Migrate DB Pro in the WPAdmin of your local to get the latest Database from Staging
 1. Run `npm install` (this will install all node dependencies)
 1. When this is done, run `gulp` and it will watch for SASS/JS file changes
-1. If you're working on a React component, run `webpack --watch` for compiling those changes.
+1. If you're working on a React component, run `npm run start` for compiling those changes in Webpack.
 1. Start coding!
 
 

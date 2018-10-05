@@ -12,8 +12,8 @@ class Card extends React.Component {
             src={this.props.image}
             srcSet={this.props.imageSrcset}
             sizes="(max-width: 1400px) 100vw, 1400px" />
-          <span>{this.props.marketName}</span>
-          <span>{this.props.serviceName}</span>
+          <span className="card-post--market">{this.props.marketName}</span>
+          <span className="card-post--service">{this.props.serviceName}</span>
           <h3 dangerouslySetInnerHTML={{__html: this.props.title}} />
           </a>
       </article>
