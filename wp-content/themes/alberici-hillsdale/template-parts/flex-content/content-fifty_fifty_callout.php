@@ -9,8 +9,8 @@ $calloutImgAlignment = get_sub_field('image_alignment');
 $calloutImg = get_sub_field('image');
 $calloutContent = get_sub_field('content');
 ?>
-<div class="flex_fifty_fifty container">
-  <div class="fifty-fifty_img img-<?php echo $calloutImgAlignment;?>">
+<div class="flex_fifty_fifty container img-<?php echo $calloutImgAlignment;?>">
+  <div class="fifty-fifty_img">
     <?php echo wp_get_attachment_image($calloutImg, 'large');  ?>
   </div>
   <div class="fifty-fifty_content">
