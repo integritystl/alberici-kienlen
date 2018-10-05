@@ -189,6 +189,8 @@ add_action( 'after_setup_theme', 'alberici_hillsdale_content_width', 0 );
 function alberici_hillsdale_scripts() {
 	wp_enqueue_style( 'alberici-hillsdale-style', get_stylesheet_uri(), array(), time() );
 
+	wp_enqueue_style( 'alberici-fontawesome',  get_template_directory_uri() . '/fonts/css/all.css');
+
 	wp_register_script('alberici-hillsdale-scripts', get_template_directory_uri() . '/js/app.js', array('jquery'), time(), true);
 
 	wp_enqueue_script( 'jquery-sidr', get_template_directory_uri() . '/js/jquery.sidr.min.js', array('jquery'), time(), true );
