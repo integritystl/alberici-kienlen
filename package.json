@@ -5,8 +5,8 @@
   "main": "gulpfile.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack --config webpack.config.js",
-    "build": "webpack -p --config webpack.config.js"
+    "start": "webpack --watch",
+    "build": "webpack --mode production"
   },
   "repository": {
     "type": "git",
@@ -34,7 +34,8 @@
     "gulp-sass": "^4.0.1",
     "gulp-sourcemaps": "^2.6.4",
     "gulp-uglify": "^3.0.0",
-    "pump": "^3.0.0"
+    "pump": "^3.0.0",
+    "webpack": "^2.7.0"
   },
   "dependencies": {
     "babel-preset-react": "^6.24.1",
@@ -44,7 +45,6 @@
     "query-string": "^4.3.2",
     "react": "^15.5.3",
     "react-dom": "^15.5.3",
-    "webpack": "^2.3.3",
     "webpack-dev-server": "^2.4.2",
     "whatwg-fetch": "^2.0.3"
   }

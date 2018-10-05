@@ -20,7 +20,7 @@ class Select extends React.Component {
     let options = this.props.options.map((item, index) => {
       let value = item.value ? item.value : item.id
        return (
-         <option value={value} key={index} label={item.name}>{item.name}</option>
+          <option value={value} key={index} dangerouslySetInnerHTML={{__html:item.name}} />
       )
     })
 
@@ -30,7 +30,6 @@ class Select extends React.Component {
         <option defaultValue={this.props.label} >{this.props.label}</option>
         {options}
       </select>
-
     )
   }
 

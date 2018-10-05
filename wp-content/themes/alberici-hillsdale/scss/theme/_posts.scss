@@ -10,10 +10,32 @@
 
   .post {
     grid-column: span 4;
+    padding: 10px;
 
     a {
       @extend .inverse-link;
     }
 
+  }
+}
+//For News List View
+.card-group {
+  margin-bottom: 30px;
+  .card-post {
+    position: relative;
+    padding: 0;
+    border: 1px solid tomato;
+    img {
+      z-index: 0;
+      min-height: 100%;
+    }
+    a {
+      padding: 10px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      min-width: 100%;
+      min-height: 100%;
+    }
   }
 }
