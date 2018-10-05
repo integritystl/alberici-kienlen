@@ -34,30 +34,25 @@ class CardList extends React.Component {
       let postDataType = document.getElementById('cardList_app').getAttribute('data-post');
       if (postDataType === 'news') {
         baseLink = wpObj.posts_endpoint;
-        console.log('news baselink', baseLink);
-        //check if any filtering is happening that needs to pass to the base API Link
-        if (this.state.hasSearchTerm) {
-          baseLink += `&search=${this.state.searchTerm}`;
-        }
-        //IT DOESN'T KNOW IT'S FILTERED ON THE FIRST CHANGE
-        if (this.state.isFiltered) {
-          console.log("FILTERED?!?", this.state.isFiltered);
-          if (this.state.filteredMarket && this.state.filteredService) {
-            baseLink += `&market_category=${this.state.filteredMarket}&service_category=${this.state.filteredService}`;
-          } else if (this.state.filteredService) {
-            baseLink += `&service_category=${this.state.filteredService}`;
-            console.log('service baselink', baseLink);
-          } else {
-            //it's just markets
-            baseLink += `&market_category=${this.state.filteredMarket}`;
-          }
-        //  return baseLink;
-        }
       } else {
         baseLink = wpObj.projects_endpoint;
       }
-
-      console.log('BASElink', baseLink);
+      if (this.state.isFiltered) {
+        if (this.state.hasSearchTerm) {
+          baseLink += `&search=${this.state.searchTerm}`;
+        }
+        if (this.state.filteredMarket && this.state.filteredService) {
+          baseLink += `&market_category=${this.state.filteredMarket}&service_category=${this.state.filteredService}`;
+        } else if (this.state.filteredService) {
+          baseLink += `&service_category=${this.state.filteredService}`;
+          console.log('service baselink', baseLink);
+        } else if (this.state.filteredMarket) {
+          //it's just markets
+          baseLink += `&market_category=${this.state.filteredMarket}`;
+        } else {
+          return baseLink;
+        }
+      }
       return baseLink;
     }
     //Get All Posts
@@ -80,10 +75,6 @@ class CardList extends React.Component {
     }
 
     getFilteredPosts(apiLink) {
-    //  let apiLink = this.buildAPILink();
-      console.log('getfiltered link', apiLink);
-
-      //TODO: Refactor this to be wrapped in the 'if' properly so apiLink is the correct endpoint before the fetch
       fetch(apiLink)
         .then( response => {
           console.log('fetch', apiLink);
@@ -120,7 +111,7 @@ class CardList extends React.Component {
         filteredMarket: parseInt(id),
         isFiltered: true,
         loading: true
-      }, this.getFilteredPosts());
+      }, () => this.getFilteredPosts(this.buildAPILink() ));
     }
 
     //Check to see what's set for our data-filter attribute and call the appropriate custom taxonomy endpoint
@@ -154,8 +145,9 @@ class CardList extends React.Component {
       this.setState({
         searchTerm: term,
         hasSearchTerm: true,
+        isFiltered: true,
         loading: true
-      });
+      },() => this.getFilteredPosts(this.buildAPILink() ));
     }
 
     //Handles Service Filter
@@ -163,17 +155,11 @@ class CardList extends React.Component {
       if (id === 'Service') {
         id = ''
       }
-      // this.setState({
-      //   filteredService: parseInt(id),
-      //   isFiltered: true,
-      //   loading: true
-      // },this.getFilteredPosts());
       this.setState({
         filteredService: parseInt(id),
         isFiltered: true,
         loading: true
-      },this.getFilteredPosts(this.buildAPILink()) );
-      //console.log('handleServiceChange', this.buildAPILink());
+      }, () => this.getFilteredPosts(this.buildAPILink()) );
     }
 
     //Get name of filtered category from object
@@ -197,14 +183,15 @@ class CardList extends React.Component {
 
     //Reset filter
     resetFilter(){
+      //TODO set the selects back to default value
       this.setState({
         isFiltered: false,
         filteredPosts: [],
         filterMarket: '',
-        filterServices: ''
-      })
-      //TODO set the selects back to default value
-      this.getPosts();
+        filterServices: '',
+        hasSearchTerm: false,
+        searchTerm: ''
+      }, () => this.getPosts())
     }
 
     render() {
