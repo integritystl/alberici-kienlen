@@ -32,9 +32,24 @@ class CardList extends React.Component {
       let postDataType = document.getElementById('cardList_app').getAttribute('data-post');
       if (postDataType === 'news') {
         baseLink = wpObj.posts_endpoint;
+        console.log('build news baselink', baseLink);
       } else {
         baseLink = wpObj.projects_endpoint;
       }
+      //check if any filtering is happening that needs to pass to the base API Link
+      if (this.state.isFiltered) {
+        if (this.state.filteredMarket && this.state.filteredService) {
+          baseLink += `&market_category=${this.state.filteredMarket}&service_category=${this.state.filteredService}`;
+        } else if (this.state.filteredService) {
+          baseLink += `&service_category=${this.state.filteredService}`;
+          console.log('build service baselink', baseLink);
+        } else {
+          //it's just markets
+          baseLink += `&market_category=${this.state.filteredMarket}`;
+        }
+        return baseLink;
+      }
+      console.log('baselink', baseLink);
       return baseLink;
     }
     //Get All Posts
@@ -59,25 +74,25 @@ class CardList extends React.Component {
     getFilteredPosts() {
       let apiLink = this.buildAPILink();
       console.log('getfiltered link', apiLink);
-      if (this.state.isFiltered) {
-        console.log('it is filtered');
-        //check for both
-        if (this.state.filteredMarket && this.state.filteredService) {
-          apiLink += `&market_category=${this.state.filteredMarket}&service_category=${this.state.filteredService}`;
-        } else if (this.state.filteredService) {
-          apiLink += `&service_category=${this.state.filteredService}`;
-        } else if (this.state.filteredMarket) {
-          //it's just markets
-          apiLink += `&market_category=${this.state.filteredMarket}`; //THIS ISN"T HAPPENING CORRECTLY :( still uses unfiltered API link the first select
-        } else {
-          //We're not filtered anymore, reset isFiltered
-          this.setState({
-            isFiltered: false,
-            loading: false
-          })
-          return;
-        }
-      }
+      // if (this.state.isFiltered) {
+      //   console.log('it is filtered');
+      //   //check for both
+      //   if (this.state.filteredMarket && this.state.filteredService) {
+      //     apiLink += `&market_category=${this.state.filteredMarket}&service_category=${this.state.filteredService}`;
+      //   } else if (this.state.filteredService) {
+      //     apiLink += `&service_category=${this.state.filteredService}`;
+      //   } else if (this.state.filteredMarket) {
+      //     //it's just markets
+      //     apiLink += `&market_category=${this.state.filteredMarket}`; //THIS ISN"T HAPPENING CORRECTLY :( still uses unfiltered API link the first select
+      //   } else {
+      //     //We're not filtered anymore, reset isFiltered
+      //     this.setState({
+      //       isFiltered: false,
+      //       loading: false
+      //     })
+      //     return;
+      //   }
+      // }
       //TODO: Refactor this to be wrapped in the 'if' properly so apiLink is the correct endpoint before the fetch
       fetch(apiLink)
         .then( response => {
