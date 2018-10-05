@@ -13,36 +13,39 @@ $HeroImage = get_field('general_hero_featured_image');
 
 <div id="primary" class="content-area">
 	<main id="main" class="site-main">
-		<div class="container">
-			<?php
-			if ( have_posts() ) :
-				while ( have_posts() ) : 
-					the_post();?>
-					<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
+		<?php
+		if ( have_posts() ) :
+			while ( have_posts() ) : 
+				the_post();?>
+				<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 					<div class="hero-area" style="background-image: url(<?php if ($HeroImage): echo $HeroImage; endif; ?>);">
-						<h2 class="entry-title"><?php the_title(); ?></h2>
+						<h1 class="entry-title"><?php the_title(); ?></h1>
 					</div><!-- .hero-area -->
-					<nav class="breadcrumbs container" aria-label="Breadcrumb navigation">
-						<?php
-						if ( function_exists('yoast_breadcrumb') ) {
-							yoast_breadcrumb( '
-							<p id="breadcrumbs">','</p>
-							' );
-						}
-						?>
-					</nav>
-					<?php alberici_hillsdale_post_thumbnail(); ?>
-				
-					<div class="entry-content">
-						<?php the_content(); ?>
-					</div><!-- .entry-content -->
+					<div class="container">
+						<nav class="breadcrumbs" aria-label="Breadcrumb navigation">
+							<?php
+							if ( function_exists('yoast_breadcrumb') ) {
+								yoast_breadcrumb( '
+								<p id="breadcrumbs">','</p>
+								' );
+							}
+							?>
+						</nav>
+						<div class="market-detail">
+							<?php alberici_hillsdale_post_thumbnail(); ?>
+						
+							<div class="market-content">
+								<?php the_content(); ?>
+							</div><!-- .market-content -->
+						</div>
+					</div>
 				</article><!-- #post-<?php the_ID(); ?> -->
-				
+			
 
-				<?php endwhile;
-			else :
-				get_template_part( 'template-parts/content', 'none' );
-			endif;
+			<?php endwhile;
+		else :
+			get_template_part( 'template-parts/content', 'none' );
+		endif;
 
 			if ( is_single() && 'market' === get_post_type()) {
 				$terms = get_the_terms( get_the_ID(), 'category' );
@@ -77,8 +80,10 @@ $HeroImage = get_field('general_hero_featured_image');
 			} 
 			
 			if ( $latest_query->have_posts() ) : ?>
+			<div class="container">
 				<div class="markets markets-latest-3">
-					<p class="headline-lines"><span>Related Projects</span></p>
+					<span class="headline-lines"></span>
+					<h2>Related Projects</h2>
 					<ul>
 						<?php while( $latest_query->have_posts() ) : $latest_query->the_post();
 							$categories = get_the_category();
@@ -90,16 +95,18 @@ $HeroImage = get_field('general_hero_featured_image');
 								}
 							} ?>
 							<li>
+								<p><?php $category = get_the_category(); echo $category[0]->cat_name; ?></p>
 								<a href="<?php the_permalink(); ?>">
+									<img src="<?php echo get_the_post_thumbnail_url(); ?>" class="project-img"/>
 									<span class="post-title"><?php the_title(); ?></span>
 								</a>
 							</li>
 						<?php endwhile; ?>
 					</ul>
+					<a href="<?php echo get_home_url(); ?>/projects" class="btn"> VIEW PROJECTS </a>
 				</div>
-			<?php endif; wp_reset_postdata(); ?>
-			<a href="<?php echo get_home_url(); ?>/projects"> VIEW PROJECTS </a>
-
+				<?php endif; wp_reset_postdata(); ?>
+			</div>
 			<?php get_template_part( 'template-parts/footer-callout' ); ?>
 		<div><!-- container -->
 	</main><!-- #main -->
