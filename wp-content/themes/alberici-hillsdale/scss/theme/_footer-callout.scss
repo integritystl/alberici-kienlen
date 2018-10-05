@@ -31,8 +31,8 @@
             &:after {
                 font-family: "Font Awesome 5 Pro";
                 font-weight: 300;
-                content: '\f178';
-                margin-left: 75px;
+                content: '\f061';
+                float: right;
                 transition: all 0.2s ease-in-out;
             }
             @include grid-media($medium-min) {
