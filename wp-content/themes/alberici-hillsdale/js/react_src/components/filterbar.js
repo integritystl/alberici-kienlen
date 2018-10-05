@@ -5,9 +5,15 @@ import Select from './filter-select.js'
 class FilterBar extends React.Component {
   constructor(props) {
     super(props);
+    this.filterSearch = this.filterSearch.bind(this);
     this.filterMarkets = this.filterMarkets.bind(this);
     this.filterServices = this.filterServices.bind(this);
     this.resetFilter = this.resetFilter.bind(this);
+  }
+
+  filterSearch(event) {
+    let term = event.target.value;
+    this.props.filterSearch(term);
   }
 
   filterMarkets(id){
@@ -26,7 +32,10 @@ class FilterBar extends React.Component {
 
     return(
       <div className="filterbar">
-        <input type="search" placeholder="Search by keywords" />
+        <input type="search"
+          placeholder="Search by keywords"
+          onChange={(event) => this.filterSearch(event)}
+        />
 
         <Select label="Market"
           options={this.props.markets}
