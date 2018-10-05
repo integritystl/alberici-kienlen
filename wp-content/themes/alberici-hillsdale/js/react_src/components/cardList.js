@@ -33,7 +33,6 @@ class CardList extends React.Component {
       if (postDataType === 'news') {
         baseLink = wpObj.posts_endpoint;
       } else {
-        //need to make Projects CPT and change this
         baseLink = wpObj.projects_endpoint;
       }
       return baseLink;
@@ -59,8 +58,9 @@ class CardList extends React.Component {
 
     getFilteredPosts() {
       let apiLink = this.buildAPILink();
-
+      console.log('getfiltered link', apiLink);
       if (this.state.isFiltered) {
+        console.log('it is filtered');
         //check for both
         if (this.state.filteredMarket && this.state.filteredService) {
           apiLink += `&market_category=${this.state.filteredMarket}&service_category=${this.state.filteredService}`;
@@ -68,7 +68,7 @@ class CardList extends React.Component {
           apiLink += `&service_category=${this.state.filteredService}`;
         } else if (this.state.filteredMarket) {
           //it's just markets
-          apiLink += `&market_category=${this.state.filteredMarket}`;
+          apiLink += `&market_category=${this.state.filteredMarket}`; //THIS ISN"T HAPPENING CORRECTLY :( still uses unfiltered API link the first select
         } else {
           //We're not filtered anymore, reset isFiltered
           this.setState({
@@ -78,8 +78,11 @@ class CardList extends React.Component {
           return;
         }
       }
+      //TODO: Refactor this to be wrapped in the 'if' properly so apiLink is the correct endpoint before the fetch
       fetch(apiLink)
         .then( response => {
+          console.log('fetch', apiLink);
+          console.log(response);
           return(response.json());
         }).then(json => {
           this.setState({
@@ -183,6 +186,7 @@ class CardList extends React.Component {
     }
 
     render() {
+
       let postGroup = '';
       let loadMoreBtn = '';
       let loadMoreLabel = 'View More Posts'; //TODO: If postData is Projects, this label should read 'View More Projects'

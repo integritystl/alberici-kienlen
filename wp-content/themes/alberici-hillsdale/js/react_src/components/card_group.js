@@ -37,8 +37,7 @@ class CardGroup extends React.Component {
             + imageSrcSetMedLarge.source_url + ' ' + imageSrcSetMedLarge.width + 'w, '
             + imageSrcSetLarge.source_url + ' ' + imageSrcSetLarge.width + 'w';
         }
-        console.log('imageSrcSetLarge', imageSrcSetLarge.source_url);
-        console.log('imgsrcSet', imageSrcSet);
+
         //roll through array of service categories per post and get the name
         if (item.service_category) {
           let postServices = item.service_category.filter( (cat) => {
@@ -77,7 +76,7 @@ class CardGroup extends React.Component {
 
 
     return(
-      <div className="card-group">
+      <div className="card-group blog-content_posts">
         {postComponents}
       </div>
     );
