@@ -28,16 +28,11 @@
             color: white;
             font-weight: normal;
             text-transform: uppercase;
-            &:after {
-                font-family: "Font Awesome 5 Pro";
-                font-weight: 300;
-                content: '\f061';
-                float: right;
-                transition: all 0.2s ease-in-out;
-            }
+            min-width: 100px;
             @include grid-media($medium-min) {
                margin: 5% 0 5% 7%;
                height:39px;
+               min-width: 400px;
             }
         }
     }
