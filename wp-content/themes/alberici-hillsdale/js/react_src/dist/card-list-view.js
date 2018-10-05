@@ -10038,7 +10038,9 @@ var CardList = function (_React$Component) {
       isFiltered: false,
       filteredPosts: [],
       filteredMarket: '',
-      filteredService: ''
+      filteredService: '',
+      hasSearchTerm: false,
+      searchTerm: ''
     });
   };
 
@@ -10057,24 +10059,30 @@ var CardList = function (_React$Component) {
     var postDataType = document.getElementById('cardList_app').getAttribute('data-post');
     if (postDataType === 'news') {
       baseLink = wpObj.posts_endpoint;
-      console.log('build news baselink', baseLink);
+      console.log('news baselink', baseLink);
+      //check if any filtering is happening that needs to pass to the base API Link
+      if (this.state.hasSearchTerm) {
+        baseLink += '&search=' + this.state.searchTerm;
+      }
+      //IT DOESN'T KNOW IT'S FILTERED ON THE FIRST CHANGE
+      if (this.state.isFiltered) {
+        console.log("FILTERED?!?", this.state.isFiltered);
+        if (this.state.filteredMarket && this.state.filteredService) {
+          baseLink += '&market_category=' + this.state.filteredMarket + '&service_category=' + this.state.filteredService;
+        } else if (this.state.filteredService) {
+          baseLink += '&service_category=' + this.state.filteredService;
+          console.log('service baselink', baseLink);
+        } else {
+          //it's just markets
+          baseLink += '&market_category=' + this.state.filteredMarket;
+        }
+        //  return baseLink;
+      }
     } else {
       baseLink = wpObj.projects_endpoint;
     }
-    //check if any filtering is happening that needs to pass to the base API Link
-    if (this.state.isFiltered) {
-      if (this.state.filteredMarket && this.state.filteredService) {
-        baseLink += '&market_category=' + this.state.filteredMarket + '&service_category=' + this.state.filteredService;
-      } else if (this.state.filteredService) {
-        baseLink += '&service_category=' + this.state.filteredService;
-        console.log('build service baselink', baseLink);
-      } else {
-        //it's just markets
-        baseLink += '&market_category=' + this.state.filteredMarket;
-      }
-      return baseLink;
-    }
-    console.log('baselink', baseLink);
+
+    console.log('BASElink', baseLink);
     return baseLink;
   };
   //Get All Posts
@@ -10098,30 +10106,12 @@ var CardList = function (_React$Component) {
     });
   };
 
-  CardList.prototype.getFilteredPosts = function getFilteredPosts() {
+  CardList.prototype.getFilteredPosts = function getFilteredPosts(apiLink) {
     var _this3 = this;
 
-    var apiLink = this.buildAPILink();
+    //  let apiLink = this.buildAPILink();
     console.log('getfiltered link', apiLink);
-    // if (this.state.isFiltered) {
-    //   console.log('it is filtered');
-    //   //check for both
-    //   if (this.state.filteredMarket && this.state.filteredService) {
-    //     apiLink += `&market_category=${this.state.filteredMarket}&service_category=${this.state.filteredService}`;
-    //   } else if (this.state.filteredService) {
-    //     apiLink += `&service_category=${this.state.filteredService}`;
-    //   } else if (this.state.filteredMarket) {
-    //     //it's just markets
-    //     apiLink += `&market_category=${this.state.filteredMarket}`; //THIS ISN"T HAPPENING CORRECTLY :( still uses unfiltered API link the first select
-    //   } else {
-    //     //We're not filtered anymore, reset isFiltered
-    //     this.setState({
-    //       isFiltered: false,
-    //       loading: false
-    //     })
-    //     return;
-    //   }
-    // }
+
     //TODO: Refactor this to be wrapped in the 'if' properly so apiLink is the correct endpoint before the fetch
     fetch(apiLink).then(function (response) {
       console.log('fetch', apiLink);
@@ -10193,6 +10183,18 @@ var CardList = function (_React$Component) {
     });
   };
 
+  //Search Input Filter
+
+
+  CardList.prototype.handleSearch = function handleSearch(term) {
+    console.log('search term', term);
+    this.setState({
+      searchTerm: term,
+      hasSearchTerm: true,
+      loading: true
+    });
+  };
+
   //Handles Service Filter
 
 
@@ -10200,11 +10202,17 @@ var CardList = function (_React$Component) {
     if (id === 'Service') {
       id = '';
     }
+    // this.setState({
+    //   filteredService: parseInt(id),
+    //   isFiltered: true,
+    //   loading: true
+    // },this.getFilteredPosts());
     this.setState({
       filteredService: parseInt(id),
       isFiltered: true,
       loading: true
-    }, this.getFilteredPosts());
+    }, this.getFilteredPosts(this.buildAPILink()));
+    //console.log('handleServiceChange', this.buildAPILink());
   };
 
   //Get name of filtered category from object
@@ -10309,6 +10317,7 @@ var CardList = function (_React$Component) {
         serviceFilter: this.state.filteredService,
         serviceFilterName: filteredServiceName,
         serviceChange: this.handleServiceChange.bind(this),
+        filterSearch: this.handleSearch.bind(this),
         resetFilter: this.resetFilter.bind(this)
       }),
       postGroup,
@@ -10535,11 +10544,17 @@ var FilterBar = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, _React$Component.call(this, props));
 
+    _this.filterSearch = _this.filterSearch.bind(_this);
     _this.filterMarkets = _this.filterMarkets.bind(_this);
     _this.filterServices = _this.filterServices.bind(_this);
     _this.resetFilter = _this.resetFilter.bind(_this);
     return _this;
   }
+
+  FilterBar.prototype.filterSearch = function filterSearch(event) {
+    var term = event.target.value;
+    this.props.filterSearch(term);
+  };
 
   FilterBar.prototype.filterMarkets = function filterMarkets(id) {
     this.props.marketChange(id);
@@ -10559,7 +10574,12 @@ var FilterBar = function (_React$Component) {
     return _react2.default.createElement(
       'div',
       { className: 'filterbar' },
-      _react2.default.createElement('input', { type: 'search', placeholder: 'Search by keywords' }),
+      _react2.default.createElement('input', { type: 'search',
+        placeholder: 'Search by keywords',
+        onChange: function onChange(event) {
+          return _this2.filterSearch(event);
+        }
+      }),
       _react2.default.createElement(_filterSelect2.default, { label: 'Market',
         options: this.props.markets,
         onFilterChange: this.filterMarkets
