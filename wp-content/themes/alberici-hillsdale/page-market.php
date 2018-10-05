@@ -17,11 +17,9 @@ get_header();
 
 
 		<?php if ( get_the_content() ) { ?>
-            <div class="entry-content container">
-                <?php
-                the_content();
-                ?>
-            </div><!-- .entry-content -->
+            <div class="market-content container">
+                <?php the_content(); ?>
+            </div><!-- .market-content -->
         <?php } ?>
 
         <?php if( have_rows('market_callouts') ): ?>
@@ -50,9 +48,10 @@ get_header();
             endwhile; ?>
             </div>
         <?php endif;?>
+        
+        <h2 class="headline-lines container"></h2>
 
-        <h3 class="container">Services</h3>
-
+        <h2 class="services-title container">Services</h2>
         <?php
 			if(have_rows('flexible_content', get_the_ID())):
 				while(have_rows('flexible_content')): the_row();

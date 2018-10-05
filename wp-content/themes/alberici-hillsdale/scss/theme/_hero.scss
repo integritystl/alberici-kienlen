@@ -28,3 +28,18 @@
     }
   }
 }
+
+//For general hero area
+.hero-area {
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-height:350px;
+  // padding: 185px 0;
+
+  h1 {
+    text-align: center;
+    padding-top: 150px;
+    color: white;
+    font-size: 78px;
+  }
+}
