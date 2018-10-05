@@ -80,7 +80,8 @@ $HeroImage = get_field('general_hero_featured_image');
 			
 			if ( $latest_query->have_posts() ) : ?>
 				<div class="markets markets-latest-3">
-					<p class="headline-lines"><span>Related Projects</span></p>
+					<span class="headline-lines container"></span>
+					<h2>Related Projects</h2>
 					<ul>
 						<?php while( $latest_query->have_posts() ) : $latest_query->the_post();
 							$categories = get_the_category();
@@ -92,7 +93,9 @@ $HeroImage = get_field('general_hero_featured_image');
 								}
 							} ?>
 							<li>
+								<p><?php $category = get_the_category(); echo $category[0]->cat_name; ?></p>
 								<a href="<?php the_permalink(); ?>">
+									<img src="<?php echo get_the_post_thumbnail_url(); ?>" class="project-img"/>
 									<span class="post-title"><?php the_title(); ?></span>
 								</a>
 							</li>
@@ -100,7 +103,7 @@ $HeroImage = get_field('general_hero_featured_image');
 					</ul>
 				</div>
 			<?php endif; wp_reset_postdata(); ?>
-			<a href="<?php echo get_home_url(); ?>/projects"> VIEW PROJECTS </a>
+			<a href="<?php echo get_home_url(); ?>/projects" class="btn"> VIEW PROJECTS </a>
 
 			<?php get_template_part( 'template-parts/footer-callout' ); ?>
 		<div><!-- container -->
