@@ -24,13 +24,18 @@ $HeroButtonLink = get_field('homepage_hero_button_link');
 		<main id="main" class="site-main">
 			<?php if ($HeroHeadline): ?>
 				<div class="homepage-hero hero-image" style="background-image: url(<?php if ($HeroImage): echo $HeroImage; endif; ?>);">
+					<div class="container">
 						<h1><?php echo $HeroHeadline; ?></h1>
+					</div>
 						<div class="hero-content">
-							<p><?php echo $HeroContent; ?></p>
-							<?php if ($HeroButtonText): ?>
-								<a href="<?php echo $HeroButtonLink; ?>"/><?php echo $HeroButtonText; ?> </a>
-							<?php endif; ?>
+							<div class="container">
+								<p><?php echo $HeroContent; ?></p>
+								<?php if ($HeroButtonText): ?>
+									<a href="<?php echo $HeroButtonLink; ?>" class="btn-lined"><?php echo $HeroButtonText; ?> </a>
+								<?php endif; ?>
+							</div>
 						</div>
+
 				</div>
 			<?php endif; ?>
 
@@ -69,7 +74,7 @@ $HeroButtonLink = get_field('homepage_hero_button_link');
 			endif;
 			?>
 				</ul>
-			<a href="<?php echo get_permalink( get_option( 'page_for_posts' ) ); ?>">VIEW MORE NEWS </a>
+			<!-- <a href="<?php echo get_permalink( get_option( 'page_for_posts' ) ); ?>">View More News</a> -->
 			</div>
 		</main><!-- #main -->
 	</div><!-- #primary -->

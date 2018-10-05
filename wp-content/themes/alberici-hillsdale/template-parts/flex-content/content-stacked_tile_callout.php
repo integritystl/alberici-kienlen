@@ -16,13 +16,16 @@
 ?>
   <div class="stacked_tile_single">
     <div class="single_tile_img">
-        <?php echo wp_get_attachment_image($StackedTileImage, 'large'); ?>
+        <?php echo wp_get_attachment_image($StackedTileImage, 'tile-image'); ?>
     </div>
     <div class="single_tile_content">
         <h2><?php echo $StackedTileHeader; ?></h2>
         <p><?php echo $StackedTileContent; ?></p>
-        <a href="<?php echo $StackedTileLink; ?>" class="btn">LEARN MORE</a>
     </div>
+    <a href="<?php echo $StackedTileLink; ?>" class="btn">Learn More</a>
+
+
+
   </div>
 <?php endwhile; ?>
 
