@@ -3,7 +3,7 @@ var gulp = require('gulp');
 var sourcemaps = require('gulp-sourcemaps');
 var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
-//var babel = require("gulp-babel");
+var babel = require("gulp-babel");
 var pump = require('pump');
 var postcss = require('gulp-postcss');
 var sass = require('gulp-sass');
@@ -14,7 +14,7 @@ gulp.task('scripts', function(cb) {
 	pump([
 		gulp.src('./wp-content/themes/alberici-hillsdale/js/src/**/*.js'),
 		sourcemaps.init(),
-		//babel({presets: ['env']}), //this is giving me an Unexpected Token when Gulp is run no matter what for some reason
+		babel({presets: ['env']}), 
 		uglify(),
 		concat('app.js'),
 		sourcemaps.write('.'),

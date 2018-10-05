@@ -195,16 +195,12 @@ function alberici_hillsdale_scripts() {
 
 	wp_enqueue_script( 'jquery-sidr', get_template_directory_uri() . '/js/jquery.sidr.min.js', array('jquery'), time(), true );
 
-	wp_enqueue_script( 'alberici-hillsdale-main', get_template_directory_uri() . '/js/main.js', array('jquery'), time(), true );
-
-	wp_enqueue_script( 'alberici-hillsdale-header', get_template_directory_uri() . '/js/src/header.js', array('jquery'), time(), true );
-
 	if (is_page_template('page-card-list.php')) {
 			wp_register_script('alberici-hillsdale-news', get_template_directory_uri() . '/js/react_src/dist/card-list-view.js', array(), time(), true );
 			wp_enqueue_script('alberici-hillsdale-news', get_template_directory_uri() . '/js/react_src/dist/card-list-view.js', array(), time(), true );
 			wp_localize_script('alberici-hillsdale-news', 'wpObj', array(
 				'posts_endpoint' => home_url('/wp-json/wp/v2/posts?_embed'),
-				'projects_endpoint' => home_url('/wp-json/wp/v2/projects?_embed'), //TODO: Update this with the actual CPT for Projects when they exist
+				'projects_endpoint' => home_url('/wp-json/wp/v2/project?_embed'),
 				'marketCat_endpoint' => home_url('/wp-json/wp/v2/market_category'),
 				'serviceCat_endpoint' => home_url('/wp-json/wp/v2/service_category'),
 				//TODO: add the endpoint for Location Categories here too;
