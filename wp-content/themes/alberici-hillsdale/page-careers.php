@@ -41,7 +41,7 @@ $jobsCalloutgform = get_field('jobs_callout_careers_form');
                     <h2><?php echo $jobsCalloutHeader; ?></h2>
                     <p><?php echo $jobsCalloutContent; ?></p>
                     <?php if ($jobsCalloutLink): ?>
-                        <a href="<?php echo $jobsCalloutLink; ?>">VIEW JOB POSTS</a>
+                        <a class="btn" href="<?php echo $jobsCalloutLink; ?>">View Job Posts</a>
                     <?php endif;?>
                 </div>
                 <?php echo $jobsCalloutgform; ?>
