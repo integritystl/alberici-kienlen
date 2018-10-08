@@ -182,7 +182,11 @@ class CardList extends React.Component {
 
     //Reset filter
     resetFilter(){
-      //TODO set the selects back to default value
+      //TODO set the selects back to default value and the search box to empty
+      let searchInput = document.getElementById('filterbar-search');
+      searchInput.value = '';
+      
+
       this.setState({
         isFiltered: false,
         filteredPosts: [],
