@@ -21,16 +21,15 @@ $HeroImage = get_field('general_hero_featured_image');
 					<div class="hero-area" style="background-image: url(<?php if ($HeroImage): echo $HeroImage; endif; ?>);">
 						<h1 class="entry-title"><?php the_title(); ?></h1>
 					</div><!-- .hero-area -->
-					<div class="container">
-						<nav class="breadcrumbs" aria-label="Breadcrumb navigation">
-							<?php
-							if ( function_exists('yoast_breadcrumb') ) {
-								yoast_breadcrumb( '
-								<p id="breadcrumbs">','</p>
-								' );
-							}
-							?>
-						</nav>
+							<nav class="container breadcrumbs" aria-label="Breadcrumb navigation">
+								<?php
+								if ( function_exists('yoast_breadcrumb') ) {
+									yoast_breadcrumb( '
+									<p id="breadcrumbs">','</p>
+									' );
+								}
+								?>
+							</nav>
 						<div class="market-detail">
 							<?php alberici_hillsdale_post_thumbnail(); ?>
 						
@@ -38,7 +37,7 @@ $HeroImage = get_field('general_hero_featured_image');
 								<?php the_content(); ?>
 							</div><!-- .market-content -->
 						</div>
-					</div>
+					<!-- </div> -->
 				</article><!-- #post-<?php the_ID(); ?> -->
 			
 
