@@ -9,7 +9,7 @@ class CardList extends React.Component {
       this.setState({
         loading: true,
         posts: [],
-        postsPerPage: 6,
+        postsPerPage: 3, //TODO change me back to 6 after testing
         market_categories: [],
         service_categories: [],
         isFiltered: false,
@@ -172,11 +172,15 @@ class CardList extends React.Component {
 
     //Load More functionality
     loadMorePosts() {
+      //need to fetch the next amount of posts and add them
+      //getPosts loads the page and uses postsPerPage
       let apiLink = this.buildAPILink();
       console.log('load more link', apiLink);
       let offset = 0;
-      if (this.state.posts) {
-
+      if (this.state.isFiltered) {
+        offset = this.state.filteredPosts.length;
+      } else {
+        offset = this.state.posts.length;
       }
     }
 
@@ -185,7 +189,7 @@ class CardList extends React.Component {
       //TODO set the selects back to default value and the search box to empty
       let searchInput = document.getElementById('filterbar-search');
       searchInput.value = '';
-      
+
 
       this.setState({
         isFiltered: false,
@@ -219,6 +223,7 @@ class CardList extends React.Component {
                       getCatName = {this.getCatName.bind(this)}
                       />
         if (allPosts && allPosts.length > this.state.postsPerPage && allPosts.length % this.state.postsPerPage != 0) {
+          console.log('load more?');
           loadMoreBtn = <button onClick={this.loadMorePosts.bind(this)}  className="btn-load-more">{loadMoreLabel}</button>;
         }
       } else if ( filterPosts && this.state.isFiltered === true ) {

@@ -10028,7 +10028,7 @@ var CardList = function (_React$Component) {
     this.setState({
       loading: true,
       posts: [],
-      postsPerPage: 6,
+      postsPerPage: 3, //TODO change me back to 6 after testing
       market_categories: [],
       service_categories: [],
       isFiltered: false,
@@ -10223,10 +10223,16 @@ var CardList = function (_React$Component) {
 
 
   CardList.prototype.loadMorePosts = function loadMorePosts() {
+    //need to fetch the next amount of posts and add them
+    //getPosts loads the page and uses postsPerPage
     var apiLink = this.buildAPILink();
     console.log('load more link', apiLink);
     var offset = 0;
-    if (this.state.posts) {}
+    if (this.state.isFiltered) {
+      offset = this.state.filteredPosts.length;
+    } else {
+      offset = this.state.posts.length;
+    }
   };
 
   //Reset filter
@@ -10277,6 +10283,7 @@ var CardList = function (_React$Component) {
         getCatName: this.getCatName.bind(this)
       });
       if (allPosts && allPosts.length > this.state.postsPerPage && allPosts.length % this.state.postsPerPage != 0) {
+        console.log('load more?');
         loadMoreBtn = _react2.default.createElement(
           'button',
           { onClick: this.loadMorePosts.bind(this), className: 'btn-load-more' },
