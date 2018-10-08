@@ -1,0 +1,54 @@
+.contact-content {
+    margin-top: 40px;
+    margin-bottom: 50px;
+}
+.contact-people {
+    display: block;
+    margin-bottom: 100px;
+    @include grid-media($medium-min) {
+        display: flex;
+        margin-bottom: 200px;
+    }
+}
+.contact-people-list {
+    width: 100%;
+    margin-left: 10px;
+    @include grid-media($medium-min) {
+        width: calc(48.33333% - 28.33333px);
+        margin-left: 0;
+    }
+    .contact-people-component {
+        margin-bottom: 30px;
+    
+        img {
+            float: left;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-top: 10px;
+            margin-right: 25px;
+        }
+        p {
+            margin-bottom: 0;
+        }
+        .contact-type {
+            font-weight: 600;
+        }
+    }
+}
+.gform_wrapper {
+    .gform_body ul li {
+        margin-bottom: 20px;
+        .gfield_label {
+            @include hide-visually;
+        }
+        input, textarea {
+            padding: 12px 0 12px 30px;
+        }
+    }
+    .gform_footer {
+        input[type=submit] {
+            min-width: 100%;
+        }
+    }
+}
