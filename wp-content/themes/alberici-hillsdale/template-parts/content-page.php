@@ -21,11 +21,5 @@
 		</div><!-- .entry-content -->
 	<?php } ?>
 
-	<?php 
-	
-	get_template_part( 'template-parts/flex-content/content-fifty_fifty_callout' );
-	get_template_part( 'template-parts/flex-content/content-full_width_callout' );
-	?>
-
 
 </article><!-- #post-<?php the_ID(); ?> -->
