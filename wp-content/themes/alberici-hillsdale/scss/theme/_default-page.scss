@@ -1,9 +1,6 @@
 .entry-content {
     margin: 20px 0 0 0;
-    p img{
-        margin: 30px 0 10px 0;
-    }
-    p:nth-child(1), p:nth-child(3),p:nth-child(4) {
+    p {
         margin: 30px 10px 0 10px;
     }
     @include grid-media($medium-min) {
@@ -12,7 +9,7 @@
             float: left;
             margin: 40px 50px 50px 0;
         }
-        p:nth-child(4) {
+        p:last-child {
             margin-bottom: 200px;
         }
     }
