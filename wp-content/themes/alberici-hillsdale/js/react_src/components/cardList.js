@@ -8,8 +8,10 @@ class CardList extends React.Component {
   componentWillMount() {
       this.setState({
         loading: true,
+        currentPage: 1,
         posts: [],
-        postsPerPage: 3, //TODO change me back to 6 after testing
+        postsPerPage: 6, //TODO change me back to 6 after testing
+        postDataType: document.getElementById('cardList_app').getAttribute('data-post'),
         market_categories: [],
         service_categories: [],
         isFiltered: false,
@@ -18,6 +20,7 @@ class CardList extends React.Component {
         filteredService: '',
         hasSearchTerm: false,
         searchTerm: '',
+        totalPosts: parseInt(wpObj.totalPosts.publish),
       })
     }
 
@@ -31,8 +34,8 @@ class CardList extends React.Component {
     //Fetch posts
     buildAPILink() {
       let baseLink = '';
-      let postDataType = document.getElementById('cardList_app').getAttribute('data-post');
-      if (postDataType === 'news') {
+
+      if (this.state.postDataType === 'news') {
         baseLink = wpObj.posts_endpoint;
       } else {
         baseLink = wpObj.projects_endpoint;
@@ -175,13 +178,20 @@ class CardList extends React.Component {
       //need to fetch the next amount of posts and add them
       //getPosts loads the page and uses postsPerPage
       let apiLink = this.buildAPILink();
-      console.log('load more link', apiLink);
+
       let offset = 0;
       if (this.state.isFiltered) {
         offset = this.state.filteredPosts.length;
+        //TODO add in some stuff here Lindsay
       } else {
-        offset = this.state.posts.length;
+        offset = this.state.currentPage * this.state.postsPerPage;
+        //increment
+        this.setState( (state) => ({
+          currentPage: state.currentPage + 1,
+        }));
       }
+      apiLink += `&offset=${offset}`;
+      console.log('load more link', apiLink);
     }
 
     //Reset filter
@@ -210,6 +220,24 @@ class CardList extends React.Component {
       let allPosts = this.state.posts;
       let filterPosts = this.state.filteredPosts;
 
+      let visiblePosts = [];
+      //Somewhere in here, we look at this.state.posts
+      // but only display the postsPerPage amount?
+      if (allPosts.length > this.state.postsPerPage) {
+        console.log('allposts', allPosts.length);
+      //  console.log(allPosts.length % this.state.postsPerPage);
+        visiblePosts = allPosts.map( (obj, i) => {
+          //count the indexes
+          if (i < this.state.postsPerPage) {
+            return obj;
+          } else {
+            return null;
+          }
+        //  return obj;
+        });
+        console.log('visible', visiblePosts);
+      }
+
       let filteredServiceName = '';
       let filteredMarketName = '';
 
@@ -222,10 +250,10 @@ class CardList extends React.Component {
                       services = {this.state.service_categories}
                       getCatName = {this.getCatName.bind(this)}
                       />
-        if (allPosts && allPosts.length > this.state.postsPerPage && allPosts.length % this.state.postsPerPage != 0) {
+        //if (allPosts && allPosts.length > this.state.postsPerPage && allPosts.length % this.state.postsPerPage != 0) {
           console.log('load more?');
           loadMoreBtn = <button onClick={this.loadMorePosts.bind(this)}  className="btn-load-more">{loadMoreLabel}</button>;
-        }
+        //}
       } else if ( filterPosts && this.state.isFiltered === true ) {
         postGroup = <CardGroup
                       posts = {this.state.filteredPosts}

@@ -10027,8 +10027,10 @@ var CardList = function (_React$Component) {
   CardList.prototype.componentWillMount = function componentWillMount() {
     this.setState({
       loading: true,
+      currentPage: 1,
       posts: [],
-      postsPerPage: 3, //TODO change me back to 6 after testing
+      postsPerPage: 6, //TODO change me back to 6 after testing
+      postDataType: document.getElementById('cardList_app').getAttribute('data-post'),
       market_categories: [],
       service_categories: [],
       isFiltered: false,
@@ -10036,7 +10038,8 @@ var CardList = function (_React$Component) {
       filteredMarket: '',
       filteredService: '',
       hasSearchTerm: false,
-      searchTerm: ''
+      searchTerm: '',
+      totalPosts: parseInt(wpObj.totalPosts.publish)
     });
   };
 
@@ -10052,8 +10055,8 @@ var CardList = function (_React$Component) {
 
   CardList.prototype.buildAPILink = function buildAPILink() {
     var baseLink = '';
-    var postDataType = document.getElementById('cardList_app').getAttribute('data-post');
-    if (postDataType === 'news') {
+
+    if (this.state.postDataType === 'news') {
       baseLink = wpObj.posts_endpoint;
     } else {
       baseLink = wpObj.projects_endpoint;
@@ -10226,13 +10229,22 @@ var CardList = function (_React$Component) {
     //need to fetch the next amount of posts and add them
     //getPosts loads the page and uses postsPerPage
     var apiLink = this.buildAPILink();
-    console.log('load more link', apiLink);
+
     var offset = 0;
     if (this.state.isFiltered) {
       offset = this.state.filteredPosts.length;
+      //TODO add in some stuff here Lindsay
     } else {
-      offset = this.state.posts.length;
+      offset = this.state.currentPage * this.state.postsPerPage;
+      //increment
+      this.setState(function (state) {
+        return {
+          currentPage: state.currentPage + 1
+        };
+      });
     }
+    apiLink += '&offset=' + offset;
+    console.log('load more link', apiLink);
   };
 
   //Reset filter
@@ -10258,6 +10270,7 @@ var CardList = function (_React$Component) {
   };
 
   CardList.prototype.render = function render() {
+    var _this10 = this;
 
     var postGroup = '';
     var loadMoreBtn = '';
@@ -10265,6 +10278,24 @@ var CardList = function (_React$Component) {
 
     var allPosts = this.state.posts;
     var filterPosts = this.state.filteredPosts;
+
+    var visiblePosts = [];
+    //Somewhere in here, we look at this.state.posts
+    // but only display the postsPerPage amount?
+    if (allPosts.length > this.state.postsPerPage) {
+      console.log('allposts', allPosts.length);
+      //  console.log(allPosts.length % this.state.postsPerPage);
+      visiblePosts = allPosts.map(function (obj, i) {
+        //count the indexes
+        if (i < _this10.state.postsPerPage) {
+          return obj;
+        } else {
+          return null;
+        }
+        //  return obj;
+      });
+      console.log('visible', visiblePosts);
+    }
 
     var filteredServiceName = '';
     var filteredMarketName = '';
@@ -10282,14 +10313,14 @@ var CardList = function (_React$Component) {
         services: this.state.service_categories,
         getCatName: this.getCatName.bind(this)
       });
-      if (allPosts && allPosts.length > this.state.postsPerPage && allPosts.length % this.state.postsPerPage != 0) {
-        console.log('load more?');
-        loadMoreBtn = _react2.default.createElement(
-          'button',
-          { onClick: this.loadMorePosts.bind(this), className: 'btn-load-more' },
-          loadMoreLabel
-        );
-      }
+      //if (allPosts && allPosts.length > this.state.postsPerPage && allPosts.length % this.state.postsPerPage != 0) {
+      console.log('load more?');
+      loadMoreBtn = _react2.default.createElement(
+        'button',
+        { onClick: this.loadMorePosts.bind(this), className: 'btn-load-more' },
+        loadMoreLabel
+      );
+      //}
     } else if (filterPosts && this.state.isFiltered === true) {
       postGroup = _react2.default.createElement(_card_group2.default, {
         posts: this.state.filteredPosts,
