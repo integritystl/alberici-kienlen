@@ -4,13 +4,10 @@
         margin: 30px 10px 0 10px;
     }
     @include grid-media($medium-min) {
-        margin: 50px 0 0 0;
-        p img {
+        margin: 50px 0 180px 0;
+        .alignleft {
             float: left;
-            margin: 40px 50px 50px 0;
-        }
-        p:last-child {
-            margin-bottom: 200px;
+            margin-right: 30px;
         }
     }
 }
