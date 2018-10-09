@@ -32,9 +32,10 @@ get_header();
             <?php foreach ( $servicePosts as $post ) :
                 setup_postdata( $post ); ?>
                 <?php if (get_the_post_thumbnail()): 
-                    $thumb = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'medium' );?>
+                    $thumb = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'medium', false );?>
                     <a class="service-detail" href="<?php the_permalink(); ?>">
-                        <img src="<?php echo get_the_post_thumbnail_url(); ?>" class="service-img"/>
+                        <span class="img-overlay"></span>
+                        <img src="<?php echo $thumb['0'];?>" class="service-img"/>
                         <span class="post-title"><?php the_title(); ?></span>
                     </a>
                 <?php endif; ?>
