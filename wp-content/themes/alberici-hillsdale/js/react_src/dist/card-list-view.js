@@ -10086,10 +10086,8 @@ var CardList = function (_React$Component) {
   CardList.prototype.getPosts = function getPosts(apiLink) {
     var _this2 = this;
 
-    //let apiLink = this.buildAPILink();
-    console.log('api link?', apiLink);
     apiLink += '&per_page=' + this.state.postsPerPage;
-    console.log('api from getPosts', apiLink);
+    //  console.log('api from getPosts', apiLink);
     var headers = new Headers({ 'Authorization': 'Basic alberici' });
     fetch(apiLink, { headers: headers }).then(function (response) {
       return response.json();
@@ -10239,31 +10237,23 @@ var CardList = function (_React$Component) {
     } else {
       offset = this.state.currentPage * this.state.postsPerPage;
       apiLink += '&offset=' + offset;
-      console.log('load more link', apiLink);
+      //  console.log('load more link', apiLink);
       fetch(apiLink).then(function (response) {
         return response.json();
       }).then(function (json) {
-        console.log(json);
         var currentPosts = _this9.state.posts;
-        // for ( var item in json) {
-        //   console.log(item[i]);
-        // //  currentPosts.push(i[0]);
-        // }
-        currentPosts.push(json);
-        console.log(currentPosts);
-        //console.log(currentPosts.push(json));
+        //when i put this into this.setState, it breaks, what do?
+        Array.prototype.push.apply(currentPosts, json);
+        //  console.log(currentPosts);
         //increment our Current Page
         _this9.setState(function (state) {
           return {
-            currentPage: state.currentPage + 1
-            //posts: state.posts.push(json), //need to jam in new json here
-            //  loading: false,
+            currentPage: state.currentPage + 1,
+            //posts: Array.prototype.push.apply(currentPosts, json), //need to jam in new json here
+            loading: false
           };
         });
       });
-
-      //where should this go?
-      //  this.getPosts(this.buildAPILink());
     }
   };
 
@@ -10301,6 +10291,8 @@ var CardList = function (_React$Component) {
     var filteredServiceName = '';
     var filteredMarketName = '';
 
+    var allPostsOffset = this.state.currentPage * this.state.postsPerPage;
+
     if (this.state.loading) {
       postGroup = _react2.default.createElement(
         'div',
@@ -10314,8 +10306,7 @@ var CardList = function (_React$Component) {
         services: this.state.service_categories,
         getCatName: this.getCatName.bind(this)
       });
-      if (allPosts && this.state.totalPosts > this.state.postsPerPage && this.state.totalPosts % this.state.postsPerPage != 0) {
-        console.log('load more?');
+      if (allPostsOffset < this.state.totalPosts && this.state.totalPosts % this.state.postsPerPage != 0) {
         loadMoreBtn = _react2.default.createElement(
           'button',
           { onClick: this.loadMorePosts.bind(this), className: 'btn-load-more' },
