@@ -203,6 +203,7 @@ function alberici_hillsdale_scripts() {
 				'projects_endpoint' => home_url('/wp-json/wp/v2/project?_embed'),
 				'marketCat_endpoint' => home_url('/wp-json/wp/v2/market_category'),
 				'serviceCat_endpoint' => home_url('/wp-json/wp/v2/service_category'),
+				'totalPosts' => wp_count_posts(), //TODO make one for Projects Post Count
 				//TODO: add the endpoint for Location Categories here too;
 			));
 	}
