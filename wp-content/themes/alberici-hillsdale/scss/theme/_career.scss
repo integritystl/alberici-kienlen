@@ -1,12 +1,12 @@
-// .career-template .flex_fifty_fifty {
-//     margin-top: 50px;
-// }
 .career-template {
     .headline-lines {
         margin-top: 62px;
     }
     .job-callout{
-        display: flex;
+        display: block;
+        @include grid-media($medium-min) {
+            display: flex;
+        }
         .callout-content {
             h2 {
                 margin-bottom: 32px;
@@ -14,13 +14,20 @@
             a {
                 text-transform: uppercase;
                 margin-top: 20px;
+                margin-bottom: 30px;
+                min-width: 100%;
             }
-            width: calc(70.33333% - 43.33333px);
-            margin-right: 110px;
+            @include grid-media($medium-min) {
+                width: calc(70.33333% - 43.33333px);
+                margin-right: 110px;
+            }
         }
         .gform_wrapper {
-            width: 90%;
+            width: 100%;
             margin-right: 20px;
+            @include grid-media($medium-min) {
+                width: 90%;
+            }
             .gform_body ul li {
                 margin-bottom: 25px;
                 label {
