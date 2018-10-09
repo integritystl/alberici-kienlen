@@ -10088,7 +10088,7 @@ var CardList = function (_React$Component) {
 
     apiLink += '&per_page=' + this.state.postsPerPage;
     //  console.log('api from getPosts', apiLink);
-    var headers = new Headers({ 'Authorization': 'Basic alberici' });
+    var headers = new Headers({ 'Authorization': 'Basic ' + btoa("demo:alberici'") });
     fetch(apiLink, { headers: headers }).then(function (response) {
       return response.json();
     }).then(function (json) {
