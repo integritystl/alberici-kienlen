@@ -63,7 +63,7 @@ class CardList extends React.Component {
     getPosts(apiLink){
       apiLink += `&per_page=${this.state.postsPerPage}`
     //  console.log('api from getPosts', apiLink);
-      let headers = new Headers({'Authorization': 'Basic demo:alberici'});
+      let headers = new Headers({'Authorization': 'Basic ' + btoa("demo:alberici'") });
       fetch(apiLink, {headers: headers})
         .then( response => {
           return(response.json());
