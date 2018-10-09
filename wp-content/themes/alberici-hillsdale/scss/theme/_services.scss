@@ -20,7 +20,7 @@
         color: white;
         font-size: 20px;
     }
-    .service-img {
+    .attachment-full {
         width:330px;
         height: 330px;
     }
@@ -33,7 +33,7 @@
     }
     @include grid-media($medium-min) {
         grid-template-columns: auto auto auto;
-        .service-img {
+        .attachment-full {
             width:300px;
             height: 300px;
         }

@@ -31,11 +31,10 @@ get_header();
         <div class="services-list container">
             <?php foreach ( $servicePosts as $post ) :
                 setup_postdata( $post ); ?>
-                <?php if (get_the_post_thumbnail()): 
-                    $thumb = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'medium', false );?>
+                <?php if (get_the_post_thumbnail()): ?>
                     <a class="service-detail" href="<?php the_permalink(); ?>">
                         <span class="img-overlay"></span>
-                        <img src="<?php echo $thumb['0'];?>" class="service-img"/>
+                        <?php echo wp_get_attachment_image( get_post_thumbnail_id($post->ID), 'full', false );?>
                         <span class="post-title"><?php the_title(); ?></span>
                     </a>
                 <?php endif; ?>
