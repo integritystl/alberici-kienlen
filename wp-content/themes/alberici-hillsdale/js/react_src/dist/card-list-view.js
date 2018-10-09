@@ -10087,9 +10087,11 @@ var CardList = function (_React$Component) {
     var _this2 = this;
 
     apiLink += '&per_page=' + this.state.postsPerPage;
-    //  console.log('api from getPosts', apiLink);
-    var headers = new Headers({ 'Authorization': 'Basic ' + btoa("demo:alberici'") });
-    fetch(apiLink, { headers: headers }).then(function (response) {
+    //Gotta pass Basic Auth for the prompt from WP Engine
+    //Ref: https://stackoverflow.com/questions/30203044/using-an-authorization-header-with-fetch-in-react-native
+    fetch(apiLink, {
+      headers: new Headers({ 'Authorization': 'Basic ' + btoa("demo:alberici") })
+    }).then(function (response) {
       return response.json();
     }).then(function (json) {
       _this2.setState({
