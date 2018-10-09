@@ -62,9 +62,11 @@ class CardList extends React.Component {
     //TODO: edit this so we're only adding either Posts or Projects to state.
     getPosts(apiLink){
       apiLink += `&per_page=${this.state.postsPerPage}`
-    //  console.log('api from getPosts', apiLink);
-      let headers = new Headers({'Authorization': 'Basic ' + btoa("demo:alberici'") });
-      fetch(apiLink, {headers: headers})
+      //Gotta pass Basic Auth for the prompt from WP Engine
+      //Ref: https://stackoverflow.com/questions/30203044/using-an-authorization-header-with-fetch-in-react-native
+      fetch(apiLink, {
+          headers: new Headers({'Authorization': 'Basic ' + btoa("demo:alberici") }),
+        })
         .then( response => {
           return(response.json());
         })
