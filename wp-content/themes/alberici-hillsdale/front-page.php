@@ -31,7 +31,7 @@ $HeroButtonLink = get_field('homepage_hero_button_link');
 							<div class="container">
 								<p><?php echo $HeroContent; ?></p>
 								<?php if ($HeroButtonText): ?>
-									<a href="<?php echo $HeroButtonLink; ?>" class="btn-lined"><?php echo $HeroButtonText; ?> </a>
+									<a href="<?php echo $HeroButtonLink; ?>" class="btn-lined-white"><?php echo $HeroButtonText; ?> </a>
 								<?php endif; ?>
 							</div>
 						</div>

@@ -132,6 +132,7 @@ if ( ! function_exists( 'alberici_hillsdale_setup' ) ) :
 		add_theme_support( 'post-thumbnails' );
 
 		add_image_size( 'tile-image', 700, 400, true );
+		add_image_size( 'blog-image', 600, 600, true );
 
 		// This theme uses wp_nav_menu() in 3 locations.
 		register_nav_menus( array(
