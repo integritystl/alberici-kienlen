@@ -10419,12 +10419,12 @@ var CardGroup = function (_React$Component) {
         var serviceName = [];
         var marketName = [];
 
-        //Media Paths to help with srcSets
-        var imageSrcSetMed = item._embedded['wp:featuredmedia'][0].media_details.sizes.medium;
-        var imageSrcSetMedLarge = item._embedded['wp:featuredmedia'][0].media_details.sizes.medium_large;
-        var imageSrcSetLarge = item._embedded['wp:featuredmedia'][0].media_details.sizes.large;
-
         if (item._embedded['wp:featuredmedia']) {
+          //Media Paths to help with srcSets
+          var imageSrcSetMed = item._embedded['wp:featuredmedia'][0].media_details.sizes.medium;
+          var imageSrcSetMedLarge = item._embedded['wp:featuredmedia'][0].media_details.sizes.medium_large;
+          var imageSrcSetLarge = item._embedded['wp:featuredmedia'][0].media_details.sizes.large;
+
           //use the Medium size as our img src fallback
           imageSrc = imageSrcSetMed.source_url;
           //chain together the other sizes to make the srcset attribute, add the 'width' from image data to create srcset attributes
