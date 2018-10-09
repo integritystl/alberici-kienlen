@@ -10,7 +10,7 @@ class CardList extends React.Component {
         loading: true,
         currentPage: 1,
         posts: [],
-        postsPerPage: 6, //TODO change me back to 6 after testing
+        postsPerPage: 6,
         postDataType: document.getElementById('cardList_app').getAttribute('data-post'),
         market_categories: [],
         service_categories: [],
@@ -25,7 +25,7 @@ class CardList extends React.Component {
     }
 
     componentDidMount() {
-      this.getPosts();
+      this.getPosts(this.buildAPILink());
       this.getMarketCats();
       this.setFilterCats();
       //this.getServiceCats();
@@ -60,9 +60,11 @@ class CardList extends React.Component {
     }
     //Get All Posts
     //TODO: edit this so we're only adding either Posts or Projects to state.
-    getPosts(){
-      let apiLink = this.buildAPILink();
+    getPosts(apiLink){
+      //let apiLink = this.buildAPILink();
+      console.log('api link?', apiLink);
       apiLink += `&per_page=${this.state.postsPerPage}`
+      console.log('api from getPosts', apiLink);
       let headers = new Headers({'Authorization': 'Basic alberici'});
       fetch(apiLink, {headers: headers})
         .then( response => {
@@ -79,8 +81,6 @@ class CardList extends React.Component {
     getFilteredPosts(apiLink) {
       fetch(apiLink)
         .then( response => {
-          // console.log('fetch', apiLink);
-          // console.log(response);
           return(response.json());
         }).then(json => {
           this.setState({
@@ -185,13 +185,33 @@ class CardList extends React.Component {
         //TODO add in some stuff here Lindsay
       } else {
         offset = this.state.currentPage * this.state.postsPerPage;
-        //increment
-        this.setState( (state) => ({
-          currentPage: state.currentPage + 1,
-        }));
+        apiLink += `&offset=${offset}`;
+        console.log('load more link', apiLink);
+        fetch(apiLink)
+          .then( response => {
+            return(response.json());
+          })
+          .then( json => {
+            console.log(json);
+            let currentPosts = this.state.posts;
+            // for ( var item in json) {
+            //   console.log(item[i]);
+            // //  currentPosts.push(i[0]);
+            // }
+            currentPosts.push(json);
+            console.log(currentPosts);
+            //console.log(currentPosts.push(json));
+            //increment our Current Page
+            this.setState( (state) => ({
+              currentPage: state.currentPage + 1,
+              //posts: state.posts.push(json), //need to jam in new json here
+            //  loading: false,
+            }));
+          })
+
+        //where should this go?
+      //  this.getPosts(this.buildAPILink());
       }
-      apiLink += `&offset=${offset}`;
-      console.log('load more link', apiLink);
     }
 
     //Reset filter
@@ -220,24 +240,6 @@ class CardList extends React.Component {
       let allPosts = this.state.posts;
       let filterPosts = this.state.filteredPosts;
 
-      let visiblePosts = [];
-      //Somewhere in here, we look at this.state.posts
-      // but only display the postsPerPage amount?
-      if (allPosts.length > this.state.postsPerPage) {
-        console.log('allposts', allPosts.length);
-      //  console.log(allPosts.length % this.state.postsPerPage);
-        visiblePosts = allPosts.map( (obj, i) => {
-          //count the indexes
-          if (i < this.state.postsPerPage) {
-            return obj;
-          } else {
-            return null;
-          }
-        //  return obj;
-        });
-        console.log('visible', visiblePosts);
-      }
-
       let filteredServiceName = '';
       let filteredMarketName = '';
 
@@ -250,10 +252,10 @@ class CardList extends React.Component {
                       services = {this.state.service_categories}
                       getCatName = {this.getCatName.bind(this)}
                       />
-        //if (allPosts && allPosts.length > this.state.postsPerPage && allPosts.length % this.state.postsPerPage != 0) {
+        if (allPosts && this.state.totalPosts > this.state.postsPerPage && this.state.totalPosts % this.state.postsPerPage != 0) {
           console.log('load more?');
           loadMoreBtn = <button onClick={this.loadMorePosts.bind(this)}  className="btn-load-more">{loadMoreLabel}</button>;
-        //}
+        }
       } else if ( filterPosts && this.state.isFiltered === true ) {
         postGroup = <CardGroup
                       posts = {this.state.filteredPosts}
