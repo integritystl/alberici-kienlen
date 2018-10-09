@@ -45,7 +45,8 @@ class FilterBar extends React.Component {
 
     return(
       <div className="filterbar">
-        <input type="search"
+        <input id="filterbar-search"
+          type="search"
           placeholder="Search by keywords"
           onChange={(event) => this.filterSearch(event)}
         />

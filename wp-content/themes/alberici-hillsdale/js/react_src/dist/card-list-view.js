@@ -9736,8 +9736,10 @@ var CardList = function (_React$Component) {
   CardList.prototype.componentWillMount = function componentWillMount() {
     this.setState({
       loading: true,
+      currentPage: 1,
       posts: [],
       postsPerPage: 6,
+      postDataType: document.getElementById('cardList_app').getAttribute('data-post'),
       market_categories: [],
       service_categories: [],
       isFiltered: false,
@@ -9745,12 +9747,13 @@ var CardList = function (_React$Component) {
       filteredMarket: '',
       filteredService: '',
       hasSearchTerm: false,
-      searchTerm: ''
+      searchTerm: '',
+      totalPosts: parseInt(wpObj.totalPosts.publish)
     });
   };
 
   CardList.prototype.componentDidMount = function componentDidMount() {
-    this.getPosts();
+    this.getPosts(this.buildAPILink());
     this.getMarketCats();
     this.setFilterCats();
     //this.getServiceCats();
@@ -9761,8 +9764,8 @@ var CardList = function (_React$Component) {
 
   CardList.prototype.buildAPILink = function buildAPILink() {
     var baseLink = '';
-    var postDataType = document.getElementById('cardList_app').getAttribute('data-post');
-    if (postDataType === 'news') {
+
+    if (this.state.postDataType === 'news') {
       baseLink = wpObj.posts_endpoint;
     } else {
       baseLink = wpObj.projects_endpoint;
@@ -9789,12 +9792,12 @@ var CardList = function (_React$Component) {
   //TODO: edit this so we're only adding either Posts or Projects to state.
 
 
-  CardList.prototype.getPosts = function getPosts() {
+  CardList.prototype.getPosts = function getPosts(apiLink) {
     var _this2 = this;
 
-    var apiLink = this.buildAPILink();
     apiLink += '&per_page=' + this.state.postsPerPage;
-    var headers = new Headers({ 'Authorization': 'Basic alberici' });
+    //  console.log('api from getPosts', apiLink);
+    var headers = new Headers({ 'Authorization': 'Basic ' + btoa("demo:alberici'") });
     fetch(apiLink, { headers: headers }).then(function (response) {
       return response.json();
     }).then(function (json) {
@@ -9809,8 +9812,6 @@ var CardList = function (_React$Component) {
     var _this3 = this;
 
     fetch(apiLink).then(function (response) {
-      // console.log('fetch', apiLink);
-      // console.log(response);
       return response.json();
     }).then(function (json) {
       _this3.setState({
@@ -9932,19 +9933,49 @@ var CardList = function (_React$Component) {
 
 
   CardList.prototype.loadMorePosts = function loadMorePosts() {
+    var _this9 = this;
+
+    //need to fetch the next amount of posts and add them
+    //getPosts loads the page and uses postsPerPage
     var apiLink = this.buildAPILink();
-    console.log('load more link', apiLink);
+
     var offset = 0;
-    if (this.state.posts) {}
+    if (this.state.isFiltered) {
+      offset = this.state.filteredPosts.length;
+      //TODO add in some stuff here Lindsay
+    } else {
+      offset = this.state.currentPage * this.state.postsPerPage;
+      apiLink += '&offset=' + offset;
+      //  console.log('load more link', apiLink);
+      fetch(apiLink).then(function (response) {
+        return response.json();
+      }).then(function (json) {
+        var currentPosts = _this9.state.posts;
+        //when i put this into this.setState, it breaks, what do?
+        Array.prototype.push.apply(currentPosts, json);
+        //  console.log(currentPosts);
+        //increment our Current Page
+        _this9.setState(function (state) {
+          return {
+            currentPage: state.currentPage + 1,
+            //posts: Array.prototype.push.apply(currentPosts, json), //need to jam in new json here
+            loading: false
+          };
+        });
+      });
+    }
   };
 
   //Reset filter
 
 
   CardList.prototype.resetFilter = function resetFilter() {
-    var _this9 = this;
+    var _this10 = this;
 
-    //TODO set the selects back to default value
+    //TODO set the selects back to default value and the search box to empty
+    var searchInput = document.getElementById('filterbar-search');
+    searchInput.value = '';
+
     this.setState({
       isFiltered: false,
       filteredPosts: [],
@@ -9953,7 +9984,7 @@ var CardList = function (_React$Component) {
       hasSearchTerm: false,
       searchTerm: ''
     }, function () {
-      return _this9.getPosts();
+      return _this10.getPosts();
     });
   };
 
@@ -9969,6 +10000,8 @@ var CardList = function (_React$Component) {
     var filteredServiceName = '';
     var filteredMarketName = '';
 
+    var allPostsOffset = this.state.currentPage * this.state.postsPerPage;
+
     if (this.state.loading) {
       postGroup = _react2.default.createElement(
         'div',
@@ -9982,7 +10015,7 @@ var CardList = function (_React$Component) {
         services: this.state.service_categories,
         getCatName: this.getCatName.bind(this)
       });
-      if (allPosts && allPosts.length > this.state.postsPerPage && allPosts.length % this.state.postsPerPage != 0) {
+      if (allPostsOffset < this.state.totalPosts && this.state.totalPosts % this.state.postsPerPage != 0) {
         loadMoreBtn = _react2.default.createElement(
           'button',
           { onClick: this.loadMorePosts.bind(this), className: 'btn-load-more' },
@@ -10311,7 +10344,8 @@ var FilterBar = function (_React$Component) {
     return _react2.default.createElement(
       'div',
       { className: 'filterbar' },
-      _react2.default.createElement('input', { type: 'search',
+      _react2.default.createElement('input', { id: 'filterbar-search',
+        type: 'search',
         placeholder: 'Search by keywords',
         onChange: function onChange(event) {
           return _this2.filterSearch(event);
