@@ -9796,9 +9796,11 @@ var CardList = function (_React$Component) {
     var _this2 = this;
 
     apiLink += '&per_page=' + this.state.postsPerPage;
-    //  console.log('api from getPosts', apiLink);
-    var headers = new Headers({ 'Authorization': 'Basic ' + btoa("demo:alberici'") });
-    fetch(apiLink, { headers: headers }).then(function (response) {
+    //Gotta pass Basic Auth for the prompt from WP Engine
+    //Ref: https://stackoverflow.com/questions/30203044/using-an-authorization-header-with-fetch-in-react-native
+    fetch(apiLink, {
+      headers: new Headers({ 'Authorization': 'Basic ' + btoa("demo:alberici") })
+    }).then(function (response) {
       return response.json();
     }).then(function (json) {
       _this2.setState({
@@ -10126,12 +10128,12 @@ var CardGroup = function (_React$Component) {
         var serviceName = [];
         var marketName = [];
 
-        //Media Paths to help with srcSets
-        var imageSrcSetMed = item._embedded['wp:featuredmedia'][0].media_details.sizes.medium;
-        var imageSrcSetMedLarge = item._embedded['wp:featuredmedia'][0].media_details.sizes.medium_large;
-        var imageSrcSetLarge = item._embedded['wp:featuredmedia'][0].media_details.sizes.large;
-
         if (item._embedded['wp:featuredmedia']) {
+          //Media Paths to help with srcSets
+          var imageSrcSetMed = item._embedded['wp:featuredmedia'][0].media_details.sizes.medium;
+          var imageSrcSetMedLarge = item._embedded['wp:featuredmedia'][0].media_details.sizes.medium_large;
+          var imageSrcSetLarge = item._embedded['wp:featuredmedia'][0].media_details.sizes.large;
+
           //use the Medium size as our img src fallback
           imageSrc = imageSrcSetMed.source_url;
           //chain together the other sizes to make the srcset attribute, add the 'width' from image data to create srcset attributes

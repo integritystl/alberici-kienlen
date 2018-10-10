@@ -48,34 +48,34 @@ $HeroButtonLink = get_field('homepage_hero_button_link');
 		?>
 
 
-			<?php $the_query = new WP_Query( 'posts_per_page=3' ); ?>
-			<?php if ( $the_query -> have_posts() ): ?>
+			<!-- <?php //$the_query = new WP_Query( 'posts_per_page=3' ); ?>
+			<?php //if ( $the_query -> have_posts() ): ?>
 			<div class="news container">
 					<ul class="blog-content_posts">
-					<?php while ($the_query -> have_posts()) : $the_query -> the_post(); ?>
+					<?php //while ($the_query -> have_posts()) : $the_query -> the_post(); ?>
 
 
-							<li class="post" style="background-image:url('<?php the_post_thumbnail_url(); ?>');">
-								<a href="<?php the_permalink() ?>" >
+							<li class="post" style="background-image:url('<?php //the_post_thumbnail_url(); ?>');">
+								<a href="<?php //the_permalink() ?>" >
 								<span class="news-meta">
 									<span class="news-category">
 										<?php
-										$category = get_the_category();
-										echo $category[0]->cat_name;
+										// $category = get_the_category();
+										// echo $category[0]->cat_name;
 									?>
 									</span>
-									<h3 class="news-name"><?php the_title();?></h3>
+									<h3 class="news-name"><?php // the_title();?></h3>
 								</a>
 							</li>
 
 				<?php
-				endwhile;
-			wp_reset_postdata();
-			endif;
+				// endwhile;
+				// wp_reset_postdata();
+				// endif;
 			?>
 				</ul>
-			<!-- <a href="<?php echo get_permalink( get_option( 'page_for_posts' ) ); ?>">View More News</a> -->
-			</div>
+			 <a href="<?php //echo get_permalink( get_option( 'page_for_posts' ) ); ?>">View More News</a>
+			</div> -->
 		</main><!-- #main -->
 	</div><!-- #primary -->
 
