@@ -16,6 +16,7 @@ get_header();
 
 <div class="page_container">
 	<div id="primary" class="content-area">
+			<?php get_template_part( 'template-parts/hero' );?>
 			<?php
 			//If flag is news, use a news-based data-att value. Otherwise add different one.
 			//Market as a custom taxonomy is on both Projects and News. The other filter varies.
