@@ -5,12 +5,97 @@
 //  @extend .grid-container;
 }
 
+.news-posts-container {
+  @extend .container;
+
+  .filterbar {
+    @extend .grid-container;
+    padding: 20px 0 0;
+    grid-template-rows: 48px;
+    border-bottom: $base-border;
+    margin-bottom: 20px;
+
+    input {
+      grid-column: span 12;
+      margin: 0;
+      @include grid-media($small-min) {
+        grid-column: span 4;
+      }
+      @include grid-media($medium-min) {
+        grid-column: span 6;
+      }
+    }
+    .select {
+      grid-column: span 12;
+      @include grid-media($small-min) {
+        grid-column: span 4;
+      }
+      @include grid-media($medium-min) {
+        grid-column: span 3;
+      }
+      select {
+        margin-bottom: 0px;
+      }
+    }
+    .filter-info {
+      grid-column: span 12;
+      display: flex;
+      align-items: center;
+
+
+      span {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      button {
+        margin-bottom: 20px;
+      }
+
+      .filter-label {
+        font-size: 13px;
+        text-transform: uppercase;
+        margin-right: 5px;
+        margin-bottom: 0px;
+      }
+
+      .filter-info--term {
+        @extend .btn-lined;
+        min-width: 0;
+        margin: 0 5px;
+        text-transform: normal;
+        padding: 9px 15px;
+        font-size: 14px;
+        &:after {
+          padding-left: 15px;
+          content:'\f00d';
+        }
+      }
+
+      .btn-reset-filter {
+        min-width: 0;
+        margin-left: 5px;
+        padding: 10px 15px;
+        font-size: 14px;
+        &:after {
+          padding-left: 15px;
+          content:'\f00d';
+        }
+      }
+    }
+  }
+}
+
 .blog-content_posts {
   @extend .grid-container;
 
   .post {
-    grid-column: span 4;
     padding: 10px;
+    grid-column: span 12;
+    @include grid-media($small-min) {
+      grid-column: span 4;
+    }
 
     a {
       @extend .inverse-link;
@@ -24,18 +109,47 @@
   .card-post {
     position: relative;
     padding: 0;
-    border: 1px solid tomato;
+
+    &:hover {
+      .card-overlay {
+        background: rgba($blue, .6);
+      }
+    }
+
+    .card-overlay {
+      background: rgba(#383838, .4);
+      transition: all $base-duration $base-timing;
+      z-index: 10;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
+
+    .news-meta {
+      font-size: 13px;
+      text-transform: uppercase;
+      margin-bottom: 5px;
+    }
     img {
       z-index: 0;
       min-height: 100%;
+      display: block;
     }
     a {
-      padding: 10px;
+      padding: 25px 30px;
       position: absolute;
       top: 0;
       left: 0;
       min-width: 100%;
       min-height: 100%;
+      z-index: 15;
+      &:hover {
+        color: white;
+      }
+    }
+
+    h3 {
+      font-size: 28px;
     }
   }
 }

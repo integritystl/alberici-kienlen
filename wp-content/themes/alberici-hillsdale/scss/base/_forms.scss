@@ -34,15 +34,18 @@ textarea {
   background-color: $_form-background-color;
   border: $base-border;
   border-radius: $base-border-radius;
-  box-shadow: $_form-box-shadow;
   box-sizing: border-box;
   margin-bottom: $small-spacing;
-  padding: $base-spacing / 3;
+  padding: 14px 10px;
   transition: border-color $base-duration $base-timing;
   width: 100%;
+  letter-spacing: .5px;
+  font-size: 16px;
+  font-family: $base-font-family;
+  font-weight: 300;
 
   &:hover {
-    border-color: shade($base-border-color, 20%);
+    border-color: $secondary-action-color;
   }
 
   &:focus {
@@ -61,7 +64,7 @@ textarea {
   }
 
   &::placeholder {
-    color: tint($base-font-color, 40%);
+    color: tint($base-font-color, 50%);
   }
 }
 
@@ -80,17 +83,51 @@ textarea {
   width: 100%;
 }
 
-select {
-  margin-bottom: $small-spacing;
-  width: 100%;
+.select {
+  position: relative;
+  select {
+    margin-bottom: $small-spacing;
+    width: 100%;
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: transparent;
+    border: $base-border;
+    border-radius: $base-border-radius;
+    box-sizing: border-box;
+    margin-bottom: $small-spacing;
+    padding: 14px 10px;
+    transition: border-color $base-duration $base-timing;
+    width: 100%;
+    letter-spacing: .5px;
+    font-size: 16px;
+    font-family: $base-font-family;
+    font-weight: 300;
+  }
+  &:after {
+    font-family: "Font Awesome 5 Pro";
+    font-weight: 300;
+    content:'\f107';
+    position: absolute;
+    top: 10px;
+    font-size: 21px;
+    right: 10px;
+  }
 }
+
+
 
 [type="checkbox"],
 [type="radio"],
 [type="file"],
 select {
+  &:hover {
+    border-color: $secondary-action-color;
+    outline: none;
+  }
+
   &:focus {
-    outline: $focus-outline;
-    outline-offset: $focus-outline-offset;
+    border-color: $secondary-action-color;
+    box-shadow: $_form-box-shadow-focus;
+    outline: none;
   }
 }

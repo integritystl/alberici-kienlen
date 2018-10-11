@@ -7,6 +7,7 @@ class Card extends React.Component {
 
     return(
       <article className="card-post card-news post">
+        <div className="card-overlay"></div>
         <img
           src={this.props.image}
           srcSet={this.props.imageSrcset}
