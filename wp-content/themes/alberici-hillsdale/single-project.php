@@ -24,9 +24,20 @@ $project_size = get_field('project_size');
 					<div class="single-project-hero" style="background-image: url(<?php if ($HeroImage): echo $HeroImage; endif; ?>);">
 						<div class="headline">
 							<h1 class="entry-title"><?php the_title(); ?></h1>
-							<p class="project-location">Chicago, Illinois</p> <!--leave it until the location taxonomy is ready-->
+							<?php 
+							$location_term = get_the_terms( get_the_ID(), 'location_category' );
+							if ( $location_term && ! is_wp_error( $location_term ) ) :
+								$location_taxonomy = $location_term[0]->name; ?>
+								<p class="project-location"><?php echo $location_taxonomy; ?></p>
+							<?php endif; ?>
+
 							<div class="market-link">
-							<a href="">Transportation</a> <!--fillup the url later， need to find where it links to. -->
+								<?php 
+								$market_term = get_the_terms( get_the_ID(), 'market_category' );
+								if ( $market_term && ! is_wp_error( $market_term ) ) :
+									$market_taxonomy = $market_term[0]->name; ?>
+									<a href=""><?php echo $market_taxonomy; ?></a> <!-- check if need a link later -->
+								<?php endif; ?>
 							</div>
 						</div>
 						<div class="project-info">
@@ -49,16 +60,16 @@ $project_size = get_field('project_size');
 					<div class="single-project">
 						<div class="single-project-content">
 							<?php the_content(); ?>
-							<div class="service-list">
-								<h3>Services</h3>
 								<?php
-								if( have_rows('project_services') ):
-									while ( have_rows('project_services') ) : the_row();
-									$link = get_sub_field('service_link');?>
-									<a href="<?php echo $link['url']; ?>"> <?php the_sub_field('service_name'); ?></a>
-									<?php endwhile;
-								endif; ?>
-							</div>
+								if( have_rows('project_services') ): ?>
+									<div class="service-list">
+									<h3>Services</h3>
+									<?php while ( have_rows('project_services') ) : the_row();
+										$link = get_sub_field('service_link');?>
+										<a href="<?php echo $link['url']; ?>"> <?php the_sub_field('service_name'); ?></a>
+									<?php endwhile; ?>
+									</div>
+								<?php endif; ?>
 						</div><!-- .single-project-content -->
 					</div>
 				</article><!-- #post-<?php the_ID(); ?> -->
