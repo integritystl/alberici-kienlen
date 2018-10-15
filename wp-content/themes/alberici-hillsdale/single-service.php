@@ -13,14 +13,13 @@ $HeroImage = get_field('general_hero_featured_image');
 
 	<div id="primary" class="content-area">
 		<main id="main" class="site-main">
-			<div class="container">
 			<?php
 			if ( have_posts() ) :
 				while ( have_posts() ) : 
 					the_post();?>
 					<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 					<div class="hero-area" style="background-image: url(<?php if ($HeroImage): echo $HeroImage; endif; ?>);">
-						<h2 class="entry-title"><?php the_title(); ?></h2>
+						<h1 class="entry-title"><?php the_title(); ?></h1>
 					</div><!-- .hero-area -->
 					<nav class="breadcrumbs container" aria-label="Breadcrumb navigation">
 						<?php
@@ -31,11 +30,12 @@ $HeroImage = get_field('general_hero_featured_image');
 						}
 						?>
 					</nav>
-					<?php alberici_hillsdale_post_thumbnail(); ?>
-				
-					<div class="entry-content">
-						<?php the_content(); ?>
-					</div><!-- .entry-content -->
+					<div class="service-detail">
+						<?php alberici_hillsdale_post_thumbnail(); ?>
+						<div class="service-content">
+							<?php the_content(); ?>
+						</div>
+					</div><!-- .service-detail -->
 				</article><!-- #post-<?php the_ID(); ?> -->
 				
 
@@ -43,41 +43,42 @@ $HeroImage = get_field('general_hero_featured_image');
 			else :
 				get_template_part( 'template-parts/content', 'none' );
 			endif;
-			?>
-		
-			<div class="services services-latest-3">
-				<p class="headline-lines"><span>Related Projects</span></p>
-				<?php
 
-				if ( is_single() && 'service' === get_post_type()) {
-					$terms = get_the_terms( get_the_ID(), 'category' );
-					$term_list = wp_list_pluck( $terms, 'slug' );
-					$latest_args = array(
-						'post_type' => 'service',
-						'posts_per_page' => 3,
-						'post_status' => 'publish',
-						'post__not_in' => array( get_the_ID() ),
-						'orderby' => 'rand',
-						'tax_query' => array(
-							array(
-								'taxonomy' => 'category',
-								'field' => 'slug',
-								'terms' => $term_list
-							)
-						)
-					);
-				}
-				//Default: Show Latest 3 Posts
-				if(empty($latest_args)) {
-					$latest_args = array(
-					'post_type' =>  '', //Add the post type after Project CPT is created
+			if ( is_single() && 'service' === get_post_type()) {
+				$terms = get_the_terms( get_the_ID(), 'category' );
+				$term_list = wp_list_pluck( $terms, 'slug' );
+				$latest_args = array(
+					'post_type' => 'service',
 					'posts_per_page' => 3,
-					);
-				}
+					'post_status' => 'publish',
+					'post__not_in' => array( get_the_ID() ),
+					'orderby' => 'rand',
+					'tax_query' => array(
+						array(
+							'taxonomy' => 'category',
+							'field' => 'slug',
+							'terms' => $term_list
+						)
+					)
+				);
+			}
+			$latest_query = new WP_Query( $latest_args );
 
+			//Default: Show Latest 3 Posts
+			if(!$latest_query->have_posts()) {
+				$latest_args = array(
+				'post_type' =>  'project',
+				'posts_per_page' => 3,
+				'post_status' => 'publish'
+				);
 				$latest_query = new WP_Query( $latest_args );
-				if ( $latest_query->have_posts() ) :
-				?>
+
+			} 
+
+			if ( $latest_query->have_posts() ) : ?>
+				<div class="services services-latest-3 container">
+				<span class="headline-lines"></span>
+				<h2>Related Projects</h2>
 				<ul>
 				<?php while( $latest_query->have_posts() ) : $latest_query->the_post();
 					$categories = get_the_category();
@@ -90,17 +91,18 @@ $HeroImage = get_field('general_hero_featured_image');
 					}
 				?>
 				<li>
+					<p><?php $category = get_the_category(); echo $category[0]->cat_name; ?></p>
 					<a href="<?php the_permalink(); ?>">
+						<img src="<?php echo get_the_post_thumbnail_url(); ?>" class="project-img"/>
 						<span class="post-title"><?php the_title(); ?></span>
 					</a>
 				</li>
 				<?php endwhile; ?>
 				</ul>
 				<?php endif; wp_reset_postdata(); ?>
-				<a href="<?php echo get_home_url(); ?>/service"> VIEW SERVICES </a>
+				<a href="<?php echo get_home_url(); ?>/service" class="btn"> VIEW SERVICES </a>
 			</div>
-			 <?php get_template_part( 'template-parts/footer-callout' ); ?>
-			<div><!-- container -->
+			<?php get_template_part( 'template-parts/footer-callout' ); ?>
 		</main><!-- #main -->
 	</div><!-- #primary -->
 
