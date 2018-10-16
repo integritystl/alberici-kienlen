@@ -616,20 +616,24 @@ class PagespeedNinja_Admin
     public function validate_config($newConfig, $oldConfig)
     {
         // copy other subset of settings
-        foreach ($oldConfig as $name => $value) {
-            if (!isset($newConfig[$name])) {
-                $newConfig[$name] = $value;
+        foreach ($oldConfig as $preset_name => $value) {
+            if (!isset($newConfig[$preset_name])) {
+                $newConfig[$preset_name] = $value;
             }
         }
 
         // apply preset from post-install screen
         if (isset($_POST['pagespeedninja_preset'])) {
-            $preset_name = $_POST['pagespeedninja_preset'];
 
             /** @var array $presets_list */
             $presets_list = file_get_contents(dirname(dirname(__FILE__)) . '/includes/presets.json.php');
             $presets_list = str_replace('\\\'', '\'', $presets_list);
             $presets_list = json_decode($presets_list);
+
+            $presets = array();
+            foreach ($presets_list as $preset) {
+                $presets[$preset->name] = array();
+            }
 
             /** @var array $options */
             $options = file_get_contents(dirname(dirname(__FILE__)) . '/includes/options.json.php');
@@ -639,21 +643,47 @@ class PagespeedNinja_Admin
             // use values suggested in PagespeedNinja_Activator
             $skip_presets = array('distribmode', 'caching');
 
-            foreach ($presets_list as $preset) {
-                if ($preset->name !== $preset_name) {
-                    continue;
-                }
-                foreach ($options as $section) {
-                    if (isset($section->items)) {
-                        /** @var array {$section->items} */
-                        foreach ($section->items as $item) {
-                            if (isset($item->presets) && !in_array($item->name, $skip_presets, true)) {
-                                $newConfig[$item->name] = isset($item->presets->$preset_name) ? $item->presets->$preset_name : $item->default;
+            // load default presets
+            foreach ($options as $section) {
+                if (isset($section->items)) {
+                    /** @var array {$section->items} */
+                    foreach ($section->items as $item) {
+                        if (isset($item->presets) && !in_array($item->name, $skip_presets, true)) {
+                            foreach ($presets as $preset_name => $preset) {
+                                $presets[$preset_name][$item->name] = $item->default;
+                            }
+                            foreach ((array)$item->presets as $preset_name => $option_value) {
+                                $presets[$preset_name][$item->name] = $option_value;
                             }
                         }
                     }
                 }
-                break;
+            }
+
+            // load extra presets
+            $extra_presets_dir = dirname(__FILE__) . '/extras/presets';
+            $extra_presets_files = glob($extra_presets_dir . '/*.json');
+            foreach ($extra_presets_files as $preset_file) {
+                $preset_name = basename($preset_file, '.json');
+                $preset_data = @file_get_contents($preset_file);
+                $preset_data = @json_decode($preset_data);
+                if (!isset($preset_data->base, $preset_data->title, $preset_data->tooltip, $preset_data->options)) {
+                    continue;
+                }
+                if (!isset($presets[$preset_data->base])) {
+                    continue;
+                }
+                $preset = $presets[$preset_data->base];
+                foreach ($preset_data as $name => $value) {
+                    $preset[$name] = $value;
+                }
+                $presets[$preset_name] = $preset;
+            }
+
+            // apply selected preset
+            $preset_name = $_POST['pagespeedninja_preset'];
+            foreach ($presets[$preset_name] as $preset_name => $value) {
+                $newConfig[$preset_name] = $value;
             }
 
             // check double gzip issue
@@ -820,10 +850,10 @@ class PagespeedNinja_Admin
             'htaccess_caching', 'caching', 'caching_processed', 'caching_ttl', 'css_abovethefoldcookie',
             'css_abovethefoldautoupdate', 'img_driver', 'img_jpegquality', 'ress_caching_ttl', 'version',
             'afterinstall_popup');
-        foreach ($newConfig as $name) {
-            if (!isset($safeSettings[$name])
-                && isset($newConfig[$name], $oldConfig[$name])
+        foreach ($newConfig as $name => $value) {
+            if (isset($oldConfig[$name])
                 && $newConfig[$name] !== $oldConfig[$name]
+                && !in_array($name, $safeSettings, true)
             ) {
                 $pagecache_stamp = dirname(dirname(__FILE__)) . '/cache/pagecache.stamp';
                 touch($pagecache_stamp);
@@ -1001,6 +1031,8 @@ class PagespeedNinja_Admin
      */
     protected function clear_cache($ttl)
     {
+        // @todo refactor: there is similar logic in PagespeedNinja::cron_daily
+
         /** @var array $options */
         $options = get_option('pagespeedninja_config');
 

@@ -444,13 +444,17 @@
                 }
             }
             setInterval(getNewScores, 200);
+        } else {
+            detectPreset();
         }
 
         basicLoadATFCSS();
     });
 
     function getNewScores() {
-        if (newUrl === null || newAjax) return;
+        if (newUrl === null || newAjax) {
+            return;
+        }
 
         // loading of new scores
         var pagespeed_api = 'https://www.googleapis.com/pagespeedonline/v2/runPagespeed',
@@ -462,10 +466,14 @@
         jQuery
             .get(url)
             .then(function () {
-                if (newUrl !== null) return;
+                if (newUrl !== null) {
+                    return;
+                }
 
                 jQuery.get(pagespeed_api, {strategy: 'desktop', url: url}).done(function (response) {
-                    if (newUrl !== null) return;
+                    if (newUrl !== null) {
+                        return;
+                    }
                     try {
                         updatePSIScore(response.ruleGroups.SPEED.score, document.getElementById('pagespeed_desktop_new'));
                     } catch (e) {
@@ -474,7 +482,9 @@
                 });
 
                 jQuery.get(pagespeed_api, {strategy: 'mobile', url: url}).done(function (response) {
-                    if (newUrl !== null) return;
+                    if (newUrl !== null) {
+                        return;
+                    }
                     try {
                         updatePSIScore(response.ruleGroups.SPEED.score, document.getElementById('pagespeed_mobile_new'));
                         updatePSIScore(response.ruleGroups.USABILITY.score, document.getElementById('pagespeed_usability_new'));
@@ -511,6 +521,49 @@
         $el.val(jQuery.trim(list.join('\n'))).trigger('change');
     }
 
+    function detectPreset() {
+        if (!window.pagespeedninja_presets) {
+            return;
+        }
+        for (var preset in pagespeedninja_presets) {
+            var match = true;
+            for (var option in pagespeedninja_presets[preset]) {
+                var $els = jQuery('input[name="pagespeedninja_config[' + option + ']"]:not([type=hidden]),select[name="pagespeedninja_config[' + option + ']"]');
+                if ($els.length) {
+                    $els.each(function () {
+                        var $el = jQuery(this),
+                            value = $el.val();
+                        switch (this.nodeName) {
+                            case 'INPUT':
+                                if ($el.attr('type') === 'checkbox') {
+                                    value = +$el.prop('checked'); // convert boolean to integer
+                                } else if ($el.attr('type') === 'radio' && !$el.prop('checked')) {
+                                    return;
+                                }
+                                break;
+                            case 'SELECT':
+                                break;
+                            default:
+                                console.log('Unknown node: ' + this.nodeName);
+                                return;
+                        }
+                        if (value != pagespeedninja_presets[preset][option]) {
+                            match = false;
+                            return false;
+                        }
+                    });
+                } else {
+                    console.log('Option not found: ' + option);
+                }
+            }
+            if (match === true) {
+                jQuery('#pagespeedninja_preset_' + preset).prop('checked', true);
+                return;
+            }
+        }
+        jQuery('#pagespeedninja_preset_custom').prop('checked', true);
+    }
+
     window.pagespeedninjaLoadPreset = function (preset) {
         if (preset === '') {
             document.getElementById('pagespeedninja_form').reset();
@@ -520,31 +573,23 @@
             return;
         }
         for (var option in pagespeedninja_presets[preset]) {
-            var $el;
-            $el = jQuery('input[name="pagespeedninja_config[' + option + ']"]:not([type=hidden]),select[name="pagespeedninja_config[' + option + ']"]');
-            if ($el.length) {
-                $el.each(function () {
-                    var $el = jQuery(this);
-                    switch (this.nodeName) {
-                        case 'INPUT':
-                            if ($el.attr('type') === 'checkbox') {
-                                $el.prop('checked', !!pagespeedninja_presets[preset][option]);
-                            } else if ($el.attr('type') === 'radio') {
-                                $el.prop('checked', pagespeedninja_presets[preset][option] == $el.val());
-                            } else {
-                                $el.val(pagespeedninja_presets[preset][option]);
-                            }
-                            break;
-                        case 'SELECT':
+            jQuery('input[name="pagespeedninja_config[' + option + ']"]:not([type=hidden]),select[name="pagespeedninja_config[' + option + ']"]').each(function () {
+                var $el = jQuery(this);
+                switch (this.nodeName) {
+                    case 'INPUT':
+                        if ($el.attr('type') === 'checkbox') {
+                            $el.prop('checked', !!pagespeedninja_presets[preset][option]);
+                        } else if ($el.attr('type') === 'radio') {
+                            $el.prop('checked', pagespeedninja_presets[preset][option] == $el.val());
+                        } else {
                             $el.val(pagespeedninja_presets[preset][option]);
-                            break;
-                        default:
-                            console.log('Unknown node: ' + this.nodeName);
-                    }
-                });
-            } else {
-                console.log('Option not found: ' + option);
-            }
+                        }
+                        break;
+                    case 'SELECT':
+                        $el.val(pagespeedninja_presets[preset][option]);
+                        break;
+                }
+            });
         }
         jQuery('#pagespeedninja_form').trigger('checkform.areYouSure');
     };

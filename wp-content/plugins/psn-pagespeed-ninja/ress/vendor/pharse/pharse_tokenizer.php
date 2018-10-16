@@ -63,6 +63,15 @@ class Tokenizer_Base
     public $doc = '';
 
     /**
+     * The lowercased document that is being tokenized
+     * @var string
+     * @internal Public for faster access!
+     * @see setDoc()
+     * @access private
+     */
+    public $doc_lc = '';
+
+    /**
      * The size of the document (length of string)
      * @var int
      * @internal Public for faster access!
@@ -186,6 +195,7 @@ class Tokenizer_Base
     public function setDoc($doc, $pos = 0)
     {
         $this->doc = $doc;
+        $this->doc_lc = strtolower($doc);
         $this->size = strlen($doc);
         $this->setPos($pos);
     }
@@ -521,31 +531,7 @@ class Tokenizer_Base
     protected function next_pos($needle, $callback = true)
     {
         $this->token_start = $this->pos;
-        if (($this->pos < $this->size) && (($p = strpos($this->doc, $needle, $this->pos + 1)) !== false)) {
-
-            $this->update_pos($p);
-
-            $char = $this->doc[$this->pos];
-            if ($callback && isset($this->char_map[$char])) {
-                $token = $this->char_map[$char];
-                return ($this->token = is_string($token) ? $this->{$token}() : $token);
-            }
-            return ($this->token = self::TOK_UNKNOWN);
-        }
-        $this->pos = $this->size;
-        return ($this->token = self::TOK_NULL);
-    }
-
-    /**
-     * Finds the next token by searching for a string (case-independent)
-     * @param string $needle The needle that's being searched for
-     * @param bool $callback Should the function check the charmap after finding the needle?
-     * @return int Next token ({@link TOK_NULL} if none)
-     */
-    protected function next_ipos($needle, $callback = true)
-    {
-        $this->token_start = $this->pos;
-        if (($this->pos < $this->size) && (($p = stripos($this->doc, $needle, $this->pos + 1)) !== false)) {
+        if (($this->pos < $this->size) && (($p = strpos($this->doc_lc, $needle, $this->pos + 1)) !== false)) {
 
             $this->update_pos($p);
 

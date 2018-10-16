@@ -31,8 +31,12 @@ class Ressio_HtmlOptimizer_Dom extends Ressio_HtmlOptimizer_Base
     /** @var bool */
     public $headMode;
 
+    // TODO Is it safe to remove (with references from insertBeforeStyleScript)?
     public $classNodeCssList = 'Ressio_HtmlOptimizer_Dom_Element';
     public $classNodeJsList = 'Ressio_HtmlOptimizer_Dom_Element';
+
+    private $jscssLists = array();
+    private $jscssIndex = -1;
 
     /**
      * @param $buffer string
@@ -68,33 +72,43 @@ class Ressio_HtmlOptimizer_Dom extends Ressio_HtmlOptimizer_Base
 
         // @todo process RESS'ed style/script tags
         $nodes = $dom->getElementsByTagName('ressscript');
-        if ($nodes->item(0) !== null) {
+        if ($nodes->length) {
             $combiner = $this->di->jsCombiner;
             $tmpDoc = new DOMDocument();
+            $removeList = array();
             foreach ($nodes as $node) {
-                $html = $combiner->combineToHtml($node->scriptList);
+                $index = (int)$node->getAttribute('index');
+                $html = $combiner->combineToHtml($this->jscssLists[$index]);
                 $tmpDoc->loadHTML('<div>' . $html . '</div>');
                 /** @var Ressio_HtmlOptimizer_Dom_Element $parent */
                 $parent = $node->parentNode;
                 foreach ($tmpDoc->getElementsByTagName('div')->item(0)->childNodes as $child) {
                     $parent->insertBefore($dom->importNode($child, true), $node);
                 }
-                $parent->removeChild($node);
+                $removeList[] = $node;
+            }
+            foreach ($removeList as $node) {
+                $node->parentNode->removeChild($node);
             }
         }
         $nodes = $dom->getElementsByTagName('resscss');
-        if ($nodes->item(0) !== null) {
+        if ($nodes->length) {
             $combiner = $this->di->cssCombiner;
             $tmpDoc = new DOMDocument();
+            $removeList = array();
             foreach ($nodes as $node) {
-                $html = $combiner->combineToHtml($node->styleList);
+                $index = (int)$node->getAttribute('index');
+                $html = $combiner->combineToHtml($this->jscssLists[$index]);
                 $tmpDoc->loadHTML('<div>' . $html . '</div>');
                 /** @var Ressio_HtmlOptimizer_Dom_Element $parent */
                 $parent = $node->parentNode;
                 foreach ($tmpDoc->getElementsByTagName('div')->item(0)->childNodes as $child) {
                     $parent->insertBefore($dom->importNode($child, true), $node);
                 }
-                $parent->removeChild($node);
+                $removeList[] = $node;
+            }
+            foreach ($removeList as $node) {
+                $node->parentNode->removeChild($node);
             }
         }
 
@@ -104,6 +118,8 @@ class Ressio_HtmlOptimizer_Dom extends Ressio_HtmlOptimizer_Base
         $this->lastJsNode = null;
         $this->lastAsyncJsNode = null;
         $this->lastCssNode = null;
+        $this->jscssLists = array();
+        $this->jscssIndex = -1;
 
         return $buffer;
     }
@@ -329,8 +345,9 @@ class Ressio_HtmlOptimizer_Dom extends Ressio_HtmlOptimizer_Base
         ) {
             /** @var Ressio_HtmlOptimizer_Dom_Comment $node */
             if ($this->config->html->removecomments) {
-                if ($node->textContent === '' || $node->textContent[0] !== '!' ||
-                    (strncmp($node->textContent, '![if ', 5) !== 0 && strncmp($node->textContent, '![endif]', 8) !== 0 &&
+                if ($node->textContent === '' || ($node->textContent[0] !== '!' &&
+                        strncmp($node->textContent, '[if ', 4) !== 0 &&
+                        strncmp($node->textContent, '[endif]', 7) !== 0 && strncmp($node->textContent, '<![endif]', 9) !== 0 &&
                         strncmp($node->textContent, '!RESS![if ', 10) !== 0 && strncmp($node->textContent, '!RESS![endif]', 13) !== 0)
                 ) {
                     $this->nodeDetach($node);
@@ -939,6 +956,10 @@ class Ressio_HtmlOptimizer_Dom extends Ressio_HtmlOptimizer_Base
             $node = $jsNode;
         } else {
             $jsNode = $this->dom->createElement('ressscript');
+            $index = ++$this->jscssIndex;
+            $jsNode->setAttribute('index', $index);
+            $this->jscssLists[$index] = array();
+
             $node->parentNode->replaceChild($jsNode, $node);
             /** @var Ressio_HtmlOptimizer_Pharse_JSList $node */
             $node = $jsNode;
@@ -950,7 +971,8 @@ class Ressio_HtmlOptimizer_Dom extends Ressio_HtmlOptimizer_Base
             $this->lastAsyncJsNode = null;
         }
 
-        $jsNode->scriptList[] = $inline
+        $index = (int)$jsNode->getAttribute('index');
+        $this->jscssLists[$index][] = $inline
             ? array(
                 'type' => 'inline',
                 'script' => $src,
@@ -987,6 +1009,10 @@ class Ressio_HtmlOptimizer_Dom extends Ressio_HtmlOptimizer_Base
         } else {
             /** @var Ressio_HtmlOptimizer_Dom_Element $newNode */
             $newNode = $this->dom->createElement('resscss');
+            $index = ++$this->jscssIndex;
+            $newNode->setAttribute('index', $index);
+            $this->jscssLists[$index] = array();
+
             $node->parentNode->replaceChild($newNode, $node);
             /** @var Ressio_HtmlOptimizer_Pharse_CSSList $node */
             $node = $newNode;
@@ -994,7 +1020,8 @@ class Ressio_HtmlOptimizer_Dom extends Ressio_HtmlOptimizer_Base
             $this->lastCssNode = $node;
         }
 
-        $this->lastCssNode->styleList[] = $inline
+        $index = $this->lastCssNode->getAttribute('index');
+        $this->jscssLists[$index][] = $inline
             ? array(
                 'type' => 'inline',
                 'style' => $src,
@@ -1160,9 +1187,9 @@ class Ressio_HtmlOptimizer_Dom extends Ressio_HtmlOptimizer_Base
         while ($node !== null) {
             $isLink = ($node->nodeName === 'link') && $node->hasAttribute('rel') && ($node->getAttribute('rel') === 'stylesheet' || $node->getAttribute('rel') === 'ress-css');
             $isStyle = ($node->nodeName === 'style');
-            $isCss = $isLink || $isStyle || $node instanceof $this->classNodeCssList;
+            $isCss = $isLink || $isStyle || ($node instanceof $this->classNodeCssList && $node->nodeName === 'resscss');
 
-            if ($isCss || $node instanceof $this->classNodeJsList) {
+            if ($isCss || ($node instanceof $this->classNodeJsList && $node->nodeName === 'ressscript')) {
                 $parent = $node->parentNode;
 
                 foreach (func_get_args() as $_node) {
