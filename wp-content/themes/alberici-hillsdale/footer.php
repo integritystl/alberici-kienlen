@@ -13,7 +13,7 @@
 
 	</div><!-- #content -->
 
-	<footer id="colophon" class="site-footer">
+	<footer id="colophon" class="site-footer clear">
 		<div class="site-info">
 				<div class="container grid-container">
 				<div class="site-copyright">
