@@ -4,7 +4,7 @@ Contributors: pagespeed
 Tags: page speed, optimizer, minification, gzip, render blocking css
 Requires at least: 4.0.1
 Tested up to: 5.0
-Stable tag: 0.9.30
+Stable tag: 0.9.31
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 
@@ -80,6 +80,15 @@ None
 
 
 == Changelog ==
+
+= 0.9.31 Beta Release [13 September 2018] =
+- Fixed gzip compression for "headers sent" issue
+- Fixed displaying of active preset name
+- Fixed removing of empty directories in cache cleaner
+- Fixed libxml HTML parser
+- Added support of DONOTCACHEPAGE and DONOTMINIFY constants
+- Improved performance of the Standard full HTML parser (Pharse library)
+- Few minor fixes
 
 = 0.9.30 Beta Release [16 July 2018] =
 - Fixed conflict of "Manage CSS/Javascript URLs" and "Load external stylesheets/scripts" settings

@@ -240,7 +240,7 @@ class HTML_Parser_Base extends Tokenizer_Base
      */
     protected function parse_style()
     {
-        if ($this->parse_attributes() && ($this->token === self::TOK_TAG_CLOSE) && ($start = $this->pos) && ($this->next_ipos('</style>', false) === self::TOK_UNKNOWN)) {
+        if ($this->parse_attributes() && ($this->token === self::TOK_TAG_CLOSE) && ($start = $this->pos) && ($this->next_pos('</style>', false) === self::TOK_UNKNOWN)) {
             $len = $this->pos - 1 - $start;
             $this->status['text'] = (($len > 0) ? substr($this->doc, $start + 1, $len) : '');
 
@@ -259,7 +259,7 @@ class HTML_Parser_Base extends Tokenizer_Base
      */
     protected function parse_script()
     {
-        if ($this->parse_attributes() && ($this->token === self::TOK_TAG_CLOSE) && ($start = $this->pos) && ($this->next_ipos('</script>', false) === self::TOK_UNKNOWN)) {
+        if ($this->parse_attributes() && ($this->token === self::TOK_TAG_CLOSE) && ($start = $this->pos) && ($this->next_pos('</script>', false) === self::TOK_UNKNOWN)) {
             $len = $this->pos - 1 - $start;
             $this->status['text'] = (($len > 0) ? substr($this->doc, $start + 1, $len) : '');
 
@@ -277,7 +277,7 @@ class HTML_Parser_Base extends Tokenizer_Base
      */
     protected function parse_svg()
     {
-        if ($this->parse_attributes() && ($this->token === self::TOK_TAG_CLOSE) && ($start = $this->pos) && ($this->next_ipos('</svg>', false) === self::TOK_UNKNOWN)) {
+        if ($this->parse_attributes() && ($this->token === self::TOK_TAG_CLOSE) && ($start = $this->pos) && ($this->next_pos('</svg>', false) === self::TOK_UNKNOWN)) {
             $len = $this->pos - 1 - $start;
             $this->status['text'] = (($len > 0) ? substr($this->doc, $start + 1, $len) : '');
 
@@ -441,7 +441,7 @@ class HTML_Parser_Base extends Tokenizer_Base
             if (substr($this->doc, $this->pos + 2, 2) === '--') {
                 $this->status['comment'] = true;
 
-                if (($this->doc[$this->pos + 4] === '[') && (strcasecmp(substr($this->doc, $this->pos + 5, 2), 'if') === 0)) {
+                if (($this->doc[$this->pos + 4] === '[') && (substr($this->doc_lc, $this->pos + 5, 2) === 'if')) {
                     return $this->parse_conditional();
                 }
                 return $this->parse_comment();
@@ -450,14 +450,14 @@ class HTML_Parser_Base extends Tokenizer_Base
             $this->status['comment'] = false;
 
             if ($this->doc[$this->pos + 2] === '[') {
-                if (strcasecmp(substr($this->doc, $this->pos + 3, 2), 'if') === 0) {
+                if (substr($this->doc_lc, $this->pos + 3, 2) === 'if') {
                     return $this->parse_conditional();
                 }
-                if (strcasecmp(substr($this->doc, $this->pos + 3, 5), 'endif') === 0) {
+                if (substr($this->doc_lc, $this->pos + 3, 5) === 'endif') {
                     $this->status['closing_tag'] = true;
                     return $this->parse_conditional();
                 }
-                if (strcasecmp(substr($this->doc, $this->pos + 3, 5), 'cdata') === 0) {
+                if (substr($this->doc_lc, $this->pos + 3, 5) === 'cdata') {
                     return $this->parse_cdata();
                 }
             }

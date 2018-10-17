@@ -90,7 +90,7 @@ class Ressio_Plugin_FilecacheCleaner extends Ressio_Plugin
                     unlink($file_path);
                     continue;
                 }
-                $remove_dir = true;
+                $remove_dir = false;
                 list($hash, $group) = explode('_', $file, 2);
                 switch ($group) {
                     case 'htmljs':
