@@ -144,7 +144,12 @@ class PagespeedNinja_Cache
 
     public function save($content)
     {
-        if (!$this->enabled || is_user_logged_in()) {
+        if (
+            !$this->enabled
+            || (defined('DONOTCACHEPAGE') && DONOTCACHEPAGE)
+            || is_user_logged_in()
+            || is_search()
+        ) {
             return;
         }
 
@@ -209,17 +214,21 @@ class PagespeedNinja_Cache
     {
         return
             // other entry points or debug mode
-            (defined('DOING_CRON') && DOING_CRON) ||
+            defined('DOING_AJAX') || defined('DOING_CRON') ||
+            defined('WP_INSTALLING') ||
+            defined('XMLRPC_REQUEST') || defined('REST_REQUEST') ||
             (defined('WP_ADMIN') && WP_ADMIN) ||
             (defined('WP_DEBUG') && WP_DEBUG) ||
-            (defined('WP_INSTALLING') && WP_INSTALLING) ||
-            (defined('XMLRPC_REQUEST') && XMLRPC_REQUEST) ||
+            (defined('SHORTINIT') && SHORTINIT) ||
 
             // post request
             ($_SERVER['REQUEST_METHOD'] !== 'GET') ||
 
             // pagespeed-ninja disabled mode
             (isset($_GET['pagespeedninja']) && $_GET['pagespeedninja'] === 'no') ||
+
+            // preview post
+            isset($_GET['preview']) ||
 
             // WordPress file editor test
             isset($_GET['wp_scrape_key']) ||
@@ -237,7 +246,10 @@ class PagespeedNinja_Cache
             (defined('AUTH_COOKIE') && isset($_COOKIE[AUTH_COOKIE])) ||
             (defined('SECURE_AUTH_COOKIE') && isset($_COOKIE[SECURE_AUTH_COOKIE])) ||
             (defined('LOGGED_IN_COOKIE') && isset($_COOKIE[LOGGED_IN_COOKIE])) ||
-            strpos("\n" . implode("\n", array_keys($_COOKIE)), "\nwordpress_") !== false
+            strpos("\n" . implode("\n", array_keys($_COOKIE)), "\nwordpress_") !== false ||
+
+            // a commenter
+            isset($_COOKIE['comment_author_' . COOKIEHASH])
             ;
     }
 
