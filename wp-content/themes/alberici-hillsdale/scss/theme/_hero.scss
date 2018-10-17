@@ -61,7 +61,9 @@
 .hero-area {
   background-repeat: no-repeat;
   background-size: cover;
-  min-height:350px;
+  background-position: 50% 70%; 
+  min-height:450px;
+  margin-top: -75px;
   // padding: 185px 0;
 
   &:after {
