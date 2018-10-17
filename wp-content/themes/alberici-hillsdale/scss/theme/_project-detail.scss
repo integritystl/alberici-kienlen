@@ -82,40 +82,52 @@
 }
 
 .single-project-content {
-    h2 {
-        margin: 40px 50px;
-        text-align: center;
-        @include grid-media($medium-min) {
-            margin: 40px 100px;
-        }
-    }
+    // h2 {
+    //     margin: 40px 50px;
+    //     text-align: center;
+    //     @include grid-media($medium-min) {
+    //         margin: 40px 100px;
+    //     }
+    // }
     margin: 20px 0 0 0;
     p {
         margin: 30px 10px 0 10px;
-        .alignleft {
-            display: block;
-            width: auto;
-            height: auto;
+        img:not(:first-child) {
+            clear: both;
         }
     }
+    h2 {
+        margin-top: 50px;
+        margin-left: 10px;
+        color: $blue;
+    }
+    .alignleft {
+        width: 100%;
+        height: auto;
+    }
     @include grid-media($medium-min) {
-        margin: 50px 16% 100px 16%;
+        margin: 50px 16% 0 16%;
         .alignleft {
             float: left;
             margin-right: 60px;
-            margin: 20px 60px 76px 0;
+            margin: 0px 60px 12px 0;
+            width: auto;
+            height: auto;
+        }
+        img:last-child {
+            margin-bottom: 100px;
         }
     }
     .service-list {
+        margin-bottom:50px;
         h3 {
-            margin-top: 30px;
-            color: $blue;
+            margin-top: 100px;
             margin-bottom: 30px;
             text-align: center;
+            color: $blue;
             @include grid-media($medium-min) {
                 text-align: left;
             }
-
         }
         a {
             display: block;
@@ -126,9 +138,11 @@
             margin: 10px 50px;
             text-align: center;
             @include grid-media($medium-min) {
-                display: inline;
+                display: inline-block;
                 margin: 0;
                 margin-right: 2px;
+                margin-bottom: 20px;
+                white-space: nowrap;
             }
 
         }
