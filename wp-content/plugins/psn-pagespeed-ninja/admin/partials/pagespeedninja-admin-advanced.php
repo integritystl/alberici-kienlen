@@ -8,6 +8,20 @@ $presets_list = ob_get_clean();
 $presets_list = json_decode($presets_list);
 /** @var array $presets_list */
 
+$extra_presets_list = array();
+$extra_presets_dir = dirname(dirname(__FILE__)) . '/extras/presets';
+$extra_presets_files = glob($extra_presets_dir . '/*.json');
+foreach ($extra_presets_files as $preset_file) {
+    $preset_name = basename($preset_file, '.json');
+    $preset_data = @file_get_contents($preset_file);
+    $preset_data = @json_decode($preset_data);
+    if (!isset($preset_data->base, $preset_data->title, $preset_data->tooltip, $preset_data->options)) {
+        continue;
+    }
+    $extra_presets_list[$preset_name] = $preset_data;
+    $extra_presets_list[$preset_name]->name = $preset_name;
+}
+
 ob_start();
 include dirname(dirname(dirname(__FILE__))) . '/includes/options.json.php';
 $options = ob_get_clean();
@@ -15,6 +29,9 @@ $options = json_decode($options);
 /** @var array $options */
 
 $presets = array();
+foreach($extra_presets_list as $preset) {
+    $presets[$preset->name] = array();
+}
 foreach ($presets_list as $preset) {
     $presets[$preset->name] = array();
 }
@@ -33,10 +50,18 @@ foreach ($options as $section) {
                 foreach ($presets_list as $preset) {
                     $name = $preset->name;
                     $value = isset($item_presets[$name]) ? $item_presets[$name] : $item->default;
-                    $presets[$name][] = "'" . $item->name . "':" . (is_string($value) ? "'$value'" : $value);
+                    $presets[$name][$item->name] = "'" . $item->name . "':" . (is_string($value) ? "'$value'" : $value);
                 }
             }
         }
+    }
+}
+
+foreach ($extra_presets_list as $preset) {
+    $name = $preset->name;
+    $presets[$name] = $presets[$preset->base];
+    foreach ($preset->options as $option_name => $option_value) {
+        $presets[$name][$option_name] = "'" . $option_name . "':" . (is_string($option_value) ? "'$option_value'" : $option_value);
     }
 }
 
@@ -67,10 +92,13 @@ echo "<script>\nvar pagespeedninja_presets={\n" . implode(",\n", $presets) . "};
 
                 <div class="presets">
                     <h3><?php _e('Presets'); ?></h3>
-                    <?php foreach ($presets_list as $preset): ?>
-                    <label data-tooltip="<?php echo esc_attr($preset->tooltip); ?>"><input type="radio" name="preset" onclick="pagespeedninjaLoadPreset('<?php echo $preset->name; ?>')"> <?php echo $preset->title; ?></label>
+                    <?php foreach ($extra_presets_list as $preset): ?>
+                    <label data-tooltip="<?php echo esc_attr($preset->tooltip); ?>"><input type="radio" name="preset" id="pagespeedninja_preset_<?php echo $preset->name; ?>" onclick="pagespeedninjaLoadPreset('<?php echo $preset->name; ?>')"> <?php echo $preset->title; ?></label>
                     <?php endforeach; ?>
-                    <label data-tooltip="<?php _e('Your current preset.'); ?>"><input type="radio" name="preset" onclick="pagespeedninjaLoadPreset('')" checked> <?php _e('Custom'); ?></label>
+                    <?php foreach ($presets_list as $preset): ?>
+                    <label data-tooltip="<?php echo esc_attr($preset->tooltip); ?>"><input type="radio" name="preset" id="pagespeedninja_preset_<?php echo $preset->name; ?>" onclick="pagespeedninjaLoadPreset('<?php echo $preset->name; ?>')"> <?php echo $preset->title; ?></label>
+                    <?php endforeach; ?>
+                    <label data-tooltip="<?php _e('Your current preset.'); ?>"><input type="radio" name="preset" id="pagespeedninja_preset_custom" onclick="pagespeedninjaLoadPreset('')"> <?php _e('Custom'); ?></label>
                 </div>
 
                 <?php
