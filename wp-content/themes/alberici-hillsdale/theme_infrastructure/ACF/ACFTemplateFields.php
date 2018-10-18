@@ -1241,8 +1241,8 @@ class ACFTemplateFields
 			'fields' => array(
 				array(
 					'key' => 'field_5bc8b97871247',
-					'label' => 'Our Onwers',
-					'name' => 'our_onwers',
+					'label' => 'Our Owners',
+					'name' => 'our_owners',
 					'type' => 'repeater',
 					'instructions' => '',
 					'required' => 0,
@@ -1261,7 +1261,7 @@ class ACFTemplateFields
 						array(
 							'key' => 'field_5bc8b98771248',
 							'label' => 'Image',
-							'name' => 'our_onwes_image',
+							'name' => 'our_owners_image',
 							'type' => 'image',
 							'instructions' => '',
 							'required' => 0,
@@ -1285,7 +1285,7 @@ class ACFTemplateFields
 						array(
 							'key' => 'field_5bc8b99871249',
 							'label' => 'Link',
-							'name' => 'our_image_link',
+							'name' => 'our_owners_link',
 							'type' => 'url',
 							'instructions' => '',
 							'required' => 0,

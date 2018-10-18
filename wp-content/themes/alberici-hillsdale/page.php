@@ -39,12 +39,12 @@ get_header();
 			endif;
 			?>
 
-			<?php if( have_rows('our_onwers') ): ?>
+			<?php if( have_rows('our_owners') ): ?>
 			<div class="our-owners container">
 				<h2>Our Owners</h2>
-				<?php while ( have_rows('our_onwers') ) : the_row(); ?>
-					<a href="<?php the_sub_field('our_image_link'); ?> ">
-					<?php echo wp_get_attachment_image(get_sub_field('our_onwes_image'), 'medium'); ?>
+				<?php while ( have_rows('our_owners') ) : the_row(); ?>
+					<a href="<?php the_sub_field('our_owners_link'); ?> ">
+					<?php echo wp_get_attachment_image(get_sub_field('our_owners_image'), 'medium'); ?>
 				<?php endwhile; ?>
 				</div>
 			 <?php endif; ?>
