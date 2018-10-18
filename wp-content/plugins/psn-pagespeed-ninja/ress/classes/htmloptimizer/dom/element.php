@@ -14,9 +14,6 @@ class Ressio_HtmlOptimizer_Dom_Element extends DOMElement implements IRessio_Htm
 {
     /** @var DOMAttr[] $attributes */
 
-    public $styleList = array();
-    public $scriptList = array();
-
     /**
      * @return string
      */

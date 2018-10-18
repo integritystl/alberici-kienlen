@@ -8,8 +8,10 @@ class CardList extends React.Component {
   componentWillMount() {
       this.setState({
         loading: true,
+        currentPage: 1,
         posts: [],
         postsPerPage: 6,
+        postDataType: document.getElementById('cardList_app').getAttribute('data-post'),
         market_categories: [],
         service_categories: [],
         isFiltered: false,
@@ -18,11 +20,12 @@ class CardList extends React.Component {
         filteredService: '',
         hasSearchTerm: false,
         searchTerm: '',
+        totalPosts: parseInt(wpObj.totalPosts.publish),
       })
     }
 
     componentDidMount() {
-      this.getPosts();
+      this.getPosts(this.buildAPILink());
       this.getMarketCats();
       this.setFilterCats();
       //this.getServiceCats();
@@ -31,8 +34,8 @@ class CardList extends React.Component {
     //Fetch posts
     buildAPILink() {
       let baseLink = '';
-      let postDataType = document.getElementById('cardList_app').getAttribute('data-post');
-      if (postDataType === 'news') {
+
+      if (this.state.postDataType === 'news') {
         baseLink = wpObj.posts_endpoint;
       } else {
         baseLink = wpObj.projects_endpoint;
@@ -57,11 +60,13 @@ class CardList extends React.Component {
     }
     //Get All Posts
     //TODO: edit this so we're only adding either Posts or Projects to state.
-    getPosts(){
-      let apiLink = this.buildAPILink();
+    getPosts(apiLink){
       apiLink += `&per_page=${this.state.postsPerPage}`
-      let headers = new Headers({'Authorization': 'Basic alberici'});
-      fetch(apiLink, {headers: headers})
+      //Gotta pass Basic Auth for the prompt from WP Engine
+      //Ref: https://stackoverflow.com/questions/30203044/using-an-authorization-header-with-fetch-in-react-native
+      fetch(apiLink, {
+          headers: new Headers({'Authorization': 'Basic ' + btoa("demo:alberici") }),
+        })
         .then( response => {
           return(response.json());
         })
@@ -76,8 +81,6 @@ class CardList extends React.Component {
     getFilteredPosts(apiLink) {
       fetch(apiLink)
         .then( response => {
-          // console.log('fetch', apiLink);
-          // console.log(response);
           return(response.json());
         }).then(json => {
           this.setState({
@@ -172,17 +175,44 @@ class CardList extends React.Component {
 
     //Load More functionality
     loadMorePosts() {
+      //need to fetch the next amount of posts and add them
+      //getPosts loads the page and uses postsPerPage
       let apiLink = this.buildAPILink();
-      console.log('load more link', apiLink);
-      let offset = 0;
-      if (this.state.posts) {
 
+      let offset = 0;
+      if (this.state.isFiltered) {
+        offset = this.state.filteredPosts.length;
+        //TODO add in some stuff here Lindsay
+      } else {
+        offset = this.state.currentPage * this.state.postsPerPage;
+        apiLink += `&offset=${offset}`;
+      //  console.log('load more link', apiLink);
+        fetch(apiLink)
+          .then( response => {
+            return(response.json());
+          })
+          .then( json => {
+            let currentPosts = this.state.posts;
+            //when i put this into this.setState, it breaks, what do?
+            Array.prototype.push.apply(currentPosts, json);
+          //  console.log(currentPosts);
+            //increment our Current Page
+            this.setState( (state) => ({
+              currentPage: state.currentPage + 1,
+              //posts: Array.prototype.push.apply(currentPosts, json), //need to jam in new json here
+              loading: false,
+            }));
+          })
       }
     }
 
     //Reset filter
     resetFilter(){
-      //TODO set the selects back to default value
+      //TODO set the selects back to default value and the search box to empty
+      let searchInput = document.getElementById('filterbar-search');
+      searchInput.value = '';
+
+
       this.setState({
         isFiltered: false,
         filteredPosts: [],
@@ -205,6 +235,8 @@ class CardList extends React.Component {
       let filteredServiceName = '';
       let filteredMarketName = '';
 
+      let allPostsOffset = this.state.currentPage * this.state.postsPerPage;
+
       if (this.state.loading) {
         postGroup = <div className="loading-spinner">Loading...</div>;
       } else if (allPosts && this.state.isFiltered === false) {
@@ -214,7 +246,7 @@ class CardList extends React.Component {
                       services = {this.state.service_categories}
                       getCatName = {this.getCatName.bind(this)}
                       />
-        if (allPosts && allPosts.length > this.state.postsPerPage && allPosts.length % this.state.postsPerPage != 0) {
+        if ( allPostsOffset < this.state.totalPosts && this.state.totalPosts % this.state.postsPerPage != 0) {
           loadMoreBtn = <button onClick={this.loadMorePosts.bind(this)}  className="btn-load-more">{loadMoreLabel}</button>;
         }
       } else if ( filterPosts && this.state.isFiltered === true ) {

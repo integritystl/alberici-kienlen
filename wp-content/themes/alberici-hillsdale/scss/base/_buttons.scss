@@ -70,10 +70,35 @@ $_button-background-color-hover: shade($primary-action-color, 20%);
   }
 }
 
+
 .btn-lined {
   @extend .btn;
   background-color: transparent;
+  border: 1px solid $blue;
+  color: $blue;
+  padding: 14px 30px;
+
+  &:hover {
+    background-color: $blue;
+    color: white;
+  }
+
+  &:focus {
+    outline: $focus-outline;
+    outline-offset: $focus-outline-offset;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+}
+
+.btn-lined-white {
+  @extend .btn;
+  background-color: transparent;
   border: 1px solid white;
+  padding: 14px 30px;
 
   &:hover {
     background-color: white;

@@ -15,7 +15,7 @@ $FooterCalloutBackImage = get_field('footer_callout_background_image');
 ?>
 
 <?php if ($FooterCalloutContent || $FooterCalloutHeadline) : ?>
-<div class="footer-callout" style="background-image: url(<?php echo $FooterCalloutBackImage; ?>);">
+<div class="footer-callout clear" style="background-image: url(<?php echo $FooterCalloutBackImage; ?>);">
 <div class="footer-callout-wrapper">
     <div class="footer-callout-content">
         <h2><?php echo $FooterCalloutHeadline; ?></h2>

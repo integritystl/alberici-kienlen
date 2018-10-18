@@ -91,6 +91,7 @@ class PagespeedNinja_Public
         if (isset($_GET['pagespeedninja'])) {
             switch ($_GET['pagespeedninja']) {
                 case 'no':
+                    define('DONOTCACHEPAGE', true);
                     $this->disabled = true;
                     $_COOKIE = array();
                     break;
@@ -103,6 +104,7 @@ class PagespeedNinja_Public
                     $_COOKIE = array();
                     break;
                 case 'test':
+                    define('DONOTCACHEPAGE', true);
                     $this->testKey = $_REQUEST['pagespeedninjakey'];
                     // remove cookies to display guest page in backend
                     // @todo develop a way to reset cookies once and allow user to login in the preview iframe
@@ -119,13 +121,16 @@ class PagespeedNinja_Public
     {
         if (
             $this->disabled
-            || defined('XMLRPC_REQUEST') || defined('DOING_AJAX') || defined('DOING_CRON')
+            || defined('XMLRPC_REQUEST') || defined('REST_REQUEST')
+            || defined('DOING_AJAX') || defined('DOING_CRON')
             || defined('WP_ADMIN') || defined('WP_INSTALLING')
             || (defined('SHORTINIT') && SHORTINIT)
             || (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] !== 'GET')
+            || isset($_GET['preview'])
             || isset($_GET['wp_scrape_key'])
             || isset($_GET['fl_builder']) || isset($_GET['mbuilder'])
             || is_404() || is_admin() || is_feed() || is_comment_feed() || is_preview() || is_robots() || is_trackback()
+            || (function_exists('is_customize_preview') && is_customize_preview()) // WordPress 4.0.0+
             || headers_sent()
             // disable for AMP plugin
             || (defined('AMP_QUERY_VAR') && get_query_var(AMP_QUERY_VAR, 0))
@@ -198,7 +203,10 @@ class PagespeedNinja_Public
             $buffer = '';
         }
 
-        if ($buffer === '') {
+        if (
+                $buffer === ''
+                || (defined('DONOTMINIFY') && DONOTMINIFY)
+        ) {
             return false;
         }
 
@@ -221,6 +229,7 @@ class PagespeedNinja_Public
             class_exists('W3_Plugin_TotalCache', false)
             || function_exists('check_richards_toolbox_gzip')
             || function_exists('wp_cache_phase2')
+            || headers_sent()
             || in_array('ob_gzhandler', ob_list_handlers(), true)
         ) {
             $gzip = false;
@@ -248,6 +257,7 @@ class PagespeedNinja_Public
         }
         Ressio::registerAutoloading(true);
 
+        // @todo don't load AMDD for disabled rescaling (use simple device detector instead)
         include_once dirname(dirname(__FILE__)) . '/includes/class-pagespeedninja-amdd.php';
         $ress_options['amdd'] = PagespeedNinja_Amdd::getConfig();
 
@@ -627,7 +637,7 @@ class PagespeedNinja_Public
     public function wp_footer()
     {
         if (!$this->started) {
-            return false;
+            return;
         }
 
         $options = get_option('pagespeedninja_config');

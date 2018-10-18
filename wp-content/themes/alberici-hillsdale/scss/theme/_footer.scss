@@ -8,12 +8,15 @@ footer {
     text-decoration: none;
   }
 }
+.clear {
+  clear: both;
+}
 .site-copyright {
    grid-column: span 12;
    place-self: center;
    @include grid-media($medium-min) {
     grid-column: span 6;
-    place-self: stretch end;
+    place-self: stretch start;
    }
 
    p {

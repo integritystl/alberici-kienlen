@@ -10,5 +10,9 @@
     command: ./scripts/deploy-staging.sh
 
   - service: app_build
+    tag: develop
+    command: ./scripts/deploy-staging-kienlen.sh
+
+  - service: app_build
     tag: master
     command: ./scripts/deploy-production.sh

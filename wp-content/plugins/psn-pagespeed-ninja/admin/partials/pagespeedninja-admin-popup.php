@@ -8,6 +8,20 @@ $presets_list = ob_get_clean();
 $presets_list = json_decode($presets_list);
 /** @var array $presets_list */
 
+$extra_presets_list = array();
+$extra_presets_dir = dirname(dirname(__FILE__)) . '/extras/presets';
+$extra_presets_files = glob($extra_presets_dir . '/*.json');
+foreach ($extra_presets_files as $preset_file) {
+    $preset_name = basename($preset_file, '.json');
+    $preset_data = @file_get_contents($preset_file);
+    $preset_data = @json_decode($preset_data);
+    if (!isset($preset_data->base, $preset_data->title, $preset_data->tooltip, $preset_data->options)) {
+        continue;
+    }
+    $extra_presets_list[$preset_name] = $preset_data;
+    $extra_presets_list[$preset_name]->name = $preset_name;
+}
+
 ob_start();
 include dirname(dirname(dirname(__FILE__))) . '/includes/options.json.php';
 $options = ob_get_clean();
@@ -51,6 +65,9 @@ foreach ($options as $section) {
         ?>
         <div class="presets_popup hidden">
             <?php
+            foreach ($extra_presets_list as $preset) {
+                ?><label><input type="radio" name="pagespeedninja_preset" value="<?php echo $preset->name; ?>"> <span class="presettitle"><?php echo $preset->title; ?></span><span class="presettooltip"><?php echo $preset->tooltip; ?></span></label><?php
+            }
             foreach ($presets_list as $preset) {
                 ?><label><input type="radio" name="pagespeedninja_preset" value="<?php echo $preset->name; ?>"<?php echo $preset->name === $default_preset ? ' checked' : ''; ?>> <span class="presettitle"><?php echo $preset->title; ?></span><span class="presettooltip"><?php echo $preset->tooltip; ?></span></label><?php
             }

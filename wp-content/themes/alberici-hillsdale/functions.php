@@ -132,6 +132,7 @@ if ( ! function_exists( 'alberici_hillsdale_setup' ) ) :
 		add_theme_support( 'post-thumbnails' );
 
 		add_image_size( 'tile-image', 700, 400, true );
+		add_image_size( 'blog-image', 600, 600, true );
 
 		// This theme uses wp_nav_menu() in 3 locations.
 		register_nav_menus( array(
@@ -167,6 +168,19 @@ if ( ! function_exists( 'alberici_hillsdale_setup' ) ) :
 endif;
 add_action( 'after_setup_theme', 'alberici_hillsdale_setup' );
 
+
+function custom_second_logo( $wp_customize ) {
+ $wp_customize->add_setting( 'custom_logo_scroll' ); // Add setting for logo uploader
+
+		 // Add control for logo uploader (actual uploader)
+		 $wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'custom_logo_scroll', array(
+				 'label'    => __( 'Upload Secondary Logo', 'alberici' ),
+				 'section'  => 'title_tagline',
+				 'settings' => 'custom_logo_scroll',
+		 ) ) );
+ }
+ add_action( 'customize_register', 'custom_second_logo' );
+
 /**
  * Set the content width in pixels, based on the theme's design and stylesheet.
  *
@@ -195,6 +209,9 @@ function alberici_hillsdale_scripts() {
 
 	wp_enqueue_script( 'jquery-sidr', get_template_directory_uri() . '/js/jquery.sidr.min.js', array('jquery'), time(), true );
 
+	wp_enqueue_script( 'alberici-hillsdale-main', get_template_directory_uri() . '/js/main.js', array('jquery'), time(), true );
+	wp_enqueue_script( 'alberici-hillsdale-header', get_template_directory_uri() . '/js/src/header.js', array('jquery'), time(), true );
+
 	if (is_page_template('page-card-list.php')) {
 			wp_register_script('alberici-hillsdale-news', get_template_directory_uri() . '/js/react_src/dist/card-list-view.js', array(), time(), true );
 			wp_enqueue_script('alberici-hillsdale-news', get_template_directory_uri() . '/js/react_src/dist/card-list-view.js', array(), time(), true );
@@ -203,6 +220,7 @@ function alberici_hillsdale_scripts() {
 				'projects_endpoint' => home_url('/wp-json/wp/v2/project?_embed'),
 				'marketCat_endpoint' => home_url('/wp-json/wp/v2/market_category'),
 				'serviceCat_endpoint' => home_url('/wp-json/wp/v2/service_category'),
+				'totalPosts' => wp_count_posts(), //TODO make one for Projects Post Count
 				//TODO: add the endpoint for Location Categories here too;
 			));
 	}

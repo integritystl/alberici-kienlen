@@ -39,26 +39,32 @@ class FilterBar extends React.Component {
       currentMarketFilter = <span className="filter-info--term" dangerouslySetInnerHTML={{__html:this.props.marketFilterName}} />;
     }
     if (this.props.isFiltered) {
-      filterTerms =  <span>Filter By: {currentServiceFilter} {currentMarketFilter}</span>;
+      filterTerms =  <span><span className="filter-label">Filter By:</span> {currentServiceFilter} {currentMarketFilter}</span>;
       resetBtn = <button onClick={() => this.resetFilter() } className="btn-reset-filter">Clear Filters</button>;
     }
 
     return(
       <div className="filterbar">
-        <input type="search"
+        <input id="filterbar-search"
+          type="search"
           placeholder="Search by keywords"
           onChange={(event) => this.filterSearch(event)}
         />
 
-        <Select label="Market"
-          options={this.props.markets}
-          onFilterChange={this.filterMarkets}
-        />
+        <div className="select">
+          <Select label="Market"
+            options={this.props.markets}
+            onFilterChange={this.filterMarkets}
+          />
+        </div>
 
-        <Select label="Service"
-          options={this.props.services}
-          onFilterChange={this.filterServices}
-        />
+        <div className="select">
+          <Select label="Service"
+            options={this.props.services}
+            onFilterChange={this.filterServices}
+          />
+        </div>
+
         <div className="filter-info">
           {filterTerms}
           {resetBtn}
