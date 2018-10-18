@@ -26,3 +26,16 @@
         margin-top: 70px;
     }
 }
+.our-owners {
+    margin-top: 50px;
+    a:not(:last-child) {
+        margin-right: 43px;
+    }
+    a {
+        text-decoration: none;
+        img {
+            width: 150px;
+            height: auto;
+        }
+    }
+}
