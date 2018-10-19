@@ -27,15 +27,12 @@ class CardGroup extends React.Component {
         if (item._embedded['wp:featuredmedia']) {
           //Media Paths to help with srcSets
           let imageSrcSetMed = item._embedded['wp:featuredmedia'][0].media_details.sizes.medium;
-          let imageSrcSetMedLarge = item._embedded['wp:featuredmedia'][0].media_details.sizes.medium_large;
-          let imageSrcSetLarge = item._embedded['wp:featuredmedia'][0].media_details.sizes.large;
+          let imageSrcSetBlog = item._embedded['wp:featuredmedia'][0].media_details.sizes.blog_image;
 
-           //use the Medium size as our img src fallback
-          imageSrc = imageSrcSetMed.source_url;
+           //use the custom Blog size as our img src fallback
+          imageSrc = imageSrcSetBlog.source_url;
           //chain together the other sizes to make the srcset attribute, add the 'width' from image data to create srcset attributes
-          imageSrcSet = imageSrcSetMed.source_url + ' ' + imageSrcSetMed.width + 'w, '
-            + imageSrcSetMedLarge.source_url + ' ' + imageSrcSetMedLarge.width + 'w, '
-            + imageSrcSetLarge.source_url + ' ' + imageSrcSetLarge.width + 'w';
+          imageSrcSet = imageSrcSetMed.source_url + ' ' + imageSrcSetMed.width + 'w, ' + imageSrcSetBlog.source_url + ' ' + imageSrcSetBlog.width + 'w';
         }
 
         //roll through array of service categories per post and get the name
