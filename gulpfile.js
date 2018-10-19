@@ -12,9 +12,9 @@ var build_dir = './wp-content/themes/alberici-hillsdale/';
 
 gulp.task('scripts', function(cb) {
 	pump([
-		gulp.src('./wp-content/themes/alberici-hillsdale/js/src/**/*.js'),
+		gulp.src('./wp-content/themes/alberici-hillsdale/js/src/*.js'),
 		sourcemaps.init(),
-		babel({presets: ['env']}), 
+		babel({presets: ['env']}),
 		uglify(),
 		concat('app.js'),
 		sourcemaps.write('.'),
@@ -36,5 +36,5 @@ gulp.task('sass', function(cb) {
 
 gulp.task('default', ['sass', 'scripts'], function(){
 	gulp.watch('./wp-content/themes/alberici-hillsdale/scss/**/*.scss', ['sass']);
-	gulp.watch('./wp-content/themes/alberici-hillsdale/js/**/*.js', ['scripts']);
+	gulp.watch('./wp-content/themes/alberici-hillsdale/js/src/*.js', ['scripts']);
 });
