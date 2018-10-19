@@ -28,14 +28,19 @@
 }
 .our-owners {
     margin-top: 50px;
-    a:not(:last-child) {
-        margin-right: 43px;
-    }
-    a {
-        text-decoration: none;
+    .owners-img {
         img {
-            width: 150px;
+            margin: 4% 4%;
+            width: 24%;
             height: auto;
+        }
+        @include grid-media($large-min) {
+            margin: 0;
+            img {
+                margin: 3% 1%;
+                width: 150px;
+                height: auto;
+            }
         }
     }
 }

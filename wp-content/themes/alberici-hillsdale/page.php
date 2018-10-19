@@ -42,11 +42,12 @@ get_header();
 			<?php if( have_rows('our_owners') ): ?>
 			<div class="our-owners container">
 				<h2>Our Owners</h2>
+				<div class="owners-img">
 				<?php while ( have_rows('our_owners') ) : the_row(); ?>
-					<a href="<?php the_sub_field('our_owners_link'); ?> ">
 					<?php echo wp_get_attachment_image(get_sub_field('our_owners_image'), 'medium'); ?>
 				<?php endwhile; ?>
 				</div>
+			</div>
 			 <?php endif; ?>
 			
 			<?php get_template_part( 'template-parts/footer-callout' ); ?>
