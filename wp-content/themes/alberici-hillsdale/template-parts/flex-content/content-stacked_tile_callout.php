@@ -16,7 +16,7 @@
 ?>
   <div class="stacked_tile_single">
     <div class="single_tile_img">
-        <?php echo wp_get_attachment_image($StackedTileImage, 'tile-image'); ?>
+        <?php echo wp_get_attachment_image($StackedTileImage, 'tile_image'); ?>
     </div>
     <div class="single_tile_content">
         <h2><?php echo $StackedTileHeader; ?></h2>
