@@ -8,7 +8,7 @@
  *
  * @package alberici-hillsdale
  */
-
+$theme_config = get_field('set_site', 'options');
 ?>
 <!doctype html>
 <html <?php language_attributes(); ?>>
@@ -19,7 +19,12 @@
 	<?php wp_head(); ?>
 </head>
 
-<body <?php body_class(); ?>>
+<?php if ( $theme_config === 'kienlen') { ?>
+	<body <?php body_class('alberici-kienlen');?>>
+<?php }else { ?>
+	<body <?php body_class(); ?>>
+<?php } ?>
+
 <div id="page" class="site">
 	<a class="skip-link screen-reader-text" href="#content"><?php esc_html_e( 'Skip to content', 'alberici-hillsdale' ); ?></a>
 
