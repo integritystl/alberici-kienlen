@@ -26,3 +26,21 @@
         margin-top: 70px;
     }
 }
+.our-owners {
+    margin-top: 50px;
+    .owners-img {
+        img {
+            margin: 4% 4%;
+            width: 24%;
+            height: auto;
+        }
+        @include grid-media($large-min) {
+            margin: 0;
+            img {
+                margin: 3% 1%;
+                width: 150px;
+                height: auto;
+            }
+        }
+    }
+}
