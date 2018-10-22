@@ -128,6 +128,13 @@
                   }
                 }
               }
+              &.current_page_item > a,
+              &.current-menu-item > a,
+              &.current_post_parent > a,
+              &.current_page_ancestor > a,
+              &.current-menu-ancestor > a {
+                color: $red;
+              }
             }
           }
         }
@@ -321,6 +328,12 @@
     -webkit-font-smoothing: initial;
     &:before {
       content: '';
+    }
+    &.current-menu-item > a,
+    &.current_post_parent > a,
+    &.current_page_ancestor > a,
+    &.current-menu-ancestor > a {
+      color: $red;
     }
     a {
       display: block;
