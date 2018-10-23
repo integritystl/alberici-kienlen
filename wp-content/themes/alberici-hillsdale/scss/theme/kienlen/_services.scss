@@ -1,0 +1,49 @@
+.alberici-kienlen {
+    .serivces-content {
+        margin-top: 40px;
+        margin-bottom:50px;
+    }
+    .services-list {
+        margin-bottom: 60px;
+        display: grid;
+        grid-gap: 30px;
+        grid-template-columns: auto;
+        a {
+            position: relative;
+            text-align: center;
+            text-decoration: none;
+        }
+        .post-title {
+            width: 80%;
+            z-index: 2;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 20px;
+        }
+        .attachment-full {
+            width:330px;
+            height: 330px;
+        }
+        .img-overlay{
+            z-index: 1;
+            position: absolute;
+            width:330px;
+            height: 98%;
+            background: $overlay;
+        }
+        @include grid-media($medium-min) {
+            grid-template-columns: auto auto auto;
+            .attachment-full {
+                width:300px;
+                height: 300px;
+            }
+            .img-overlay{
+                width: 100%;
+                height: 98%;
+            }
+        }
+    }
+}
