@@ -31,7 +31,6 @@
             min-width: 100px;
             @include grid-media($medium-min) {
                margin: 5% 0 5% 7%;
-               height:39px;
                min-width: 400px;
             }
         }
