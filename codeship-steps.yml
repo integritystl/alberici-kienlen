@@ -1,13 +1,10 @@
 - name: ci
   type: serial
   steps:
-  # - service: app_build
-  #   tag: ^(?!develop|master)
-  #   command: npm run-script build-production
 
-  - service: app_build
-    tag: develop
-    command: ./scripts/deploy-staging.sh
+  # - service: app_build
+  #   tag: develop
+  #   command: ./scripts/deploy-staging.sh
 
   - service: app_build
     tag: develop

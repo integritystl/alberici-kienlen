@@ -11,7 +11,7 @@ class Card extends React.Component {
         <img
           src={this.props.image}
           srcSet={this.props.imageSrcset}
-          sizes="(max-width: 1400px) 100vw, 1400px" />
+          sizes="(max-width: 600px) 100vw, 600px" />
           <a href={this.props.link}>
             <div className="news-meta">
               <span className="card-post--market" dangerouslySetInnerHTML={{__html: this.props.marketName}} />

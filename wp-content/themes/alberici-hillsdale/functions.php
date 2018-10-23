@@ -131,8 +131,8 @@ if ( ! function_exists( 'alberici_hillsdale_setup' ) ) :
 		 */
 		add_theme_support( 'post-thumbnails' );
 
-		add_image_size( 'tile-image', 700, 400, true );
-		add_image_size( 'blog-image', 600, 600, true );
+		add_image_size( 'tile_image', 700, 400, true );
+		add_image_size( 'blog_image', 600, 600, true );
 
 		// This theme uses wp_nav_menu() in 3 locations.
 		register_nav_menus( array(
@@ -205,12 +205,9 @@ function alberici_hillsdale_scripts() {
 
 	wp_enqueue_style( 'alberici-fontawesome',  get_template_directory_uri() . '/fonts/css/all.css');
 
-	wp_register_script('alberici-hillsdale-scripts', get_template_directory_uri() . '/js/app.js', array('jquery'), time(), true);
-
 	wp_enqueue_script( 'jquery-sidr', get_template_directory_uri() . '/js/jquery.sidr.min.js', array('jquery'), time(), true );
 
-	wp_enqueue_script( 'alberici-hillsdale-main', get_template_directory_uri() . '/js/main.js', array('jquery'), time(), true );
-	wp_enqueue_script( 'alberici-hillsdale-header', get_template_directory_uri() . '/js/src/header.js', array('jquery'), time(), true );
+	wp_enqueue_script('alberici-hillsdale-scripts', get_template_directory_uri() . '/js/app.js', array('jquery'), time(), true);
 
 	if (is_page_template('page-card-list.php')) {
 			wp_register_script('alberici-hillsdale-news', get_template_directory_uri() . '/js/react_src/dist/card-list-view.js', array(), time(), true );
@@ -227,8 +224,6 @@ function alberici_hillsdale_scripts() {
 	// if (is_page_template('page-projects.php')) {
 	// 		wp_enqueue_script('alberici-hillsdale-news', get_template_directory_uri() . '/js/react_src/dist/projects.js', array(), time(), true );
 	// }
-
-
 }
 add_action( 'wp_enqueue_scripts', 'alberici_hillsdale_scripts' );
 
@@ -270,3 +265,53 @@ function add_file_types_to_uploads($file_types){
 	return $file_types;
 }
 add_action('upload_mimes', 'add_file_types_to_uploads');
+
+//Remove default WP Emoji calls to cut back on unnecessary calls
+// Ref: https://kinsta.com/knowledgebase/disable-emojis-wordpress/
+/**
+ * Disable the emoji's
+ */
+function disable_emojis() {
+ remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
+ remove_action( 'admin_print_scripts', 'print_emoji_detection_script' );
+ remove_action( 'wp_print_styles', 'print_emoji_styles' );
+ remove_action( 'admin_print_styles', 'print_emoji_styles' );
+ remove_filter( 'the_content_feed', 'wp_staticize_emoji' );
+ remove_filter( 'comment_text_rss', 'wp_staticize_emoji' );
+ remove_filter( 'wp_mail', 'wp_staticize_emoji_for_email' );
+ add_filter( 'tiny_mce_plugins', 'disable_emojis_tinymce' );
+ add_filter( 'wp_resource_hints', 'disable_emojis_remove_dns_prefetch', 10, 2 );
+}
+add_action( 'init', 'disable_emojis' );
+
+/**
+ * Filter function used to remove the tinymce emoji plugin.
+ *
+ * @param array $plugins
+ * @return array Difference betwen the two arrays
+ */
+function disable_emojis_tinymce( $plugins ) {
+ if ( is_array( $plugins ) ) {
+ return array_diff( $plugins, array( 'wpemoji' ) );
+ } else {
+ return array();
+ }
+}
+
+/**
+ * Remove emoji CDN hostname from DNS prefetching hints.
+ *
+ * @param array $urls URLs to print for resource hints.
+ * @param string $relation_type The relation type the URLs are printed for.
+ * @return array Difference betwen the two arrays.
+ */
+function disable_emojis_remove_dns_prefetch( $urls, $relation_type ) {
+ if ( 'dns-prefetch' == $relation_type ) {
+ /** This filter is documented in wp-includes/formatting.php */
+ $emoji_svg_url = apply_filters( 'emoji_svg_url', 'https://s.w.org/images/core/emoji/2/svg/' );
+
+$urls = array_diff( $urls, array( $emoji_svg_url ) );
+ }
+
+return $urls;
+}
