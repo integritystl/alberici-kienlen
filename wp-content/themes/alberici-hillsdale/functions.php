@@ -224,8 +224,6 @@ function alberici_hillsdale_scripts() {
 	// if (is_page_template('page-projects.php')) {
 	// 		wp_enqueue_script('alberici-hillsdale-news', get_template_directory_uri() . '/js/react_src/dist/projects.js', array(), time(), true );
 	// }
-
-
 }
 add_action( 'wp_enqueue_scripts', 'alberici_hillsdale_scripts' );
 

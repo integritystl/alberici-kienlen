@@ -70,6 +70,58 @@ class ACFOptionsPage {
 		if( function_exists('acf_add_local_field_group') ):
 
 			acf_add_local_field_group(array(
+				'key' => 'group_5bca218e17c58',
+				'title' => 'Set to Kienlen',
+				'fields' => array(
+					array(
+						'key' => 'field_5bca21976f78c',
+						'label' => 'Set site',
+						'name' => 'set_site',
+						'type' => 'radio',
+						'instructions' => '',
+						'required' => 0,
+						'conditional_logic' => 0,
+						'wrapper' => array(
+							'width' => '',
+							'class' => '',
+							'id' => '',
+						),
+						'choices' => array(
+							'hillsdale' => 'Hillsdale',
+							'kienlen' => 'Kienlen',
+						),
+						'allow_null' => 0,
+						'other_choice' => 0,
+						'default_value' => 'Hillsdale',
+						'layout' => 'vertical',
+						'return_format' => 'value',
+						'save_other_choice' => 0,
+					),
+				),
+				'location' => array(
+					array(
+						array(
+							'param' => 'options_page',
+							'operator' => '==',
+							'value' => 'global-settings',
+						),
+					),
+				),
+				'menu_order' => 0,
+				'position' => 'normal',
+				'style' => 'default',
+				'label_placement' => 'top',
+				'instruction_placement' => 'label',
+				'hide_on_screen' => '',
+				'active' => 1,
+				'description' => '',
+			));
+			
+			endif;
+
+		if( function_exists('acf_add_local_field_group') ):
+
+			acf_add_local_field_group(array(
 				'key' => 'group_5b6b1433e3e7a',
 				'title' => 'Footer',
 				'fields' => array(
