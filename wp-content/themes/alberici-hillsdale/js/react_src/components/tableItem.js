@@ -6,7 +6,7 @@ class TableItem extends React.Component {
 
 
     return(
-      <tr className="card-post card-news post">
+      <tr className="">
         <td><a href={this.props.link}><h3 dangerouslySetInnerHTML={{__html: this.props.title}} /></a></td>
         <td>
             <span className="card-post--market" dangerouslySetInnerHTML={{__html: this.props.marketName}} />

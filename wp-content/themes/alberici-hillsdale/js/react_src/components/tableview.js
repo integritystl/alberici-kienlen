@@ -14,10 +14,12 @@ class TableList extends React.Component {
         postsPerPage: 6,
         market_categories: [],
         location_categories: [],
+        service_categories: [],
         isFiltered: false,
         filteredProjects: [],
         filteredMarket: '',
         filteredLocation: '',
+        filteredService: '',
         hasSearchTerm: false,
         searchTerm: '',
         totalProjects: parseInt(wpObj.totalProjects.publish),
@@ -29,6 +31,7 @@ class TableList extends React.Component {
     this.getPosts(this.buildAPILink());
     this.getMarketCats();
     this.getLocationCats();
+    this.getServiceCats();
   }
 
   //Fetch posts
@@ -138,6 +141,32 @@ class TableList extends React.Component {
       });
   }
 
+  //Fetch our Services Categories
+  getServiceCats() {
+    let serviceCatApi = wpObj.serviceCat_endpoint;
+    fetch(serviceCatApi)
+      .then( response => {
+        return(response.json());
+      })
+      .then(json => {
+        this.setState({
+          service_categories: json,
+        })
+      });
+  }
+
+  //Handles Service Filter
+  handleServiceChange(id) {
+    if (id === 'Service') {
+      id = ''
+    }
+    this.setState({
+      filteredService: parseInt(id),
+      isFiltered: true,
+      loading: true
+    }, () => this.getFilteredPosts(this.buildAPILink()) );
+  }
+
   //Search Input Filter
   handleSearch(term) {
     console.log('search term', term);
@@ -168,11 +197,42 @@ class TableList extends React.Component {
     let filterPosts = this.state.filteredProjects;
 
     let filteredLocationName = '';
+    let filteredServiceName = '';
     let filteredMarketName = '';
 
     let allPostsOffset = this.state.currentPage * this.state.postsPerPage;
 
+    if (this.state.loading) {
+      postGroup = <div className="loading-spinner">Loading...</div>;
+    } else if (allPosts && this.state.isFiltered === false) {
+      postGroup =  <Table
+                posts = {this.state.projects}
+                markets = {this.state.market_categories}
+                services = {this.state.service_categories}
+                getCatName = {this.getCatName.bind(this)}
+              />
+    } else if ( filterPosts && this.state.isFiltered === true ) {
+      postGroup = <Table
+                    posts = {this.state.filteredProjects}
+                    markets = {this.state.market_categories}
+                    services = {this.state.service_categories}
+                    getCatName = {this.getCatName.bind(this)}
+                    filteredService = {this.state.filteredService}
+                    filteredMarket = {this.state.filteredMarket}
+                  />
 
+      //Get the names of filtered service categories for display purposes
+      if (this.state.service_categories && this.state.filteredService) {
+        filteredServiceName = this.getCatName(this.state.filteredService, this.state.service_categories);
+      }
+      //Get the names of filtered markets for display purposes
+      if (this.state.market_categories && this.state.filteredMarket) {
+        filteredMarketName = this.getCatName(this.state.filteredMarket, this.state.market_categories);
+      }
+    } else if (filterPosts === 0 && this.state.isFiltered === true) {
+      postGroup = 'No results';
+      loadMoreBtn = '';
+    }
 
 
     return(
@@ -182,6 +242,10 @@ class TableList extends React.Component {
           marketFilter = {this.state.filteredMarket}
           marketFilterName = {filteredMarketName}
           marketChange = {this.handleMarketChange.bind(this)}
+          services = {this.state.service_categories}
+          serviceFilter = {this.state.filteredService}
+          serviceFilterName = {filteredServiceName}
+          serviceChange = {this.handleServiceChange.bind(this)}
           locations = {this.state.location_categories}
           locationFilter = {this.state.filteredLocation}
            locationFilterName = {filteredLocationName}
@@ -192,32 +256,7 @@ class TableList extends React.Component {
         //  removeFilterTerm = {this.removeFilterTerm.bind(this)}
         />
 
-        <table className="table-projects">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Market</th>
-              <th>Service</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Test</td>
-              <td>test</td>
-              <td>test</td>
-            </tr>
-            <tr>
-              <td>Test</td>
-              <td>test</td>
-              <td>test</td>
-            </tr>
-            <tr>
-              <td>Test</td>
-              <td>test</td>
-              <td>test</td>
-            </tr>
-          </tbody>
-        </table>
+        {postGroup}
         <div className="table-projects-info">
           <ul className="table-projects-pagination">
             <li>1</li>
