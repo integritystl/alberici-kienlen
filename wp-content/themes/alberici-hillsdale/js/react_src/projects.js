@@ -1,14 +1,13 @@
 import React from 'react';
 import {render} from 'react-dom';
-
-import FilterBar from './components/filterbar.js'
+import {fetch} from 'whatwg-fetch';
+import TableList from './components/tableview.js'
 
 class AppInitializer {
   run() {
     render(
       <div>
-        Applesauce
-        <FilterBar />
+        <TableList />
       </div>,
       document.getElementById('projects_app')
     )

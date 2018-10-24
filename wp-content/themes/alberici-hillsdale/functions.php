@@ -210,20 +210,26 @@ function alberici_hillsdale_scripts() {
 	wp_enqueue_script('alberici-hillsdale-scripts', get_template_directory_uri() . '/js/app.js', array('jquery'), time(), true);
 
 	if (is_page_template('page-card-list.php')) {
-			wp_register_script('alberici-hillsdale-news', get_template_directory_uri() . '/js/react_src/dist/card-list-view.js', array(), time(), true );
-			wp_enqueue_script('alberici-hillsdale-news', get_template_directory_uri() . '/js/react_src/dist/card-list-view.js', array(), time(), true );
+			wp_register_script('alberici-hillsdale-news', get_template_directory_uri() . '/js/react_src/dist/cardList.js', array(), time(), true );
+			wp_enqueue_script('alberici-hillsdale-news', get_template_directory_uri() . '/js/react_src/dist/cardList.js', array(), time(), true );
 			wp_localize_script('alberici-hillsdale-news', 'wpObj', array(
 				'posts_endpoint' => home_url('/wp-json/wp/v2/posts?_embed'),
 				'projects_endpoint' => home_url('/wp-json/wp/v2/project?_embed'),
 				'marketCat_endpoint' => home_url('/wp-json/wp/v2/market_category'),
 				'serviceCat_endpoint' => home_url('/wp-json/wp/v2/service_category'),
 				'totalPosts' => wp_count_posts(), //TODO make one for Projects Post Count
-				//TODO: add the endpoint for Location Categories here too;
 			));
 	}
-	// if (is_page_template('page-projects.php')) {
-	// 		wp_enqueue_script('alberici-hillsdale-news', get_template_directory_uri() . '/js/react_src/dist/projects.js', array(), time(), true );
-	// }
+	if (is_page_template('page-projects.php')) {
+			wp_register_script('alberici-hillsdale-project-table', get_template_directory_uri() . '/js/react_src/dist/projects.js', array(), time(), true );
+			wp_enqueue_script('alberici-hillsdale-project-table', get_template_directory_uri() . '/js/react_src/dist/projects.js', array(), time(), true );
+			wp_localize_script('alberici-hillsdale-project-table', 'wpObj', array(
+				'projects_endpoint' => home_url('/wp-json/wp/v2/project?_embed'),
+				'marketCat_endpoint' => home_url('/wp-json/wp/v2/market_category'),
+				'locationCat_endpoint' => home_url('/wp-json/wp/v2/location_category'),
+				'totalProjects' => wp_count_posts('project'),
+			));
+	}
 }
 add_action( 'wp_enqueue_scripts', 'alberici_hillsdale_scripts' );
 

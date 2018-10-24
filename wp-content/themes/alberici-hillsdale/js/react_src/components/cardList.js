@@ -68,6 +68,7 @@ class CardList extends React.Component {
           headers: new Headers({'Authorization': 'Basic ' + btoa("demo:alberici") }),
         })
         .then( response => {
+          console.log('news response', response)
           return(response.json());
         })
         .then(json => {
@@ -255,7 +256,6 @@ class CardList extends React.Component {
     }
 
     render() {
-
       let postGroup = '';
       let loadMoreBtn = '';
       let loadMoreLabel = 'View More Posts'; //TODO: If postData is Projects, this label should read 'View More Projects'
