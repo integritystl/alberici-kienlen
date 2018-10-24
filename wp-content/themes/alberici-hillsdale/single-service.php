@@ -93,6 +93,7 @@ $HeroImage = get_field('general_hero_featured_image');
 				<li>
 					<p><?php $category = get_the_category(); echo $category[0]->cat_name; ?></p>
 					<a href="<?php the_permalink(); ?>">
+						<span class="img-overlay"></span>
 						<?php echo wp_get_attachment_image( get_post_thumbnail_id(get_the_ID()), 'blog_image', false );?>
 						<span class="projects-text">
 							<?php
