@@ -8,6 +8,9 @@ footer {
     text-decoration: none;
   }
 }
+.clear {
+  clear: both;
+}
 .site-copyright {
    grid-column: span 12;
    place-self: center;
@@ -62,4 +65,12 @@ footer {
        }
      }
    }
+}
+
+//sticky footer
+.site-content {
+  min-height: calc(100vh - 187px);
+}
+.site-footer {
+  height: 63px;
 }

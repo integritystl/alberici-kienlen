@@ -1,0 +1,93 @@
+.alberici-kienlen {
+    .service-detail {
+        display: block;
+        .post-thumbnail img {
+                height: auto;
+        }
+        .service-content {
+            margin: 0 20px;
+        }
+        @include grid-media($medium-min) {
+            display: flex;
+            margin: 4% 10%;
+            .service-content {
+                margin: 1.5% 10% 0 50px;
+                width: calc(97.33% - 9.33333px);
+            }
+        }
+    }
+    .services-latest-3 {
+        margin: 0 15px;
+        @include grid-media($medium-min) {
+            margin: auto;
+        }
+        .headline-lines {
+            &:after {
+                display: block;
+                content: " ";
+                background-color: $blue;
+                opacity: 0.5;
+                height: 1px;
+                width: 100%;
+            }
+        }
+        h2 {
+            margin-top: 30px;
+            color: $blue;
+        }
+        ul {
+            margin-bottom: 10px;
+            display: block;
+            li a {
+                display: block;
+                position: relative;
+                text-decoration: none;
+                color: white;
+                font-weight: 500;
+                img {
+                    width:100%;
+                    height: 300px;
+                }
+                .projects-text {
+                    position: absolute;
+                    margin-bottom: 20px;
+                    top: 20px;
+                    width: 90%;
+                    p, h3 {
+                        margin-left: 25px;
+                        margin-right: 25px;
+                        font-weight: 400;
+                    }
+                    h3 {
+                        margin-top: 15px;
+                    }
+                    p:not(:last-child) {
+                        margin-bottom: 0;
+                    }
+                }
+            }
+            li:nth-child(1), li:nth-child(2) {
+                margin-right: 0;
+                @include grid-media($small-min) {
+                    margin-right: 20px;
+                }
+            }
+    
+            @include grid-media($small-min) {
+                display: flex;
+                flex-wrap: initial;
+                margin-bottom: 40px;
+            } 
+        }
+        .btn {
+            color: white;
+            font-weight: 400;
+            margin-left: 0;
+            min-width: 100%;
+            @include grid-media($small-min) {
+                margin-left: 29%;
+                min-width: 400px;
+            }
+        }
+    }
+}

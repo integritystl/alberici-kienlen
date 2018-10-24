@@ -8,7 +8,12 @@
 @import "market-detail";
 @import "career";
 @import "default-page";
-@import "services";
 @import "contact";
 @import "project-detail";
-@import "service-detail";
+@import "homepage-news";
+
+//Kienlen Styles
+@import "kienlen/services";
+@import "kienlen/service-detail";
+@import "kienlen/kienlen-about-us";
+@import "kienlen/header-footer";

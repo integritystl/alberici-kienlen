@@ -210,17 +210,48 @@ class CardList extends React.Component {
     resetFilter(){
       //TODO set the selects back to default value and the search box to empty
       let searchInput = document.getElementById('filterbar-search');
-      searchInput.value = '';
+      let serviceSelect = document.getElementById('filterbar-select-service');
+      let marketSelect = document.getElementById('filterbar-select-market');
 
+      // let serviceFilterTerm = document.getElementById('filter-info-service');
+      // let marketFilterTerm = document.getElementById('filter-info-market');
+      searchInput.value = '';
+      //I'm cheating :\
+      marketSelect.value = 'Market';
+      serviceSelect.value = 'Service';
 
       this.setState({
         isFiltered: false,
         filteredPosts: [],
-        filterMarket: '',
-        filterServices: '',
+        filteredMarket: '',
+        filteredService: '',
         hasSearchTerm: false,
         searchTerm: ''
       }, () => this.getPosts())
+    }
+
+    removeFilterTerm(currentTermId){
+      if (currentTermId === 'filter-info-service') {
+        console.log('services')
+        this.setState({
+          filteredService: '',
+        }, () => this.checkFilterStatus())
+        document.getElementById('filterbar-select-service').value = 'Service';
+      } else if (currentTermId === 'filter-info-market') {
+        // it's markets
+        this.setState({
+          filteredMarket: '',
+        }, () => this.checkFilterStatus())
+        document.getElementById('filterbar-select-market').value = 'Market';
+      }
+    }
+
+    checkFilterStatus(){
+      if (!this.state.filteredMarket && !this.state.filteredService && !this.state.hasSearchTerm) {
+        this.setState({
+          isFiltered: false,
+        })
+      }
     }
 
     render() {
@@ -286,6 +317,7 @@ class CardList extends React.Component {
             isFiltered = {this.state.isFiltered}
             filterSearch = {this.handleSearch.bind(this)}
             resetFilter = {this.resetFilter.bind(this)}
+            removeFilterTerm = {this.removeFilterTerm.bind(this)}
           />
           {postGroup}
           {loadMoreBtn}
