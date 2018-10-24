@@ -18,7 +18,8 @@ h6 {
   margin: 0 0 $small-spacing;
 }
 
-.home h1 {
+.hero-image h1,
+.hero-area h1, {
   font-size: 48px;
   font-weight: 300;
   @include grid-media($medium-min) {

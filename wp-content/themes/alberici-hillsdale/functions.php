@@ -209,6 +209,7 @@ function alberici_hillsdale_scripts() {
 
 	wp_enqueue_script('alberici-hillsdale-scripts', get_template_directory_uri() . '/js/app.js', array('jquery'), time(), true);
 
+
 	if (is_page_template('page-card-list.php')) {
 			wp_register_script('alberici-hillsdale-news', get_template_directory_uri() . '/js/react_src/dist/cardList.js', array(), time(), true );
 			wp_enqueue_script('alberici-hillsdale-news', get_template_directory_uri() . '/js/react_src/dist/cardList.js', array(), time(), true );
