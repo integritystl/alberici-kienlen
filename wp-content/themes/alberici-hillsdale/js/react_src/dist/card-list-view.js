@@ -10274,8 +10274,9 @@ var CardList = function (_React$Component) {
     // let serviceFilterTerm = document.getElementById('filter-info-service');
     // let marketFilterTerm = document.getElementById('filter-info-market');
     searchInput.value = '';
-    // marketSelect.value = '';
-    // serviceSelect.value = '';
+    //I'm cheating :\
+    marketSelect.value = 'Market';
+    serviceSelect.value = 'Service';
 
     this.setState({
       isFiltered: false,
@@ -10287,6 +10288,36 @@ var CardList = function (_React$Component) {
     }, function () {
       return _this10.getPosts();
     });
+  };
+
+  CardList.prototype.removeFilterTerm = function removeFilterTerm(currentTermId) {
+    var _this11 = this;
+
+    if (currentTermId === 'filter-info-service') {
+      console.log('services');
+      this.setState({
+        filteredService: ''
+      }, function () {
+        return _this11.checkFilterStatus();
+      });
+      document.getElementById('filterbar-select-service').value = 'Service';
+    } else if (currentTermId === 'filter-info-market') {
+      // it's markets
+      this.setState({
+        filteredMarket: ''
+      }, function () {
+        return _this11.checkFilterStatus();
+      });
+      document.getElementById('filterbar-select-market').value = 'Market';
+    }
+  };
+
+  CardList.prototype.checkFilterStatus = function checkFilterStatus() {
+    if (!this.state.filteredMarket && !this.state.filteredService && !this.state.hasSearchTerm) {
+      this.setState({
+        isFiltered: false
+      });
+    }
   };
 
   CardList.prototype.render = function render() {
@@ -10360,7 +10391,8 @@ var CardList = function (_React$Component) {
         serviceChange: this.handleServiceChange.bind(this),
         isFiltered: this.state.isFiltered,
         filterSearch: this.handleSearch.bind(this),
-        resetFilter: this.resetFilter.bind(this)
+        resetFilter: this.resetFilter.bind(this),
+        removeFilterTerm: this.removeFilterTerm.bind(this)
       }),
       postGroup,
       loadMoreBtn
@@ -10519,10 +10551,9 @@ var Select = function (_React$Component) {
   }
 
   Select.prototype.componentWillMount = function componentWillMount() {
-    console.log('select state', this.state);
-    var defaultValue = this.props.defaultValue ? this.props.defaultValue : '';
+    var defaultValue = this.props.defaultValue ? this.props.defaultValue : this.props.label;
     this.setState({
-      selected: defaultValue
+      selected: this.props.label
     });
   };
 
@@ -10594,15 +10625,9 @@ var FilterBar = function (_React$Component) {
     _this.filterMarkets = _this.filterMarkets.bind(_this);
     _this.filterServices = _this.filterServices.bind(_this);
     _this.resetFilter = _this.resetFilter.bind(_this);
+    _this.removeFilterTerm = _this.removeFilterTerm.bind(_this);
     return _this;
   }
-
-  // componentWillMount(){
-  //   let defaultValue = this.props.defaultValue ? this.props.defaultValue : ''
-  //   this.setState({
-  //     selected: defaultValue,
-  //   })
-  // }
 
   FilterBar.prototype.filterSearch = function filterSearch(event) {
     var term = event.target.value;
@@ -10621,6 +10646,13 @@ var FilterBar = function (_React$Component) {
     this.props.resetFilter();
   };
 
+  FilterBar.prototype.removeFilterTerm = function removeFilterTerm(event) {
+    var currentTermId = event.target.id;
+    console.log('remove this', event.target.id);
+    console.log('props', this.props);
+    this.props.removeFilterTerm(currentTermId);
+  };
+
   FilterBar.prototype.render = function render() {
     var _this2 = this;
 
@@ -10629,10 +10661,14 @@ var FilterBar = function (_React$Component) {
     var filterTerms = '';
     var resetBtn = '';
     if (this.props.serviceFilterName) {
-      currentServiceFilter = _react2.default.createElement('span', { id: 'filter-info-service', className: 'filter-info--term', dangerouslySetInnerHTML: { __html: this.props.serviceFilterName } });
+      currentServiceFilter = _react2.default.createElement('span', { id: 'filter-info-service', onClick: function onClick(event) {
+          return _this2.removeFilterTerm(event);
+        }, className: 'filter-info--term', key: this.props.serviceFilter, dangerouslySetInnerHTML: { __html: this.props.serviceFilterName } });
     }
     if (this.props.marketFilterName) {
-      currentMarketFilter = _react2.default.createElement('span', { id: 'filter-info-market', className: 'filter-info--term', dangerouslySetInnerHTML: { __html: this.props.marketFilterName } });
+      currentMarketFilter = _react2.default.createElement('span', { id: 'filter-info-market', onClick: function onClick(event) {
+          return _this2.removeFilterTerm(event);
+        }, className: 'filter-info--term', key: this.props.marketFilter, dangerouslySetInnerHTML: { __html: this.props.marketFilterName } });
     }
     if (this.props.isFiltered) {
       filterTerms = _react2.default.createElement(

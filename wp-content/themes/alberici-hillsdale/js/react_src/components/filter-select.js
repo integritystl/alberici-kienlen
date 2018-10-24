@@ -7,13 +7,12 @@ class Select extends React.Component {
     this.changeSelect = this.changeSelect.bind(this);
   }
 
-
   componentWillMount(){
-    console.log('select state', this.state)
-    let defaultValue = this.props.defaultValue ? this.props.defaultValue : ''
+   let defaultValue = this.props.defaultValue ? this.props.defaultValue : this.props.label;
     this.setState({
-      selected: defaultValue,
+      selected: this.props.label,
     })
+
   }
 
   changeSelect(e){

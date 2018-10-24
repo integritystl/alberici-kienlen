@@ -216,8 +216,9 @@ class CardList extends React.Component {
       // let serviceFilterTerm = document.getElementById('filter-info-service');
       // let marketFilterTerm = document.getElementById('filter-info-market');
       searchInput.value = '';
-      // marketSelect.value = '';
-      // serviceSelect.value = '';
+      //I'm cheating :\
+      marketSelect.value = 'Market';
+      serviceSelect.value = 'Service';
 
       this.setState({
         isFiltered: false,
@@ -227,6 +228,30 @@ class CardList extends React.Component {
         hasSearchTerm: false,
         searchTerm: ''
       }, () => this.getPosts())
+    }
+
+    removeFilterTerm(currentTermId){
+      if (currentTermId === 'filter-info-service') {
+        console.log('services')
+        this.setState({
+          filteredService: '',
+        }, () => this.checkFilterStatus())
+        document.getElementById('filterbar-select-service').value = 'Service';
+      } else if (currentTermId === 'filter-info-market') {
+        // it's markets
+        this.setState({
+          filteredMarket: '',
+        }, () => this.checkFilterStatus())
+        document.getElementById('filterbar-select-market').value = 'Market';
+      }
+    }
+
+    checkFilterStatus(){
+      if (!this.state.filteredMarket && !this.state.filteredService && !this.state.hasSearchTerm) {
+        this.setState({
+          isFiltered: false,
+        })
+      }
     }
 
     render() {
@@ -292,6 +317,7 @@ class CardList extends React.Component {
             isFiltered = {this.state.isFiltered}
             filterSearch = {this.handleSearch.bind(this)}
             resetFilter = {this.resetFilter.bind(this)}
+            removeFilterTerm = {this.removeFilterTerm.bind(this)}
           />
           {postGroup}
           {loadMoreBtn}

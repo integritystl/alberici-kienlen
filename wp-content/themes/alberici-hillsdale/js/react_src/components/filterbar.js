@@ -9,14 +9,8 @@ class FilterBar extends React.Component {
     this.filterMarkets = this.filterMarkets.bind(this);
     this.filterServices = this.filterServices.bind(this);
     this.resetFilter = this.resetFilter.bind(this);
+    this.removeFilterTerm = this.removeFilterTerm.bind(this);
   }
-
-  // componentWillMount(){
-  //   let defaultValue = this.props.defaultValue ? this.props.defaultValue : ''
-  //   this.setState({
-  //     selected: defaultValue,
-  //   })
-  // }
 
   filterSearch(event) {
     let term = event.target.value;
@@ -34,16 +28,23 @@ class FilterBar extends React.Component {
     this.props.resetFilter();
   }
 
+  removeFilterTerm(event){
+    let currentTermId = event.target.id
+    console.log('remove this', event.target.id);
+    console.log('props', this.props);
+    this.props.removeFilterTerm(currentTermId);
+  }
+
   render() {
     let currentServiceFilter = '';
     let currentMarketFilter = '';
     let filterTerms = '';
     let resetBtn = '';
     if (this.props.serviceFilterName) {
-      currentServiceFilter = <span id="filter-info-service" className="filter-info--term" dangerouslySetInnerHTML={{__html:this.props.serviceFilterName}} />;
+      currentServiceFilter = <span id="filter-info-service" onClick={(event) => this.removeFilterTerm(event) } className="filter-info--term" key={this.props.serviceFilter} dangerouslySetInnerHTML={{__html:this.props.serviceFilterName}} />;
     }
     if (this.props.marketFilterName) {
-      currentMarketFilter = <span id="filter-info-market" className="filter-info--term" dangerouslySetInnerHTML={{__html:this.props.marketFilterName}} />;
+      currentMarketFilter = <span id="filter-info-market" onClick={(event) => this.removeFilterTerm(event) } className="filter-info--term" key={this.props.marketFilter} dangerouslySetInnerHTML={{__html:this.props.marketFilterName}} />;
     }
     if (this.props.isFiltered) {
       filterTerms =  <span><span className="filter-label">Filter By:</span> {currentServiceFilter} {currentMarketFilter}</span>;
