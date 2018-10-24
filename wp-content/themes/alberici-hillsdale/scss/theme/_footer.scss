@@ -23,10 +23,22 @@ footer {
     font-weight: 300;
     font-size: 14px;
     margin: 4px 0 0;
-    a:before {
-      content:'|';
-      padding-left: 5px;
-      padding-right: 8px;
+
+  }
+
+  a {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+    @include grid-media($small-min) {
+      display: inline-block;
+      text-align: left;
+      margin: 0;
+      &:before {
+        content:'|';
+        padding-left: 5px;
+        padding-right: 8px;
+      }
     }
   }
 }
@@ -72,5 +84,5 @@ footer {
   min-height: calc(100vh - 187px);
 }
 .site-footer {
-  height: 63px;
+  height: 100%;
 }
