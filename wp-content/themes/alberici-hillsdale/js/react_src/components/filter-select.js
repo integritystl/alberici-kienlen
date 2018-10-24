@@ -9,10 +9,17 @@ class Select extends React.Component {
 
 
   componentWillMount(){
+    console.log('select state', this.state)
     let defaultValue = this.props.defaultValue ? this.props.defaultValue : ''
+    this.setState({
+      selected: defaultValue,
+    })
   }
 
   changeSelect(e){
+    this.setState({
+      selected: e.target.value
+    })
     this.props.onFilterChange(e.target.value);
   }
 
@@ -26,7 +33,9 @@ class Select extends React.Component {
 
     return(
       <select
-      onChange={this.changeSelect} >
+      id={this.props.selectID}
+      onChange={this.changeSelect}
+      value= {this.props.selected} >
         <option defaultValue={this.props.label} >{this.props.label}</option>
         {options}
       </select>

@@ -10268,13 +10268,20 @@ var CardList = function (_React$Component) {
 
     //TODO set the selects back to default value and the search box to empty
     var searchInput = document.getElementById('filterbar-search');
+    var serviceSelect = document.getElementById('filterbar-select-service');
+    var marketSelect = document.getElementById('filterbar-select-market');
+
+    // let serviceFilterTerm = document.getElementById('filter-info-service');
+    // let marketFilterTerm = document.getElementById('filter-info-market');
     searchInput.value = '';
+    // marketSelect.value = '';
+    // serviceSelect.value = '';
 
     this.setState({
       isFiltered: false,
       filteredPosts: [],
-      filterMarket: '',
-      filterServices: '',
+      filteredMarket: '',
+      filteredService: '',
       hasSearchTerm: false,
       searchTerm: ''
     }, function () {
@@ -10512,10 +10519,17 @@ var Select = function (_React$Component) {
   }
 
   Select.prototype.componentWillMount = function componentWillMount() {
+    console.log('select state', this.state);
     var defaultValue = this.props.defaultValue ? this.props.defaultValue : '';
+    this.setState({
+      selected: defaultValue
+    });
   };
 
   Select.prototype.changeSelect = function changeSelect(e) {
+    this.setState({
+      selected: e.target.value
+    });
     this.props.onFilterChange(e.target.value);
   };
 
@@ -10528,7 +10542,9 @@ var Select = function (_React$Component) {
     return _react2.default.createElement(
       'select',
       {
-        onChange: this.changeSelect },
+        id: this.props.selectID,
+        onChange: this.changeSelect,
+        value: this.props.selected },
       _react2.default.createElement(
         'option',
         { defaultValue: this.props.label },
@@ -10581,6 +10597,13 @@ var FilterBar = function (_React$Component) {
     return _this;
   }
 
+  // componentWillMount(){
+  //   let defaultValue = this.props.defaultValue ? this.props.defaultValue : ''
+  //   this.setState({
+  //     selected: defaultValue,
+  //   })
+  // }
+
   FilterBar.prototype.filterSearch = function filterSearch(event) {
     var term = event.target.value;
     this.props.filterSearch(term);
@@ -10606,10 +10629,10 @@ var FilterBar = function (_React$Component) {
     var filterTerms = '';
     var resetBtn = '';
     if (this.props.serviceFilterName) {
-      currentServiceFilter = _react2.default.createElement('span', { className: 'filter-info--term', dangerouslySetInnerHTML: { __html: this.props.serviceFilterName } });
+      currentServiceFilter = _react2.default.createElement('span', { id: 'filter-info-service', className: 'filter-info--term', dangerouslySetInnerHTML: { __html: this.props.serviceFilterName } });
     }
     if (this.props.marketFilterName) {
-      currentMarketFilter = _react2.default.createElement('span', { className: 'filter-info--term', dangerouslySetInnerHTML: { __html: this.props.marketFilterName } });
+      currentMarketFilter = _react2.default.createElement('span', { id: 'filter-info-market', className: 'filter-info--term', dangerouslySetInnerHTML: { __html: this.props.marketFilterName } });
     }
     if (this.props.isFiltered) {
       filterTerms = _react2.default.createElement(
@@ -10648,6 +10671,7 @@ var FilterBar = function (_React$Component) {
         'div',
         { className: 'select' },
         _react2.default.createElement(_filterSelect2.default, { label: 'Market',
+          selectID: 'filterbar-select-market',
           options: this.props.markets,
           onFilterChange: this.filterMarkets
         })
@@ -10656,6 +10680,7 @@ var FilterBar = function (_React$Component) {
         'div',
         { className: 'select' },
         _react2.default.createElement(_filterSelect2.default, { label: 'Service',
+          selectID: 'filterbar-select-service',
           options: this.props.services,
           onFilterChange: this.filterServices
         })

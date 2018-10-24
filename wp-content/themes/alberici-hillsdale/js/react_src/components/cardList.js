@@ -210,14 +210,20 @@ class CardList extends React.Component {
     resetFilter(){
       //TODO set the selects back to default value and the search box to empty
       let searchInput = document.getElementById('filterbar-search');
-      searchInput.value = '';
+      let serviceSelect = document.getElementById('filterbar-select-service');
+      let marketSelect = document.getElementById('filterbar-select-market');
 
+      // let serviceFilterTerm = document.getElementById('filter-info-service');
+      // let marketFilterTerm = document.getElementById('filter-info-market');
+      searchInput.value = '';
+      // marketSelect.value = '';
+      // serviceSelect.value = '';
 
       this.setState({
         isFiltered: false,
         filteredPosts: [],
-        filterMarket: '',
-        filterServices: '',
+        filteredMarket: '',
+        filteredService: '',
         hasSearchTerm: false,
         searchTerm: ''
       }, () => this.getPosts())

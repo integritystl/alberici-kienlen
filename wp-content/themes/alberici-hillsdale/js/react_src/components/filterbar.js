@@ -11,6 +11,13 @@ class FilterBar extends React.Component {
     this.resetFilter = this.resetFilter.bind(this);
   }
 
+  // componentWillMount(){
+  //   let defaultValue = this.props.defaultValue ? this.props.defaultValue : ''
+  //   this.setState({
+  //     selected: defaultValue,
+  //   })
+  // }
+
   filterSearch(event) {
     let term = event.target.value;
     this.props.filterSearch(term);
@@ -33,10 +40,10 @@ class FilterBar extends React.Component {
     let filterTerms = '';
     let resetBtn = '';
     if (this.props.serviceFilterName) {
-      currentServiceFilter = <span className="filter-info--term" dangerouslySetInnerHTML={{__html:this.props.serviceFilterName}} />;
+      currentServiceFilter = <span id="filter-info-service" className="filter-info--term" dangerouslySetInnerHTML={{__html:this.props.serviceFilterName}} />;
     }
     if (this.props.marketFilterName) {
-      currentMarketFilter = <span className="filter-info--term" dangerouslySetInnerHTML={{__html:this.props.marketFilterName}} />;
+      currentMarketFilter = <span id="filter-info-market" className="filter-info--term" dangerouslySetInnerHTML={{__html:this.props.marketFilterName}} />;
     }
     if (this.props.isFiltered) {
       filterTerms =  <span><span className="filter-label">Filter By:</span> {currentServiceFilter} {currentMarketFilter}</span>;
@@ -53,6 +60,7 @@ class FilterBar extends React.Component {
 
         <div className="select">
           <Select label="Market"
+            selectID= "filterbar-select-market"
             options={this.props.markets}
             onFilterChange={this.filterMarkets}
           />
@@ -60,6 +68,7 @@ class FilterBar extends React.Component {
 
         <div className="select">
           <Select label="Service"
+            selectID= "filterbar-select-service"
             options={this.props.services}
             onFilterChange={this.filterServices}
           />
