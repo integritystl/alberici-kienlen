@@ -19,14 +19,15 @@ class Table extends React.Component {
     if (this.props.posts && this.props.posts.length) {
 
       postComponents = this.props.posts.map((item, index) => {
-
+        let serviceName = [];
+        let marketName = [];
         //roll through array of service categories per post and get the name
-        // if (item.service_category) {
-        //   let postServices = item.service_category.filter( (cat) => {
-        //       let name = this.displayCatName(cat, this.props.services);
-        //       return serviceName.push(name);
-        //   })
-        // }
+        if (item.service_category) {
+          let postServices = item.service_category.filter( (cat) => {
+              let name = this.displayCatName(cat, this.props.services);
+              return serviceName.push(name);
+          })
+        }
 
         //same but with markets
         if (item.market_category) {
@@ -56,30 +57,19 @@ class Table extends React.Component {
 
 
     return(
-      <div className="card-group blog-content_posts">
-        <table className="table-projects">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Market</th>
-              <th>Service</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Test</td>
-              <td>test</td>
-              <td>test</td>
-            </tr>
-            <tr>
-              <td>Test</td>
-              <td>test</td>
-              <td>test</td>
-            </tr>
-          </tbody>
-        </table>
-        {postComponents}
-      </div>
+      <table className="table-projects">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Market</th>
+            <th>Service</th>
+          </tr>
+        </thead>
+        <tbody>
+          {postComponents}
+        </tbody>
+      </table>
+
     );
   }
 }
