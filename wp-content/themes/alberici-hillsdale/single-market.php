@@ -96,7 +96,7 @@ $HeroImage = get_field('general_hero_featured_image');
 							<li>
 								<p><?php $category = get_the_category(); echo $category[0]->cat_name; ?></p>
 								<a href="<?php the_permalink(); ?>">
-									<img src="<?php echo get_the_post_thumbnail_url(); ?>" class="project-img"/>
+									<?php echo wp_get_attachment_image( get_post_thumbnail_id(get_the_ID()), 'full', false );?>
 									<span class="post-title"><?php the_title(); ?></span>
 								</a>
 							</li>

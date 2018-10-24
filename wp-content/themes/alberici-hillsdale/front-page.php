@@ -49,16 +49,16 @@ $HeroButtonLink = get_field('homepage_hero_button_link');
 
 
 			<!-- News Section for Kienlen -->
-			<?php $the_query = new WP_Query( 'posts_per_page = 3' ); ?>
+			<?php $the_query = new WP_Query( 'posts_per_page=3' ); ?>
 			<?php if ( $the_query -> have_posts() ): ?>
 			<div class="news container">
 				<h2>News</h2>
 				<ul class="blog-content_posts">
 				<?php while ($the_query -> have_posts()) : $the_query -> the_post(); ?>
 					<li>
-						<a href="<?php the_permalink() ?>" >
+						<a href="<?php the_permalink(); ?>" >
 							<span class="news-meta">
-								<img src="<?php echo get_the_post_thumbnail_url(); ?>" class="news-img"/>
+								<?php echo wp_get_attachment_image( get_post_thumbnail_id(get_the_ID()), 'full', false );?>
 								<span class="news-text">
 									<?php
 									$market_taxonomy = get_the_terms( get_the_ID(), 'market_category' );
