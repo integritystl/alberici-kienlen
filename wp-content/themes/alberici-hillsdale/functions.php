@@ -209,7 +209,7 @@ function alberici_hillsdale_scripts() {
 
 	wp_enqueue_script( 'jquery-sidr', get_template_directory_uri() . '/js/jquery.sidr.min.js', array('jquery'), time(), true );
 
-	wp_enqueue_script( 'alberici-hillsdale-main', get_template_directory_uri() . '/js/main.js', array('jquery'), time(), true );
+	wp_enqueue_script( 'alberici-hillsdale-main', get_template_directory_uri() . '/js/src/main.js', array('jquery'), time(), true );
 	wp_enqueue_script( 'alberici-hillsdale-header', get_template_directory_uri() . '/js/src/header.js', array('jquery'), time(), true );
 
 	if (is_page_template('page-card-list.php')) {

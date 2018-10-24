@@ -1,10 +1,10 @@
 .entry-content {
     margin: 20px 0 0 0;
     p {
-        margin: 30px 10px 0 10px;
+        margin: 30px 0px 0 0px;
     }
     @include grid-media($medium-min) {
-        margin: 50px 0 180px 0;
+        margin: 50px 0 50px 0;
         .alignleft {
             float: left;
             margin-right: 30px;

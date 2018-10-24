@@ -5,6 +5,7 @@
   @extend .grid-container;
   grid-template-rows: 75% 25%;
   margin-top: -75px;
+  background-color: $dark-blue;
 
   > .container {
     grid-column: span 12;
@@ -61,8 +62,15 @@
 .hero-area {
   background-repeat: no-repeat;
   background-size: cover;
-  min-height:350px;
-  // padding: 185px 0;
+  background-color: $dark-gray;
+  min-height:300px;
+  margin-top: -68px;
+  display: flex;
+  align-items: center;
+  @include grid-media($medium-min) {
+    min-height:450px;
+  }
+
 
   &:after {
     content: "";
@@ -72,9 +80,8 @@
 
   h1 {
     text-align: center;
-    padding-top: 135px;
+    margin: 58px auto 0;
     color: white;
-    font-size: 78px;
   }
 }
 
