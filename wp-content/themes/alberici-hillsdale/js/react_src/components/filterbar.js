@@ -40,6 +40,29 @@ class FilterBar extends React.Component {
     let currentMarketFilter = '';
     let filterTerms = '';
     let resetBtn = '';
+    //Check if Service or Location exists, then output the one we want.
+    let secondarySelect = '';
+    if (this.props.services) {
+      secondarySelect =
+        <div className="select">
+          <Select label="Service"
+            selectID= "filterbar-select-service"
+            options={this.props.services}
+            onFilterChange={this.filterServices}
+          />
+        </div>
+    } else {
+      //It must be locations
+      secondarySelect =
+        <div className="select">
+          <Select label="Locations"
+            selectID= "filterbar-select-location"
+            options={this.props.locations}
+            onFilterChange={this.filterLocations}
+          />
+        </div>
+    }
+
     if (this.props.serviceFilterName) {
       currentServiceFilter = <span id="filter-info-service" onClick={(event) => this.removeFilterTerm(event) } className="filter-info--term" key={this.props.serviceFilter} dangerouslySetInnerHTML={{__html:this.props.serviceFilterName}} />;
     }
@@ -67,13 +90,7 @@ class FilterBar extends React.Component {
           />
         </div>
 
-        <div className="select">
-          <Select label="Service"
-            selectID= "filterbar-select-service"
-            options={this.props.services}
-            onFilterChange={this.filterServices}
-          />
-        </div>
+        {secondarySelect}
 
         <div className="filter-info">
           {filterTerms}
