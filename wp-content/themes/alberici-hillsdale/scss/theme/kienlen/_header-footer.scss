@@ -1,0 +1,22 @@
+.alberici-kienlen {
+    .site-header {
+        .utility-bar {
+            @include grid-media($headerMenu-min) {
+              background-color: $dark-gray;
+            }
+        }
+        .main-header {
+            background-color: white;
+            .main-navigation {
+                .menu {
+                    a {
+                        color: $dark-gray;
+                    }
+                }
+            }
+        }
+    }
+    footer {
+        background-color: $dark-blue;
+    }
+}

@@ -93,8 +93,19 @@ $HeroImage = get_field('general_hero_featured_image');
 				<li>
 					<p><?php $category = get_the_category(); echo $category[0]->cat_name; ?></p>
 					<a href="<?php the_permalink(); ?>">
-						<img src="<?php echo get_the_post_thumbnail_url(); ?>" class="project-img"/>
-						<span class="post-title"><?php the_title(); ?></span>
+						<?php echo wp_get_attachment_image( get_post_thumbnail_id(get_the_ID()), 'blog_image', false );?>
+						<span class="projects-text">
+							<?php
+							$market_taxonomy = get_the_terms( get_the_ID(), 'market_category' );
+							$service_taxonomy = get_the_terms( get_the_ID(), 'service_category' );
+							if ($market_taxonomy) { ?>
+								<p><?php echo $market_taxonomy[0]->name;?></p>
+							<?php }
+							if ($service_taxonomy) { ?>
+								<p><?php echo $service_taxonomy[0]->name;?></p>
+							<?php } ?>
+							<h3><?php  the_title();?></h3>
+						</span>
 					</a>
 				</li>
 				<?php endwhile; ?>
