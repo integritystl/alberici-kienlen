@@ -58,7 +58,7 @@ $HeroButtonLink = get_field('homepage_hero_button_link');
 					<li>
 						<a href="<?php the_permalink(); ?>" >
 							<span class="news-meta">
-								<?php echo wp_get_attachment_image( get_post_thumbnail_id(get_the_ID()), 'full', false );?>
+								<?php echo wp_get_attachment_image( get_post_thumbnail_id(get_the_ID()), 'blog_image', false );?>
 								<span class="news-text">
 									<?php
 									$market_taxonomy = get_the_terms( get_the_ID(), 'market_category' );
