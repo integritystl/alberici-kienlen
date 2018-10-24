@@ -10268,18 +10268,56 @@ var CardList = function (_React$Component) {
 
     //TODO set the selects back to default value and the search box to empty
     var searchInput = document.getElementById('filterbar-search');
+    var serviceSelect = document.getElementById('filterbar-select-service');
+    var marketSelect = document.getElementById('filterbar-select-market');
+
+    // let serviceFilterTerm = document.getElementById('filter-info-service');
+    // let marketFilterTerm = document.getElementById('filter-info-market');
     searchInput.value = '';
+    //I'm cheating :\
+    marketSelect.value = 'Market';
+    serviceSelect.value = 'Service';
 
     this.setState({
       isFiltered: false,
       filteredPosts: [],
-      filterMarket: '',
-      filterServices: '',
+      filteredMarket: '',
+      filteredService: '',
       hasSearchTerm: false,
       searchTerm: ''
     }, function () {
       return _this10.getPosts();
     });
+  };
+
+  CardList.prototype.removeFilterTerm = function removeFilterTerm(currentTermId) {
+    var _this11 = this;
+
+    if (currentTermId === 'filter-info-service') {
+      console.log('services');
+      this.setState({
+        filteredService: ''
+      }, function () {
+        return _this11.checkFilterStatus();
+      });
+      document.getElementById('filterbar-select-service').value = 'Service';
+    } else if (currentTermId === 'filter-info-market') {
+      // it's markets
+      this.setState({
+        filteredMarket: ''
+      }, function () {
+        return _this11.checkFilterStatus();
+      });
+      document.getElementById('filterbar-select-market').value = 'Market';
+    }
+  };
+
+  CardList.prototype.checkFilterStatus = function checkFilterStatus() {
+    if (!this.state.filteredMarket && !this.state.filteredService && !this.state.hasSearchTerm) {
+      this.setState({
+        isFiltered: false
+      });
+    }
   };
 
   CardList.prototype.render = function render() {
@@ -10353,7 +10391,8 @@ var CardList = function (_React$Component) {
         serviceChange: this.handleServiceChange.bind(this),
         isFiltered: this.state.isFiltered,
         filterSearch: this.handleSearch.bind(this),
-        resetFilter: this.resetFilter.bind(this)
+        resetFilter: this.resetFilter.bind(this),
+        removeFilterTerm: this.removeFilterTerm.bind(this)
       }),
       postGroup,
       loadMoreBtn
@@ -10512,10 +10551,16 @@ var Select = function (_React$Component) {
   }
 
   Select.prototype.componentWillMount = function componentWillMount() {
-    var defaultValue = this.props.defaultValue ? this.props.defaultValue : '';
+    var defaultValue = this.props.defaultValue ? this.props.defaultValue : this.props.label;
+    this.setState({
+      selected: this.props.label
+    });
   };
 
   Select.prototype.changeSelect = function changeSelect(e) {
+    this.setState({
+      selected: e.target.value
+    });
     this.props.onFilterChange(e.target.value);
   };
 
@@ -10528,7 +10573,9 @@ var Select = function (_React$Component) {
     return _react2.default.createElement(
       'select',
       {
-        onChange: this.changeSelect },
+        id: this.props.selectID,
+        onChange: this.changeSelect,
+        value: this.props.selected },
       _react2.default.createElement(
         'option',
         { defaultValue: this.props.label },
@@ -10578,6 +10625,7 @@ var FilterBar = function (_React$Component) {
     _this.filterMarkets = _this.filterMarkets.bind(_this);
     _this.filterServices = _this.filterServices.bind(_this);
     _this.resetFilter = _this.resetFilter.bind(_this);
+    _this.removeFilterTerm = _this.removeFilterTerm.bind(_this);
     return _this;
   }
 
@@ -10598,6 +10646,13 @@ var FilterBar = function (_React$Component) {
     this.props.resetFilter();
   };
 
+  FilterBar.prototype.removeFilterTerm = function removeFilterTerm(event) {
+    var currentTermId = event.target.id;
+    console.log('remove this', event.target.id);
+    console.log('props', this.props);
+    this.props.removeFilterTerm(currentTermId);
+  };
+
   FilterBar.prototype.render = function render() {
     var _this2 = this;
 
@@ -10606,10 +10661,14 @@ var FilterBar = function (_React$Component) {
     var filterTerms = '';
     var resetBtn = '';
     if (this.props.serviceFilterName) {
-      currentServiceFilter = _react2.default.createElement('span', { className: 'filter-info--term', dangerouslySetInnerHTML: { __html: this.props.serviceFilterName } });
+      currentServiceFilter = _react2.default.createElement('span', { id: 'filter-info-service', onClick: function onClick(event) {
+          return _this2.removeFilterTerm(event);
+        }, className: 'filter-info--term', key: this.props.serviceFilter, dangerouslySetInnerHTML: { __html: this.props.serviceFilterName } });
     }
     if (this.props.marketFilterName) {
-      currentMarketFilter = _react2.default.createElement('span', { className: 'filter-info--term', dangerouslySetInnerHTML: { __html: this.props.marketFilterName } });
+      currentMarketFilter = _react2.default.createElement('span', { id: 'filter-info-market', onClick: function onClick(event) {
+          return _this2.removeFilterTerm(event);
+        }, className: 'filter-info--term', key: this.props.marketFilter, dangerouslySetInnerHTML: { __html: this.props.marketFilterName } });
     }
     if (this.props.isFiltered) {
       filterTerms = _react2.default.createElement(
@@ -10648,6 +10707,7 @@ var FilterBar = function (_React$Component) {
         'div',
         { className: 'select' },
         _react2.default.createElement(_filterSelect2.default, { label: 'Market',
+          selectID: 'filterbar-select-market',
           options: this.props.markets,
           onFilterChange: this.filterMarkets
         })
@@ -10656,6 +10716,7 @@ var FilterBar = function (_React$Component) {
         'div',
         { className: 'select' },
         _react2.default.createElement(_filterSelect2.default, { label: 'Service',
+          selectID: 'filterbar-select-service',
           options: this.props.services,
           onFilterChange: this.filterServices
         })
