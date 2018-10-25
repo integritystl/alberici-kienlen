@@ -2,9 +2,9 @@
   type: serial
   steps:
 
-  # - service: app_build
-  #   tag: develop
-  #   command: ./scripts/deploy-staging.sh
+  - service: app_build
+    tag: develop
+    command: ./scripts/deploy-staging.sh
 
   - service: app_build
     tag: develop
