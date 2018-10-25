@@ -8,6 +8,7 @@ class FilterBar extends React.Component {
     this.filterSearch = this.filterSearch.bind(this);
     this.filterMarkets = this.filterMarkets.bind(this);
     this.filterServices = this.filterServices.bind(this);
+    this.filterLocations = this.filterLocations.bind(this);
     this.resetFilter = this.resetFilter.bind(this);
     this.removeFilterTerm = this.removeFilterTerm.bind(this);
   }
@@ -24,34 +25,40 @@ class FilterBar extends React.Component {
   filterServices(id){
     this.props.serviceChange(id);
   }
+
+  filterLocations(id) {
+    this.props.locationChange(id);
+  }
+
   resetFilter() {
     this.props.resetFilter();
   }
 
   removeFilterTerm(event){
     let currentTermId = event.target.id
-    console.log('remove this', event.target.id);
-    console.log('props', this.props);
     this.props.removeFilterTerm(currentTermId);
   }
 
   render() {
     let currentServiceFilter = '';
     let currentMarketFilter = '';
+    let currentLocationFilter = '';
     let filterTerms = '';
     let resetBtn = '';
     //Check if Service or Location exists, then output the one we want.
     let secondarySelect = '';
-    if (this.props.services) {
-      secondarySelect =
-        <div className="select">
-          <label className="screen-reader-text">Service</label>
-          <Select label="Service"
-            selectID= "filterbar-select-service"
-            options={this.props.services}
-            onFilterChange={this.filterServices}
-          />
-        </div>
+    if (this.props.postDataType === 'news') {
+      if (this.props.services) {
+        secondarySelect =
+          <div className="select">
+            <label className="screen-reader-text">Service</label>
+            <Select label="Service"
+              selectID= "filterbar-select-service"
+              options={this.props.services}
+              onFilterChange={this.filterServices}
+            />
+          </div>
+      }
     } else {
       //It must be locations
       secondarySelect =
@@ -68,11 +75,15 @@ class FilterBar extends React.Component {
     if (this.props.serviceFilterName) {
       currentServiceFilter = <span id="filter-info-service" onClick={(event) => this.removeFilterTerm(event) } className="filter-info--term" key={this.props.serviceFilter} dangerouslySetInnerHTML={{__html:this.props.serviceFilterName}} />;
     }
+    if (this.props.locationFilterName) {
+      currentLocationFilter = <span id="filter-info-location" onClick={(event) => this.removeFilterTerm(event) } className="filter-info--term" key={this.props.locationFilter} dangerouslySetInnerHTML={{__html:this.props.locationFilterName}} />;
+    }
+
     if (this.props.marketFilterName) {
       currentMarketFilter = <span id="filter-info-market" onClick={(event) => this.removeFilterTerm(event) } className="filter-info--term" key={this.props.marketFilter} dangerouslySetInnerHTML={{__html:this.props.marketFilterName}} />;
     }
     if (this.props.isFiltered) {
-      filterTerms =  <span><span className="filter-label">Filter By:</span> {currentServiceFilter} {currentMarketFilter}</span>;
+      filterTerms =  <span><span className="filter-label">Filter By:</span> {currentMarketFilter} {currentServiceFilter} {currentLocationFilter}</span>;
       resetBtn = <button onClick={() => this.resetFilter() } className="btn-reset-filter">Clear Filters</button>;
     }
 
