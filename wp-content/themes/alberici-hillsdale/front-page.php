@@ -56,9 +56,9 @@ $HeroButtonLink = get_field('homepage_hero_button_link');
 				<ul class="blog-content_posts">
 				<?php while ($the_query -> have_posts()) : $the_query -> the_post(); ?>
 					<li>
-						<a href="<?php the_permalink(); ?>" >
+						<a href="<?php the_permalink(); ?>">
 							<span class="news-meta">
-								<span class="img-overlay"></span>
+								<span class="card-overlay"></span>
 								<?php echo wp_get_attachment_image( get_post_thumbnail_id(get_the_ID()), 'blog_image', false );?>
 								<span class="news-text">
 									<?php
