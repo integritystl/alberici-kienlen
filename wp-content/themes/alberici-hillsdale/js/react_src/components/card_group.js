@@ -23,6 +23,7 @@ class CardGroup extends React.Component {
         let imageSrcSet = '';
         let serviceName = [];
         let marketName = [];
+        let locationName = [];
 
         if (item._embedded['wp:featuredmedia']) {
           //Media Paths to help with srcSets
@@ -36,11 +37,23 @@ class CardGroup extends React.Component {
         }
 
         //roll through array of service categories per post and get the name
-        if (item.service_category) {
-          let postServices = item.service_category.filter( (cat) => {
-              let name = this.displayCatName(cat, this.props.services);
-              return serviceName.push(name);
-          })
+        //We only do this if this is being used to display News
+        if (this.props.postDataType === 'news') {
+          if (item.service_category) {
+            let postServices = item.service_category.filter( (cat) => {
+                let name = this.displayCatName(cat, this.props.services);
+                return serviceName.push(name);
+            })
+          }
+        }
+
+        if (this.props.postDataType === 'projects') {
+          if (item.location_category) {
+            let postLocations = item.location_category.filter( (cat) => {
+                let name = this.displayCatName(cat, this.props.locations);
+                return locationName.push(name);
+            })
+          }
         }
 
         //same but with markets
@@ -59,8 +72,10 @@ class CardGroup extends React.Component {
                   title={item.title.rendered}
                   market={item.market_category}
                   service={item.service_category}
+                  location={item.location_category}
                   serviceName = {serviceName}
                   marketName = {marketName}
+                  locationName = {locationName}
                   link={item.link}
                 />
 

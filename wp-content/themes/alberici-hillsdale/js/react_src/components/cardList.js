@@ -14,10 +14,12 @@ class CardList extends React.Component {
         postDataType: document.getElementById('cardList_app').getAttribute('data-post'),
         market_categories: [],
         service_categories: [],
+        location_categories: [],
         isFiltered: false,
         filteredPosts: [],
         filteredMarket: '',
         filteredService: '',
+        filteredLocation: '',
         hasSearchTerm: false,
         searchTerm: '',
         totalPosts: parseInt(wpObj.totalPosts.publish),
@@ -68,7 +70,6 @@ class CardList extends React.Component {
           headers: new Headers({'Authorization': 'Basic ' + btoa("demo:alberici") }),
         })
         .then( response => {
-          console.log('news response', response)
           return(response.json());
         })
         .then(json => {
@@ -123,8 +124,22 @@ class CardList extends React.Component {
       if (filterDataType === 'service') {
         this.getServiceCats();
       } else {
-        //TODO: add a getLocationCats function here once that category exists
+        this.getLocationCats();
       }
+    }
+
+    //Fetch our Location Categories
+    getLocationCats() {
+      let locationCatApi = wpObj.locationCat_endpoint;
+      fetch(locationCatApi)
+        .then( response => {
+          return(response.json());
+        })
+        .then(json => {
+          this.setState({
+            location_categories: json,
+          })
+        });
     }
 
     //Fetch our Services Categories
@@ -263,6 +278,7 @@ class CardList extends React.Component {
       let allPosts = this.state.posts;
       let filterPosts = this.state.filteredPosts;
 
+      let filteredLocationName = '';
       let filteredServiceName = '';
       let filteredMarketName = '';
 
@@ -273,8 +289,10 @@ class CardList extends React.Component {
       } else if (allPosts && this.state.isFiltered === false) {
         postGroup = <CardGroup
                       posts = {this.state.posts}
+                      postDataType = {this.state.postDataType}
                       markets = {this.state.market_categories}
                       services = {this.state.service_categories}
+                      locations = {this.state.location_categories}
                       getCatName = {this.getCatName.bind(this)}
                       />
         if ( allPostsOffset < this.state.totalPosts && this.state.totalPosts % this.state.postsPerPage != 0) {
@@ -283,8 +301,10 @@ class CardList extends React.Component {
       } else if ( filterPosts && this.state.isFiltered === true ) {
         postGroup = <CardGroup
                       posts = {this.state.filteredPosts}
+                      postDataType = {this.state.postDataType}
                       markets = {this.state.market_categories}
                       services = {this.state.service_categories}
+                      locations = {this.state.location_categories}
                       getCatName = {this.getCatName.bind(this)}
                       filteredService = {this.state.filteredService}
                       filteredMarket = {this.state.filteredMarket}
