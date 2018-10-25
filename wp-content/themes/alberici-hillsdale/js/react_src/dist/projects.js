@@ -10475,6 +10475,7 @@ var FilterBar = function (_React$Component) {
     _this.filterSearch = _this.filterSearch.bind(_this);
     _this.filterMarkets = _this.filterMarkets.bind(_this);
     _this.filterServices = _this.filterServices.bind(_this);
+    _this.filterLocations = _this.filterLocations.bind(_this);
     _this.resetFilter = _this.resetFilter.bind(_this);
     _this.removeFilterTerm = _this.removeFilterTerm.bind(_this);
     return _this;
@@ -10493,14 +10494,16 @@ var FilterBar = function (_React$Component) {
     this.props.serviceChange(id);
   };
 
+  FilterBar.prototype.filterLocations = function filterLocations(id) {
+    this.props.locationChange(id);
+  };
+
   FilterBar.prototype.resetFilter = function resetFilter() {
     this.props.resetFilter();
   };
 
   FilterBar.prototype.removeFilterTerm = function removeFilterTerm(event) {
     var currentTermId = event.target.id;
-    console.log('remove this', event.target.id);
-    console.log('props', this.props);
     this.props.removeFilterTerm(currentTermId);
   };
 
@@ -10513,21 +10516,23 @@ var FilterBar = function (_React$Component) {
     var resetBtn = '';
     //Check if Service or Location exists, then output the one we want.
     var secondarySelect = '';
-    if (this.props.services) {
-      secondarySelect = _react2.default.createElement(
-        'div',
-        { className: 'select' },
-        _react2.default.createElement(
-          'label',
-          { className: 'screen-reader-text' },
-          'Service'
-        ),
-        _react2.default.createElement(_filterSelect2.default, { label: 'Service',
-          selectID: 'filterbar-select-service',
-          options: this.props.services,
-          onFilterChange: this.filterServices
-        })
-      );
+    if (this.props.postDataType === 'news') {
+      if (this.props.services) {
+        secondarySelect = _react2.default.createElement(
+          'div',
+          { className: 'select' },
+          _react2.default.createElement(
+            'label',
+            { className: 'screen-reader-text' },
+            'Service'
+          ),
+          _react2.default.createElement(_filterSelect2.default, { label: 'Service',
+            selectID: 'filterbar-select-service',
+            options: this.props.services,
+            onFilterChange: this.filterServices
+          })
+        );
+      }
     } else {
       //It must be locations
       secondarySelect = _react2.default.createElement(
@@ -23355,9 +23360,7 @@ var TableList = function (_React$Component) {
         baseLink += '&market_category=' + this.state.filteredMarket + '&location_category=' + this.state.filteredLocation;
       } else if (this.state.filteredLocation) {
         baseLink += '&location_category=' + this.state.filteredLocation;
-        console.log('service baselink', baseLink);
       } else if (this.state.filteredMarket) {
-        //it's just markets
         baseLink += '&market_category=' + this.state.filteredMarket;
       } else {
         return baseLink;

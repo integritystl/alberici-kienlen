@@ -8,6 +8,7 @@ class FilterBar extends React.Component {
     this.filterSearch = this.filterSearch.bind(this);
     this.filterMarkets = this.filterMarkets.bind(this);
     this.filterServices = this.filterServices.bind(this);
+    this.filterLocations = this.filterLocations.bind(this);
     this.resetFilter = this.resetFilter.bind(this);
     this.removeFilterTerm = this.removeFilterTerm.bind(this);
   }
@@ -24,14 +25,17 @@ class FilterBar extends React.Component {
   filterServices(id){
     this.props.serviceChange(id);
   }
+
+  filterLocations(id) {
+    this.props.locationChange(id);
+  }
+
   resetFilter() {
     this.props.resetFilter();
   }
 
   removeFilterTerm(event){
     let currentTermId = event.target.id
-    console.log('remove this', event.target.id);
-    console.log('props', this.props);
     this.props.removeFilterTerm(currentTermId);
   }
 
@@ -42,16 +46,18 @@ class FilterBar extends React.Component {
     let resetBtn = '';
     //Check if Service or Location exists, then output the one we want.
     let secondarySelect = '';
-    if (this.props.services) {
-      secondarySelect =
-        <div className="select">
-          <label className="screen-reader-text">Service</label>
-          <Select label="Service"
-            selectID= "filterbar-select-service"
-            options={this.props.services}
-            onFilterChange={this.filterServices}
-          />
-        </div>
+    if (this.props.postDataType === 'news') {
+      if (this.props.services) {
+        secondarySelect =
+          <div className="select">
+            <label className="screen-reader-text">Service</label>
+            <Select label="Service"
+              selectID= "filterbar-select-service"
+              options={this.props.services}
+              onFilterChange={this.filterServices}
+            />
+          </div>
+      }
     } else {
       //It must be locations
       secondarySelect =

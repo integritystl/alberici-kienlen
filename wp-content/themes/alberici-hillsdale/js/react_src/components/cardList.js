@@ -46,17 +46,30 @@ class CardList extends React.Component {
         if (this.state.hasSearchTerm) {
           baseLink += `&search=${this.state.searchTerm}`;
         }
-        if (this.state.filteredMarket && this.state.filteredService) {
-          baseLink += `&market_category=${this.state.filteredMarket}&service_category=${this.state.filteredService}`;
-        } else if (this.state.filteredService) {
-          baseLink += `&service_category=${this.state.filteredService}`;
-          console.log('service baselink', baseLink);
-        } else if (this.state.filteredMarket) {
-          //it's just markets
-          baseLink += `&market_category=${this.state.filteredMarket}`;
+        //Build the API call with the taxonomies that the Post Type uses
+        if (this.state.postDataType === 'news') {
+          if (this.state.filteredMarket && this.state.filteredService) {
+            baseLink += `&market_category=${this.state.filteredMarket}&service_category=${this.state.filteredService}`;
+          } else if (this.state.filteredService) {
+            baseLink += `&service_category=${this.state.filteredService}`;
+          } else if (this.state.filteredMarket) {
+            baseLink += `&market_category=${this.state.filteredMarket}`;
+          } else {
+            return baseLink;
+          }
         } else {
-          return baseLink;
+          //Projects only uses Locations
+          if (this.state.filteredMarket && this.state.filteredLocation) {
+            baseLink += `&market_category=${this.state.filteredMarket}&location_category=${this.state.filteredLocation}`;
+          } else if (this.state.filteredLocation) {
+            baseLink += `&location_category=${this.state.filteredLocation}`;
+          } else if (this.state.filteredMarket) {
+            baseLink += `&market_category=${this.state.filteredMarket}`;
+          } else {
+            return baseLink;
+          }
         }
+
       }
       return baseLink;
     }
@@ -140,6 +153,18 @@ class CardList extends React.Component {
             location_categories: json,
           })
         });
+    }
+
+    //Handle Location Filter
+    handleLocationChange(id) {
+      if (id === 'Location') {
+        id = ''
+      }
+      this.setState({
+        filteredLocation: parseInt(id),
+        isFiltered: true,
+        loading: true
+      }, () => this.getFilteredPosts(this.buildAPILink()) );
     }
 
     //Fetch our Services Categories
@@ -273,7 +298,13 @@ class CardList extends React.Component {
     render() {
       let postGroup = '';
       let loadMoreBtn = '';
-      let loadMoreLabel = 'View More Posts'; //TODO: If postData is Projects, this label should read 'View More Projects'
+      let loadMoreLabel = '';
+
+      if (this.state.postDataType === 'news') {
+        loadMoreLabel = 'View More Posts';
+      } else {
+        loadMoreLabel = 'View More Projects';
+      }
 
       let allPosts = this.state.posts;
       let filterPosts = this.state.filteredPosts;
@@ -326,6 +357,7 @@ class CardList extends React.Component {
       return(
         <div className="news-posts-container">
           <FilterBar
+            postDataType = {this.state.postDataType}
             markets = {this.state.market_categories}
             marketFilter = {this.state.filteredMarket}
             marketFilterName = {filteredMarketName}
@@ -334,6 +366,10 @@ class CardList extends React.Component {
             serviceFilter = {this.state.filteredService}
             serviceFilterName = {filteredServiceName}
             serviceChange = {this.handleServiceChange.bind(this)}
+            locations = {this.state.location_categories}
+            locationFilter = {this.state.filteredLocation}
+            locationFilterName = {filteredLocationName}
+            locationChange = {this.handleLocationChange.bind(this)}
             isFiltered = {this.state.isFiltered}
             filterSearch = {this.handleSearch.bind(this)}
             resetFilter = {this.resetFilter.bind(this)}

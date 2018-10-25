@@ -82,7 +82,9 @@ class CardGroup extends React.Component {
       });
     } else {
       postComponents = (
-        <h3>Sorry, no posts.</h3>
+        <div className="no-results">
+          <h3>Sorry, no posts.</h3>
+        </div>
       );
     }
 
