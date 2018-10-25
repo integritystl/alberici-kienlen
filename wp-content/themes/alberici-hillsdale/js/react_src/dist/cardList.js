@@ -23381,7 +23381,6 @@ var CardList = function (_React$Component) {
     fetch(apiLink, {
       headers: new Headers({ 'Authorization': 'Basic ' + btoa("demo:alberici") })
     }).then(function (response) {
-      console.log('news response', response);
       return response.json();
     }).then(function (json) {
       _this2.setState({
@@ -23648,6 +23647,7 @@ var CardList = function (_React$Component) {
     } else if (allPosts && this.state.isFiltered === false) {
       postGroup = _react2.default.createElement(_card_group2.default, {
         posts: this.state.posts,
+        postDataType: this.state.postDataType,
         markets: this.state.market_categories,
         services: this.state.service_categories,
         locations: this.state.location_categories,
@@ -23663,6 +23663,7 @@ var CardList = function (_React$Component) {
     } else if (filterPosts && this.state.isFiltered === true) {
       postGroup = _react2.default.createElement(_card_group2.default, {
         posts: this.state.filteredPosts,
+        postDataType: this.state.postDataType,
         markets: this.state.market_categories,
         services: this.state.service_categories,
         locations: this.state.location_categories,
@@ -23880,18 +23881,23 @@ var CardGroup = function (_React$Component) {
         }
 
         //roll through array of service categories per post and get the name
-        if (item.service_category) {
-          var postServices = item.service_category.filter(function (cat) {
-            var name = _this2.displayCatName(cat, _this2.props.services);
-            return serviceName.push(name);
-          });
+        //We only do this if this is being used to display News
+        if (_this2.props.postDataType === 'news') {
+          if (item.service_category) {
+            var postServices = item.service_category.filter(function (cat) {
+              var name = _this2.displayCatName(cat, _this2.props.services);
+              return serviceName.push(name);
+            });
+          }
         }
 
-        if (item.location_category) {
-          var postLocations = item.location_category.filter(function (cat) {
-            var name = _this2.displayCatName(cat, _this2.props.locations);
-            return locationName.push(name);
-          });
+        if (_this2.props.postDataType === 'projects') {
+          if (item.location_category) {
+            var postLocations = item.location_category.filter(function (cat) {
+              var name = _this2.displayCatName(cat, _this2.props.locations);
+              return locationName.push(name);
+            });
+          }
         }
 
         //same but with markets

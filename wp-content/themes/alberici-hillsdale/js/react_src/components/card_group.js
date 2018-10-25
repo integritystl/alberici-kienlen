@@ -37,18 +37,23 @@ class CardGroup extends React.Component {
         }
 
         //roll through array of service categories per post and get the name
-        if (item.service_category) {
-          let postServices = item.service_category.filter( (cat) => {
-              let name = this.displayCatName(cat, this.props.services);
-              return serviceName.push(name);
-          })
+        //We only do this if this is being used to display News
+        if (this.props.postDataType === 'news') {
+          if (item.service_category) {
+            let postServices = item.service_category.filter( (cat) => {
+                let name = this.displayCatName(cat, this.props.services);
+                return serviceName.push(name);
+            })
+          }
         }
 
-        if (item.location_category) {
-          let postLocations = item.location_category.filter( (cat) => {
-              let name = this.displayCatName(cat, this.props.locations);
-              return locationName.push(name);
-          })
+        if (this.props.postDataType === 'projects') {
+          if (item.location_category) {
+            let postLocations = item.location_category.filter( (cat) => {
+                let name = this.displayCatName(cat, this.props.locations);
+                return locationName.push(name);
+            })
+          }
         }
 
         //same but with markets

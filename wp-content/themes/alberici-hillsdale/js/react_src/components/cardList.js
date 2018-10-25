@@ -70,7 +70,6 @@ class CardList extends React.Component {
           headers: new Headers({'Authorization': 'Basic ' + btoa("demo:alberici") }),
         })
         .then( response => {
-          console.log('news response', response)
           return(response.json());
         })
         .then(json => {
@@ -290,6 +289,7 @@ class CardList extends React.Component {
       } else if (allPosts && this.state.isFiltered === false) {
         postGroup = <CardGroup
                       posts = {this.state.posts}
+                      postDataType = {this.state.postDataType}
                       markets = {this.state.market_categories}
                       services = {this.state.service_categories}
                       locations = {this.state.location_categories}
@@ -301,6 +301,7 @@ class CardList extends React.Component {
       } else if ( filterPosts && this.state.isFiltered === true ) {
         postGroup = <CardGroup
                       posts = {this.state.filteredPosts}
+                      postDataType = {this.state.postDataType}
                       markets = {this.state.market_categories}
                       services = {this.state.service_categories}
                       locations = {this.state.location_categories}
