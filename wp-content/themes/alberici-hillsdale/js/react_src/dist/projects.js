@@ -10517,6 +10517,11 @@ var FilterBar = function (_React$Component) {
       secondarySelect = _react2.default.createElement(
         'div',
         { className: 'select' },
+        _react2.default.createElement(
+          'label',
+          { className: 'screen-reader-text' },
+          'Service'
+        ),
         _react2.default.createElement(_filterSelect2.default, { label: 'Service',
           selectID: 'filterbar-select-service',
           options: this.props.services,
@@ -10528,6 +10533,11 @@ var FilterBar = function (_React$Component) {
       secondarySelect = _react2.default.createElement(
         'div',
         { className: 'select' },
+        _react2.default.createElement(
+          'label',
+          { className: 'screen-reader-text' },
+          'Locations'
+        ),
         _react2.default.createElement(_filterSelect2.default, { label: 'Locations',
           selectID: 'filterbar-select-location',
           options: this.props.locations,
@@ -10572,6 +10582,11 @@ var FilterBar = function (_React$Component) {
     return _react2.default.createElement(
       'div',
       { className: 'filterbar' },
+      _react2.default.createElement(
+        'label',
+        { className: 'screen-reader-text' },
+        'Search'
+      ),
       _react2.default.createElement('input', { id: 'filterbar-search',
         type: 'search',
         placeholder: 'Search by keywords',
@@ -10582,6 +10597,11 @@ var FilterBar = function (_React$Component) {
       _react2.default.createElement(
         'div',
         { className: 'select' },
+        _react2.default.createElement(
+          'label',
+          { className: 'screen-reader-text' },
+          'Market'
+        ),
         _react2.default.createElement(_filterSelect2.default, { label: 'Market',
           selectID: 'filterbar-select-market',
           options: this.props.markets,
