@@ -28,7 +28,7 @@ $ContactForm = get_field('contact_people_form');
                 <?php
                     while ( have_rows('contact_people') ) : the_row(); ?>
                     <div class="contact-people-component">
-                        <?php 
+                        <?php
                         $ContactProfileImg = get_sub_field('contact_people_profile_image');
                         $ContactType = get_sub_field('contact_people_contact_type');
                         $ContactName = get_sub_field('contact_people_name');
@@ -36,14 +36,26 @@ $ContactForm = get_field('contact_people_form');
                         $ContactOfficePhone = get_sub_field('contact_people_office_phone');
                         $ContactFax = get_sub_field('contact_people_fax');
                         ?>
-                        <?php echo wp_get_attachment_image($ContactProfileImg, 'large'); ?>
-                        <p class="contact-type"><?php echo $ContactType; ?></p>
-                        <p><?php echo $ContactName; ?></p>
-                        <p>Email: <?php echo $ContactEmail; ?></p>
-                        <p>Office: <?php echo $ContactOfficePhone; ?></p>
-                        <p>Fax: <?php echo $ContactFax; ?></p>
+                        <?php if ($ContactProfileImg) : ?>
+                          <?php echo wp_get_attachment_image($ContactProfileImg, 'large'); ?>
+                        <?php endif; ?>
+                        <?php if ($ContactType) : ?>
+                          <p class="contact-type"><?php echo $ContactType; ?></p>
+                        <?php endif; ?>
+                        <?php if ($ContactName) : ?>
+                          <p><?php echo $ContactName; ?></p>
+                        <?php endif; ?>
+                        <?php if ($ContactEmail) : ?>
+                          <p>Email: <?php echo $ContactEmail; ?></p>
+                        <?php endif; ?>
+                        <?php if ($ContactOfficePhone) : ?>
+                          <p>Office: <?php echo $ContactOfficePhone; ?></p>
+                        <?php endif; ?>
+                        <?php if ($ContactFax) : ?>
+                          <p>Fax: <?php echo $ContactFax; ?></p>
+                        <?php endif; ?>
                     </div>
-            
+
                     <?php endwhile;?>
                 </div>
                 <?php echo $ContactForm; ?>
@@ -52,6 +64,6 @@ $ContactForm = get_field('contact_people_form');
         <?php endif; ?>
     </main><!-- #main -->
 </div><!-- #primary -->
-<?php 
+<?php
 get_footer();
  ?>

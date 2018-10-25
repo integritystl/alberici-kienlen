@@ -5,7 +5,7 @@
     @extend .grid-container;
     grid-template-rows: 75% 25%;
     margin-top: -75px;
-  
+
     > .container {
       grid-column: span 12;
     }
@@ -116,7 +116,7 @@
             height: auto;
         }
         img:last-child {
-            margin-bottom: 100px;
+          //  margin-bottom: 100px;
         }
     }
     .service-list {
