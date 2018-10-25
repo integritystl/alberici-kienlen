@@ -10475,6 +10475,7 @@ var FilterBar = function (_React$Component) {
     _this.filterSearch = _this.filterSearch.bind(_this);
     _this.filterMarkets = _this.filterMarkets.bind(_this);
     _this.filterServices = _this.filterServices.bind(_this);
+    _this.filterLocations = _this.filterLocations.bind(_this);
     _this.resetFilter = _this.resetFilter.bind(_this);
     _this.removeFilterTerm = _this.removeFilterTerm.bind(_this);
     return _this;
@@ -10493,14 +10494,16 @@ var FilterBar = function (_React$Component) {
     this.props.serviceChange(id);
   };
 
+  FilterBar.prototype.filterLocations = function filterLocations(id) {
+    this.props.locationChange(id);
+  };
+
   FilterBar.prototype.resetFilter = function resetFilter() {
     this.props.resetFilter();
   };
 
   FilterBar.prototype.removeFilterTerm = function removeFilterTerm(event) {
     var currentTermId = event.target.id;
-    console.log('remove this', event.target.id);
-    console.log('props', this.props);
     this.props.removeFilterTerm(currentTermId);
   };
 
@@ -10509,25 +10512,28 @@ var FilterBar = function (_React$Component) {
 
     var currentServiceFilter = '';
     var currentMarketFilter = '';
+    var currentLocationFilter = '';
     var filterTerms = '';
     var resetBtn = '';
     //Check if Service or Location exists, then output the one we want.
     var secondarySelect = '';
-    if (this.props.services) {
-      secondarySelect = _react2.default.createElement(
-        'div',
-        { className: 'select' },
-        _react2.default.createElement(
-          'label',
-          { className: 'screen-reader-text' },
-          'Service'
-        ),
-        _react2.default.createElement(_filterSelect2.default, { label: 'Service',
-          selectID: 'filterbar-select-service',
-          options: this.props.services,
-          onFilterChange: this.filterServices
-        })
-      );
+    if (this.props.postDataType === 'news') {
+      if (this.props.services) {
+        secondarySelect = _react2.default.createElement(
+          'div',
+          { className: 'select' },
+          _react2.default.createElement(
+            'label',
+            { className: 'screen-reader-text' },
+            'Service'
+          ),
+          _react2.default.createElement(_filterSelect2.default, { label: 'Service',
+            selectID: 'filterbar-select-service',
+            options: this.props.services,
+            onFilterChange: this.filterServices
+          })
+        );
+      }
     } else {
       //It must be locations
       secondarySelect = _react2.default.createElement(
@@ -10551,6 +10557,12 @@ var FilterBar = function (_React$Component) {
           return _this2.removeFilterTerm(event);
         }, className: 'filter-info--term', key: this.props.serviceFilter, dangerouslySetInnerHTML: { __html: this.props.serviceFilterName } });
     }
+    if (this.props.locationFilterName) {
+      currentLocationFilter = _react2.default.createElement('span', { id: 'filter-info-location', onClick: function onClick(event) {
+          return _this2.removeFilterTerm(event);
+        }, className: 'filter-info--term', key: this.props.locationFilter, dangerouslySetInnerHTML: { __html: this.props.locationFilterName } });
+    }
+
     if (this.props.marketFilterName) {
       currentMarketFilter = _react2.default.createElement('span', { id: 'filter-info-market', onClick: function onClick(event) {
           return _this2.removeFilterTerm(event);
@@ -10566,9 +10578,11 @@ var FilterBar = function (_React$Component) {
           'Filter By:'
         ),
         ' ',
+        currentMarketFilter,
+        ' ',
         currentServiceFilter,
         ' ',
-        currentMarketFilter
+        currentLocationFilter
       );
       resetBtn = _react2.default.createElement(
         'button',
@@ -23355,9 +23369,7 @@ var TableList = function (_React$Component) {
         baseLink += '&market_category=' + this.state.filteredMarket + '&location_category=' + this.state.filteredLocation;
       } else if (this.state.filteredLocation) {
         baseLink += '&location_category=' + this.state.filteredLocation;
-        console.log('service baselink', baseLink);
       } else if (this.state.filteredMarket) {
-        //it's just markets
         baseLink += '&market_category=' + this.state.filteredMarket;
       } else {
         return baseLink;
@@ -23806,7 +23818,7 @@ var TableItem = function (_React$Component) {
   }
 
   TableItem.prototype.render = function render() {
-    //  console.log('card props', this.props);
+    //  console.log('table item props', this.props);
 
 
     return _react2.default.createElement(
@@ -23819,17 +23831,22 @@ var TableItem = function (_React$Component) {
           "a",
           { href: this.props.link },
           _react2.default.createElement("h3", { dangerouslySetInnerHTML: { __html: this.props.title } })
+        ),
+        _react2.default.createElement(
+          "span",
+          { className: "table-item--owner" },
+          "Owner"
         )
       ),
       _react2.default.createElement(
         "td",
         null,
-        _react2.default.createElement("span", { className: "card-post--market", dangerouslySetInnerHTML: { __html: this.props.marketName } })
+        _react2.default.createElement("span", { className: "table-item--market", dangerouslySetInnerHTML: { __html: this.props.marketName } })
       ),
       _react2.default.createElement(
         "td",
         null,
-        _react2.default.createElement("span", { className: "card-post--service", dangerouslySetInnerHTML: { __html: this.props.serviceName } })
+        _react2.default.createElement("span", { className: "table-item--service", dangerouslySetInnerHTML: { __html: this.props.serviceName } })
       )
     );
   };
