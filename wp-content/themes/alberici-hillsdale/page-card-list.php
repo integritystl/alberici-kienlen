@@ -23,13 +23,15 @@ get_header();
 			if ($postDataType === 'is_news') {
 				$postData = 'news';
 				$filterCat = 'service';
+				$totalPosts = wp_count_posts();
 			} else {
 				//assume it's Projects
 				$postData = 'projects';
 				$filterCat = 'location';
+				$totalPosts = wp_count_posts('project');
 			}
 			?>
-			<div id="cardList_app" data-post="<?php echo $postData; ?>" data-filter="<?php echo $filterCat; ?>" data-market="market"></div>
+			<div id="cardList_app" data-post="<?php echo $postData; ?>" data-filter="<?php echo $filterCat; ?>" data-total="<?php echo $totalPosts->publish; ?>"></div>
 	</div>
 </div>
 

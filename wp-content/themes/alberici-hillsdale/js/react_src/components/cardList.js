@@ -22,7 +22,7 @@ class CardList extends React.Component {
         filteredLocation: '',
         hasSearchTerm: false,
         searchTerm: '',
-        totalPosts: parseInt(wpObj.totalPosts.publish),
+        totalPosts: parseInt( document.getElementById('cardList_app').getAttribute('data-total') ),
       })
     }
 
@@ -30,7 +30,6 @@ class CardList extends React.Component {
       this.getPosts(this.buildAPILink());
       this.getMarketCats();
       this.setFilterCats();
-      //this.getServiceCats();
     }
 
     //Fetch posts
@@ -69,12 +68,11 @@ class CardList extends React.Component {
             return baseLink;
           }
         }
-
+        console.log(baseLink);
       }
       return baseLink;
     }
     //Get All Posts
-    //TODO: edit this so we're only adding either Posts or Projects to state.
     getPosts(apiLink){
       apiLink += `&per_page=${this.state.postsPerPage}`
       //Gotta pass Basic Auth for the prompt from WP Engine
@@ -123,7 +121,6 @@ class CardList extends React.Component {
       if (id === 'Market') {
         id = ''
       }
-
       this.setState({
         filteredMarket: parseInt(id),
         isFiltered: true,
@@ -157,6 +154,7 @@ class CardList extends React.Component {
 
     //Handle Location Filter
     handleLocationChange(id) {
+      console.log('handleLocationChange', id);
       if (id === 'Location') {
         id = ''
       }
@@ -184,7 +182,6 @@ class CardList extends React.Component {
 
     //Search Input Filter
     handleSearch(term) {
-      console.log('search term', term);
       this.setState({
         searchTerm: term,
         hasSearchTerm: true,
@@ -227,7 +224,6 @@ class CardList extends React.Component {
       } else {
         offset = this.state.currentPage * this.state.postsPerPage;
         apiLink += `&offset=${offset}`;
-      //  console.log('load more link', apiLink);
         fetch(apiLink)
           .then( response => {
             return(response.json());
@@ -236,7 +232,6 @@ class CardList extends React.Component {
             let currentPosts = this.state.posts;
             //when i put this into this.setState, it breaks, what do?
             Array.prototype.push.apply(currentPosts, json);
-          //  console.log(currentPosts);
             //increment our Current Page
             this.setState( (state) => ({
               currentPage: state.currentPage + 1,
@@ -251,21 +246,27 @@ class CardList extends React.Component {
     resetFilter(){
       //TODO set the selects back to default value and the search box to empty
       let searchInput = document.getElementById('filterbar-search');
-      let serviceSelect = document.getElementById('filterbar-select-service');
       let marketSelect = document.getElementById('filterbar-select-market');
+      let secondarySelect = '';
 
-      // let serviceFilterTerm = document.getElementById('filter-info-service');
-      // let marketFilterTerm = document.getElementById('filter-info-market');
       searchInput.value = '';
       //I'm cheating :\
       marketSelect.value = 'Market';
-      serviceSelect.value = 'Service';
+
+      if (this.props.postDataType === 'news') {
+        secondarySelect = document.getElementById('filterbar-select-service');
+        secondarySelect.value = 'Service';
+      } else {
+        secondarySelect = document.getElementById('filterbar-select-location');
+        secondarySelect.value = 'Location';
+      }
 
       this.setState({
         isFiltered: false,
         filteredPosts: [],
         filteredMarket: '',
         filteredService: '',
+        filteredLocation: '',
         hasSearchTerm: false,
         searchTerm: ''
       }, () => this.getPosts())
@@ -273,7 +274,6 @@ class CardList extends React.Component {
 
     removeFilterTerm(currentTermId){
       if (currentTermId === 'filter-info-service') {
-        console.log('services')
         this.setState({
           filteredService: '',
         }, () => this.checkFilterStatus())
@@ -284,11 +284,25 @@ class CardList extends React.Component {
           filteredMarket: '',
         }, () => this.checkFilterStatus())
         document.getElementById('filterbar-select-market').value = 'Market';
+      } else if (currentTermId === 'filter-info-location') {
+        //it's location
+        this.setState({
+          filteredLocation: '',
+        }, () => this.checkFilterStatus())
+        document.getElementById('filterbar-select-location').value = 'Location';
       }
     }
 
     checkFilterStatus(){
-      if (!this.state.filteredMarket && !this.state.filteredService && !this.state.hasSearchTerm) {
+      //check which postDataType it is
+      let secondaryFilter = '';
+      if (this.props.postDataType === 'news') {
+        secondaryFilter = !this.state.filteredService;
+      } else {
+        secondaryFilter = !this.state.filteredLocation;
+      }
+
+      if (!this.state.filteredMarket && secondaryFilter && !this.state.hasSearchTerm) {
         this.setState({
           isFiltered: false,
         })
@@ -349,6 +363,12 @@ class CardList extends React.Component {
         if (this.state.market_categories && this.state.filteredMarket) {
           filteredMarketName = this.getCatName(this.state.filteredMarket, this.state.market_categories);
         }
+
+        //Get the names of filtered markets for display purposes
+        if (this.state.location_categories && this.state.filteredLocation) {
+          filteredLocationName = this.getCatName(this.state.filteredLocation, this.state.location_categories);
+        }
+
       } else if (filterPosts === 0 && this.state.isFiltered === true) {
         postGroup = 'No results';
         loadMoreBtn = '';

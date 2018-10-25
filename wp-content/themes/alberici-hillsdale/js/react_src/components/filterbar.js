@@ -42,6 +42,7 @@ class FilterBar extends React.Component {
   render() {
     let currentServiceFilter = '';
     let currentMarketFilter = '';
+    let currentLocationFilter = '';
     let filterTerms = '';
     let resetBtn = '';
     //Check if Service or Location exists, then output the one we want.
@@ -74,11 +75,15 @@ class FilterBar extends React.Component {
     if (this.props.serviceFilterName) {
       currentServiceFilter = <span id="filter-info-service" onClick={(event) => this.removeFilterTerm(event) } className="filter-info--term" key={this.props.serviceFilter} dangerouslySetInnerHTML={{__html:this.props.serviceFilterName}} />;
     }
+    if (this.props.locationFilterName) {
+      currentLocationFilter = <span id="filter-info-location" onClick={(event) => this.removeFilterTerm(event) } className="filter-info--term" key={this.props.locationFilter} dangerouslySetInnerHTML={{__html:this.props.locationFilterName}} />;
+    }
+
     if (this.props.marketFilterName) {
       currentMarketFilter = <span id="filter-info-market" onClick={(event) => this.removeFilterTerm(event) } className="filter-info--term" key={this.props.marketFilter} dangerouslySetInnerHTML={{__html:this.props.marketFilterName}} />;
     }
     if (this.props.isFiltered) {
-      filterTerms =  <span><span className="filter-label">Filter By:</span> {currentServiceFilter} {currentMarketFilter}</span>;
+      filterTerms =  <span><span className="filter-label">Filter By:</span> {currentMarketFilter} {currentServiceFilter} {currentLocationFilter}</span>;
       resetBtn = <button onClick={() => this.resetFilter() } className="btn-reset-filter">Clear Filters</button>;
     }
 

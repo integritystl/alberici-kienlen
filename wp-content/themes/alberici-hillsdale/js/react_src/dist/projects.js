@@ -10512,6 +10512,7 @@ var FilterBar = function (_React$Component) {
 
     var currentServiceFilter = '';
     var currentMarketFilter = '';
+    var currentLocationFilter = '';
     var filterTerms = '';
     var resetBtn = '';
     //Check if Service or Location exists, then output the one we want.
@@ -10556,6 +10557,12 @@ var FilterBar = function (_React$Component) {
           return _this2.removeFilterTerm(event);
         }, className: 'filter-info--term', key: this.props.serviceFilter, dangerouslySetInnerHTML: { __html: this.props.serviceFilterName } });
     }
+    if (this.props.locationFilterName) {
+      currentLocationFilter = _react2.default.createElement('span', { id: 'filter-info-location', onClick: function onClick(event) {
+          return _this2.removeFilterTerm(event);
+        }, className: 'filter-info--term', key: this.props.locationFilter, dangerouslySetInnerHTML: { __html: this.props.locationFilterName } });
+    }
+
     if (this.props.marketFilterName) {
       currentMarketFilter = _react2.default.createElement('span', { id: 'filter-info-market', onClick: function onClick(event) {
           return _this2.removeFilterTerm(event);
@@ -10571,9 +10578,11 @@ var FilterBar = function (_React$Component) {
           'Filter By:'
         ),
         ' ',
+        currentMarketFilter,
+        ' ',
         currentServiceFilter,
         ' ',
-        currentMarketFilter
+        currentLocationFilter
       );
       resetBtn = _react2.default.createElement(
         'button',
