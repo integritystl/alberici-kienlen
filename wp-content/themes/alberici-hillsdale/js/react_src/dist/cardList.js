@@ -10517,6 +10517,11 @@ var FilterBar = function (_React$Component) {
       secondarySelect = _react2.default.createElement(
         'div',
         { className: 'select' },
+        _react2.default.createElement(
+          'label',
+          { className: 'screen-reader-text' },
+          'Service'
+        ),
         _react2.default.createElement(_filterSelect2.default, { label: 'Service',
           selectID: 'filterbar-select-service',
           options: this.props.services,
@@ -10528,6 +10533,11 @@ var FilterBar = function (_React$Component) {
       secondarySelect = _react2.default.createElement(
         'div',
         { className: 'select' },
+        _react2.default.createElement(
+          'label',
+          { className: 'screen-reader-text' },
+          'Locations'
+        ),
         _react2.default.createElement(_filterSelect2.default, { label: 'Locations',
           selectID: 'filterbar-select-location',
           options: this.props.locations,
@@ -10572,6 +10582,11 @@ var FilterBar = function (_React$Component) {
     return _react2.default.createElement(
       'div',
       { className: 'filterbar' },
+      _react2.default.createElement(
+        'label',
+        { className: 'screen-reader-text' },
+        'Search'
+      ),
       _react2.default.createElement('input', { id: 'filterbar-search',
         type: 'search',
         placeholder: 'Search by keywords',
@@ -10582,6 +10597,11 @@ var FilterBar = function (_React$Component) {
       _react2.default.createElement(
         'div',
         { className: 'select' },
+        _react2.default.createElement(
+          'label',
+          { className: 'screen-reader-text' },
+          'Market'
+        ),
         _react2.default.createElement(_filterSelect2.default, { label: 'Market',
           selectID: 'filterbar-select-market',
           options: this.props.markets,
@@ -23300,10 +23320,12 @@ var CardList = function (_React$Component) {
       postDataType: document.getElementById('cardList_app').getAttribute('data-post'),
       market_categories: [],
       service_categories: [],
+      location_categories: [],
       isFiltered: false,
       filteredPosts: [],
       filteredMarket: '',
       filteredService: '',
+      filteredLocation: '',
       hasSearchTerm: false,
       searchTerm: '',
       totalPosts: parseInt(wpObj.totalPosts.publish)
@@ -23359,7 +23381,6 @@ var CardList = function (_React$Component) {
     fetch(apiLink, {
       headers: new Headers({ 'Authorization': 'Basic ' + btoa("demo:alberici") })
     }).then(function (response) {
-      console.log('news response', response);
       return response.json();
     }).then(function (json) {
       _this2.setState({
@@ -23424,21 +23445,37 @@ var CardList = function (_React$Component) {
     if (filterDataType === 'service') {
       this.getServiceCats();
     } else {
-      //TODO: add a getLocationCats function here once that category exists
+      this.getLocationCats();
     }
+  };
+
+  //Fetch our Location Categories
+
+
+  CardList.prototype.getLocationCats = function getLocationCats() {
+    var _this6 = this;
+
+    var locationCatApi = wpObj.locationCat_endpoint;
+    fetch(locationCatApi).then(function (response) {
+      return response.json();
+    }).then(function (json) {
+      _this6.setState({
+        location_categories: json
+      });
+    });
   };
 
   //Fetch our Services Categories
 
 
   CardList.prototype.getServiceCats = function getServiceCats() {
-    var _this6 = this;
+    var _this7 = this;
 
     var serviceCatApi = wpObj.serviceCat_endpoint;
     fetch(serviceCatApi).then(function (response) {
       return response.json();
     }).then(function (json) {
-      _this6.setState({
+      _this7.setState({
         service_categories: json
       });
     });
@@ -23448,7 +23485,7 @@ var CardList = function (_React$Component) {
 
 
   CardList.prototype.handleSearch = function handleSearch(term) {
-    var _this7 = this;
+    var _this8 = this;
 
     console.log('search term', term);
     this.setState({
@@ -23457,7 +23494,7 @@ var CardList = function (_React$Component) {
       isFiltered: true,
       loading: true
     }, function () {
-      return _this7.getFilteredPosts(_this7.buildAPILink());
+      return _this8.getFilteredPosts(_this8.buildAPILink());
     });
   };
 
@@ -23465,7 +23502,7 @@ var CardList = function (_React$Component) {
 
 
   CardList.prototype.handleServiceChange = function handleServiceChange(id) {
-    var _this8 = this;
+    var _this9 = this;
 
     if (id === 'Service') {
       id = '';
@@ -23475,7 +23512,7 @@ var CardList = function (_React$Component) {
       isFiltered: true,
       loading: true
     }, function () {
-      return _this8.getFilteredPosts(_this8.buildAPILink());
+      return _this9.getFilteredPosts(_this9.buildAPILink());
     });
   };
 
@@ -23494,7 +23531,7 @@ var CardList = function (_React$Component) {
 
 
   CardList.prototype.loadMorePosts = function loadMorePosts() {
-    var _this9 = this;
+    var _this10 = this;
 
     //need to fetch the next amount of posts and add them
     //getPosts loads the page and uses postsPerPage
@@ -23511,12 +23548,12 @@ var CardList = function (_React$Component) {
       fetch(apiLink).then(function (response) {
         return response.json();
       }).then(function (json) {
-        var currentPosts = _this9.state.posts;
+        var currentPosts = _this10.state.posts;
         //when i put this into this.setState, it breaks, what do?
         Array.prototype.push.apply(currentPosts, json);
         //  console.log(currentPosts);
         //increment our Current Page
-        _this9.setState(function (state) {
+        _this10.setState(function (state) {
           return {
             currentPage: state.currentPage + 1,
             //posts: Array.prototype.push.apply(currentPosts, json), //need to jam in new json here
@@ -23531,7 +23568,7 @@ var CardList = function (_React$Component) {
 
 
   CardList.prototype.resetFilter = function resetFilter() {
-    var _this10 = this;
+    var _this11 = this;
 
     //TODO set the selects back to default value and the search box to empty
     var searchInput = document.getElementById('filterbar-search');
@@ -23553,19 +23590,19 @@ var CardList = function (_React$Component) {
       hasSearchTerm: false,
       searchTerm: ''
     }, function () {
-      return _this10.getPosts();
+      return _this11.getPosts();
     });
   };
 
   CardList.prototype.removeFilterTerm = function removeFilterTerm(currentTermId) {
-    var _this11 = this;
+    var _this12 = this;
 
     if (currentTermId === 'filter-info-service') {
       console.log('services');
       this.setState({
         filteredService: ''
       }, function () {
-        return _this11.checkFilterStatus();
+        return _this12.checkFilterStatus();
       });
       document.getElementById('filterbar-select-service').value = 'Service';
     } else if (currentTermId === 'filter-info-market') {
@@ -23573,7 +23610,7 @@ var CardList = function (_React$Component) {
       this.setState({
         filteredMarket: ''
       }, function () {
-        return _this11.checkFilterStatus();
+        return _this12.checkFilterStatus();
       });
       document.getElementById('filterbar-select-market').value = 'Market';
     }
@@ -23595,6 +23632,7 @@ var CardList = function (_React$Component) {
     var allPosts = this.state.posts;
     var filterPosts = this.state.filteredPosts;
 
+    var filteredLocationName = '';
     var filteredServiceName = '';
     var filteredMarketName = '';
 
@@ -23609,8 +23647,10 @@ var CardList = function (_React$Component) {
     } else if (allPosts && this.state.isFiltered === false) {
       postGroup = _react2.default.createElement(_card_group2.default, {
         posts: this.state.posts,
+        postDataType: this.state.postDataType,
         markets: this.state.market_categories,
         services: this.state.service_categories,
+        locations: this.state.location_categories,
         getCatName: this.getCatName.bind(this)
       });
       if (allPostsOffset < this.state.totalPosts && this.state.totalPosts % this.state.postsPerPage != 0) {
@@ -23623,8 +23663,10 @@ var CardList = function (_React$Component) {
     } else if (filterPosts && this.state.isFiltered === true) {
       postGroup = _react2.default.createElement(_card_group2.default, {
         posts: this.state.filteredPosts,
+        postDataType: this.state.postDataType,
         markets: this.state.market_categories,
         services: this.state.service_categories,
+        locations: this.state.location_categories,
         getCatName: this.getCatName.bind(this),
         filteredService: this.state.filteredService,
         filteredMarket: this.state.filteredMarket
@@ -23825,6 +23867,7 @@ var CardGroup = function (_React$Component) {
         var imageSrcSet = '';
         var serviceName = [];
         var marketName = [];
+        var locationName = [];
 
         if (item._embedded['wp:featuredmedia']) {
           //Media Paths to help with srcSets
@@ -23838,11 +23881,23 @@ var CardGroup = function (_React$Component) {
         }
 
         //roll through array of service categories per post and get the name
-        if (item.service_category) {
-          var postServices = item.service_category.filter(function (cat) {
-            var name = _this2.displayCatName(cat, _this2.props.services);
-            return serviceName.push(name);
-          });
+        //We only do this if this is being used to display News
+        if (_this2.props.postDataType === 'news') {
+          if (item.service_category) {
+            var postServices = item.service_category.filter(function (cat) {
+              var name = _this2.displayCatName(cat, _this2.props.services);
+              return serviceName.push(name);
+            });
+          }
+        }
+
+        if (_this2.props.postDataType === 'projects') {
+          if (item.location_category) {
+            var postLocations = item.location_category.filter(function (cat) {
+              var name = _this2.displayCatName(cat, _this2.props.locations);
+              return locationName.push(name);
+            });
+          }
         }
 
         //same but with markets
@@ -23861,8 +23916,10 @@ var CardGroup = function (_React$Component) {
           title: item.title.rendered,
           market: item.market_category,
           service: item.service_category,
+          location: item.location_category,
           serviceName: serviceName,
           marketName: marketName,
+          locationName: locationName,
           link: item.link
         });
       });
