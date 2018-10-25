@@ -20,6 +20,10 @@
             a {
                 @extend .inverse-link;
                 position: relative;
+                .card-overlay {
+                    z-index: 0;
+                    height: 300px;
+                }
                 .news-text {
                     position: absolute;
                     margin-bottom: 20px;
@@ -29,12 +33,18 @@
                         margin-left: 25px;
                         margin-right: 25px;
                         font-weight: 400;
+                        color: white;
                     }
                     h3 {
                         margin-top: 15px;
                     }
                     p:not(:last-child) {
                         margin-bottom: 0;
+                    }
+                }
+                &:hover {
+                    .card-overlay {
+                        background: rgba($blue, .6);
                     }
                 }
 

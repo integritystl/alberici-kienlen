@@ -19,20 +19,20 @@
       <div class="single_tile_img">
           <?php echo wp_get_attachment_image($StackedTileImage, 'tile-image'); ?>
       </div>
-    <? endif; ?>
+    <?php endif; ?>
 
     <div class="single_tile_content">
       <?php if ($StackedTileHeader) : ?>
         <h2><?php echo $StackedTileHeader; ?></h2>
-      <? endif; ?>
+      <?php endif; ?>
       <?php if ($StackedTileContent) : ?>
         <p><?php echo $StackedTileContent; ?></p>
-      <? endif; ?>
+      <?php endif; ?>
     </div>
 
     <?php if ($StackedTileLink) : ?>
       <a href="<?php echo $StackedTileLink; ?>" class="btn">Learn More</a>
-    <? endif; ?>
+    <?php endif; ?>
 
   </div>
 <?php endwhile; ?>
