@@ -23818,7 +23818,7 @@ var TableItem = function (_React$Component) {
   }
 
   TableItem.prototype.render = function render() {
-    //  console.log('card props', this.props);
+    //  console.log('table item props', this.props);
 
 
     return _react2.default.createElement(
@@ -23831,17 +23831,22 @@ var TableItem = function (_React$Component) {
           "a",
           { href: this.props.link },
           _react2.default.createElement("h3", { dangerouslySetInnerHTML: { __html: this.props.title } })
+        ),
+        _react2.default.createElement(
+          "span",
+          { className: "table-item--owner" },
+          "Owner"
         )
       ),
       _react2.default.createElement(
         "td",
         null,
-        _react2.default.createElement("span", { className: "card-post--market", dangerouslySetInnerHTML: { __html: this.props.marketName } })
+        _react2.default.createElement("span", { className: "table-item--market", dangerouslySetInnerHTML: { __html: this.props.marketName } })
       ),
       _react2.default.createElement(
         "td",
         null,
-        _react2.default.createElement("span", { className: "card-post--service", dangerouslySetInnerHTML: { __html: this.props.serviceName } })
+        _react2.default.createElement("span", { className: "table-item--service", dangerouslySetInnerHTML: { __html: this.props.serviceName } })
       )
     );
   };
