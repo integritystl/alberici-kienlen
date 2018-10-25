@@ -15,16 +15,24 @@
     $StackedTileLink = get_sub_field('link');
 ?>
   <div class="stacked_tile_single">
-    <div class="single_tile_img">
-        <?php echo wp_get_attachment_image($StackedTileImage, 'tile_image'); ?>
-    </div>
+    <?php if ($StackedTileImage) : ?>
+      <div class="single_tile_img">
+          <?php echo wp_get_attachment_image($StackedTileImage, 'tile-image'); ?>
+      </div>
+    <?php endif; ?>
+
     <div class="single_tile_content">
+      <?php if ($StackedTileHeader) : ?>
         <h2><?php echo $StackedTileHeader; ?></h2>
+      <?php endif; ?>
+      <?php if ($StackedTileContent) : ?>
         <p><?php echo $StackedTileContent; ?></p>
+      <?php endif; ?>
     </div>
-    <a href="<?php echo $StackedTileLink; ?>" class="btn">Learn More</a>
 
-
+    <?php if ($StackedTileLink) : ?>
+      <a href="<?php echo $StackedTileLink; ?>" class="btn">Learn More</a>
+    <?php endif; ?>
 
   </div>
 <?php endwhile; ?>
