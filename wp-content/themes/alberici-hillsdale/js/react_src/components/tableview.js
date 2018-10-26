@@ -72,7 +72,7 @@ class TableList extends React.Component {
     //Gotta pass Basic Auth for the prompt from WP Engine
     //Ref: https://stackoverflow.com/questions/30203044/using-an-authorization-header-with-fetch-in-react-native
     fetch(apiLink, {
-        headers: new Headers({'Authorization': 'Basic ' + btoa("demo:alberici") }),
+        headers: new Headers({'Authorization': 'Basic ' + btoa("kienlen:constructors") }),
       })
       .then( response => {
         return(response.json());
