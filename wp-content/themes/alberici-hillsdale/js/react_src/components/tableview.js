@@ -25,7 +25,7 @@ class TableList extends React.Component {
         loading: true,
         currentPage: 1,
         projects: [],
-        postsPerPage: 6,
+        postsPerPage: 4,
         market_categories: [],
         service_categories: [],
         isFiltered: false,
@@ -68,6 +68,7 @@ class TableList extends React.Component {
   //Get All Posts
   getPosts(apiLink){
     apiLink += `&per_page=${this.state.postsPerPage}`
+    console.log(apiLink);
     //Gotta pass Basic Auth for the prompt from WP Engine
     //Ref: https://stackoverflow.com/questions/30203044/using-an-authorization-header-with-fetch-in-react-native
     fetch(apiLink, {
@@ -153,6 +154,10 @@ class TableList extends React.Component {
 
     let allPostsOffset = this.state.currentPage * this.state.postsPerPage;
 
+    let currentPage = this.state.currentPage;
+    let totalResults = this.state.totalProjects;
+    let displayNumber = ''; //This should be a count of current Visible Posts
+
     if (this.state.loading) {
       postGroup = <div className="loading-spinner">Loading...</div>;
     } else if (allPosts && this.state.isFiltered === false) {
@@ -162,7 +167,12 @@ class TableList extends React.Component {
                 services = {this.state.service_categories}
                 getCatName = {this.getCatName.bind(this)}
               />
+
+      displayNumber = postGroup.props.posts.length;
+
     } else if ( filterPosts && this.state.isFiltered === true ) {
+
+      totalResults = this.state.filteredProjects.length;
       postGroup = <Table
                     posts = {this.state.filteredProjects}
                     markets = {this.state.market_categories}
@@ -171,7 +181,7 @@ class TableList extends React.Component {
                     filteredService = {this.state.filteredService}
                     filteredMarket = {this.state.filteredMarket}
                   />
-
+      displayNumber = postGroup.props.posts.length;
       //Get the names of filtered service categories for display purposes
       if (this.state.service_categories && this.state.filteredService) {
         filteredServiceName = this.getCatName(this.state.filteredService, this.state.service_categories);
@@ -212,8 +222,8 @@ class TableList extends React.Component {
             <li>3</li>
           </ul>
           <div className="table-projects-results">
-            <span className="table-project-results--current">Page 1</span>
-            <span className="table-project-results--total">10 of 62 Results</span>
+            <div className="table-project-results--current">Page {currentPage}</div>
+            <div className="table-project-results--total"> {displayNumber} of {totalResults} Results</div>
           </div>
         </div>
       </div>

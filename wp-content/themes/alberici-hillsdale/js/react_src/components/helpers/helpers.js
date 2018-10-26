@@ -12,7 +12,6 @@ export function handleSearch(term) {
 
 //Fetch our Market Categories
 export function getMarketCats() {
-  console.log('market cat helper');
   let marketCatApi = wpObj.marketCat_endpoint;
   fetch(marketCatApi)
     .then( response => {
@@ -40,7 +39,6 @@ export function handleMarketChange(id) {
 
 //Fetch our Services Categories
 export function getServiceCats() {
-  console.log('service cat helper');
   let serviceCatApi = wpObj.serviceCat_endpoint;
   fetch(serviceCatApi)
     .then( response => {
@@ -62,8 +60,8 @@ export function resetFilter(){
   searchInput.value = '';
   //I'm cheating :\
   marketSelect.value = 'Market';
-  //This won't work on the Service List View, change it :|
-  if (this.state.postDataType === 'news') {
+  //Table List View also uses 'Service', so check if we're using its state
+  if (this.state.postDataType === 'news' || this.state.projects) {
     secondarySelect = document.getElementById('filterbar-select-service');
     secondarySelect.value = 'Service';
   } else {
@@ -79,7 +77,7 @@ export function resetFilter(){
     filteredLocation: '',
     hasSearchTerm: false,
     searchTerm: ''
-  }, () => this.getPosts())
+  }, () => this.getPosts(this.buildAPILink()))
 }
 
 export function removeFilterTerm(currentTermId){
