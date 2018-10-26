@@ -10517,7 +10517,7 @@ var FilterBar = function (_React$Component) {
     var resetBtn = '';
     //Check if Service or Location exists, then output the one we want.
     var secondarySelect = '';
-    if (this.props.postDataType === 'news') {
+    if (this.props.secondarySelect === 'services') {
       if (this.props.services) {
         secondarySelect = _react2.default.createElement(
           'div',
@@ -23307,6 +23307,8 @@ var _card_group = __webpack_require__(196);
 
 var _card_group2 = _interopRequireDefault(_card_group);
 
+var _helpers = __webpack_require__(197);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -23319,10 +23321,21 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var CardList = function (_React$Component) {
   _inherits(CardList, _React$Component);
 
-  function CardList() {
+  function CardList(props) {
     _classCallCheck(this, CardList);
 
-    return _possibleConstructorReturn(this, _React$Component.apply(this, arguments));
+    //bind our helpers
+    var _this = _possibleConstructorReturn(this, _React$Component.call(this, props));
+
+    _this.getMarketCats = _helpers.getMarketCats.bind(_this);
+    _this.handleSearch = _helpers.handleSearch.bind(_this);
+    _this.getServiceCats = _helpers.getServiceCats.bind(_this);
+    _this.resetFilter = _helpers.resetFilter.bind(_this);
+    _this.removeFilterTerm = _helpers.removeFilterTerm.bind(_this);
+    _this.checkFilterStatus = _helpers.checkFilterStatus.bind(_this);
+    _this.handleMarketChange = _helpers.handleMarketChange.bind(_this);
+    _this.getCatName = _helpers.getCatName.bind(_this);
+    return _this;
   }
 
   CardList.prototype.componentWillMount = function componentWillMount() {
@@ -23428,47 +23441,17 @@ var CardList = function (_React$Component) {
     });
   };
 
-  //Fetch our Market Categories
-
-
-  CardList.prototype.getMarketCats = function getMarketCats() {
-    var _this4 = this;
-
-    var marketCatApi = wpObj.marketCat_endpoint;
-    fetch(marketCatApi).then(function (response) {
-      return response.json();
-    }).then(function (json) {
-      _this4.setState({
-        market_categories: json
-      });
-    });
-  };
-  //Handles Market Filter
-
-
-  CardList.prototype.handleMarketChange = function handleMarketChange(id) {
-    var _this5 = this;
-
-    if (id === 'Market') {
-      id = '';
-    }
-    this.setState({
-      filteredMarket: parseInt(id),
-      isFiltered: true,
-      loading: true
-    }, function () {
-      return _this5.getFilteredPosts(_this5.buildAPILink());
-    });
-  };
-
   //Check to see what's set for our data-filter attribute and call the appropriate custom taxonomy endpoint
 
 
   CardList.prototype.setFilterCats = function setFilterCats() {
     var filterDataType = document.getElementById('cardList_app').getAttribute('data-filter');
+    console.log('set filter cats', filterDataType);
     if (filterDataType === 'service') {
+      console.log('check filter service');
       this.getServiceCats();
     } else {
+      console.log('filter is location?');
       this.getLocationCats();
     }
   };
@@ -23477,13 +23460,13 @@ var CardList = function (_React$Component) {
 
 
   CardList.prototype.getLocationCats = function getLocationCats() {
-    var _this6 = this;
+    var _this4 = this;
 
     var locationCatApi = wpObj.locationCat_endpoint;
     fetch(locationCatApi).then(function (response) {
       return response.json();
     }).then(function (json) {
-      _this6.setState({
+      _this4.setState({
         location_categories: json
       });
     });
@@ -23493,7 +23476,7 @@ var CardList = function (_React$Component) {
 
 
   CardList.prototype.handleLocationChange = function handleLocationChange(id) {
-    var _this7 = this;
+    var _this5 = this;
 
     console.log('handleLocationChange', id);
     if (id === 'Location') {
@@ -23504,39 +23487,7 @@ var CardList = function (_React$Component) {
       isFiltered: true,
       loading: true
     }, function () {
-      return _this7.getFilteredPosts(_this7.buildAPILink());
-    });
-  };
-
-  //Fetch our Services Categories
-
-
-  CardList.prototype.getServiceCats = function getServiceCats() {
-    var _this8 = this;
-
-    var serviceCatApi = wpObj.serviceCat_endpoint;
-    fetch(serviceCatApi).then(function (response) {
-      return response.json();
-    }).then(function (json) {
-      _this8.setState({
-        service_categories: json
-      });
-    });
-  };
-
-  //Search Input Filter
-
-
-  CardList.prototype.handleSearch = function handleSearch(term) {
-    var _this9 = this;
-
-    this.setState({
-      searchTerm: term,
-      hasSearchTerm: true,
-      isFiltered: true,
-      loading: true
-    }, function () {
-      return _this9.getFilteredPosts(_this9.buildAPILink());
+      return _this5.getFilteredPosts(_this5.buildAPILink());
     });
   };
 
@@ -23544,7 +23495,7 @@ var CardList = function (_React$Component) {
 
 
   CardList.prototype.handleServiceChange = function handleServiceChange(id) {
-    var _this10 = this;
+    var _this6 = this;
 
     if (id === 'Service') {
       id = '';
@@ -23554,26 +23505,15 @@ var CardList = function (_React$Component) {
       isFiltered: true,
       loading: true
     }, function () {
-      return _this10.getFilteredPosts(_this10.buildAPILink());
+      return _this6.getFilteredPosts(_this6.buildAPILink());
     });
-  };
-
-  //Get name of filtered category from object
-
-
-  CardList.prototype.getCatName = function getCatName(filteredCatId, categories) {
-    var catObj = categories.filter(function (item) {
-      return item.id === filteredCatId;
-    });
-    var filteredCatName = catObj[0].name;
-    return filteredCatName;
   };
 
   //Load More functionality
 
 
   CardList.prototype.loadMorePosts = function loadMorePosts() {
-    var _this11 = this;
+    var _this7 = this;
 
     //need to fetch the next amount of posts and add them
     //getPosts loads the page and uses postsPerPage
@@ -23589,11 +23529,11 @@ var CardList = function (_React$Component) {
       fetch(apiLink).then(function (response) {
         return response.json();
       }).then(function (json) {
-        var currentPosts = _this11.state.posts;
+        var currentPosts = _this7.state.posts;
         //when i put this into this.setState, it breaks, what do?
         Array.prototype.push.apply(currentPosts, json);
         //increment our Current Page
-        _this11.setState(function (state) {
+        _this7.setState(function (state) {
           return {
             currentPage: state.currentPage + 1,
             //posts: Array.prototype.push.apply(currentPosts, json), //need to jam in new json here
@@ -23604,96 +23544,18 @@ var CardList = function (_React$Component) {
     }
   };
 
-  //Reset filter
-
-
-  CardList.prototype.resetFilter = function resetFilter() {
-    var _this12 = this;
-
-    //TODO set the selects back to default value and the search box to empty
-    var searchInput = document.getElementById('filterbar-search');
-    var marketSelect = document.getElementById('filterbar-select-market');
-    var secondarySelect = '';
-
-    searchInput.value = '';
-    //I'm cheating :\
-    marketSelect.value = 'Market';
-
-    if (this.props.postDataType === 'news') {
-      secondarySelect = document.getElementById('filterbar-select-service');
-      secondarySelect.value = 'Service';
-    } else {
-      secondarySelect = document.getElementById('filterbar-select-location');
-      secondarySelect.value = 'Location';
-    }
-
-    this.setState({
-      isFiltered: false,
-      filteredPosts: [],
-      filteredMarket: '',
-      filteredService: '',
-      filteredLocation: '',
-      hasSearchTerm: false,
-      searchTerm: ''
-    }, function () {
-      return _this12.getPosts();
-    });
-  };
-
-  CardList.prototype.removeFilterTerm = function removeFilterTerm(currentTermId) {
-    var _this13 = this;
-
-    if (currentTermId === 'filter-info-service') {
-      this.setState({
-        filteredService: ''
-      }, function () {
-        return _this13.checkFilterStatus();
-      });
-      document.getElementById('filterbar-select-service').value = 'Service';
-    } else if (currentTermId === 'filter-info-market') {
-      // it's markets
-      this.setState({
-        filteredMarket: ''
-      }, function () {
-        return _this13.checkFilterStatus();
-      });
-      document.getElementById('filterbar-select-market').value = 'Market';
-    } else if (currentTermId === 'filter-info-location') {
-      //it's location
-      this.setState({
-        filteredLocation: ''
-      }, function () {
-        return _this13.checkFilterStatus();
-      });
-      document.getElementById('filterbar-select-location').value = 'Location';
-    }
-  };
-
-  CardList.prototype.checkFilterStatus = function checkFilterStatus() {
-    //check which postDataType it is
-    var secondaryFilter = '';
-    if (this.props.postDataType === 'news') {
-      secondaryFilter = !this.state.filteredService;
-    } else {
-      secondaryFilter = !this.state.filteredLocation;
-    }
-
-    if (!this.state.filteredMarket && secondaryFilter && !this.state.hasSearchTerm) {
-      this.setState({
-        isFiltered: false
-      });
-    }
-  };
-
   CardList.prototype.render = function render() {
     var postGroup = '';
     var loadMoreBtn = '';
     var loadMoreLabel = '';
+    var secondarySelect = '';
 
     if (this.state.postDataType === 'news') {
       loadMoreLabel = 'View More Posts';
+      secondarySelect = 'services';
     } else {
       loadMoreLabel = 'View More Projects';
+      secondarySelect = 'location';
     }
 
     var allPosts = this.state.posts;
@@ -23718,7 +23580,7 @@ var CardList = function (_React$Component) {
         markets: this.state.market_categories,
         services: this.state.service_categories,
         locations: this.state.location_categories,
-        getCatName: this.getCatName.bind(this)
+        getCatName: this.getCatName
       });
       if (allPostsOffset < this.state.totalPosts && this.state.totalPosts % this.state.postsPerPage != 0) {
         loadMoreBtn = _react2.default.createElement(
@@ -23734,7 +23596,7 @@ var CardList = function (_React$Component) {
         markets: this.state.market_categories,
         services: this.state.service_categories,
         locations: this.state.location_categories,
-        getCatName: this.getCatName.bind(this),
+        getCatName: this.getCatName,
         filteredService: this.state.filteredService,
         filteredMarket: this.state.filteredMarket
       });
@@ -23765,19 +23627,20 @@ var CardList = function (_React$Component) {
         markets: this.state.market_categories,
         marketFilter: this.state.filteredMarket,
         marketFilterName: filteredMarketName,
-        marketChange: this.handleMarketChange.bind(this),
+        marketChange: this.handleMarketChange,
         services: this.state.service_categories,
         serviceFilter: this.state.filteredService,
         serviceFilterName: filteredServiceName,
         serviceChange: this.handleServiceChange.bind(this),
+        secondarySelect: secondarySelect,
         locations: this.state.location_categories,
         locationFilter: this.state.filteredLocation,
         locationFilterName: filteredLocationName,
         locationChange: this.handleLocationChange.bind(this),
         isFiltered: this.state.isFiltered,
-        filterSearch: this.handleSearch.bind(this),
-        resetFilter: this.resetFilter.bind(this),
-        removeFilterTerm: this.removeFilterTerm.bind(this)
+        filterSearch: this.handleSearch,
+        resetFilter: this.resetFilter,
+        removeFilterTerm: this.removeFilterTerm
       }),
       postGroup,
       loadMoreBtn
@@ -24023,6 +23886,174 @@ var CardGroup = function (_React$Component) {
 }(_react2.default.Component);
 
 module.exports = CardGroup;
+
+/***/ }),
+/* 197 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.handleSearch = handleSearch;
+exports.getMarketCats = getMarketCats;
+exports.handleMarketChange = handleMarketChange;
+exports.getServiceCats = getServiceCats;
+exports.resetFilter = resetFilter;
+exports.removeFilterTerm = removeFilterTerm;
+exports.checkFilterStatus = checkFilterStatus;
+exports.getCatName = getCatName;
+//This houses shared functionality used between CardList and Table List
+
+//Search Input Filter
+function handleSearch(term) {
+  var _this = this;
+
+  this.setState({
+    searchTerm: term,
+    hasSearchTerm: true,
+    isFiltered: true,
+    loading: true
+  }, function () {
+    return _this.getFilteredPosts(_this.buildAPILink());
+  });
+}
+
+//Fetch our Market Categories
+function getMarketCats() {
+  var _this2 = this;
+
+  console.log('market cat helper');
+  var marketCatApi = wpObj.marketCat_endpoint;
+  fetch(marketCatApi).then(function (response) {
+    return response.json();
+  }).then(function (json) {
+    _this2.setState({
+      market_categories: json
+    });
+  });
+}
+
+//Handles Market Filter
+function handleMarketChange(id) {
+  var _this3 = this;
+
+  if (id === 'Market') {
+    id = '';
+  }
+
+  this.setState({
+    filteredMarket: parseInt(id),
+    isFiltered: true,
+    loading: true
+  }, function () {
+    return _this3.getFilteredPosts(_this3.buildAPILink());
+  });
+}
+
+//Fetch our Services Categories
+function getServiceCats() {
+  var _this4 = this;
+
+  console.log('service cat helper');
+  var serviceCatApi = wpObj.serviceCat_endpoint;
+  fetch(serviceCatApi).then(function (response) {
+    return response.json();
+  }).then(function (json) {
+    _this4.setState({
+      service_categories: json
+    });
+  });
+}
+
+function resetFilter() {
+  var _this5 = this;
+
+  //TODO set the selects back to default value and the search box to empty
+  var searchInput = document.getElementById('filterbar-search');
+  var marketSelect = document.getElementById('filterbar-select-market');
+  var secondarySelect = '';
+
+  searchInput.value = '';
+  //I'm cheating :\
+  marketSelect.value = 'Market';
+  //This won't work on the Service List View, change it :|
+  if (this.state.postDataType === 'news') {
+    secondarySelect = document.getElementById('filterbar-select-service');
+    secondarySelect.value = 'Service';
+  } else {
+    secondarySelect = document.getElementById('filterbar-select-location');
+    secondarySelect.value = 'Location';
+  }
+
+  this.setState({
+    isFiltered: false,
+    filteredPosts: [],
+    filteredMarket: '',
+    filteredService: '',
+    filteredLocation: '',
+    hasSearchTerm: false,
+    searchTerm: ''
+  }, function () {
+    return _this5.getPosts();
+  });
+}
+
+function removeFilterTerm(currentTermId) {
+  var _this6 = this;
+
+  if (currentTermId === 'filter-info-service') {
+    this.setState({
+      filteredService: ''
+    }, function () {
+      return _this6.checkFilterStatus();
+    });
+    document.getElementById('filterbar-select-service').value = 'Service';
+  } else if (currentTermId === 'filter-info-market') {
+    // it's markets
+    this.setState({
+      filteredMarket: ''
+    }, function () {
+      return _this6.checkFilterStatus();
+    });
+    document.getElementById('filterbar-select-market').value = 'Market';
+  } else if (currentTermId === 'filter-info-location') {
+    //it's location
+    this.setState({
+      filteredLocation: ''
+    }, function () {
+      return _this6.checkFilterStatus();
+    });
+    document.getElementById('filterbar-select-location').value = 'Location';
+  }
+}
+
+function checkFilterStatus() {
+  //check which postDataType it is
+  var secondaryFilter = '';
+  if (this.state.postDataType === 'news') {
+    secondaryFilter = !this.state.filteredService;
+  } else {
+    secondaryFilter = !this.state.filteredLocation;
+  }
+
+  if (!this.state.filteredMarket && secondaryFilter && !this.state.hasSearchTerm) {
+    this.setState({
+      isFiltered: false
+    });
+  }
+}
+
+//Get name of filtered category from object
+function getCatName(filteredCatId, categories) {
+  var catObj = categories.filter(function (item) {
+    return item.id === filteredCatId;
+  });
+  var filteredCatName = catObj[0].name;
+  return filteredCatName;
+}
 
 /***/ })
 /******/ ]);

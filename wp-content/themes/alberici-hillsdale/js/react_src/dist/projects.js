@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "/wp-content/themes/alberici-hillsdale/js/react_src/dist/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 199);
+/******/ 	return __webpack_require__(__webpack_require__.s = 200);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -10517,7 +10517,7 @@ var FilterBar = function (_React$Component) {
     var resetBtn = '';
     //Check if Service or Location exists, then output the one we want.
     var secondarySelect = '';
-    if (this.props.postDataType === 'news') {
+    if (this.props.secondarySelect === 'services') {
       if (this.props.services) {
         secondarySelect = _react2.default.createElement(
           'div',
@@ -23300,11 +23300,13 @@ var _react = __webpack_require__(18);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _helpers = __webpack_require__(197);
+
 var _filterbar = __webpack_require__(90);
 
 var _filterbar2 = _interopRequireDefault(_filterbar);
 
-var _table = __webpack_require__(197);
+var _table = __webpack_require__(198);
 
 var _table2 = _interopRequireDefault(_table);
 
@@ -23322,10 +23324,21 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var TableList = function (_React$Component) {
   _inherits(TableList, _React$Component);
 
-  function TableList() {
+  function TableList(props) {
     _classCallCheck(this, TableList);
 
-    return _possibleConstructorReturn(this, _React$Component.apply(this, arguments));
+    //bind our helpers
+    var _this = _possibleConstructorReturn(this, _React$Component.call(this, props));
+
+    _this.getMarketCats = _helpers.getMarketCats.bind(_this);
+    _this.handleSearch = _helpers.handleSearch.bind(_this);
+    _this.getServiceCats = _helpers.getServiceCats.bind(_this);
+    _this.resetFilter = _helpers.resetFilter.bind(_this);
+    _this.removeFilterTerm = _helpers.removeFilterTerm.bind(_this);
+    _this.checkFilterStatus = _helpers.checkFilterStatus.bind(_this);
+    _this.handleMarketChange = _helpers.handleMarketChange.bind(_this);
+    _this.getCatName = _helpers.getCatName.bind(_this);
+    return _this;
   }
 
   TableList.prototype.componentWillMount = function componentWillMount() {
@@ -23335,12 +23348,10 @@ var TableList = function (_React$Component) {
       projects: [],
       postsPerPage: 6,
       market_categories: [],
-      location_categories: [],
       service_categories: [],
       isFiltered: false,
       filteredProjects: [],
       filteredMarket: '',
-      filteredLocation: '',
       filteredService: '',
       hasSearchTerm: false,
       searchTerm: '',
@@ -23351,7 +23362,6 @@ var TableList = function (_React$Component) {
   TableList.prototype.componentDidMount = function componentDidMount() {
     this.getPosts(this.buildAPILink());
     this.getMarketCats();
-    this.getLocationCats();
     this.getServiceCats();
   };
 
@@ -23360,15 +23370,14 @@ var TableList = function (_React$Component) {
 
   TableList.prototype.buildAPILink = function buildAPILink() {
     var baseLink = wpObj.projects_endpoint;
-    console.log(baseLink);
     if (this.state.isFiltered) {
       if (this.state.hasSearchTerm) {
         baseLink += '&search=' + this.state.searchTerm;
       }
-      if (this.state.filteredMarket && this.state.filteredLocation) {
-        baseLink += '&market_category=' + this.state.filteredMarket + '&location_category=' + this.state.filteredLocation;
-      } else if (this.state.filteredLocation) {
-        baseLink += '&location_category=' + this.state.filteredLocation;
+      if (this.state.filteredMarket && this.state.filteredService) {
+        baseLink += '&market_category=' + this.state.filteredMarket + '&service_category=' + this.state.filteredService;
+      } else if (this.state.filteredService) {
+        baseLink += '&service_category=' + this.state.filteredService;
       } else if (this.state.filteredMarket) {
         baseLink += '&market_category=' + this.state.filteredMarket;
       } else {
@@ -23379,7 +23388,6 @@ var TableList = function (_React$Component) {
   };
 
   //Get All Posts
-  //TODO: edit this so we're only adding either Posts or Projects to state.
 
 
   TableList.prototype.getPosts = function getPosts(apiLink) {
@@ -23391,7 +23399,6 @@ var TableList = function (_React$Component) {
     fetch(apiLink, {
       headers: new Headers({ 'Authorization': 'Basic ' + btoa("demo:alberici") })
     }).then(function (response) {
-      console.log('response?', response);
       return response.json();
     }).then(function (json) {
       _this2.setState({
@@ -23408,91 +23415,8 @@ var TableList = function (_React$Component) {
       return response.json();
     }).then(function (json) {
       _this3.setState({
-        filteredPosts: json,
+        filteredProjects: json,
         loading: false
-      });
-    });
-  };
-
-  //Fetch our Market Categories
-
-
-  TableList.prototype.getMarketCats = function getMarketCats() {
-    var _this4 = this;
-
-    var marketCatApi = wpObj.marketCat_endpoint;
-    fetch(marketCatApi).then(function (response) {
-      return response.json();
-    }).then(function (json) {
-      _this4.setState({
-        market_categories: json
-      });
-    });
-  };
-  //Handles Market Filter
-
-
-  TableList.prototype.handleMarketChange = function handleMarketChange(id) {
-    var _this5 = this;
-
-    if (id === 'Market') {
-      id = '';
-    }
-
-    this.setState({
-      filteredMarket: parseInt(id),
-      isFiltered: true,
-      loading: true
-    }, function () {
-      return _this5.getFilteredPosts(_this5.buildAPILink());
-    });
-  };
-  //Handle Location Filter
-
-
-  TableList.prototype.handleLocationChange = function handleLocationChange(id) {
-    var _this6 = this;
-
-    if (id === 'Location') {
-      id = '';
-    }
-    this.setState({
-      filteredLocation: parseInt(id),
-      isFiltered: true,
-      loading: true
-    }, function () {
-      return _this6.getFilteredPosts(_this6.buildAPILink());
-    });
-  };
-
-  //Fetch our Services Categories
-
-
-  TableList.prototype.getLocationCats = function getLocationCats() {
-    var _this7 = this;
-
-    var locationCatApi = wpObj.locationCat_endpoint;
-    fetch(locationCatApi).then(function (response) {
-      return response.json();
-    }).then(function (json) {
-      _this7.setState({
-        location_categories: json
-      });
-    });
-  };
-
-  //Fetch our Services Categories
-
-
-  TableList.prototype.getServiceCats = function getServiceCats() {
-    var _this8 = this;
-
-    var serviceCatApi = wpObj.serviceCat_endpoint;
-    fetch(serviceCatApi).then(function (response) {
-      return response.json();
-    }).then(function (json) {
-      _this8.setState({
-        service_categories: json
       });
     });
   };
@@ -23501,7 +23425,7 @@ var TableList = function (_React$Component) {
 
 
   TableList.prototype.handleServiceChange = function handleServiceChange(id) {
-    var _this9 = this;
+    var _this4 = this;
 
     if (id === 'Service') {
       id = '';
@@ -23511,36 +23435,44 @@ var TableList = function (_React$Component) {
       isFiltered: true,
       loading: true
     }, function () {
-      return _this9.getFilteredPosts(_this9.buildAPILink());
+      return _this4.getFilteredPosts(_this4.buildAPILink());
     });
   };
 
-  //Search Input Filter
+  //Load More functionality
+  // TODO: Load more is pagination in this view, so will be different from CardList view
 
 
-  TableList.prototype.handleSearch = function handleSearch(term) {
-    var _this10 = this;
+  TableList.prototype.loadMorePosts = function loadMorePosts() {
+    var _this5 = this;
 
-    console.log('search term', term);
-    this.setState({
-      searchTerm: term,
-      hasSearchTerm: true,
-      isFiltered: true,
-      loading: true
-    }, function () {
-      return _this10.getFilteredPosts(_this10.buildAPILink());
-    });
-  };
+    //need to fetch the next amount of posts and add them
+    //getPosts loads the page and uses postsPerPage
+    var apiLink = this.buildAPILink();
 
-  //Get name of filtered category from object
-
-
-  TableList.prototype.getCatName = function getCatName(filteredCatId, categories) {
-    var catObj = categories.filter(function (item) {
-      return item.id === filteredCatId;
-    });
-    var filteredCatName = catObj[0].name;
-    return filteredCatName;
+    var offset = 0;
+    if (this.state.isFiltered) {
+      offset = this.state.filteredProjects.length;
+      //TODO add in some stuff here Lindsay
+    } else {
+      offset = this.state.currentPage * this.state.postsPerPage;
+      apiLink += '&offset=' + offset;
+      fetch(apiLink).then(function (response) {
+        return response.json();
+      }).then(function (json) {
+        var currentPosts = _this5.state.projects;
+        //when i put this into this.setState, it breaks, what do?
+        Array.prototype.push.apply(currentPosts, json);
+        //increment our Current Page
+        _this5.setState(function (state) {
+          return {
+            currentPage: state.currentPage + 1,
+            //posts: Array.prototype.push.apply(currentPosts, json), //need to jam in new json here
+            loading: false
+          };
+        });
+      });
+    }
   };
 
   TableList.prototype.render = function render() {
@@ -23551,7 +23483,6 @@ var TableList = function (_React$Component) {
     var allPosts = this.state.projects;
     var filterPosts = this.state.filteredProjects;
 
-    var filteredLocationName = '';
     var filteredServiceName = '';
     var filteredMarketName = '';
 
@@ -23600,19 +23531,16 @@ var TableList = function (_React$Component) {
         markets: this.state.market_categories,
         marketFilter: this.state.filteredMarket,
         marketFilterName: filteredMarketName,
-        marketChange: this.handleMarketChange.bind(this),
+        marketChange: this.handleMarketChange,
         services: this.state.service_categories,
         serviceFilter: this.state.filteredService,
         serviceFilterName: filteredServiceName,
         serviceChange: this.handleServiceChange.bind(this),
-        locations: this.state.location_categories,
-        locationFilter: this.state.filteredLocation,
-        locationFilterName: filteredLocationName,
-        locationChange: this.handleLocationChange.bind(this),
+        secondarySelect: 'services',
         isFiltered: this.state.isFiltered,
-        filterSearch: this.handleSearch.bind(this)
-        //  resetFilter = {this.resetFilter.bind(this)}
-        //  removeFilterTerm = {this.removeFilterTerm.bind(this)}
+        filterSearch: this.handleSearch,
+        resetFilter: this.resetFilter,
+        removeFilterTerm: this.removeFilterTerm
       }),
       postGroup,
       _react2.default.createElement(
@@ -23670,11 +23598,179 @@ module.exports = TableList;
 "use strict";
 
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.handleSearch = handleSearch;
+exports.getMarketCats = getMarketCats;
+exports.handleMarketChange = handleMarketChange;
+exports.getServiceCats = getServiceCats;
+exports.resetFilter = resetFilter;
+exports.removeFilterTerm = removeFilterTerm;
+exports.checkFilterStatus = checkFilterStatus;
+exports.getCatName = getCatName;
+//This houses shared functionality used between CardList and Table List
+
+//Search Input Filter
+function handleSearch(term) {
+  var _this = this;
+
+  this.setState({
+    searchTerm: term,
+    hasSearchTerm: true,
+    isFiltered: true,
+    loading: true
+  }, function () {
+    return _this.getFilteredPosts(_this.buildAPILink());
+  });
+}
+
+//Fetch our Market Categories
+function getMarketCats() {
+  var _this2 = this;
+
+  console.log('market cat helper');
+  var marketCatApi = wpObj.marketCat_endpoint;
+  fetch(marketCatApi).then(function (response) {
+    return response.json();
+  }).then(function (json) {
+    _this2.setState({
+      market_categories: json
+    });
+  });
+}
+
+//Handles Market Filter
+function handleMarketChange(id) {
+  var _this3 = this;
+
+  if (id === 'Market') {
+    id = '';
+  }
+
+  this.setState({
+    filteredMarket: parseInt(id),
+    isFiltered: true,
+    loading: true
+  }, function () {
+    return _this3.getFilteredPosts(_this3.buildAPILink());
+  });
+}
+
+//Fetch our Services Categories
+function getServiceCats() {
+  var _this4 = this;
+
+  console.log('service cat helper');
+  var serviceCatApi = wpObj.serviceCat_endpoint;
+  fetch(serviceCatApi).then(function (response) {
+    return response.json();
+  }).then(function (json) {
+    _this4.setState({
+      service_categories: json
+    });
+  });
+}
+
+function resetFilter() {
+  var _this5 = this;
+
+  //TODO set the selects back to default value and the search box to empty
+  var searchInput = document.getElementById('filterbar-search');
+  var marketSelect = document.getElementById('filterbar-select-market');
+  var secondarySelect = '';
+
+  searchInput.value = '';
+  //I'm cheating :\
+  marketSelect.value = 'Market';
+  //This won't work on the Service List View, change it :|
+  if (this.state.postDataType === 'news') {
+    secondarySelect = document.getElementById('filterbar-select-service');
+    secondarySelect.value = 'Service';
+  } else {
+    secondarySelect = document.getElementById('filterbar-select-location');
+    secondarySelect.value = 'Location';
+  }
+
+  this.setState({
+    isFiltered: false,
+    filteredPosts: [],
+    filteredMarket: '',
+    filteredService: '',
+    filteredLocation: '',
+    hasSearchTerm: false,
+    searchTerm: ''
+  }, function () {
+    return _this5.getPosts();
+  });
+}
+
+function removeFilterTerm(currentTermId) {
+  var _this6 = this;
+
+  if (currentTermId === 'filter-info-service') {
+    this.setState({
+      filteredService: ''
+    }, function () {
+      return _this6.checkFilterStatus();
+    });
+    document.getElementById('filterbar-select-service').value = 'Service';
+  } else if (currentTermId === 'filter-info-market') {
+    // it's markets
+    this.setState({
+      filteredMarket: ''
+    }, function () {
+      return _this6.checkFilterStatus();
+    });
+    document.getElementById('filterbar-select-market').value = 'Market';
+  } else if (currentTermId === 'filter-info-location') {
+    //it's location
+    this.setState({
+      filteredLocation: ''
+    }, function () {
+      return _this6.checkFilterStatus();
+    });
+    document.getElementById('filterbar-select-location').value = 'Location';
+  }
+}
+
+function checkFilterStatus() {
+  //check which postDataType it is
+  var secondaryFilter = '';
+  if (this.state.postDataType === 'news') {
+    secondaryFilter = !this.state.filteredService;
+  } else {
+    secondaryFilter = !this.state.filteredLocation;
+  }
+
+  if (!this.state.filteredMarket && secondaryFilter && !this.state.hasSearchTerm) {
+    this.setState({
+      isFiltered: false
+    });
+  }
+}
+
+//Get name of filtered category from object
+function getCatName(filteredCatId, categories) {
+  var catObj = categories.filter(function (item) {
+    return item.id === filteredCatId;
+  });
+  var filteredCatName = catObj[0].name;
+  return filteredCatName;
+}
+
+/***/ }),
+/* 198 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
 var _react = __webpack_require__(18);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _tableItem = __webpack_require__(198);
+var _tableItem = __webpack_require__(199);
 
 var _tableItem2 = _interopRequireDefault(_tableItem);
 
@@ -23710,6 +23806,9 @@ var Table = function (_React$Component) {
     var _this2 = this;
 
     var postComponents = '';
+    var results = '';
+
+    //If we have project posts, loop through 'em and jam into table
     if (this.props.posts && this.props.posts.length) {
 
       postComponents = this.props.posts.map(function (item, index) {
@@ -23735,6 +23834,7 @@ var Table = function (_React$Component) {
           key: index,
           id: item.id,
           title: item.title.rendered,
+          owner: item.acf.project_owner,
           market: item.market_category,
           service: item.service_category,
           serviceName: serviceName,
@@ -23742,45 +23842,51 @@ var Table = function (_React$Component) {
           link: item.link
         });
       });
+      //end postComponents
+      results = _react2.default.createElement(
+        'table',
+        { className: 'table-projects' },
+        _react2.default.createElement(
+          'thead',
+          null,
+          _react2.default.createElement(
+            'tr',
+            null,
+            _react2.default.createElement(
+              'th',
+              null,
+              'Name'
+            ),
+            _react2.default.createElement(
+              'th',
+              null,
+              'Market'
+            ),
+            _react2.default.createElement(
+              'th',
+              null,
+              'Service'
+            )
+          )
+        ),
+        _react2.default.createElement(
+          'tbody',
+          null,
+          postComponents
+        )
+      );
     } else {
-      postComponents = _react2.default.createElement(
-        'h3',
-        null,
-        'Sorry, no posts.'
+      results = _react2.default.createElement(
+        'div',
+        { className: 'no-results' },
+        'No projects available.'
       );
     }
 
     return _react2.default.createElement(
-      'table',
-      { className: 'table-projects' },
-      _react2.default.createElement(
-        'thead',
-        null,
-        _react2.default.createElement(
-          'tr',
-          null,
-          _react2.default.createElement(
-            'th',
-            null,
-            'Name'
-          ),
-          _react2.default.createElement(
-            'th',
-            null,
-            'Market'
-          ),
-          _react2.default.createElement(
-            'th',
-            null,
-            'Service'
-          )
-        )
-      ),
-      _react2.default.createElement(
-        'tbody',
-        null,
-        postComponents
-      )
+      'div',
+      null,
+      results
     );
   };
 
@@ -23790,7 +23896,7 @@ var Table = function (_React$Component) {
 module.exports = Table;
 
 /***/ }),
-/* 198 */
+/* 199 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23818,8 +23924,6 @@ var TableItem = function (_React$Component) {
   }
 
   TableItem.prototype.render = function render() {
-    //  console.log('table item props', this.props);
-
 
     return _react2.default.createElement(
       "tr",
@@ -23827,16 +23931,8 @@ var TableItem = function (_React$Component) {
       _react2.default.createElement(
         "td",
         null,
-        _react2.default.createElement(
-          "a",
-          { href: this.props.link },
-          _react2.default.createElement("h3", { dangerouslySetInnerHTML: { __html: this.props.title } })
-        ),
-        _react2.default.createElement(
-          "span",
-          { className: "table-item--owner" },
-          "Owner"
-        )
+        _react2.default.createElement("a", { href: this.props.link, dangerouslySetInnerHTML: { __html: this.props.title } }),
+        _react2.default.createElement("span", { className: "table-item--owner", dangerouslySetInnerHTML: { __html: this.props.owner } })
       ),
       _react2.default.createElement(
         "td",
@@ -23857,7 +23953,7 @@ var TableItem = function (_React$Component) {
 module.exports = TableItem;
 
 /***/ }),
-/* 199 */
+/* 200 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
