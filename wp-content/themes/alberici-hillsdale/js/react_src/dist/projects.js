@@ -23512,7 +23512,7 @@ var TableList = function (_React$Component) {
       loading: true,
       currentPage: 1,
       projects: [],
-      postsPerPage: 4,
+      postsPerPage: 2,
       market_categories: [],
       service_categories: [],
       isFiltered: false,
@@ -23653,9 +23653,12 @@ var TableList = function (_React$Component) {
     var filteredServiceName = '';
     var filteredMarketName = '';
 
-    var allPostsOffset = this.state.currentPage * this.state.postsPerPage;
-
     var currentPage = this.state.currentPage;
+    var allPostsOffset = currentPage * this.state.postsPerPage;
+    console.log('allposts offset', allPostsOffset);
+    var maxPages = this.state.totalProjects / this.state.postsPerPage;
+    console.log('max', Math.ceil(maxPages));
+
     var totalResults = this.state.totalProjects;
     var displayNumber = ''; //This should be a count of current Visible Posts
 

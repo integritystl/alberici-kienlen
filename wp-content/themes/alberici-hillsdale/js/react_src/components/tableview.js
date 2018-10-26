@@ -25,7 +25,7 @@ class TableList extends React.Component {
         loading: true,
         currentPage: 1,
         projects: [],
-        postsPerPage: 4,
+        postsPerPage: 2,
         market_categories: [],
         service_categories: [],
         isFiltered: false,
@@ -152,9 +152,12 @@ class TableList extends React.Component {
     let filteredServiceName = '';
     let filteredMarketName = '';
 
-    let allPostsOffset = this.state.currentPage * this.state.postsPerPage;
-
     let currentPage = this.state.currentPage;
+    let allPostsOffset = currentPage * this.state.postsPerPage;
+    console.log('allposts offset', allPostsOffset);
+    let maxPages = this.state.totalProjects / this.state.postsPerPage;
+    console.log('max', Math.ceil(maxPages) );
+
     let totalResults = this.state.totalProjects;
     let displayNumber = ''; //This should be a count of current Visible Posts
 
