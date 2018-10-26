@@ -386,6 +386,7 @@ class CardList extends React.Component {
             serviceFilter = {this.state.filteredService}
             serviceFilterName = {filteredServiceName}
             serviceChange = {this.handleServiceChange.bind(this)}
+            secondarySelect = 'services'
             locations = {this.state.location_categories}
             locationFilter = {this.state.filteredLocation}
             locationFilterName = {filteredLocationName}

@@ -13,12 +13,10 @@ class TableList extends React.Component {
         projects: [],
         postsPerPage: 6,
         market_categories: [],
-        location_categories: [],
         service_categories: [],
         isFiltered: false,
         filteredProjects: [],
         filteredMarket: '',
-        filteredLocation: '',
         filteredService: '',
         hasSearchTerm: false,
         searchTerm: '',
@@ -30,22 +28,20 @@ class TableList extends React.Component {
   componentDidMount() {
     this.getPosts(this.buildAPILink());
     this.getMarketCats();
-    this.getLocationCats();
     this.getServiceCats();
   }
 
   //Fetch posts
   buildAPILink() {
     let baseLink = wpObj.projects_endpoint;
-    console.log(baseLink);
     if (this.state.isFiltered) {
       if (this.state.hasSearchTerm) {
         baseLink += `&search=${this.state.searchTerm}`;
       }
-      if (this.state.filteredMarket && this.state.filteredLocation) {
-        baseLink += `&market_category=${this.state.filteredMarket}&location_category=${this.state.filteredLocation}`;
-      } else if (this.state.filteredLocation) {
-        baseLink += `&location_category=${this.state.filteredLocation}`;
+      if (this.state.filteredMarket && this.state.filteredService) {
+        baseLink += `&market_category=${this.state.filteredMarket}&service_category=${this.state.filteredService}`;
+      } else if (this.state.filteredService) {
+        baseLink += `&service_category=${this.state.filteredService}`;
       } else if (this.state.filteredMarket) {
         baseLink += `&market_category=${this.state.filteredMarket}`;
       } else {
@@ -56,7 +52,6 @@ class TableList extends React.Component {
   }
 
   //Get All Posts
-  //TODO: edit this so we're only adding either Posts or Projects to state.
   getPosts(apiLink){
     apiLink += `&per_page=${this.state.postsPerPage}`
     //Gotta pass Basic Auth for the prompt from WP Engine
@@ -65,7 +60,6 @@ class TableList extends React.Component {
         headers: new Headers({'Authorization': 'Basic ' + btoa("demo:alberici") }),
       })
       .then( response => {
-        console.log('response?', response);
         return(response.json());
       })
       .then(json => {
@@ -82,7 +76,7 @@ class TableList extends React.Component {
         return(response.json());
       }).then(json => {
         this.setState({
-          filteredPosts: json,
+          filteredProjects: json,
           loading: false
         })
       })
@@ -112,31 +106,6 @@ class TableList extends React.Component {
       isFiltered: true,
       loading: true
     }, () => this.getFilteredPosts(this.buildAPILink() ));
-  }
-  //Handle Location Filter
-  handleLocationChange(id) {
-    if (id === 'Location') {
-      id = ''
-    }
-    this.setState({
-      filteredLocation: parseInt(id),
-      isFiltered: true,
-      loading: true
-    }, () => this.getFilteredPosts(this.buildAPILink()) );
-  }
-
-  //Fetch our Services Categories
-  getLocationCats() {
-    let locationCatApi = wpObj.locationCat_endpoint;
-    fetch(locationCatApi)
-      .then( response => {
-        return(response.json());
-      })
-      .then(json => {
-        this.setState({
-          location_categories: json,
-        })
-      });
   }
 
   //Fetch our Services Categories
@@ -194,7 +163,6 @@ class TableList extends React.Component {
     let allPosts = this.state.projects;
     let filterPosts = this.state.filteredProjects;
 
-    let filteredLocationName = '';
     let filteredServiceName = '';
     let filteredMarketName = '';
 
@@ -244,10 +212,7 @@ class TableList extends React.Component {
           serviceFilter = {this.state.filteredService}
           serviceFilterName = {filteredServiceName}
           serviceChange = {this.handleServiceChange.bind(this)}
-          locations = {this.state.location_categories}
-          locationFilter = {this.state.filteredLocation}
-           locationFilterName = {filteredLocationName}
-           locationChange = {this.handleLocationChange.bind(this)}
+          secondarySelect = 'services'
           isFiltered = {this.state.isFiltered}
           filterSearch = {this.handleSearch.bind(this)}
         //  resetFilter = {this.resetFilter.bind(this)}

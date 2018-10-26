@@ -778,7 +778,7 @@ module.exports = ExecutionEnvironment;
 
 
 
-var _prodInvariant = __webpack_require__(22);
+var _prodInvariant = __webpack_require__(21);
 
 var ReactCurrentOwner = __webpack_require__(10);
 
@@ -1194,7 +1194,7 @@ var _prodInvariant = __webpack_require__(2),
 var CallbackQueue = __webpack_require__(55);
 var PooledClass = __webpack_require__(14);
 var ReactFeatureFlags = __webpack_require__(60);
-var ReactReconciler = __webpack_require__(20);
+var ReactReconciler = __webpack_require__(19);
 var Transaction = __webpack_require__(30);
 
 var invariant = __webpack_require__(1);
@@ -2585,16 +2585,6 @@ module.exports = warning;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
-
-module.exports = __webpack_require__(21);
-
-
-/***/ }),
-/* 19 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
 /**
  * Copyright (c) 2015-present, Facebook, Inc.
  *
@@ -2712,7 +2702,7 @@ DOMLazyTree.queueText = queueText;
 module.exports = DOMLazyTree;
 
 /***/ }),
-/* 20 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2882,7 +2872,7 @@ module.exports = ReactReconciler;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 21 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3018,7 +3008,7 @@ module.exports = React;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 22 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3058,6 +3048,16 @@ function reactProdInvariant(code) {
 }
 
 module.exports = reactProdInvariant;
+
+/***/ }),
+/* 22 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = __webpack_require__(20);
+
 
 /***/ }),
 /* 23 */
@@ -4845,7 +4845,7 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 
 
 
-var DOMLazyTree = __webpack_require__(19);
+var DOMLazyTree = __webpack_require__(18);
 var Danger = __webpack_require__(99);
 var ReactDOMComponentTree = __webpack_require__(4);
 var ReactInstrumentation = __webpack_require__(8);
@@ -5395,7 +5395,7 @@ var _prodInvariant = __webpack_require__(2);
 var ReactPropTypesSecret = __webpack_require__(65);
 var propTypesFactory = __webpack_require__(52);
 
-var React = __webpack_require__(21);
+var React = __webpack_require__(20);
 var PropTypes = propTypesFactory(React.isValidElement);
 
 var invariant = __webpack_require__(1);
@@ -7743,9 +7743,9 @@ module.exports = ReactInputSelection;
 
 var _prodInvariant = __webpack_require__(2);
 
-var DOMLazyTree = __webpack_require__(19);
+var DOMLazyTree = __webpack_require__(18);
 var DOMProperty = __webpack_require__(13);
-var React = __webpack_require__(21);
+var React = __webpack_require__(20);
 var ReactBrowserEventEmitter = __webpack_require__(28);
 var ReactCurrentOwner = __webpack_require__(10);
 var ReactDOMComponentTree = __webpack_require__(4);
@@ -7755,7 +7755,7 @@ var ReactFeatureFlags = __webpack_require__(60);
 var ReactInstanceMap = __webpack_require__(25);
 var ReactInstrumentation = __webpack_require__(8);
 var ReactMarkupChecksum = __webpack_require__(131);
-var ReactReconciler = __webpack_require__(20);
+var ReactReconciler = __webpack_require__(19);
 var ReactUpdateQueue = __webpack_require__(42);
 var ReactUpdates = __webpack_require__(9);
 
@@ -8286,7 +8286,7 @@ module.exports = ReactMount;
 
 var _prodInvariant = __webpack_require__(2);
 
-var React = __webpack_require__(21);
+var React = __webpack_require__(20);
 
 var invariant = __webpack_require__(1);
 
@@ -9265,7 +9265,7 @@ module.exports = getActiveElement;
 
 
 
-var _prodInvariant = __webpack_require__(22),
+var _prodInvariant = __webpack_require__(21),
     _assign = __webpack_require__(34);
 
 var ReactNoopUpdateQueue = __webpack_require__(83);
@@ -10377,7 +10377,7 @@ module.exports = __webpack_require__(107);
 "use strict";
 
 
-var _react = __webpack_require__(18);
+var _react = __webpack_require__(22);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -10448,7 +10448,7 @@ module.exports = Select;
 "use strict";
 
 
-var _react = __webpack_require__(18);
+var _react = __webpack_require__(22);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -10517,7 +10517,7 @@ var FilterBar = function (_React$Component) {
     var resetBtn = '';
     //Check if Service or Location exists, then output the one we want.
     var secondarySelect = '';
-    if (this.props.postDataType === 'news') {
+    if (this.props.secondarySelect === 'services') {
       if (this.props.services) {
         secondarySelect = _react2.default.createElement(
           'div',
@@ -12438,7 +12438,7 @@ module.exports = ChangeEventPlugin;
 
 var _prodInvariant = __webpack_require__(2);
 
-var DOMLazyTree = __webpack_require__(19);
+var DOMLazyTree = __webpack_require__(18);
 var ExecutionEnvironment = __webpack_require__(6);
 
 var createNodesFromMarkup = __webpack_require__(168);
@@ -12954,7 +12954,7 @@ module.exports = HTMLDOMPropertyConfig;
 
 
 
-var ReactReconciler = __webpack_require__(20);
+var ReactReconciler = __webpack_require__(19);
 
 var instantiateReactComponent = __webpack_require__(72);
 var KeyEscapeUtils = __webpack_require__(38);
@@ -13145,14 +13145,14 @@ module.exports = ReactComponentBrowserEnvironment;
 var _prodInvariant = __webpack_require__(2),
     _assign = __webpack_require__(5);
 
-var React = __webpack_require__(21);
+var React = __webpack_require__(20);
 var ReactComponentEnvironment = __webpack_require__(40);
 var ReactCurrentOwner = __webpack_require__(10);
 var ReactErrorUtils = __webpack_require__(41);
 var ReactInstanceMap = __webpack_require__(25);
 var ReactInstrumentation = __webpack_require__(8);
 var ReactNodeTypes = __webpack_require__(64);
-var ReactReconciler = __webpack_require__(20);
+var ReactReconciler = __webpack_require__(19);
 
 if (process.env.NODE_ENV !== 'production') {
   var checkReactTypeSpec = __webpack_require__(154);
@@ -14051,7 +14051,7 @@ module.exports = ReactCompositeComponent;
 var ReactDOMComponentTree = __webpack_require__(4);
 var ReactDefaultInjection = __webpack_require__(124);
 var ReactMount = __webpack_require__(63);
-var ReactReconciler = __webpack_require__(20);
+var ReactReconciler = __webpack_require__(19);
 var ReactUpdates = __webpack_require__(9);
 var ReactVersion = __webpack_require__(139);
 
@@ -14168,7 +14168,7 @@ var _prodInvariant = __webpack_require__(2),
 
 var AutoFocusUtils = __webpack_require__(95);
 var CSSPropertyOperations = __webpack_require__(97);
-var DOMLazyTree = __webpack_require__(19);
+var DOMLazyTree = __webpack_require__(18);
 var DOMNamespaces = __webpack_require__(36);
 var DOMProperty = __webpack_require__(13);
 var DOMPropertyOperations = __webpack_require__(56);
@@ -15218,7 +15218,7 @@ module.exports = ReactDOMContainerInfo;
 
 var _assign = __webpack_require__(5);
 
-var DOMLazyTree = __webpack_require__(19);
+var DOMLazyTree = __webpack_require__(18);
 var ReactDOMComponentTree = __webpack_require__(4);
 
 var ReactDOMEmptyComponent = function (instantiate) {
@@ -15774,7 +15774,7 @@ module.exports = ReactDOMNullInputValuePropHook;
 
 var _assign = __webpack_require__(5);
 
-var React = __webpack_require__(21);
+var React = __webpack_require__(20);
 var ReactDOMComponentTree = __webpack_require__(4);
 var ReactDOMSelect = __webpack_require__(58);
 
@@ -16117,7 +16117,7 @@ var _prodInvariant = __webpack_require__(2),
     _assign = __webpack_require__(5);
 
 var DOMChildrenOperations = __webpack_require__(35);
-var DOMLazyTree = __webpack_require__(19);
+var DOMLazyTree = __webpack_require__(18);
 var ReactDOMComponentTree = __webpack_require__(4);
 
 var escapeTextContentForBrowser = __webpack_require__(31);
@@ -17615,7 +17615,7 @@ var ReactInstanceMap = __webpack_require__(25);
 var ReactInstrumentation = __webpack_require__(8);
 
 var ReactCurrentOwner = __webpack_require__(10);
-var ReactReconciler = __webpack_require__(20);
+var ReactReconciler = __webpack_require__(19);
 var ReactChildReconciler = __webpack_require__(104);
 
 var emptyFunction = __webpack_require__(12);
@@ -21436,7 +21436,7 @@ module.exports = KeyEscapeUtils;
 
 
 
-var _prodInvariant = __webpack_require__(22);
+var _prodInvariant = __webpack_require__(21);
 
 var invariant = __webpack_require__(16);
 
@@ -22006,7 +22006,7 @@ module.exports = '15.6.2';
 
 
 
-var _prodInvariant = __webpack_require__(22);
+var _prodInvariant = __webpack_require__(21);
 
 var ReactPropTypeLocationNames = __webpack_require__(182);
 var ReactPropTypesSecret = __webpack_require__(184);
@@ -22146,7 +22146,7 @@ module.exports = getNextDebugID;
  */
 
 
-var _prodInvariant = __webpack_require__(22);
+var _prodInvariant = __webpack_require__(21);
 
 var ReactElement = __webpack_require__(15);
 
@@ -22189,7 +22189,7 @@ module.exports = onlyChild;
 
 
 
-var _prodInvariant = __webpack_require__(22);
+var _prodInvariant = __webpack_require__(21);
 
 var ReactCurrentOwner = __webpack_require__(10);
 var REACT_ELEMENT_TYPE = __webpack_require__(81);
@@ -23295,7 +23295,7 @@ module.exports = factory;
 "use strict";
 
 
-var _react = __webpack_require__(18);
+var _react = __webpack_require__(22);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -23770,6 +23770,7 @@ var CardList = function (_React$Component) {
         serviceFilter: this.state.filteredService,
         serviceFilterName: filteredServiceName,
         serviceChange: this.handleServiceChange.bind(this),
+        secondarySelect: 'services',
         locations: this.state.location_categories,
         locationFilter: this.state.filteredLocation,
         locationFilterName: filteredLocationName,
@@ -23797,7 +23798,7 @@ module.exports = CardList;
 "use strict";
 
 
-var _react = __webpack_require__(18);
+var _react = __webpack_require__(22);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -23838,7 +23839,7 @@ new AppInitializer().run();
 "use strict";
 
 
-var _react = __webpack_require__(18);
+var _react = __webpack_require__(22);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -23897,7 +23898,7 @@ module.exports = Card;
 "use strict";
 
 
-var _react = __webpack_require__(18);
+var _react = __webpack_require__(22);
 
 var _react2 = _interopRequireDefault(_react);
 
