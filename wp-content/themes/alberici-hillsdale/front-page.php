@@ -51,36 +51,38 @@ $HeroButtonLink = get_field('homepage_hero_button_link');
 			<!-- News Section for Kienlen -->
 			<?php $the_query = new WP_Query( 'posts_per_page=3' ); ?>
 			<?php if ( $the_query -> have_posts() ): ?>
-			<div class="news container">
-				<h2>News</h2>
-				<ul class="blog-content_posts">
-				<?php while ($the_query -> have_posts()) : $the_query -> the_post(); ?>
-					<li>
-						<a href="<?php the_permalink(); ?>">
-							<span class="news-meta">
-								<span class="card-overlay"></span>
-								<?php echo wp_get_attachment_image( get_post_thumbnail_id(get_the_ID()), 'blog_image', false );?>
-								<span class="news-text">
-									<?php
-									$market_taxonomy = get_the_terms( get_the_ID(), 'market_category' );
-									$service_taxonomy = get_the_terms( get_the_ID(), 'service_category' );
-									if ($market_taxonomy) { ?>
-										<p><?php echo $market_taxonomy[0]->name;?></p>
-									<?php }
-									if ($service_taxonomy) { ?>
-										<p><?php echo $service_taxonomy[0]->name;?></p>
-									<?php } ?>
-									<h3><?php  the_title();?></h3>
+			<div class="news">
+				<div class="container">
+					<h2>News</h2>
+					<ul class="blog-content_posts">
+					<?php while ($the_query -> have_posts()) : $the_query -> the_post(); ?>
+						<li>
+							<a href="<?php the_permalink(); ?>">
+								<span class="news-meta">
+									<span class="card-overlay"></span>
+									<?php echo wp_get_attachment_image( get_post_thumbnail_id(get_the_ID()), 'blog_image', false );?>
+									<span class="news-text">
+										<?php
+										$market_taxonomy = get_the_terms( get_the_ID(), 'market_category' );
+										$service_taxonomy = get_the_terms( get_the_ID(), 'service_category' );
+										if ($market_taxonomy) { ?>
+											<p><?php echo $market_taxonomy[0]->name;?></p>
+										<?php }
+										if ($service_taxonomy) { ?>
+											<p><?php echo $service_taxonomy[0]->name;?></p>
+										<?php } ?>
+										<h3><?php  the_title();?></h3>
+									</span>
 								</span>
-							</span>
-						</a>
-					</li>
+							</a>
+						</li>
 
-				<?php
-				 endwhile;
-				 wp_reset_postdata(); ?>
-				</ul>
-				<a href="<?php echo get_permalink( get_option( 'page_for_posts' ) ); ?>" class="btn">View More News</a>
+					<?php
+					endwhile;
+					wp_reset_postdata(); ?>
+					</ul>
+					<a href="<?php echo get_permalink( get_option( 'page_for_posts' ) ); ?>" class="btn-secondary">View More News</a>
+				</div>
 			</div>
 			<?php endif; ?>
 		</main><!-- #main -->
