@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "/wp-content/themes/alberici-hillsdale/js/react_src/dist/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 198);
+/******/ 	return __webpack_require__(__webpack_require__.s = 200);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -778,7 +778,7 @@ module.exports = ExecutionEnvironment;
 
 
 
-var _prodInvariant = __webpack_require__(21);
+var _prodInvariant = __webpack_require__(22);
 
 var ReactCurrentOwner = __webpack_require__(10);
 
@@ -1194,7 +1194,7 @@ var _prodInvariant = __webpack_require__(2),
 var CallbackQueue = __webpack_require__(55);
 var PooledClass = __webpack_require__(14);
 var ReactFeatureFlags = __webpack_require__(60);
-var ReactReconciler = __webpack_require__(19);
+var ReactReconciler = __webpack_require__(20);
 var Transaction = __webpack_require__(30);
 
 var invariant = __webpack_require__(1);
@@ -2585,6 +2585,16 @@ module.exports = warning;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+
+
+module.exports = __webpack_require__(21);
+
+
+/***/ }),
+/* 19 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
 /**
  * Copyright (c) 2015-present, Facebook, Inc.
  *
@@ -2702,7 +2712,7 @@ DOMLazyTree.queueText = queueText;
 module.exports = DOMLazyTree;
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2872,7 +2882,7 @@ module.exports = ReactReconciler;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3008,7 +3018,7 @@ module.exports = React;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3048,16 +3058,6 @@ function reactProdInvariant(code) {
 }
 
 module.exports = reactProdInvariant;
-
-/***/ }),
-/* 22 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-module.exports = __webpack_require__(20);
-
 
 /***/ }),
 /* 23 */
@@ -4845,7 +4845,7 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 
 
 
-var DOMLazyTree = __webpack_require__(18);
+var DOMLazyTree = __webpack_require__(19);
 var Danger = __webpack_require__(99);
 var ReactDOMComponentTree = __webpack_require__(4);
 var ReactInstrumentation = __webpack_require__(8);
@@ -5395,7 +5395,7 @@ var _prodInvariant = __webpack_require__(2);
 var ReactPropTypesSecret = __webpack_require__(65);
 var propTypesFactory = __webpack_require__(52);
 
-var React = __webpack_require__(20);
+var React = __webpack_require__(21);
 var PropTypes = propTypesFactory(React.isValidElement);
 
 var invariant = __webpack_require__(1);
@@ -7743,9 +7743,9 @@ module.exports = ReactInputSelection;
 
 var _prodInvariant = __webpack_require__(2);
 
-var DOMLazyTree = __webpack_require__(18);
+var DOMLazyTree = __webpack_require__(19);
 var DOMProperty = __webpack_require__(13);
-var React = __webpack_require__(20);
+var React = __webpack_require__(21);
 var ReactBrowserEventEmitter = __webpack_require__(28);
 var ReactCurrentOwner = __webpack_require__(10);
 var ReactDOMComponentTree = __webpack_require__(4);
@@ -7755,7 +7755,7 @@ var ReactFeatureFlags = __webpack_require__(60);
 var ReactInstanceMap = __webpack_require__(25);
 var ReactInstrumentation = __webpack_require__(8);
 var ReactMarkupChecksum = __webpack_require__(131);
-var ReactReconciler = __webpack_require__(19);
+var ReactReconciler = __webpack_require__(20);
 var ReactUpdateQueue = __webpack_require__(42);
 var ReactUpdates = __webpack_require__(9);
 
@@ -8286,7 +8286,7 @@ module.exports = ReactMount;
 
 var _prodInvariant = __webpack_require__(2);
 
-var React = __webpack_require__(20);
+var React = __webpack_require__(21);
 
 var invariant = __webpack_require__(1);
 
@@ -9265,7 +9265,7 @@ module.exports = getActiveElement;
 
 
 
-var _prodInvariant = __webpack_require__(21),
+var _prodInvariant = __webpack_require__(22),
     _assign = __webpack_require__(34);
 
 var ReactNoopUpdateQueue = __webpack_require__(83);
@@ -10377,7 +10377,7 @@ module.exports = __webpack_require__(107);
 "use strict";
 
 
-var _react = __webpack_require__(22);
+var _react = __webpack_require__(18);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -10448,7 +10448,7 @@ module.exports = Select;
 "use strict";
 
 
-var _react = __webpack_require__(22);
+var _react = __webpack_require__(18);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -12438,7 +12438,7 @@ module.exports = ChangeEventPlugin;
 
 var _prodInvariant = __webpack_require__(2);
 
-var DOMLazyTree = __webpack_require__(18);
+var DOMLazyTree = __webpack_require__(19);
 var ExecutionEnvironment = __webpack_require__(6);
 
 var createNodesFromMarkup = __webpack_require__(168);
@@ -12954,7 +12954,7 @@ module.exports = HTMLDOMPropertyConfig;
 
 
 
-var ReactReconciler = __webpack_require__(19);
+var ReactReconciler = __webpack_require__(20);
 
 var instantiateReactComponent = __webpack_require__(72);
 var KeyEscapeUtils = __webpack_require__(38);
@@ -13145,14 +13145,14 @@ module.exports = ReactComponentBrowserEnvironment;
 var _prodInvariant = __webpack_require__(2),
     _assign = __webpack_require__(5);
 
-var React = __webpack_require__(20);
+var React = __webpack_require__(21);
 var ReactComponentEnvironment = __webpack_require__(40);
 var ReactCurrentOwner = __webpack_require__(10);
 var ReactErrorUtils = __webpack_require__(41);
 var ReactInstanceMap = __webpack_require__(25);
 var ReactInstrumentation = __webpack_require__(8);
 var ReactNodeTypes = __webpack_require__(64);
-var ReactReconciler = __webpack_require__(19);
+var ReactReconciler = __webpack_require__(20);
 
 if (process.env.NODE_ENV !== 'production') {
   var checkReactTypeSpec = __webpack_require__(154);
@@ -14051,7 +14051,7 @@ module.exports = ReactCompositeComponent;
 var ReactDOMComponentTree = __webpack_require__(4);
 var ReactDefaultInjection = __webpack_require__(124);
 var ReactMount = __webpack_require__(63);
-var ReactReconciler = __webpack_require__(19);
+var ReactReconciler = __webpack_require__(20);
 var ReactUpdates = __webpack_require__(9);
 var ReactVersion = __webpack_require__(139);
 
@@ -14168,7 +14168,7 @@ var _prodInvariant = __webpack_require__(2),
 
 var AutoFocusUtils = __webpack_require__(95);
 var CSSPropertyOperations = __webpack_require__(97);
-var DOMLazyTree = __webpack_require__(18);
+var DOMLazyTree = __webpack_require__(19);
 var DOMNamespaces = __webpack_require__(36);
 var DOMProperty = __webpack_require__(13);
 var DOMPropertyOperations = __webpack_require__(56);
@@ -15218,7 +15218,7 @@ module.exports = ReactDOMContainerInfo;
 
 var _assign = __webpack_require__(5);
 
-var DOMLazyTree = __webpack_require__(18);
+var DOMLazyTree = __webpack_require__(19);
 var ReactDOMComponentTree = __webpack_require__(4);
 
 var ReactDOMEmptyComponent = function (instantiate) {
@@ -15774,7 +15774,7 @@ module.exports = ReactDOMNullInputValuePropHook;
 
 var _assign = __webpack_require__(5);
 
-var React = __webpack_require__(20);
+var React = __webpack_require__(21);
 var ReactDOMComponentTree = __webpack_require__(4);
 var ReactDOMSelect = __webpack_require__(58);
 
@@ -16117,7 +16117,7 @@ var _prodInvariant = __webpack_require__(2),
     _assign = __webpack_require__(5);
 
 var DOMChildrenOperations = __webpack_require__(35);
-var DOMLazyTree = __webpack_require__(18);
+var DOMLazyTree = __webpack_require__(19);
 var ReactDOMComponentTree = __webpack_require__(4);
 
 var escapeTextContentForBrowser = __webpack_require__(31);
@@ -17615,7 +17615,7 @@ var ReactInstanceMap = __webpack_require__(25);
 var ReactInstrumentation = __webpack_require__(8);
 
 var ReactCurrentOwner = __webpack_require__(10);
-var ReactReconciler = __webpack_require__(19);
+var ReactReconciler = __webpack_require__(20);
 var ReactChildReconciler = __webpack_require__(104);
 
 var emptyFunction = __webpack_require__(12);
@@ -21436,7 +21436,7 @@ module.exports = KeyEscapeUtils;
 
 
 
-var _prodInvariant = __webpack_require__(21);
+var _prodInvariant = __webpack_require__(22);
 
 var invariant = __webpack_require__(16);
 
@@ -22006,7 +22006,7 @@ module.exports = '15.6.2';
 
 
 
-var _prodInvariant = __webpack_require__(21);
+var _prodInvariant = __webpack_require__(22);
 
 var ReactPropTypeLocationNames = __webpack_require__(182);
 var ReactPropTypesSecret = __webpack_require__(184);
@@ -22146,7 +22146,7 @@ module.exports = getNextDebugID;
  */
 
 
-var _prodInvariant = __webpack_require__(21);
+var _prodInvariant = __webpack_require__(22);
 
 var ReactElement = __webpack_require__(15);
 
@@ -22189,7 +22189,7 @@ module.exports = onlyChild;
 
 
 
-var _prodInvariant = __webpack_require__(21);
+var _prodInvariant = __webpack_require__(22);
 
 var ReactCurrentOwner = __webpack_require__(10);
 var REACT_ELEMENT_TYPE = __webpack_require__(81);
@@ -23296,15 +23296,17 @@ module.exports = factory;
 "use strict";
 
 
-var _react = __webpack_require__(22);
+var _react = __webpack_require__(18);
 
 var _react2 = _interopRequireDefault(_react);
+
+var _helpers = __webpack_require__(197);
 
 var _filterbar = __webpack_require__(90);
 
 var _filterbar2 = _interopRequireDefault(_filterbar);
 
-var _table = __webpack_require__(197);
+var _table = __webpack_require__(198);
 
 var _table2 = _interopRequireDefault(_table);
 
@@ -23322,10 +23324,21 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var TableList = function (_React$Component) {
   _inherits(TableList, _React$Component);
 
-  function TableList() {
+  function TableList(props) {
     _classCallCheck(this, TableList);
 
-    return _possibleConstructorReturn(this, _React$Component.apply(this, arguments));
+    //bind our helpers
+    var _this = _possibleConstructorReturn(this, _React$Component.call(this, props));
+
+    _this.getMarketCats = _helpers.getMarketCats.bind(_this);
+    _this.handleSearch = _helpers.handleSearch.bind(_this);
+    _this.getServiceCats = _helpers.getServiceCats.bind(_this);
+    _this.resetFilter = _helpers.resetFilter.bind(_this);
+    _this.removeFilterTerm = _helpers.removeFilterTerm.bind(_this);
+    _this.checkFilterStatus = _helpers.checkFilterStatus.bind(_this);
+    _this.handleMarketChange = _helpers.handleMarketChange.bind(_this);
+    _this.getCatName = _helpers.getCatName.bind(_this);
+    return _this;
   }
 
   TableList.prototype.componentWillMount = function componentWillMount() {
@@ -23408,61 +23421,11 @@ var TableList = function (_React$Component) {
     });
   };
 
-  //Fetch our Market Categories
-
-
-  TableList.prototype.getMarketCats = function getMarketCats() {
-    var _this4 = this;
-
-    var marketCatApi = wpObj.marketCat_endpoint;
-    fetch(marketCatApi).then(function (response) {
-      return response.json();
-    }).then(function (json) {
-      _this4.setState({
-        market_categories: json
-      });
-    });
-  };
-  //Handles Market Filter
-
-
-  TableList.prototype.handleMarketChange = function handleMarketChange(id) {
-    var _this5 = this;
-
-    if (id === 'Market') {
-      id = '';
-    }
-
-    this.setState({
-      filteredMarket: parseInt(id),
-      isFiltered: true,
-      loading: true
-    }, function () {
-      return _this5.getFilteredPosts(_this5.buildAPILink());
-    });
-  };
-
-  //Fetch our Services Categories
-
-
-  TableList.prototype.getServiceCats = function getServiceCats() {
-    var _this6 = this;
-
-    var serviceCatApi = wpObj.serviceCat_endpoint;
-    fetch(serviceCatApi).then(function (response) {
-      return response.json();
-    }).then(function (json) {
-      _this6.setState({
-        service_categories: json
-      });
-    });
-  };
-
   //Handles Service Filter
 
 
   TableList.prototype.handleServiceChange = function handleServiceChange(id) {
-    var _this7 = this;
+    var _this4 = this;
 
     if (id === 'Service') {
       id = '';
@@ -23472,36 +23435,44 @@ var TableList = function (_React$Component) {
       isFiltered: true,
       loading: true
     }, function () {
-      return _this7.getFilteredPosts(_this7.buildAPILink());
+      return _this4.getFilteredPosts(_this4.buildAPILink());
     });
   };
 
-  //Search Input Filter
+  //Load More functionality
+  // TODO: Load more is pagination in this view, so will be different from CardList view
 
 
-  TableList.prototype.handleSearch = function handleSearch(term) {
-    var _this8 = this;
+  TableList.prototype.loadMorePosts = function loadMorePosts() {
+    var _this5 = this;
 
-    console.log('search term', term);
-    this.setState({
-      searchTerm: term,
-      hasSearchTerm: true,
-      isFiltered: true,
-      loading: true
-    }, function () {
-      return _this8.getFilteredPosts(_this8.buildAPILink());
-    });
-  };
+    //need to fetch the next amount of posts and add them
+    //getPosts loads the page and uses postsPerPage
+    var apiLink = this.buildAPILink();
 
-  //Get name of filtered category from object
-
-
-  TableList.prototype.getCatName = function getCatName(filteredCatId, categories) {
-    var catObj = categories.filter(function (item) {
-      return item.id === filteredCatId;
-    });
-    var filteredCatName = catObj[0].name;
-    return filteredCatName;
+    var offset = 0;
+    if (this.state.isFiltered) {
+      offset = this.state.filteredProjects.length;
+      //TODO add in some stuff here Lindsay
+    } else {
+      offset = this.state.currentPage * this.state.postsPerPage;
+      apiLink += '&offset=' + offset;
+      fetch(apiLink).then(function (response) {
+        return response.json();
+      }).then(function (json) {
+        var currentPosts = _this5.state.projects;
+        //when i put this into this.setState, it breaks, what do?
+        Array.prototype.push.apply(currentPosts, json);
+        //increment our Current Page
+        _this5.setState(function (state) {
+          return {
+            currentPage: state.currentPage + 1,
+            //posts: Array.prototype.push.apply(currentPosts, json), //need to jam in new json here
+            loading: false
+          };
+        });
+      });
+    }
   };
 
   TableList.prototype.render = function render() {
@@ -23560,16 +23531,16 @@ var TableList = function (_React$Component) {
         markets: this.state.market_categories,
         marketFilter: this.state.filteredMarket,
         marketFilterName: filteredMarketName,
-        marketChange: this.handleMarketChange.bind(this),
+        marketChange: this.handleMarketChange,
         services: this.state.service_categories,
         serviceFilter: this.state.filteredService,
         serviceFilterName: filteredServiceName,
         serviceChange: this.handleServiceChange.bind(this),
         secondarySelect: 'services',
         isFiltered: this.state.isFiltered,
-        filterSearch: this.handleSearch.bind(this)
-        //  resetFilter = {this.resetFilter.bind(this)}
-        //  removeFilterTerm = {this.removeFilterTerm.bind(this)}
+        filterSearch: this.handleSearch,
+        resetFilter: this.resetFilter,
+        removeFilterTerm: this.removeFilterTerm
       }),
       postGroup,
       _react2.default.createElement(
@@ -23627,7 +23598,175 @@ module.exports = TableList;
 "use strict";
 
 
-var _react = __webpack_require__(22);
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.handleSearch = handleSearch;
+exports.getMarketCats = getMarketCats;
+exports.handleMarketChange = handleMarketChange;
+exports.getServiceCats = getServiceCats;
+exports.resetFilter = resetFilter;
+exports.removeFilterTerm = removeFilterTerm;
+exports.checkFilterStatus = checkFilterStatus;
+exports.getCatName = getCatName;
+//This houses shared functionality used between CardList and Table List
+
+//Search Input Filter
+function handleSearch(term) {
+  var _this = this;
+
+  this.setState({
+    searchTerm: term,
+    hasSearchTerm: true,
+    isFiltered: true,
+    loading: true
+  }, function () {
+    return _this.getFilteredPosts(_this.buildAPILink());
+  });
+}
+
+//Fetch our Market Categories
+function getMarketCats() {
+  var _this2 = this;
+
+  console.log('market cat helper');
+  var marketCatApi = wpObj.marketCat_endpoint;
+  fetch(marketCatApi).then(function (response) {
+    return response.json();
+  }).then(function (json) {
+    _this2.setState({
+      market_categories: json
+    });
+  });
+}
+
+//Handles Market Filter
+function handleMarketChange(id) {
+  var _this3 = this;
+
+  if (id === 'Market') {
+    id = '';
+  }
+
+  this.setState({
+    filteredMarket: parseInt(id),
+    isFiltered: true,
+    loading: true
+  }, function () {
+    return _this3.getFilteredPosts(_this3.buildAPILink());
+  });
+}
+
+//Fetch our Services Categories
+function getServiceCats() {
+  var _this4 = this;
+
+  console.log('service cat helper');
+  var serviceCatApi = wpObj.serviceCat_endpoint;
+  fetch(serviceCatApi).then(function (response) {
+    return response.json();
+  }).then(function (json) {
+    _this4.setState({
+      service_categories: json
+    });
+  });
+}
+
+function resetFilter() {
+  var _this5 = this;
+
+  //TODO set the selects back to default value and the search box to empty
+  var searchInput = document.getElementById('filterbar-search');
+  var marketSelect = document.getElementById('filterbar-select-market');
+  var secondarySelect = '';
+
+  searchInput.value = '';
+  //I'm cheating :\
+  marketSelect.value = 'Market';
+  //This won't work on the Service List View, change it :|
+  if (this.state.postDataType === 'news') {
+    secondarySelect = document.getElementById('filterbar-select-service');
+    secondarySelect.value = 'Service';
+  } else {
+    secondarySelect = document.getElementById('filterbar-select-location');
+    secondarySelect.value = 'Location';
+  }
+
+  this.setState({
+    isFiltered: false,
+    filteredPosts: [],
+    filteredMarket: '',
+    filteredService: '',
+    filteredLocation: '',
+    hasSearchTerm: false,
+    searchTerm: ''
+  }, function () {
+    return _this5.getPosts();
+  });
+}
+
+function removeFilterTerm(currentTermId) {
+  var _this6 = this;
+
+  if (currentTermId === 'filter-info-service') {
+    this.setState({
+      filteredService: ''
+    }, function () {
+      return _this6.checkFilterStatus();
+    });
+    document.getElementById('filterbar-select-service').value = 'Service';
+  } else if (currentTermId === 'filter-info-market') {
+    // it's markets
+    this.setState({
+      filteredMarket: ''
+    }, function () {
+      return _this6.checkFilterStatus();
+    });
+    document.getElementById('filterbar-select-market').value = 'Market';
+  } else if (currentTermId === 'filter-info-location') {
+    //it's location
+    this.setState({
+      filteredLocation: ''
+    }, function () {
+      return _this6.checkFilterStatus();
+    });
+    document.getElementById('filterbar-select-location').value = 'Location';
+  }
+}
+
+function checkFilterStatus() {
+  //check which postDataType it is
+  var secondaryFilter = '';
+  if (this.state.postDataType === 'news') {
+    secondaryFilter = !this.state.filteredService;
+  } else {
+    secondaryFilter = !this.state.filteredLocation;
+  }
+
+  if (!this.state.filteredMarket && secondaryFilter && !this.state.hasSearchTerm) {
+    this.setState({
+      isFiltered: false
+    });
+  }
+}
+
+//Get name of filtered category from object
+function getCatName(filteredCatId, categories) {
+  var catObj = categories.filter(function (item) {
+    return item.id === filteredCatId;
+  });
+  var filteredCatName = catObj[0].name;
+  return filteredCatName;
+}
+
+/***/ }),
+/* 198 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _react = __webpack_require__(18);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -23757,54 +23896,13 @@ var Table = function (_React$Component) {
 module.exports = Table;
 
 /***/ }),
-/* 198 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _react = __webpack_require__(22);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactDom = __webpack_require__(87);
-
-var _whatwgFetch = __webpack_require__(88);
-
-var _tableview = __webpack_require__(193);
-
-var _tableview2 = _interopRequireDefault(_tableview);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var AppInitializer = function () {
-  function AppInitializer() {
-    _classCallCheck(this, AppInitializer);
-  }
-
-  AppInitializer.prototype.run = function run() {
-    (0, _reactDom.render)(_react2.default.createElement(
-      'div',
-      null,
-      _react2.default.createElement(_tableview2.default, null)
-    ), document.getElementById('projects_app'));
-  };
-
-  return AppInitializer;
-}();
-
-new AppInitializer().run();
-
-/***/ }),
 /* 199 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _react = __webpack_require__(22);
+var _react = __webpack_require__(18);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -23853,6 +23951,47 @@ var TableItem = function (_React$Component) {
 }(_react2.default.Component);
 
 module.exports = TableItem;
+
+/***/ }),
+/* 200 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _react = __webpack_require__(18);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = __webpack_require__(87);
+
+var _whatwgFetch = __webpack_require__(88);
+
+var _tableview = __webpack_require__(193);
+
+var _tableview2 = _interopRequireDefault(_tableview);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var AppInitializer = function () {
+  function AppInitializer() {
+    _classCallCheck(this, AppInitializer);
+  }
+
+  AppInitializer.prototype.run = function run() {
+    (0, _reactDom.render)(_react2.default.createElement(
+      'div',
+      null,
+      _react2.default.createElement(_tableview2.default, null)
+    ), document.getElementById('projects_app'));
+  };
+
+  return AppInitializer;
+}();
+
+new AppInitializer().run();
 
 /***/ })
 /******/ ]);

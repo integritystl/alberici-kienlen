@@ -1,11 +1,25 @@
 //This is for the table view of Projects
 import React from 'react';
-
+import {handleSearch, getMarketCats, getServiceCats, resetFilter, removeFilterTerm, checkFilterStatus, handleMarketChange, getCatName} from './helpers/helpers.js'
 import FilterBar from './filterbar.js'
 import Table from './table.js'
+
 //Many functions in here are clones of what's happening in CardList.js
 // The major difference is we're using Project Post types and the Location Custom Taxonomy.
 class TableList extends React.Component {
+  constructor(props) {
+    super(props);
+    //bind our helpers
+    this.getMarketCats = getMarketCats.bind(this);
+    this.handleSearch = handleSearch.bind(this);
+    this.getServiceCats = getServiceCats.bind(this);
+    this.resetFilter = resetFilter.bind(this);
+    this.removeFilterTerm = removeFilterTerm.bind(this);
+    this.checkFilterStatus = checkFilterStatus.bind(this);
+    this.handleMarketChange = handleMarketChange.bind(this);
+    this.getCatName = getCatName.bind(this);
+  }
+
   componentWillMount() {
       this.setState({
         loading: true,
@@ -82,46 +96,6 @@ class TableList extends React.Component {
       })
   }
 
-  //Fetch our Market Categories
-  getMarketCats() {
-    let marketCatApi = wpObj.marketCat_endpoint;
-    fetch(marketCatApi)
-      .then( response => {
-        return(response.json());
-      })
-      .then(json => {
-        this.setState({
-          market_categories: json,
-        })
-      });
-  }
-  //Handles Market Filter
-  handleMarketChange(id) {
-    if (id === 'Market') {
-      id = ''
-    }
-
-    this.setState({
-      filteredMarket: parseInt(id),
-      isFiltered: true,
-      loading: true
-    }, () => this.getFilteredPosts(this.buildAPILink() ));
-  }
-
-  //Fetch our Services Categories
-  getServiceCats() {
-    let serviceCatApi = wpObj.serviceCat_endpoint;
-    fetch(serviceCatApi)
-      .then( response => {
-        return(response.json());
-      })
-      .then(json => {
-        this.setState({
-          service_categories: json,
-        })
-      });
-  }
-
   //Handles Service Filter
   handleServiceChange(id) {
     if (id === 'Service') {
@@ -134,26 +108,37 @@ class TableList extends React.Component {
     }, () => this.getFilteredPosts(this.buildAPILink()) );
   }
 
-  //Search Input Filter
-  handleSearch(term) {
-    console.log('search term', term);
-    this.setState({
-      searchTerm: term,
-      hasSearchTerm: true,
-      isFiltered: true,
-      loading: true
-    },() => this.getFilteredPosts(this.buildAPILink() ));
-  }
+  //Load More functionality
+  // TODO: Load more is pagination in this view, so will be different from CardList view
+    loadMorePosts() {
+      //need to fetch the next amount of posts and add them
+      //getPosts loads the page and uses postsPerPage
+      let apiLink = this.buildAPILink();
 
-  //Get name of filtered category from object
-  getCatName(filteredCatId, categories){
-    let catObj = categories.filter( (item) => {
-      return item.id === filteredCatId;
-    });
-    let filteredCatName = catObj[0].name;
-    return filteredCatName;
-  }
-
+      let offset = 0;
+      if (this.state.isFiltered) {
+        offset = this.state.filteredProjects.length;
+        //TODO add in some stuff here Lindsay
+      } else {
+        offset = this.state.currentPage * this.state.postsPerPage;
+        apiLink += `&offset=${offset}`;
+        fetch(apiLink)
+          .then( response => {
+            return(response.json());
+          })
+          .then( json => {
+            let currentPosts = this.state.projects;
+            //when i put this into this.setState, it breaks, what do?
+            Array.prototype.push.apply(currentPosts, json);
+            //increment our Current Page
+            this.setState( (state) => ({
+              currentPage: state.currentPage + 1,
+              //posts: Array.prototype.push.apply(currentPosts, json), //need to jam in new json here
+              loading: false,
+            }));
+          })
+      }
+    }
 
   render() {
     let postGroup = '';
@@ -207,16 +192,16 @@ class TableList extends React.Component {
           markets = {this.state.market_categories}
           marketFilter = {this.state.filteredMarket}
           marketFilterName = {filteredMarketName}
-          marketChange = {this.handleMarketChange.bind(this)}
+          marketChange = {this.handleMarketChange}
           services = {this.state.service_categories}
           serviceFilter = {this.state.filteredService}
           serviceFilterName = {filteredServiceName}
           serviceChange = {this.handleServiceChange.bind(this)}
           secondarySelect = 'services'
           isFiltered = {this.state.isFiltered}
-          filterSearch = {this.handleSearch.bind(this)}
-        //  resetFilter = {this.resetFilter.bind(this)}
-        //  removeFilterTerm = {this.removeFilterTerm.bind(this)}
+          filterSearch = {this.handleSearch}
+          resetFilter = {this.resetFilter}
+          removeFilterTerm = {this.removeFilterTerm}
         />
 
         {postGroup}
