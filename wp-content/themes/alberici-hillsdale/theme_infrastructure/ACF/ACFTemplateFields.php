@@ -1303,7 +1303,7 @@ class ACFTemplateFields
 			'active' => 1,
 			'description' => '',
 		));
-		
+
 		endif;
   }
 
