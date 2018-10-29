@@ -7,7 +7,7 @@
 
     @include grid-media($medium-min) {
         display: flex;
-        padding: 3% 10% 0 10%;
+        padding: 0 10% 0 10%;
     }
     .footer-callout-content {
         padding: 5% 5% 5% 5%;
@@ -24,7 +24,7 @@
             color: white;
             font-weight: normal;
             text-transform: uppercase;
-            min-width: 100px;
+            min-width: 275px;
             @include grid-media($medium-min) {
                 margin: 5% 0 5% 0;
                 min-width: 60%;
@@ -32,8 +32,11 @@
         }
     }
     .footer-callout-img {
-        position: absolute;
+        position: relative;
         bottom: -7px;
         right: 0;
+        @include grid-media($medium-min) {
+            position: absolute;
+        }
     }
 }
