@@ -3,8 +3,22 @@ import React from 'react';
 
 import FilterBar from './filterbar.js'
 import CardGroup from './card_group.js'
+import {handleSearch, getMarketCats, getServiceCats, resetFilter, removeFilterTerm, checkFilterStatus, handleMarketChange, getCatName} from './helpers/helpers.js'
 
 class CardList extends React.Component {
+  constructor(props) {
+    super(props);
+    //bind our helpers
+    this.getMarketCats = getMarketCats.bind(this);
+    this.handleSearch = handleSearch.bind(this);
+    this.getServiceCats = getServiceCats.bind(this);
+    this.resetFilter = resetFilter.bind(this);
+    this.removeFilterTerm = removeFilterTerm.bind(this);
+    this.checkFilterStatus = checkFilterStatus.bind(this);
+    this.handleMarketChange = handleMarketChange.bind(this);
+    this.getCatName = getCatName.bind(this);
+  }
+
   componentWillMount() {
       this.setState({
         loading: true,
@@ -103,37 +117,15 @@ class CardList extends React.Component {
         })
     }
 
-    //Fetch our Market Categories
-    getMarketCats() {
-      let marketCatApi = wpObj.marketCat_endpoint;
-      fetch(marketCatApi)
-        .then( response => {
-          return(response.json());
-        })
-        .then(json => {
-          this.setState({
-            market_categories: json,
-          })
-        });
-    }
-    //Handles Market Filter
-    handleMarketChange(id) {
-      if (id === 'Market') {
-        id = ''
-      }
-      this.setState({
-        filteredMarket: parseInt(id),
-        isFiltered: true,
-        loading: true
-      }, () => this.getFilteredPosts(this.buildAPILink() ));
-    }
-
     //Check to see what's set for our data-filter attribute and call the appropriate custom taxonomy endpoint
     setFilterCats() {
       let filterDataType = document.getElementById('cardList_app').getAttribute('data-filter');
+      console.log('set filter cats', filterDataType);
       if (filterDataType === 'service') {
+        console.log('check filter service');
         this.getServiceCats();
       } else {
+        console.log('filter is location?')
         this.getLocationCats();
       }
     }
@@ -165,31 +157,6 @@ class CardList extends React.Component {
       }, () => this.getFilteredPosts(this.buildAPILink()) );
     }
 
-    //Fetch our Services Categories
-    getServiceCats() {
-      let serviceCatApi = wpObj.serviceCat_endpoint;
-      fetch(serviceCatApi)
-        .then( response => {
-          return(response.json());
-        })
-        .then(json => {
-          this.setState({
-            service_categories: json,
-          })
-        });
-    }
-
-
-    //Search Input Filter
-    handleSearch(term) {
-      this.setState({
-        searchTerm: term,
-        hasSearchTerm: true,
-        isFiltered: true,
-        loading: true
-      },() => this.getFilteredPosts(this.buildAPILink() ));
-    }
-
     //Handles Service Filter
     handleServiceChange(id) {
       if (id === 'Service') {
@@ -200,15 +167,6 @@ class CardList extends React.Component {
         isFiltered: true,
         loading: true
       }, () => this.getFilteredPosts(this.buildAPILink()) );
-    }
-
-    //Get name of filtered category from object
-    getCatName(filteredCatId, categories){
-      let catObj = categories.filter( (item) => {
-        return item.id === filteredCatId;
-      });
-      let filteredCatName = catObj[0].name;
-      return filteredCatName;
     }
 
     //Load More functionality
@@ -242,82 +200,19 @@ class CardList extends React.Component {
       }
     }
 
-    //Reset filter
-    resetFilter(){
-      //TODO set the selects back to default value and the search box to empty
-      let searchInput = document.getElementById('filterbar-search');
-      let marketSelect = document.getElementById('filterbar-select-market');
-      let secondarySelect = '';
-
-      searchInput.value = '';
-      //I'm cheating :\
-      marketSelect.value = 'Market';
-
-      if (this.props.postDataType === 'news') {
-        secondarySelect = document.getElementById('filterbar-select-service');
-        secondarySelect.value = 'Service';
-      } else {
-        secondarySelect = document.getElementById('filterbar-select-location');
-        secondarySelect.value = 'Location';
-      }
-
-      this.setState({
-        isFiltered: false,
-        filteredPosts: [],
-        filteredMarket: '',
-        filteredService: '',
-        filteredLocation: '',
-        hasSearchTerm: false,
-        searchTerm: ''
-      }, () => this.getPosts())
-    }
-
-    removeFilterTerm(currentTermId){
-      if (currentTermId === 'filter-info-service') {
-        this.setState({
-          filteredService: '',
-        }, () => this.checkFilterStatus())
-        document.getElementById('filterbar-select-service').value = 'Service';
-      } else if (currentTermId === 'filter-info-market') {
-        // it's markets
-        this.setState({
-          filteredMarket: '',
-        }, () => this.checkFilterStatus())
-        document.getElementById('filterbar-select-market').value = 'Market';
-      } else if (currentTermId === 'filter-info-location') {
-        //it's location
-        this.setState({
-          filteredLocation: '',
-        }, () => this.checkFilterStatus())
-        document.getElementById('filterbar-select-location').value = 'Location';
-      }
-    }
-
-    checkFilterStatus(){
-      //check which postDataType it is
-      let secondaryFilter = '';
-      if (this.props.postDataType === 'news') {
-        secondaryFilter = !this.state.filteredService;
-      } else {
-        secondaryFilter = !this.state.filteredLocation;
-      }
-
-      if (!this.state.filteredMarket && secondaryFilter && !this.state.hasSearchTerm) {
-        this.setState({
-          isFiltered: false,
-        })
-      }
-    }
 
     render() {
       let postGroup = '';
       let loadMoreBtn = '';
       let loadMoreLabel = '';
+      let secondarySelect = '';
 
       if (this.state.postDataType === 'news') {
         loadMoreLabel = 'View More Posts';
+        secondarySelect = 'services';
       } else {
         loadMoreLabel = 'View More Projects';
+        secondarySelect = 'location';
       }
 
       let allPosts = this.state.posts;
@@ -338,7 +233,7 @@ class CardList extends React.Component {
                       markets = {this.state.market_categories}
                       services = {this.state.service_categories}
                       locations = {this.state.location_categories}
-                      getCatName = {this.getCatName.bind(this)}
+                      getCatName = {this.getCatName}
                       />
         if ( allPostsOffset < this.state.totalPosts && this.state.totalPosts % this.state.postsPerPage != 0) {
           loadMoreBtn = <button onClick={this.loadMorePosts.bind(this)}  className="btn-load-more">{loadMoreLabel}</button>;
@@ -350,7 +245,7 @@ class CardList extends React.Component {
                       markets = {this.state.market_categories}
                       services = {this.state.service_categories}
                       locations = {this.state.location_categories}
-                      getCatName = {this.getCatName.bind(this)}
+                      getCatName = {this.getCatName}
                       filteredService = {this.state.filteredService}
                       filteredMarket = {this.state.filteredMarket}
                     />
@@ -381,19 +276,20 @@ class CardList extends React.Component {
             markets = {this.state.market_categories}
             marketFilter = {this.state.filteredMarket}
             marketFilterName = {filteredMarketName}
-            marketChange = {this.handleMarketChange.bind(this)}
+            marketChange = {this.handleMarketChange}
             services = {this.state.service_categories}
             serviceFilter = {this.state.filteredService}
             serviceFilterName = {filteredServiceName}
             serviceChange = {this.handleServiceChange.bind(this)}
+            secondarySelect = {secondarySelect}
             locations = {this.state.location_categories}
             locationFilter = {this.state.filteredLocation}
             locationFilterName = {filteredLocationName}
             locationChange = {this.handleLocationChange.bind(this)}
             isFiltered = {this.state.isFiltered}
-            filterSearch = {this.handleSearch.bind(this)}
-            resetFilter = {this.resetFilter.bind(this)}
-            removeFilterTerm = {this.removeFilterTerm.bind(this)}
+            filterSearch = {this.handleSearch}
+            resetFilter = {this.resetFilter}
+            removeFilterTerm = {this.removeFilterTerm}
           />
           {postGroup}
           {loadMoreBtn}

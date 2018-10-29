@@ -1,24 +1,36 @@
 //This is for the table view of Projects
 import React from 'react';
-
+import {handleSearch, getMarketCats, getServiceCats, resetFilter, removeFilterTerm, checkFilterStatus, handleMarketChange, getCatName} from './helpers/helpers.js'
 import FilterBar from './filterbar.js'
 import Table from './table.js'
+
 //Many functions in here are clones of what's happening in CardList.js
 // The major difference is we're using Project Post types and the Location Custom Taxonomy.
 class TableList extends React.Component {
+  constructor(props) {
+    super(props);
+    //bind our helpers
+    this.getMarketCats = getMarketCats.bind(this);
+    this.handleSearch = handleSearch.bind(this);
+    this.getServiceCats = getServiceCats.bind(this);
+    this.resetFilter = resetFilter.bind(this);
+    this.removeFilterTerm = removeFilterTerm.bind(this);
+    this.checkFilterStatus = checkFilterStatus.bind(this);
+    this.handleMarketChange = handleMarketChange.bind(this);
+    this.getCatName = getCatName.bind(this);
+  }
+
   componentWillMount() {
       this.setState({
         loading: true,
         currentPage: 1,
         projects: [],
-        postsPerPage: 6,
+        postsPerPage: 2,
         market_categories: [],
-        location_categories: [],
         service_categories: [],
         isFiltered: false,
         filteredProjects: [],
         filteredMarket: '',
-        filteredLocation: '',
         filteredService: '',
         hasSearchTerm: false,
         searchTerm: '',
@@ -30,22 +42,20 @@ class TableList extends React.Component {
   componentDidMount() {
     this.getPosts(this.buildAPILink());
     this.getMarketCats();
-    this.getLocationCats();
     this.getServiceCats();
   }
 
   //Fetch posts
   buildAPILink() {
     let baseLink = wpObj.projects_endpoint;
-    console.log(baseLink);
     if (this.state.isFiltered) {
       if (this.state.hasSearchTerm) {
         baseLink += `&search=${this.state.searchTerm}`;
       }
-      if (this.state.filteredMarket && this.state.filteredLocation) {
-        baseLink += `&market_category=${this.state.filteredMarket}&location_category=${this.state.filteredLocation}`;
-      } else if (this.state.filteredLocation) {
-        baseLink += `&location_category=${this.state.filteredLocation}`;
+      if (this.state.filteredMarket && this.state.filteredService) {
+        baseLink += `&market_category=${this.state.filteredMarket}&service_category=${this.state.filteredService}`;
+      } else if (this.state.filteredService) {
+        baseLink += `&service_category=${this.state.filteredService}`;
       } else if (this.state.filteredMarket) {
         baseLink += `&market_category=${this.state.filteredMarket}`;
       } else {
@@ -56,16 +66,15 @@ class TableList extends React.Component {
   }
 
   //Get All Posts
-  //TODO: edit this so we're only adding either Posts or Projects to state.
   getPosts(apiLink){
     apiLink += `&per_page=${this.state.postsPerPage}`
+    console.log(apiLink);
     //Gotta pass Basic Auth for the prompt from WP Engine
     //Ref: https://stackoverflow.com/questions/30203044/using-an-authorization-header-with-fetch-in-react-native
     fetch(apiLink, {
-        headers: new Headers({'Authorization': 'Basic ' + btoa("demo:alberici") }),
+        headers: new Headers({'Authorization': 'Basic ' + btoa("kienlen:constructors") }),
       })
       .then( response => {
-        console.log('response?', response);
         return(response.json());
       })
       .then(json => {
@@ -82,75 +91,10 @@ class TableList extends React.Component {
         return(response.json());
       }).then(json => {
         this.setState({
-          filteredPosts: json,
+          filteredProjects: json,
           loading: false
         })
       })
-  }
-
-  //Fetch our Market Categories
-  getMarketCats() {
-    let marketCatApi = wpObj.marketCat_endpoint;
-    fetch(marketCatApi)
-      .then( response => {
-        return(response.json());
-      })
-      .then(json => {
-        this.setState({
-          market_categories: json,
-        })
-      });
-  }
-  //Handles Market Filter
-  handleMarketChange(id) {
-    if (id === 'Market') {
-      id = ''
-    }
-
-    this.setState({
-      filteredMarket: parseInt(id),
-      isFiltered: true,
-      loading: true
-    }, () => this.getFilteredPosts(this.buildAPILink() ));
-  }
-  //Handle Location Filter
-  handleLocationChange(id) {
-    if (id === 'Location') {
-      id = ''
-    }
-    this.setState({
-      filteredLocation: parseInt(id),
-      isFiltered: true,
-      loading: true
-    }, () => this.getFilteredPosts(this.buildAPILink()) );
-  }
-
-  //Fetch our Services Categories
-  getLocationCats() {
-    let locationCatApi = wpObj.locationCat_endpoint;
-    fetch(locationCatApi)
-      .then( response => {
-        return(response.json());
-      })
-      .then(json => {
-        this.setState({
-          location_categories: json,
-        })
-      });
-  }
-
-  //Fetch our Services Categories
-  getServiceCats() {
-    let serviceCatApi = wpObj.serviceCat_endpoint;
-    fetch(serviceCatApi)
-      .then( response => {
-        return(response.json());
-      })
-      .then(json => {
-        this.setState({
-          service_categories: json,
-        })
-      });
   }
 
   //Handles Service Filter
@@ -165,26 +109,37 @@ class TableList extends React.Component {
     }, () => this.getFilteredPosts(this.buildAPILink()) );
   }
 
-  //Search Input Filter
-  handleSearch(term) {
-    console.log('search term', term);
-    this.setState({
-      searchTerm: term,
-      hasSearchTerm: true,
-      isFiltered: true,
-      loading: true
-    },() => this.getFilteredPosts(this.buildAPILink() ));
-  }
+  //Load More functionality
+  // TODO: Load more is pagination in this view, so will be different from CardList view
+    loadMorePosts() {
+      //need to fetch the next amount of posts and add them
+      //getPosts loads the page and uses postsPerPage
+      let apiLink = this.buildAPILink();
 
-  //Get name of filtered category from object
-  getCatName(filteredCatId, categories){
-    let catObj = categories.filter( (item) => {
-      return item.id === filteredCatId;
-    });
-    let filteredCatName = catObj[0].name;
-    return filteredCatName;
-  }
-
+      let offset = 0;
+      if (this.state.isFiltered) {
+        offset = this.state.filteredProjects.length;
+        //TODO add in some stuff here Lindsay
+      } else {
+        offset = this.state.currentPage * this.state.postsPerPage;
+        apiLink += `&offset=${offset}`;
+        fetch(apiLink)
+          .then( response => {
+            return(response.json());
+          })
+          .then( json => {
+            let currentPosts = this.state.projects;
+            //when i put this into this.setState, it breaks, what do?
+            Array.prototype.push.apply(currentPosts, json);
+            //increment our Current Page
+            this.setState( (state) => ({
+              currentPage: state.currentPage + 1,
+              //posts: Array.prototype.push.apply(currentPosts, json), //need to jam in new json here
+              loading: false,
+            }));
+          })
+      }
+    }
 
   render() {
     let postGroup = '';
@@ -194,11 +149,17 @@ class TableList extends React.Component {
     let allPosts = this.state.projects;
     let filterPosts = this.state.filteredProjects;
 
-    let filteredLocationName = '';
     let filteredServiceName = '';
     let filteredMarketName = '';
 
-    let allPostsOffset = this.state.currentPage * this.state.postsPerPage;
+    let currentPage = this.state.currentPage;
+    let allPostsOffset = currentPage * this.state.postsPerPage;
+    console.log('allposts offset', allPostsOffset);
+    let maxPages = this.state.totalProjects / this.state.postsPerPage;
+    console.log('max', Math.ceil(maxPages) );
+
+    let totalResults = this.state.totalProjects;
+    let displayNumber = ''; //This should be a count of current Visible Posts
 
     if (this.state.loading) {
       postGroup = <div className="loading-spinner">Loading...</div>;
@@ -209,7 +170,12 @@ class TableList extends React.Component {
                 services = {this.state.service_categories}
                 getCatName = {this.getCatName.bind(this)}
               />
+
+      displayNumber = postGroup.props.posts.length;
+
     } else if ( filterPosts && this.state.isFiltered === true ) {
+
+      totalResults = this.state.filteredProjects.length;
       postGroup = <Table
                     posts = {this.state.filteredProjects}
                     markets = {this.state.market_categories}
@@ -218,7 +184,7 @@ class TableList extends React.Component {
                     filteredService = {this.state.filteredService}
                     filteredMarket = {this.state.filteredMarket}
                   />
-
+      displayNumber = postGroup.props.posts.length;
       //Get the names of filtered service categories for display purposes
       if (this.state.service_categories && this.state.filteredService) {
         filteredServiceName = this.getCatName(this.state.filteredService, this.state.service_categories);
@@ -239,19 +205,16 @@ class TableList extends React.Component {
           markets = {this.state.market_categories}
           marketFilter = {this.state.filteredMarket}
           marketFilterName = {filteredMarketName}
-          marketChange = {this.handleMarketChange.bind(this)}
+          marketChange = {this.handleMarketChange}
           services = {this.state.service_categories}
           serviceFilter = {this.state.filteredService}
           serviceFilterName = {filteredServiceName}
           serviceChange = {this.handleServiceChange.bind(this)}
-          locations = {this.state.location_categories}
-          locationFilter = {this.state.filteredLocation}
-           locationFilterName = {filteredLocationName}
-           locationChange = {this.handleLocationChange.bind(this)}
+          secondarySelect = 'services'
           isFiltered = {this.state.isFiltered}
-          filterSearch = {this.handleSearch.bind(this)}
-        //  resetFilter = {this.resetFilter.bind(this)}
-        //  removeFilterTerm = {this.removeFilterTerm.bind(this)}
+          filterSearch = {this.handleSearch}
+          resetFilter = {this.resetFilter}
+          removeFilterTerm = {this.removeFilterTerm}
         />
 
         {postGroup}
@@ -262,8 +225,8 @@ class TableList extends React.Component {
             <li>3</li>
           </ul>
           <div className="table-projects-results">
-            <span className="table-project-results--current">Page 1</span>
-            <span className="table-project-results--total">10 of 62 Results</span>
+            <div className="table-project-results--current">Page {currentPage}</div>
+            <div className="table-project-results--total"> {displayNumber} of {totalResults} Results</div>
           </div>
         </div>
       </div>
