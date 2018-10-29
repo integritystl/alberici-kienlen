@@ -1,5 +1,6 @@
 //This is for the table view of Projects
 import React from 'react';
+import Pagination from 'react-paginating';
 import {handleSearch, getMarketCats, getServiceCats, resetFilter, removeFilterTerm, checkFilterStatus, handleMarketChange, getCatName} from './helpers/helpers.js'
 import FilterBar from './filterbar.js'
 import Table from './table.js'
@@ -109,37 +110,67 @@ class TableList extends React.Component {
     }, () => this.getFilteredPosts(this.buildAPILink()) );
   }
 
+  handlePageChange(page) {
+    console.log('handlePage');
+    this.setState({
+      currentPage: page
+    }, () => this.loadMorePosts() );
+  };
+
   //Load More functionality
   // TODO: Load more is pagination in this view, so will be different from CardList view
     loadMorePosts() {
       //need to fetch the next amount of posts and add them
       //getPosts loads the page and uses postsPerPage
       let apiLink = this.buildAPILink();
+      console.log('load more', apiLink);
 
-      let offset = 0;
-      if (this.state.isFiltered) {
-        offset = this.state.filteredProjects.length;
-        //TODO add in some stuff here Lindsay
-      } else {
-        offset = this.state.currentPage * this.state.postsPerPage;
-        apiLink += `&offset=${offset}`;
-        fetch(apiLink)
-          .then( response => {
-            return(response.json());
-          })
-          .then( json => {
-            let currentPosts = this.state.projects;
-            //when i put this into this.setState, it breaks, what do?
-            Array.prototype.push.apply(currentPosts, json);
-            //increment our Current Page
-            this.setState( (state) => ({
-              currentPage: state.currentPage + 1,
-              //posts: Array.prototype.push.apply(currentPosts, json), //need to jam in new json here
-              loading: false,
-            }));
-          })
-      }
+      let offset = this.state.currentPage * this.state.postsPerPage;
+      apiLink += `&offset=${offset}`;
+      console.log('load more offset', apiLink);
+
+      fetch(apiLink)
+        .then( response => {
+          return(response.json());
+        })
+        .then( json => {
+          console.log(json);
+          let currentPosts = this.state.projects;
+          //when i put this into this.setState, it breaks, what do?
+          Array.prototype.push.apply(currentPosts, json);
+          //increment our Current Page
+          this.setState( (state) => ({
+            currentPage: state.currentPage + 1,
+            //posts: Array.prototype.push.apply(currentPosts, json), //need to jam in new json here
+            loading: false,
+          }));
+        })
+
+      // let offset = 0;
+      // if (this.state.isFiltered) {
+      //   offset = this.state.filteredProjects.length;
+      //   //TODO add in some stuff here Lindsay
+      // } else {
+      //   offset = this.state.currentPage * this.state.postsPerPage;
+      //   apiLink += `&offset=${offset}`;
+      //   fetch(apiLink)
+      //     .then( response => {
+      //       return(response.json());
+      //     })
+      //     .then( json => {
+      //       let currentPosts = this.state.projects;
+      //       //when i put this into this.setState, it breaks, what do?
+      //       Array.prototype.push.apply(currentPosts, json);
+      //       //increment our Current Page
+      //       this.setState( (state) => ({
+      //         currentPage: state.currentPage + 1,
+      //         //posts: Array.prototype.push.apply(currentPosts, json), //need to jam in new json here
+      //         loading: false,
+      //       }));
+      //     })
+      // }
     }
+
 
   render() {
     let postGroup = '';
@@ -155,8 +186,8 @@ class TableList extends React.Component {
     let currentPage = this.state.currentPage;
     let allPostsOffset = currentPage * this.state.postsPerPage;
     console.log('allposts offset', allPostsOffset);
-    let maxPages = this.state.totalProjects / this.state.postsPerPage;
-    console.log('max', Math.ceil(maxPages) );
+    // let maxPages = this.state.totalProjects / this.state.postsPerPage;
+    // console.log('max', Math.ceil(maxPages) );
 
     let totalResults = this.state.totalProjects;
     let displayNumber = ''; //This should be a count of current Visible Posts
@@ -225,6 +256,66 @@ class TableList extends React.Component {
             <li>3</li>
           </ul>
           <div className="table-projects-results">
+          <Pagination
+            total={totalResults}
+            limit={this.state.postsPerPage}
+            currentPage={currentPage}
+          >
+            {({
+              pages,
+              currentPage,
+              hasNextPage,
+              hasPreviousPage,
+              previousPage,
+              nextPage,
+              totalPages,
+              getPageItemProps
+            }) => (
+              <div>
+                {hasPreviousPage && (
+                  <button
+                    {...getPageItemProps({
+                      pageValue: previousPage,
+                      onPageChange: this.handlePageChange.bind(this)
+                    })}
+                  >
+                    {"<"}
+                  </button>
+                )}
+
+                {pages.map(page => {
+                  let activePage = null;
+                  if (currentPage === page) {
+                    activePage = { backgroundColor: "#fdce09" };
+                  }
+                  return (
+                    <button
+                      key={page}
+                      style={activePage}
+                      {...getPageItemProps({
+                        pageValue: page,
+                        onPageChange: this.handlePageChange.bind(this)
+                      })}
+                    >
+                      {page}
+                    </button>
+                  );
+                })}
+
+                {hasNextPage && (
+                  <button
+                    {...getPageItemProps({
+                      pageValue: nextPage,
+                      onPageChange: this.handlePageChange.bind(this)
+                    })}
+                  >
+                    {">"}
+                  </button>
+                )}
+
+              </div>
+            )}
+          </Pagination>
             <div className="table-project-results--current">Page {currentPage}</div>
             <div className="table-project-results--total"> {displayNumber} of {totalResults} Results</div>
           </div>
