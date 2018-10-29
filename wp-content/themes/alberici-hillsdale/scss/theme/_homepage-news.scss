@@ -5,7 +5,7 @@
     h2 {
         margin-bottom: 25px;
         color: white;
-        font-weight: 600;
+        font-weight: 500;
         font-style:italic;
     }
     ul {
@@ -71,5 +71,14 @@
             margin: 40px 280px;
             min-width: 400px;
         }
+    }
+}
+
+.alberici-kienlen {
+    .news .news-text {
+        top: -327px;
+    }
+    .news h2 {
+        margin-bottom: 0;
     }
 }
