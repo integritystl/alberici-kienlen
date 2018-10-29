@@ -15,16 +15,17 @@ $FooterCalloutBackImage = get_field('footer_callout_background_image');
 ?>
 
 <?php if ($FooterCalloutContent || $FooterCalloutHeadline) : ?>
-<div class="footer-callout clear" style="background-image: url(<?php echo $FooterCalloutBackImage; ?>);">
-<div class="footer-callout-wrapper">
-    <div class="footer-callout-content">
+<div class="footer-callout clear">
+    <div class="footer-callout-content container">
         <h2><?php echo $FooterCalloutHeadline; ?></h2>
         <p><?php echo $FooterCalloutContent; ?></p>
+        <?php if ($FooterCalloutText) : ?>
+            <a href="<?php echo $FooterCalloutLink; ?>" class="btn"><?php echo $FooterCalloutText; ?></a>
+        <?php endif; ?>
     </div>
 
-    <?php if ($FooterCalloutText) : ?>
-        <a href="<?php echo $FooterCalloutLink; ?>" class="btn"><?php echo $FooterCalloutText; ?></a>
-    <?php endif; ?>
-</div>
+    <div class="footer-callout-img">
+      <?php echo wp_get_attachment_image($FooterCalloutBackImage, 'full'); ?>
+    </div>
 </div>
 <?php endif; ?>
