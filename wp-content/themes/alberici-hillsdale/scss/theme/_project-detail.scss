@@ -56,28 +56,32 @@
         background-color: $overlay;
         grid-column: span 12;
         color: white;
-        // padding: 35px 0px 40px;
-        //@include grid-media($medium-min) {
-        //   padding: 30px 20px;
-        // }
+
         .container {
           display: block;
+          margin: 0 auto;
+          width: 100%;
+          padding: 0;
           @include grid-media($medium-min) {
             display: flex;
             flex-flow: row nowrap;
-            //justify-content: space-between;
             align-items: stretch;
+            padding: 0 10px;
           }
         }
         .project-info-metric {
             flex-basis: 100%;
             margin: 0;
             padding: 15px 20px;
-            border: 1px solid white;
+            border-top: 1px solid white;
             text-align: center;
             display: flex;
             flex-direction: column;
             //justify-content: space-between;
+
+            @include grid-media($medium-min) {
+              border: 1px solid white;
+            }
 
             h5 {
               color: rgba(#E2E2E2, .8);
@@ -90,10 +94,15 @@
             }
 
             &:first-of-type {
-              margin-right: -.5px;
+
+              @include grid-media($medium-min) {
+                margin-right: -.5px;
+              }
             }
             &:last-of-type {
-              margin-left: -.5px;
+              @include grid-media($medium-min) {
+                margin-left: -.5px;
+              }
             }
 
         }
@@ -135,6 +144,7 @@
     grid-gap: 40px;
     grid-template-columns: repeat(12, 1fr);
     grid-column: span 12;
+    padding: 0px;
   }
 
   .single-project-images {
@@ -195,7 +205,7 @@
               border: 1px solid #E2E2E2;
               padding: 10px 15px;
               background-color: white;
-              margin: 10px 50px;
+              margin: 10px auto;
               text-align: center;
               font-size: 14px;
               transition: all .3s ease-in-out;
@@ -207,9 +217,7 @@
               }
               @include grid-media($medium-min) {
                   display: inline-block;
-                  margin: 0;
-                  margin-right: 2px;
-                  margin-bottom: 20px;
+                  margin: 0 5px 20px 0;
                   white-space: nowrap;
               }
 

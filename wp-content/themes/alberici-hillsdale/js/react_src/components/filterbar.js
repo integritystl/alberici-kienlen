@@ -47,7 +47,7 @@ class FilterBar extends React.Component {
     let resetBtn = '';
     //Check if Service or Location exists, then output the one we want.
     let secondarySelect = '';
-    if (this.props.postDataType === 'news') {
+    if (this.props.secondarySelect=== 'services') {
       if (this.props.services) {
         secondarySelect =
           <div className="select">
