@@ -1,5 +1,6 @@
 //This is for the table view of Projects
 import React from 'react';
+import Pagination from 'react-paginating';
 import {handleSearch, getMarketCats, getServiceCats, resetFilter, removeFilterTerm, checkFilterStatus, handleMarketChange, getCatName} from './helpers/helpers.js'
 import FilterBar from './filterbar.js'
 import Table from './table.js'
@@ -25,7 +26,7 @@ class TableList extends React.Component {
         loading: true,
         currentPage: 1,
         projects: [],
-        postsPerPage: 6,
+        postsPerPage: 2,
         market_categories: [],
         service_categories: [],
         isFiltered: false,
@@ -68,10 +69,11 @@ class TableList extends React.Component {
   //Get All Posts
   getPosts(apiLink){
     apiLink += `&per_page=${this.state.postsPerPage}`
+    console.log(apiLink);
     //Gotta pass Basic Auth for the prompt from WP Engine
     //Ref: https://stackoverflow.com/questions/30203044/using-an-authorization-header-with-fetch-in-react-native
     fetch(apiLink, {
-        headers: new Headers({'Authorization': 'Basic ' + btoa("demo:alberici") }),
+        headers: new Headers({'Authorization': 'Basic ' + btoa("kienlen:constructors") }),
       })
       .then( response => {
         return(response.json());
@@ -108,37 +110,67 @@ class TableList extends React.Component {
     }, () => this.getFilteredPosts(this.buildAPILink()) );
   }
 
+  handlePageChange(page) {
+    console.log('handlePage');
+    this.setState({
+      currentPage: page
+    }, () => this.loadMorePosts() );
+  };
+
   //Load More functionality
   // TODO: Load more is pagination in this view, so will be different from CardList view
     loadMorePosts() {
       //need to fetch the next amount of posts and add them
       //getPosts loads the page and uses postsPerPage
       let apiLink = this.buildAPILink();
+      console.log('load more', apiLink);
 
-      let offset = 0;
-      if (this.state.isFiltered) {
-        offset = this.state.filteredProjects.length;
-        //TODO add in some stuff here Lindsay
-      } else {
-        offset = this.state.currentPage * this.state.postsPerPage;
-        apiLink += `&offset=${offset}`;
-        fetch(apiLink)
-          .then( response => {
-            return(response.json());
-          })
-          .then( json => {
-            let currentPosts = this.state.projects;
-            //when i put this into this.setState, it breaks, what do?
-            Array.prototype.push.apply(currentPosts, json);
-            //increment our Current Page
-            this.setState( (state) => ({
-              currentPage: state.currentPage + 1,
-              //posts: Array.prototype.push.apply(currentPosts, json), //need to jam in new json here
-              loading: false,
-            }));
-          })
-      }
+      let offset = this.state.currentPage * this.state.postsPerPage;
+      apiLink += `&offset=${offset}`;
+      console.log('load more offset', apiLink);
+
+      fetch(apiLink)
+        .then( response => {
+          return(response.json());
+        })
+        .then( json => {
+          console.log(json);
+          let currentPosts = this.state.projects;
+          //when i put this into this.setState, it breaks, what do?
+          Array.prototype.push.apply(currentPosts, json);
+          //increment our Current Page
+          this.setState( (state) => ({
+            currentPage: state.currentPage + 1,
+            //posts: Array.prototype.push.apply(currentPosts, json), //need to jam in new json here
+            loading: false,
+          }));
+        })
+
+      // let offset = 0;
+      // if (this.state.isFiltered) {
+      //   offset = this.state.filteredProjects.length;
+      //   //TODO add in some stuff here Lindsay
+      // } else {
+      //   offset = this.state.currentPage * this.state.postsPerPage;
+      //   apiLink += `&offset=${offset}`;
+      //   fetch(apiLink)
+      //     .then( response => {
+      //       return(response.json());
+      //     })
+      //     .then( json => {
+      //       let currentPosts = this.state.projects;
+      //       //when i put this into this.setState, it breaks, what do?
+      //       Array.prototype.push.apply(currentPosts, json);
+      //       //increment our Current Page
+      //       this.setState( (state) => ({
+      //         currentPage: state.currentPage + 1,
+      //         //posts: Array.prototype.push.apply(currentPosts, json), //need to jam in new json here
+      //         loading: false,
+      //       }));
+      //     })
+      // }
     }
+
 
   render() {
     let postGroup = '';
@@ -151,7 +183,14 @@ class TableList extends React.Component {
     let filteredServiceName = '';
     let filteredMarketName = '';
 
-    let allPostsOffset = this.state.currentPage * this.state.postsPerPage;
+    let currentPage = this.state.currentPage;
+    let allPostsOffset = currentPage * this.state.postsPerPage;
+    console.log('allposts offset', allPostsOffset);
+    // let maxPages = this.state.totalProjects / this.state.postsPerPage;
+    // console.log('max', Math.ceil(maxPages) );
+
+    let totalResults = this.state.totalProjects;
+    let displayNumber = ''; //This should be a count of current Visible Posts
 
     if (this.state.loading) {
       postGroup = <div className="loading-spinner">Loading...</div>;
@@ -162,7 +201,12 @@ class TableList extends React.Component {
                 services = {this.state.service_categories}
                 getCatName = {this.getCatName.bind(this)}
               />
+
+      displayNumber = postGroup.props.posts.length;
+
     } else if ( filterPosts && this.state.isFiltered === true ) {
+
+      totalResults = this.state.filteredProjects.length;
       postGroup = <Table
                     posts = {this.state.filteredProjects}
                     markets = {this.state.market_categories}
@@ -171,7 +215,7 @@ class TableList extends React.Component {
                     filteredService = {this.state.filteredService}
                     filteredMarket = {this.state.filteredMarket}
                   />
-
+      displayNumber = postGroup.props.posts.length;
       //Get the names of filtered service categories for display purposes
       if (this.state.service_categories && this.state.filteredService) {
         filteredServiceName = this.getCatName(this.state.filteredService, this.state.service_categories);
@@ -212,8 +256,9 @@ class TableList extends React.Component {
             <li>3</li>
           </ul>
           <div className="table-projects-results">
-            <span className="table-project-results--current">Page 1</span>
-            <span className="table-project-results--total">10 of 62 Results</span>
+
+            <div className="table-project-results--current">Page {currentPage}</div>
+            <div className="table-project-results--total"> {displayNumber} of {totalResults} Results</div>
           </div>
         </div>
       </div>

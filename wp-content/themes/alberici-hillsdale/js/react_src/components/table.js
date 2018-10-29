@@ -24,6 +24,7 @@ class Table extends React.Component {
       postComponents = this.props.posts.map((item, index) => {
         let serviceName = [];
         let marketName = [];
+        let owner = '';
         //roll through array of service categories per post and get the name
         if (item.service_category) {
           let postServices = item.service_category.filter( (cat) => {
@@ -40,11 +41,15 @@ class Table extends React.Component {
           })
         }
 
+        if (item.acf.project_owner) {
+          owner = item.acf.project_owner;
+        }
+
         return <TableItem
                   key={index}
                   id={item.id}
                   title={item.title.rendered}
-                  owner={item.acf.project_owner}
+                  owner={owner}
                   market={item.market_category}
                   service={item.service_category}
                   serviceName = {serviceName}
