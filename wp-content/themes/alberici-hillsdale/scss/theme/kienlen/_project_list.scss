@@ -1,0 +1,52 @@
+.alberici-kienlen {
+    .projects-posts-container .filterbar {
+        border-bottom: none;
+    }
+    .table-projects{
+        table-layout: auto;
+        margin-top: 3%;
+        th {
+            padding: 3%;
+        }
+        tbody tr {
+            border-bottom: none;
+            h3 {
+                font-size: 16px;
+                font-weight: 400;
+            }
+            td {
+                padding: 3%;
+                span {
+                        word-break: break-word;
+                    }
+            }
+            td:first-child {
+                width: 45%;
+            }
+
+        }
+        tr:nth-child(even) {
+            background-color: $light-gray;
+        }
+    }
+    .table-projects-info {
+        display:flex;
+        justify-content: space-between;
+        ul {
+            li {
+                display: inline;
+                margin-right: 10px;
+            }
+        }
+        .table-projects-results {
+            display: flex;
+            .table-project-results--total {
+                &:before {
+                    content:'|';
+                    padding-left: 12px;
+                    padding-right: 8px;
+                }
+            }
+        }
+    }
+}
