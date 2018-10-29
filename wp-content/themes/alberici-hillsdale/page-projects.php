@@ -13,7 +13,8 @@ get_header();
 
 <div class="page_container">
 	<div id="primary" class="content-area">
-			<div id="projects_app"></div>
+		<?php get_template_part( 'template-parts/hero' );?>
+		<div id="projects_app"></div>
 	</div>
 </div>
 

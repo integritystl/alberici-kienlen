@@ -19,4 +19,22 @@
     footer {
         background-color: $dark-blue;
     }
+
+    .footer-callout {
+        background-color: $red;
+        .footer-callout-content {
+            h2 {
+                color: white;
+                font-style: italic;
+                font-weight: 500;
+            }
+            p {
+                color: white;
+            }
+            a {
+                background-color: white;
+                color: black;
+            }
+        }
+    }
 }

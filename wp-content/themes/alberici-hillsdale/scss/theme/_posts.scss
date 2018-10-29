@@ -5,7 +5,7 @@
 //  @extend .grid-container;
 }
 
-.news-posts-container {
+.news-posts-container, .projects-posts-container {
   @extend .container;
 
   .filterbar {

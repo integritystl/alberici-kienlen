@@ -810,7 +810,7 @@ class ACFTemplateFields
 						'class' => '',
 						'id' => '',
 						),
-					'return_format' => 'url',
+					'return_format' => 'id',
 					'preview_size' => 'thumbnail',
 					'library' => 'all',
 					'min_width' => '',
@@ -1303,7 +1303,7 @@ class ACFTemplateFields
 			'active' => 1,
 			'description' => '',
 		));
-		
+
 		endif;
   }
 
