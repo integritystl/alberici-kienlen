@@ -1,38 +1,42 @@
 .footer-callout {
-    min-height: 400px;
-    background-size: cover;
-    background-repeat: no-repeat;
-    margin-top: 150px;
+    position: relative;
+    display: block;
+    padding: 11% 0 0 0;
+    background-color: #F2F2F2;
 
-    .footer-callout-wrapper {
-        display: block;
-        padding: 11% 0 0 0;
 
+    @include grid-media($medium-min) {
+        display: flex;
+        padding: 0 10% 0 10%;
+    }
+    .footer-callout-content {
+        padding: 5% 5% 5% 5%;
         @include grid-media($medium-min) {
-            display: flex;
-            padding: 3% 10% 0 10%;
+            float:left;
+            padding-left: 0;
         }
-        .footer-callout-content {
-            padding: 5% 5% 5% 5%;
-            h2 {
-                font-size: 36px;
-                font-weight: 400;
-            }
-            @include grid-media($medium-min) {
-                float:left;
-                padding: 4% 0 0 21%;
-            }
+        h2 {
+            font-size: 36px;
+            font-weight: 400;
         }
         a {
             margin: 20px 25px 20px 25px;
             color: white;
             font-weight: normal;
             text-transform: uppercase;
-            min-width: 100px;
+            min-width: 275px;
             @include grid-media($medium-min) {
-               margin: 5% 0 5% 7%;
-               min-width: 400px;
+                margin: 5% 0 5% 0;
+                min-width: 60%;
             }
+        }
+    }
+    .footer-callout-img {
+        position: relative;
+        bottom: -7px;
+        right: 0;
+        @include grid-media($medium-min) {
+            position: absolute;
         }
     }
 }
