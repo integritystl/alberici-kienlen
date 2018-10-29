@@ -30,18 +30,23 @@
         }
     }
     .table-projects-info {
-        position: relative;
+        display:flex;
+        justify-content: space-between;
         ul {
-            display: inline;
             li {
                 display: inline;
                 margin-right: 10px;
             }
         }
         .table-projects-results {
-            position: absolute;
-            right: 0;
-            display: inline;
+            display: flex;
+            .table-project-results--total {
+                &:before {
+                    content:'|';
+                    padding-left: 12px;
+                    padding-right: 8px;
+                }
+            }
         }
     }
 }
