@@ -45,6 +45,7 @@
     "query-string": "^4.3.2",
     "react": "^15.5.3",
     "react-dom": "^15.5.3",
+    "react-paginating": "^1.0.3-react16.0",
     "webpack-dev-server": "^2.4.2",
     "whatwg-fetch": "^2.0.3"
   }
