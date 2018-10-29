@@ -256,7 +256,66 @@ class TableList extends React.Component {
             <li>3</li>
           </ul>
           <div className="table-projects-results">
+          <Pagination
+            total={totalResults}
+            limit={this.state.postsPerPage}
+            currentPage={currentPage}
+          >
+            {({
+              pages,
+              currentPage,
+              hasNextPage,
+              hasPreviousPage,
+              previousPage,
+              nextPage,
+              totalPages,
+              getPageItemProps
+            }) => (
+              <div>
+                {hasPreviousPage && (
+                  <button
+                    {...getPageItemProps({
+                      pageValue: previousPage,
+                      onPageChange: this.handlePageChange.bind(this)
+                    })}
+                  >
+                    {"<"}
+                  </button>
+                )}
 
+                {pages.map(page => {
+                  let activePage = null;
+                  if (currentPage === page) {
+                    activePage = { backgroundColor: "#fdce09" };
+                  }
+                  return (
+                    <button
+                      key={page}
+                      style={activePage}
+                      {...getPageItemProps({
+                        pageValue: page,
+                        onPageChange: this.handlePageChange.bind(this)
+                      })}
+                    >
+                      {page}
+                    </button>
+                  );
+                })}
+
+                {hasNextPage && (
+                  <button
+                    {...getPageItemProps({
+                      pageValue: nextPage,
+                      onPageChange: this.handlePageChange.bind(this)
+                    })}
+                  >
+                    {">"}
+                  </button>
+                )}
+
+              </div>
+            )}
+          </Pagination>
             <div className="table-project-results--current">Page {currentPage}</div>
             <div className="table-project-results--total"> {displayNumber} of {totalResults} Results</div>
           </div>
