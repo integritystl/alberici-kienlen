@@ -23462,8 +23462,6 @@ module.exports = factory;
 "use strict";
 
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 var _react = __webpack_require__(14);
 
 var _react2 = _interopRequireDefault(_react);
@@ -23680,8 +23678,6 @@ var TableList = function (_React$Component) {
   };
 
   TableList.prototype.render = function render() {
-    var _this7 = this;
-
     var postGroup = '';
     var loadMoreBtn = '';
     var loadMoreLabel = 'View More Projects';
@@ -23785,61 +23781,6 @@ var TableList = function (_React$Component) {
         _react2.default.createElement(
           'div',
           { className: 'table-projects-results' },
-          _react2.default.createElement(
-            _reactPaginating2.default,
-            {
-              total: totalResults,
-              limit: this.state.postsPerPage,
-              currentPage: currentPage
-            },
-            function (_ref) {
-              var pages = _ref.pages,
-                  currentPage = _ref.currentPage,
-                  hasNextPage = _ref.hasNextPage,
-                  hasPreviousPage = _ref.hasPreviousPage,
-                  previousPage = _ref.previousPage,
-                  nextPage = _ref.nextPage,
-                  totalPages = _ref.totalPages,
-                  getPageItemProps = _ref.getPageItemProps;
-              return _react2.default.createElement(
-                'div',
-                null,
-                hasPreviousPage && _react2.default.createElement(
-                  'button',
-                  getPageItemProps({
-                    pageValue: previousPage,
-                    onPageChange: _this7.handlePageChange.bind(_this7)
-                  }),
-                  "<"
-                ),
-                pages.map(function (page) {
-                  var activePage = null;
-                  if (currentPage === page) {
-                    activePage = { backgroundColor: "#fdce09" };
-                  }
-                  return _react2.default.createElement(
-                    'button',
-                    _extends({
-                      key: page,
-                      style: activePage
-                    }, getPageItemProps({
-                      pageValue: page,
-                      onPageChange: _this7.handlePageChange.bind(_this7)
-                    })),
-                    page
-                  );
-                }),
-                hasNextPage && _react2.default.createElement(
-                  'button',
-                  getPageItemProps({
-                    pageValue: nextPage,
-                    onPageChange: _this7.handlePageChange.bind(_this7)
-                  }),
-                  ">"
-                )
-              );
-            }
-          ),
           _react2.default.createElement(
             'div',
             { className: 'table-project-results--current' },
