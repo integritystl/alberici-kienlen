@@ -23615,9 +23615,10 @@ var TableList = function (_React$Component) {
   TableList.prototype.handlePageChange = function handlePageChange(page) {
     var _this5 = this;
 
-    console.log('handlePage');
+    console.log('handlePage', page);
     this.setState({
-      currentPage: page
+      currentPage: page,
+      loading: true
     }, function () {
       return _this5.loadMorePosts();
     });
@@ -23631,52 +23632,37 @@ var TableList = function (_React$Component) {
     //need to fetch the next amount of posts and add them
     //getPosts loads the page and uses postsPerPage
     var apiLink = this.buildAPILink();
-    console.log('load more', apiLink);
+    apiLink += '&per_page=' + this.state.postsPerPage;
+    console.log('load more current page', this.state.currentPage);
 
-    var offset = this.state.currentPage * this.state.postsPerPage;
+    var offset = '';
+    //If currentPage is 1, don't do offset math
+    if (this.state.currentPage === 1) {
+      offset = 0;
+    } else if (this.state.isFiltered) {
+      //TODO: check this
+      offset = this.state.filteredProjects.length;
+    } else {
+      //something in here is goofy when it comes to the 1st page
+      offset = this.state.currentPage * this.state.postsPerPage;
+      //  offset = this.state.projects.length;
+    }
+    console.log('offset loadMorePosts', offset);
     apiLink += '&offset=' + offset;
     console.log('load more offset', apiLink);
 
     fetch(apiLink).then(function (response) {
       return response.json();
     }).then(function (json) {
-      console.log(json);
+      console.log('load more json', json);
       var currentPosts = _this6.state.projects;
-      //when i put this into this.setState, it breaks, what do?
-      Array.prototype.push.apply(currentPosts, json);
-      //increment our Current Page
       _this6.setState(function (state) {
         return {
-          currentPage: state.currentPage + 1,
-          //posts: Array.prototype.push.apply(currentPosts, json), //need to jam in new json here
+          projects: json,
           loading: false
         };
       });
     });
-
-    // let offset = 0;
-    // if (this.state.isFiltered) {
-    //   offset = this.state.filteredProjects.length;
-    //   //TODO add in some stuff here Lindsay
-    // } else {
-    //   offset = this.state.currentPage * this.state.postsPerPage;
-    //   apiLink += `&offset=${offset}`;
-    //   fetch(apiLink)
-    //     .then( response => {
-    //       return(response.json());
-    //     })
-    //     .then( json => {
-    //       let currentPosts = this.state.projects;
-    //       //when i put this into this.setState, it breaks, what do?
-    //       Array.prototype.push.apply(currentPosts, json);
-    //       //increment our Current Page
-    //       this.setState( (state) => ({
-    //         currentPage: state.currentPage + 1,
-    //         //posts: Array.prototype.push.apply(currentPosts, json), //need to jam in new json here
-    //         loading: false,
-    //       }));
-    //     })
-    // }
   };
 
   TableList.prototype.render = function render() {
@@ -23693,11 +23679,7 @@ var TableList = function (_React$Component) {
     var filteredMarketName = '';
 
     var currentPage = this.state.currentPage;
-    var allPostsOffset = currentPage * this.state.postsPerPage;
-    console.log('allposts offset', allPostsOffset);
-    // let maxPages = this.state.totalProjects / this.state.postsPerPage;
-    // console.log('max', Math.ceil(maxPages) );
-
+    var pageCount = 3;
     var totalResults = this.state.totalProjects;
     var displayNumber = ''; //This should be a count of current Visible Posts
 
@@ -23716,6 +23698,7 @@ var TableList = function (_React$Component) {
       });
 
       displayNumber = postGroup.props.posts.length;
+      console.log('postgroup', postGroup.props.posts);
     } else if (filterPosts && this.state.isFiltered === true) {
 
       totalResults = this.state.filteredProjects.length;
@@ -23741,6 +23724,70 @@ var TableList = function (_React$Component) {
       loadMoreBtn = '';
     }
 
+    //Pagination
+    var pagination = '';
+    if (!this.state.loading) {
+      //currentPage keeps being 0 to start, wtf?
+      pagination = _react2.default.createElement(
+        _reactPaginating2.default,
+        {
+          total: totalResults,
+          limit: this.state.postsPerPage,
+          pageCount: pageCount,
+          currentPage: this.state.currentPage,
+          previousPage: this.state.currentPage - 1,
+          nextPage: this.state.currentPage + 1
+        },
+        function (_ref) {
+          var pages = _ref.pages,
+              currentPage = _ref.currentPage,
+              hasNextPage = _ref.hasNextPage,
+              hasPreviousPage = _ref.hasPreviousPage,
+              previousPage = _ref.previousPage,
+              nextPage = _ref.nextPage,
+              totalPages = _ref.totalPages,
+              getPageItemProps = _ref.getPageItemProps;
+          return _react2.default.createElement(
+            'ul',
+            null,
+            hasPreviousPage && _react2.default.createElement(
+              'li',
+              getPageItemProps({
+                pageValue: previousPage,
+                onPageChange: _this7.handlePageChange.bind(_this7)
+              }),
+              "<"
+            ),
+            pages.map(function (page) {
+              var activePage = null;
+              if (_this7.state.currentPage === page) {
+                activePage = { backgroundColor: "tomato" };
+              }
+              return _react2.default.createElement(
+                'li',
+                _extends({
+                  key: page,
+                  style: activePage
+                }, getPageItemProps({
+                  pageValue: page,
+                  onPageChange: _this7.handlePageChange.bind(_this7)
+                })),
+                page
+              );
+            }),
+            hasNextPage && _react2.default.createElement(
+              'li',
+              getPageItemProps({
+                pageValue: nextPage,
+                onPageChange: _this7.handlePageChange.bind(_this7)
+              }),
+              ">"
+            )
+          );
+        }
+      );
+    }
+
     return _react2.default.createElement(
       'div',
       { className: 'projects-posts-container' },
@@ -23764,82 +23811,18 @@ var TableList = function (_React$Component) {
         'div',
         { className: 'table-projects-info' },
         _react2.default.createElement(
-          'ul',
+          'div',
           { className: 'table-projects-pagination' },
           _react2.default.createElement(
-            'li',
+            'h2',
             null,
-            '1'
+            currentPage
           ),
-          _react2.default.createElement(
-            'li',
-            null,
-            '2'
-          ),
-          _react2.default.createElement(
-            'li',
-            null,
-            '3'
-          )
+          pagination
         ),
         _react2.default.createElement(
           'div',
           { className: 'table-projects-results' },
-          _react2.default.createElement(
-            _reactPaginating2.default,
-            {
-              total: totalResults,
-              limit: this.state.postsPerPage,
-              currentPage: currentPage
-            },
-            function (_ref) {
-              var pages = _ref.pages,
-                  currentPage = _ref.currentPage,
-                  hasNextPage = _ref.hasNextPage,
-                  hasPreviousPage = _ref.hasPreviousPage,
-                  previousPage = _ref.previousPage,
-                  nextPage = _ref.nextPage,
-                  totalPages = _ref.totalPages,
-                  getPageItemProps = _ref.getPageItemProps;
-              return _react2.default.createElement(
-                'div',
-                null,
-                hasPreviousPage && _react2.default.createElement(
-                  'button',
-                  getPageItemProps({
-                    pageValue: previousPage,
-                    onPageChange: _this7.handlePageChange.bind(_this7)
-                  }),
-                  "<"
-                ),
-                pages.map(function (page) {
-                  var activePage = null;
-                  if (currentPage === page) {
-                    activePage = { backgroundColor: "#fdce09" };
-                  }
-                  return _react2.default.createElement(
-                    'button',
-                    _extends({
-                      key: page,
-                      style: activePage
-                    }, getPageItemProps({
-                      pageValue: page,
-                      onPageChange: _this7.handlePageChange.bind(_this7)
-                    })),
-                    page
-                  );
-                }),
-                hasNextPage && _react2.default.createElement(
-                  'button',
-                  getPageItemProps({
-                    pageValue: nextPage,
-                    onPageChange: _this7.handlePageChange.bind(_this7)
-                  }),
-                  ">"
-                )
-              );
-            }
-          ),
           _react2.default.createElement(
             'div',
             { className: 'table-project-results--current' },

@@ -111,9 +111,10 @@ class TableList extends React.Component {
   }
 
   handlePageChange(page) {
-    console.log('handlePage');
+    console.log('handlePage', page);
     this.setState({
-      currentPage: page
+      currentPage: page,
+      loading: true
     }, () => this.loadMorePosts() );
   };
 
@@ -123,9 +124,22 @@ class TableList extends React.Component {
       //need to fetch the next amount of posts and add them
       //getPosts loads the page and uses postsPerPage
       let apiLink = this.buildAPILink();
-      console.log('load more', apiLink);
+      apiLink += `&per_page=${this.state.postsPerPage}`
+      console.log('load more current page', this.state.currentPage);
 
-      let offset = this.state.currentPage * this.state.postsPerPage;
+      let offset = '';
+      //If currentPage is 1, don't do offset math
+      if (this.state.currentPage === 1) {
+        offset = 0
+      } else if (this.state.isFiltered) {
+        //TODO: check this
+        offset = this.state.filteredProjects.length;
+      } else {
+        //something in here is goofy when it comes to the 1st page
+        offset = this.state.currentPage * this.state.postsPerPage;
+      //  offset = this.state.projects.length;
+      }
+      console.log('offset loadMorePosts', offset);
       apiLink += `&offset=${offset}`;
       console.log('load more offset', apiLink);
 
@@ -134,41 +148,13 @@ class TableList extends React.Component {
           return(response.json());
         })
         .then( json => {
-          console.log(json);
+          console.log('load more json', json);
           let currentPosts = this.state.projects;
-          //when i put this into this.setState, it breaks, what do?
-          Array.prototype.push.apply(currentPosts, json);
-          //increment our Current Page
           this.setState( (state) => ({
-            currentPage: state.currentPage + 1,
-            //posts: Array.prototype.push.apply(currentPosts, json), //need to jam in new json here
+            projects: json,
             loading: false,
           }));
         })
-
-      // let offset = 0;
-      // if (this.state.isFiltered) {
-      //   offset = this.state.filteredProjects.length;
-      //   //TODO add in some stuff here Lindsay
-      // } else {
-      //   offset = this.state.currentPage * this.state.postsPerPage;
-      //   apiLink += `&offset=${offset}`;
-      //   fetch(apiLink)
-      //     .then( response => {
-      //       return(response.json());
-      //     })
-      //     .then( json => {
-      //       let currentPosts = this.state.projects;
-      //       //when i put this into this.setState, it breaks, what do?
-      //       Array.prototype.push.apply(currentPosts, json);
-      //       //increment our Current Page
-      //       this.setState( (state) => ({
-      //         currentPage: state.currentPage + 1,
-      //         //posts: Array.prototype.push.apply(currentPosts, json), //need to jam in new json here
-      //         loading: false,
-      //       }));
-      //     })
-      // }
     }
 
 
@@ -184,11 +170,7 @@ class TableList extends React.Component {
     let filteredMarketName = '';
 
     let currentPage = this.state.currentPage;
-    let allPostsOffset = currentPage * this.state.postsPerPage;
-    console.log('allposts offset', allPostsOffset);
-    // let maxPages = this.state.totalProjects / this.state.postsPerPage;
-    // console.log('max', Math.ceil(maxPages) );
-
+    let pageCount = 3;
     let totalResults = this.state.totalProjects;
     let displayNumber = ''; //This should be a count of current Visible Posts
 
@@ -203,7 +185,7 @@ class TableList extends React.Component {
               />
 
       displayNumber = postGroup.props.posts.length;
-
+      console.log('postgroup', postGroup.props.posts);
     } else if ( filterPosts && this.state.isFiltered === true ) {
 
       totalResults = this.state.filteredProjects.length;
@@ -229,6 +211,74 @@ class TableList extends React.Component {
       loadMoreBtn = '';
     }
 
+    //Pagination
+    let pagination = '';
+    if (!this.state.loading) {
+      //currentPage keeps being 0 to start, wtf?
+      pagination = <Pagination
+        total={totalResults}
+        limit={this.state.postsPerPage}
+        pageCount = {pageCount}
+        currentPage={this.state.currentPage}
+        previousPage={this.state.currentPage - 1}
+        nextPage={this.state.currentPage + 1}
+      >
+        {({
+          pages,
+          currentPage,
+          hasNextPage,
+          hasPreviousPage,
+          previousPage,
+          nextPage,
+          totalPages,
+          getPageItemProps
+        }) => (
+          <ul>
+          {hasPreviousPage && (
+             <li
+               {...getPageItemProps({
+                 pageValue: previousPage,
+                 onPageChange: this.handlePageChange.bind(this)
+               })}
+             >
+               {"<"}
+             </li>
+           )}
+
+            {pages.map(page => {
+              let activePage = null;
+              if (this.state.currentPage === page) {
+                activePage = { backgroundColor: "tomato" };
+              }
+              return (
+                <li
+                  key={page}
+                  style={activePage}
+                  {...getPageItemProps({
+                    pageValue: page,
+                    onPageChange: this.handlePageChange.bind(this)
+                  })}
+                >
+                  {page}
+                </li>
+              );
+            })}
+
+            {hasNextPage && (
+             <li
+               {...getPageItemProps({
+                 pageValue: nextPage,
+                 onPageChange: this.handlePageChange.bind(this)
+               })}
+             >
+               {">"}
+             </li>
+           )}
+
+          </ul>
+        )}
+      </Pagination>
+    }
 
     return(
       <div className="projects-posts-container">
@@ -250,72 +300,12 @@ class TableList extends React.Component {
 
         {postGroup}
         <div className="table-projects-info">
-          <ul className="table-projects-pagination">
-            <li>1</li>
-            <li>2</li>
-            <li>3</li>
-          </ul>
+          <div className="table-projects-pagination">
+             <h2>{currentPage}</h2>
+             {pagination}
+          </div>
+
           <div className="table-projects-results">
-          <Pagination
-            total={totalResults}
-            limit={this.state.postsPerPage}
-            currentPage={currentPage}
-          >
-            {({
-              pages,
-              currentPage,
-              hasNextPage,
-              hasPreviousPage,
-              previousPage,
-              nextPage,
-              totalPages,
-              getPageItemProps
-            }) => (
-              <div>
-                {hasPreviousPage && (
-                  <button
-                    {...getPageItemProps({
-                      pageValue: previousPage,
-                      onPageChange: this.handlePageChange.bind(this)
-                    })}
-                  >
-                    {"<"}
-                  </button>
-                )}
-
-                {pages.map(page => {
-                  let activePage = null;
-                  if (currentPage === page) {
-                    activePage = { backgroundColor: "#fdce09" };
-                  }
-                  return (
-                    <button
-                      key={page}
-                      style={activePage}
-                      {...getPageItemProps({
-                        pageValue: page,
-                        onPageChange: this.handlePageChange.bind(this)
-                      })}
-                    >
-                      {page}
-                    </button>
-                  );
-                })}
-
-                {hasNextPage && (
-                  <button
-                    {...getPageItemProps({
-                      pageValue: nextPage,
-                      onPageChange: this.handlePageChange.bind(this)
-                    })}
-                  >
-                    {">"}
-                  </button>
-                )}
-
-              </div>
-            )}
-          </Pagination>
             <div className="table-project-results--current">Page {currentPage}</div>
             <div className="table-project-results--total"> {displayNumber} of {totalResults} Results</div>
           </div>
