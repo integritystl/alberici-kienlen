@@ -1,6 +1,6 @@
 //This is for the table view of Projects
 import React from 'react';
-import Pagination from 'react-paginating';
+import ReactPaginate from 'react-paginate';
 import {handleSearch, getMarketCats, getServiceCats, resetFilter, removeFilterTerm, checkFilterStatus, handleMarketChange, getCatName} from './helpers/helpers.js'
 import FilterBar from './filterbar.js'
 import Table from './table.js'
@@ -110,35 +110,37 @@ class TableList extends React.Component {
     }, () => this.getFilteredPosts(this.buildAPILink()) );
   }
 
-  handlePageChange(page) {
-    console.log('handlePage', page);
+  handlePageChange(pageData) {
+    console.log('handlePage', pageData);
+    let selected = pageData.selected;
+    let offset = Math.ceil(selected * this.state.postsPerPage);
+    console.log('handPage', offset);
     this.setState({
-      currentPage: page,
       loading: true
-    }, () => this.loadMorePosts() );
+    }, () => this.loadMorePosts(offset) );
   };
 
   //Load More functionality
   // TODO: Load more is pagination in this view, so will be different from CardList view
-    loadMorePosts() {
+    loadMorePosts(offset) {
       //need to fetch the next amount of posts and add them
       //getPosts loads the page and uses postsPerPage
       let apiLink = this.buildAPILink();
       apiLink += `&per_page=${this.state.postsPerPage}`
       console.log('load more current page', this.state.currentPage);
 
-      let offset = '';
-      //If currentPage is 1, don't do offset math
-      if (this.state.currentPage === 1) {
-        offset = 0
-      } else if (this.state.isFiltered) {
-        //TODO: check this
-        offset = this.state.filteredProjects.length;
-      } else {
-        //something in here is goofy when it comes to the 1st page
-        offset = this.state.currentPage * this.state.postsPerPage;
-      //  offset = this.state.projects.length;
-      }
+      // let offset = '';
+      // //If currentPage is 1, don't do offset math
+      // if (this.state.currentPage === 1) {
+      //   offset = 0
+      // } else if (this.state.isFiltered) {
+      //   //TODO: check this
+      //   offset = this.state.filteredProjects.length;
+      // } else {
+      //   //something in here is goofy when it comes to the 1st page
+      //   offset = this.state.currentPage * this.state.postsPerPage;
+      // //  offset = this.state.projects.length;
+      // }
       console.log('offset loadMorePosts', offset);
       apiLink += `&offset=${offset}`;
       console.log('load more offset', apiLink);
@@ -170,7 +172,7 @@ class TableList extends React.Component {
     let filteredMarketName = '';
 
     let currentPage = this.state.currentPage;
-    let pageCount = 3;
+    let pageCount = Math.ceil(this.state.totalProjects / this.state.postsPerPage);
     let totalResults = this.state.totalProjects;
     let displayNumber = ''; //This should be a count of current Visible Posts
 
@@ -215,69 +217,17 @@ class TableList extends React.Component {
     let pagination = '';
     if (!this.state.loading) {
       //currentPage keeps being 0 to start, wtf?
-      pagination = <Pagination
-        total={totalResults}
-        limit={this.state.postsPerPage}
-        pageCount = {pageCount}
-        currentPage={this.state.currentPage}
-        previousPage={this.state.currentPage - 1}
-        nextPage={this.state.currentPage + 1}
-      >
-        {({
-          pages,
-          currentPage,
-          hasNextPage,
-          hasPreviousPage,
-          previousPage,
-          nextPage,
-          totalPages,
-          getPageItemProps
-        }) => (
-          <ul>
-          {hasPreviousPage && (
-             <li
-               {...getPageItemProps({
-                 pageValue: previousPage,
-                 onPageChange: this.handlePageChange.bind(this)
-               })}
-             >
-               {"<"}
-             </li>
-           )}
-
-            {pages.map(page => {
-              let activePage = null;
-              if (this.state.currentPage === page) {
-                activePage = { backgroundColor: "tomato" };
-              }
-              return (
-                <li
-                  key={page}
-                  style={activePage}
-                  {...getPageItemProps({
-                    pageValue: page,
-                    onPageChange: this.handlePageChange.bind(this)
-                  })}
-                >
-                  {page}
-                </li>
-              );
-            })}
-
-            {hasNextPage && (
-             <li
-               {...getPageItemProps({
-                 pageValue: nextPage,
-                 onPageChange: this.handlePageChange.bind(this)
-               })}
-             >
-               {">"}
-             </li>
-           )}
-
-          </ul>
-        )}
-      </Pagination>
+      pagination =  <ReactPaginate previousLabel={"previous"}
+                       nextLabel={"next"}
+                       breakLabel={<a href="">...</a>}
+                       breakClassName={"break-me"}
+                       pageCount={pageCount}
+                       marginPagesDisplayed={2}
+                       pageRangeDisplayed={5}
+                       onPageChange={this.handlePageChange.bind(this)}
+                       containerClassName={"pagination"}
+                       subContainerClassName={"pages pagination"}
+                       activeClassName={"active"} />
     }
 
     return(
