@@ -24,7 +24,7 @@ class TableList extends React.Component {
   componentWillMount() {
       this.setState({
         loading: true,
-        currentPage: 1,
+        currentPage: 0,
         projects: [],
         postsPerPage: 2,
         market_categories: [],
@@ -44,6 +44,7 @@ class TableList extends React.Component {
     this.getPosts(this.buildAPILink());
     this.getMarketCats();
     this.getServiceCats();
+    this.baseState = this.state;
   }
 
   //Fetch posts
@@ -63,6 +64,7 @@ class TableList extends React.Component {
         return baseLink;
       }
     }
+    console.log('buildAPILink url', baseLink);
     return baseLink;
   }
 
@@ -93,6 +95,7 @@ class TableList extends React.Component {
       }).then(json => {
         this.setState({
           filteredProjects: json,
+          totalProjects: json.length,
           loading: false
         })
       })
@@ -112,11 +115,13 @@ class TableList extends React.Component {
 
   handlePageChange(pageData) {
     console.log('handlePage', pageData);
+    console.log('handlePage page', pageData.page);
     let selected = pageData.selected;
     let offset = Math.ceil(selected * this.state.postsPerPage);
     console.log('handPage', offset);
     this.setState({
-      loading: true
+      currentPage: selected,
+      loading : true
     }, () => this.loadMorePosts(offset) );
   };
 
@@ -126,23 +131,9 @@ class TableList extends React.Component {
       //need to fetch the next amount of posts and add them
       //getPosts loads the page and uses postsPerPage
       let apiLink = this.buildAPILink();
-      apiLink += `&per_page=${this.state.postsPerPage}`
-      console.log('load more current page', this.state.currentPage);
+      apiLink += `&per_page=${this.state.postsPerPage}&offset=${offset}`
 
-      // let offset = '';
-      // //If currentPage is 1, don't do offset math
-      // if (this.state.currentPage === 1) {
-      //   offset = 0
-      // } else if (this.state.isFiltered) {
-      //   //TODO: check this
-      //   offset = this.state.filteredProjects.length;
-      // } else {
-      //   //something in here is goofy when it comes to the 1st page
-      //   offset = this.state.currentPage * this.state.postsPerPage;
-      // //  offset = this.state.projects.length;
-      // }
       console.log('offset loadMorePosts', offset);
-      apiLink += `&offset=${offset}`;
       console.log('load more offset', apiLink);
 
       fetch(apiLink)
@@ -153,7 +144,7 @@ class TableList extends React.Component {
           console.log('load more json', json);
           let currentPosts = this.state.projects;
           this.setState( (state) => ({
-            projects: json,
+            projects: json, //TODO: update for isFiltered
             loading: false,
           }));
         })
@@ -161,6 +152,7 @@ class TableList extends React.Component {
 
 
   render() {
+    console.log('base state', this.baseState);
     let postGroup = '';
     let loadMoreBtn = '';
     let loadMoreLabel = 'View More Projects';
@@ -172,6 +164,8 @@ class TableList extends React.Component {
     let filteredMarketName = '';
 
     let currentPage = this.state.currentPage;
+    //to display the current page we're on + make up for 0 index of pagination
+    let currentPageDisplay = currentPage + 1;
     let pageCount = Math.ceil(this.state.totalProjects / this.state.postsPerPage);
     let totalResults = this.state.totalProjects;
     let displayNumber = ''; //This should be a count of current Visible Posts
@@ -216,18 +210,17 @@ class TableList extends React.Component {
     //Pagination
     let pagination = '';
     if (!this.state.loading) {
-      //currentPage keeps being 0 to start, wtf?
+
       pagination =  <ReactPaginate previousLabel={"previous"}
                        nextLabel={"next"}
                        breakLabel={<a href="">...</a>}
                        breakClassName={"break-me"}
                        pageCount={pageCount}
-                       marginPagesDisplayed={2}
-                       pageRangeDisplayed={5}
                        onPageChange={this.handlePageChange.bind(this)}
                        containerClassName={"pagination"}
                        subContainerClassName={"pages pagination"}
                        activeClassName={"active"} />
+
     }
 
     return(
@@ -251,12 +244,12 @@ class TableList extends React.Component {
         {postGroup}
         <div className="table-projects-info">
           <div className="table-projects-pagination">
-             <h2>{currentPage}</h2>
+             <h2>{currentPageDisplay}</h2>
              {pagination}
           </div>
 
           <div className="table-projects-results">
-            <div className="table-project-results--current">Page {currentPage}</div>
+            <div className="table-project-results--current">Page {currentPageDisplay}</div>
             <div className="table-project-results--total"> {displayNumber} of {totalResults} Results</div>
           </div>
         </div>
