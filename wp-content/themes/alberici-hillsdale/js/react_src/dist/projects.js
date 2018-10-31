@@ -23554,6 +23554,7 @@ var TableList = function (_React$Component) {
       } else {
         return baseLink;
       }
+      baseLink += '&per_page=' + this.state.postsPerPage;
     }
     console.log('buildAPILink url', baseLink);
     return baseLink;
@@ -23585,11 +23586,14 @@ var TableList = function (_React$Component) {
     var _this3 = this;
 
     fetch(apiLink).then(function (response) {
+      //console.log('response get response header', response.headers.get('X-WP-Total'))
+      _this3.setState({
+        totalProjects: parseInt(response.headers.get('X-WP-Total')) // WP this is BS man.
+      });
       return response.json();
     }).then(function (json) {
       _this3.setState({
         filteredProjects: json,
-        totalProjects: json.length,
         loading: false
       });
     });
@@ -23642,17 +23646,29 @@ var TableList = function (_React$Component) {
     console.log('offset loadMorePosts', offset);
     console.log('load more offset', apiLink);
 
+    //PRESENT Lindsay
+    // This needs to be different if isFiltered is true
     fetch(apiLink).then(function (response) {
       return response.json();
     }).then(function (json) {
       console.log('load more json', json);
       var currentPosts = _this6.state.projects;
-      _this6.setState(function (state) {
-        return {
-          projects: json, //TODO: update for isFiltered
-          loading: false
-        };
-      });
+      if (_this6.state.isFiltered) {
+        _this6.setState(function (state) {
+          return {
+            filteredProjects: json,
+            loading: false
+          };
+        });
+      } else {
+        //NonFiltered Change
+        _this6.setState(function (state) {
+          return {
+            projects: json, //TODO: update for isFiltered
+            loading: false
+          };
+        });
+      }
     });
   };
 
@@ -23692,8 +23708,7 @@ var TableList = function (_React$Component) {
       displayNumber = postGroup.props.posts.length;
       console.log('postgroup', postGroup.props.posts);
     } else if (filterPosts && this.state.isFiltered === true) {
-
-      totalResults = this.state.filteredProjects.length;
+      console.log('if filteredPosts', filterPosts);
       postGroup = _react2.default.createElement(_table2.default, {
         posts: this.state.filteredProjects,
         markets: this.state.market_categories,
@@ -23703,6 +23718,9 @@ var TableList = function (_React$Component) {
         filteredMarket: this.state.filteredMarket
       });
       displayNumber = postGroup.props.posts.length;
+      pageCount = Math.ceil(totalResults / this.state.postsPerPage);
+      console.log('pageCount filtered', pageCount);
+      console.log('pageCount postgroup', postGroup.props.posts);
       //Get the names of filtered service categories for display purposes
       if (this.state.service_categories && this.state.filteredService) {
         filteredServiceName = this.getCatName(this.state.filteredService, this.state.service_categories);
@@ -23729,7 +23747,9 @@ var TableList = function (_React$Component) {
         ),
         breakClassName: "break-me",
         pageCount: pageCount,
-        onPageChange: this.handlePageChange.bind(this),
+        pageRangeDisplayed: 5,
+        forcePage: currentPage //changes the counter, not data
+        , onPageChange: this.handlePageChange.bind(this),
         containerClassName: "pagination",
         subContainerClassName: "pages pagination",
         activeClassName: "active" });
@@ -23760,11 +23780,6 @@ var TableList = function (_React$Component) {
         _react2.default.createElement(
           'div',
           { className: 'table-projects-pagination' },
-          _react2.default.createElement(
-            'h2',
-            null,
-            currentPageDisplay
-          ),
           pagination
         ),
         _react2.default.createElement(
@@ -23774,7 +23789,9 @@ var TableList = function (_React$Component) {
             'div',
             { className: 'table-project-results--current' },
             'Page ',
-            currentPageDisplay
+            currentPageDisplay,
+            ' of ',
+            pageCount
           ),
           _react2.default.createElement(
             'div',
@@ -23783,7 +23800,7 @@ var TableList = function (_React$Component) {
             displayNumber,
             ' of ',
             totalResults,
-            ' Results'
+            ' Total Results'
           )
         )
       )

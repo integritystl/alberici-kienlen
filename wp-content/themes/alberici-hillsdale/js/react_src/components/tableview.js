@@ -63,6 +63,7 @@ class TableList extends React.Component {
       } else {
         return baseLink;
       }
+      baseLink += `&per_page=${this.state.postsPerPage}`
     }
     console.log('buildAPILink url', baseLink);
     return baseLink;
@@ -91,11 +92,14 @@ class TableList extends React.Component {
   getFilteredPosts(apiLink) {
     fetch(apiLink)
       .then( response => {
+        //console.log('response get response header', response.headers.get('X-WP-Total'))
+        this.setState({
+          totalProjects: parseInt( response.headers.get('X-WP-Total') )// WP this is BS man.
+        })
         return(response.json());
       }).then(json => {
         this.setState({
           filteredProjects: json,
-          totalProjects: json.length,
           loading: false
         })
       })
@@ -136,6 +140,8 @@ class TableList extends React.Component {
       console.log('offset loadMorePosts', offset);
       console.log('load more offset', apiLink);
 
+      //PRESENT Lindsay
+      // This needs to be different if isFiltered is true
       fetch(apiLink)
         .then( response => {
           return(response.json());
@@ -143,10 +149,18 @@ class TableList extends React.Component {
         .then( json => {
           console.log('load more json', json);
           let currentPosts = this.state.projects;
-          this.setState( (state) => ({
-            projects: json, //TODO: update for isFiltered
-            loading: false,
-          }));
+          if (this.state.isFiltered) {
+            this.setState( (state) => ({
+              filteredProjects: json,
+              loading: false,
+            }));
+          } else {
+            //NonFiltered Change
+            this.setState( (state) => ({
+              projects: json, //TODO: update for isFiltered
+              loading: false,
+            }));
+          }
         })
     }
 
@@ -183,8 +197,7 @@ class TableList extends React.Component {
       displayNumber = postGroup.props.posts.length;
       console.log('postgroup', postGroup.props.posts);
     } else if ( filterPosts && this.state.isFiltered === true ) {
-
-      totalResults = this.state.filteredProjects.length;
+      console.log('if filteredPosts', filterPosts);
       postGroup = <Table
                     posts = {this.state.filteredProjects}
                     markets = {this.state.market_categories}
@@ -194,6 +207,9 @@ class TableList extends React.Component {
                     filteredMarket = {this.state.filteredMarket}
                   />
       displayNumber = postGroup.props.posts.length;
+      pageCount =  Math.ceil(totalResults / this.state.postsPerPage);
+      console.log('pageCount filtered', pageCount)
+      console.log('pageCount postgroup', postGroup.props.posts)
       //Get the names of filtered service categories for display purposes
       if (this.state.service_categories && this.state.filteredService) {
         filteredServiceName = this.getCatName(this.state.filteredService, this.state.service_categories);
@@ -216,6 +232,8 @@ class TableList extends React.Component {
                        breakLabel={<a href="">...</a>}
                        breakClassName={"break-me"}
                        pageCount={pageCount}
+                       pageRangeDisplayed={5}
+                       forcePage={currentPage} //changes the counter, not data
                        onPageChange={this.handlePageChange.bind(this)}
                        containerClassName={"pagination"}
                        subContainerClassName={"pages pagination"}
@@ -244,13 +262,12 @@ class TableList extends React.Component {
         {postGroup}
         <div className="table-projects-info">
           <div className="table-projects-pagination">
-             <h2>{currentPageDisplay}</h2>
              {pagination}
           </div>
 
           <div className="table-projects-results">
-            <div className="table-project-results--current">Page {currentPageDisplay}</div>
-            <div className="table-project-results--total"> {displayNumber} of {totalResults} Results</div>
+            <div className="table-project-results--current">Page {currentPageDisplay} of {pageCount}</div>
+            <div className="table-project-results--total"> {displayNumber} of {totalResults} Total Results</div>
           </div>
         </div>
       </div>
