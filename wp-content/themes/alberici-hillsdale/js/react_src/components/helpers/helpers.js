@@ -69,15 +69,32 @@ export function resetFilter(){
     secondarySelect.value = 'Location';
   }
 
-  this.setState({
-    isFiltered: false,
-    filteredPosts: [],
-    filteredMarket: '',
-    filteredService: '',
-    filteredLocation: '',
-    hasSearchTerm: false,
-    searchTerm: ''
-  }, () => this.getPosts(this.buildAPILink()))
+  //Change the state based on the Page Template
+  if (this.state.projects) {
+    console.log('projects reset')
+    this.setState({
+      isFiltered: false,
+      filteredProjects: [],
+      filteredMarket: '',
+      filteredService: '',
+      hasSearchTerm: false,
+      searchTerm: '',
+      totalProjects: parseInt(wpObj.totalProjects.publish),
+    }, () => this.getPosts(this.buildAPILink()))
+  } else {
+    // It's CardListView
+    this.setState({
+      isFiltered: false,
+      filteredPosts: [],
+      filteredMarket: '',
+      filteredService: '',
+      filteredLocation: '',
+      hasSearchTerm: false,
+      searchTerm: '',
+      totalPosts: parseInt( document.getElementById('cardList_app').getAttribute('data-total') )
+    }, () => this.getPosts(this.buildAPILink()))
+  }
+
 }
 
 export function removeFilterTerm(currentTermId){

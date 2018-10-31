@@ -28,17 +28,19 @@
     		)
     	)
     );
+    $latest_query = new WP_Query( $latest_args );
   }
 
   //Default: Show Latest 3 Posts
-  if(empty($latest_args)) {
+  if(!$latest_query->have_posts()) {
     $latest_args = array(
       'post_type' =>  'post',
       'posts_per_page' => 3,
     );
+    $latest_query = new WP_Query( $latest_args );
   }
 
-  $latest_query = new WP_Query( $latest_args );
+  
   if ( $latest_query->have_posts() ) :
 ?>
 <ul>
