@@ -11299,17 +11299,35 @@ function resetFilter() {
     secondarySelect.value = 'Location';
   }
 
-  this.setState({
-    isFiltered: false,
-    filteredPosts: [],
-    filteredMarket: '',
-    filteredService: '',
-    filteredLocation: '',
-    hasSearchTerm: false,
-    searchTerm: ''
-  }, function () {
-    return _this5.getPosts(_this5.buildAPILink());
-  });
+  //Change the state based on the Page Template
+  if (this.state.projects) {
+    console.log('projects reset');
+    this.setState({
+      isFiltered: false,
+      filteredProjects: [],
+      filteredMarket: '',
+      filteredService: '',
+      hasSearchTerm: false,
+      searchTerm: '',
+      totalProjects: parseInt(wpObj.totalProjects.publish)
+    }, function () {
+      return _this5.getPosts(_this5.buildAPILink());
+    });
+  } else {
+    // It's CardListView
+    this.setState({
+      isFiltered: false,
+      filteredPosts: [],
+      filteredMarket: '',
+      filteredService: '',
+      filteredLocation: '',
+      hasSearchTerm: false,
+      searchTerm: '',
+      totalPosts: parseInt(document.getElementById('cardList_app').getAttribute('data-total'))
+    }, function () {
+      return _this5.getPosts(_this5.buildAPILink());
+    });
+  }
 }
 
 function removeFilterTerm(currentTermId) {
@@ -23509,7 +23527,7 @@ var CardList = function (_React$Component) {
       loading: true,
       currentPage: 1,
       posts: [],
-      postsPerPage: 6,
+      postsPerPage: 2,
       postDataType: document.getElementById('cardList_app').getAttribute('data-post'),
       market_categories: [],
       service_categories: [],
@@ -23568,8 +23586,9 @@ var CardList = function (_React$Component) {
         } else {
           return baseLink;
         }
+        baseLink += '&per_page=' + this.state.postsPerPage;
       }
-      console.log(baseLink);
+      // console.log(baseLink);
     }
     return baseLink;
   };
@@ -23612,12 +23631,9 @@ var CardList = function (_React$Component) {
 
   CardList.prototype.setFilterCats = function setFilterCats() {
     var filterDataType = document.getElementById('cardList_app').getAttribute('data-filter');
-    console.log('set filter cats', filterDataType);
     if (filterDataType === 'service') {
-      console.log('check filter service');
       this.getServiceCats();
     } else {
-      console.log('filter is location?');
       this.getLocationCats();
     }
   };
@@ -23684,11 +23700,10 @@ var CardList = function (_React$Component) {
     //need to fetch the next amount of posts and add them
     //getPosts loads the page and uses postsPerPage
     var apiLink = this.buildAPILink();
-
+    console.log('loadmore api link', apiLink);
     var offset = 0;
     if (this.state.isFiltered) {
       offset = this.state.filteredPosts.length;
-      //TODO add in some stuff here Lindsay
     } else {
       offset = this.state.currentPage * this.state.postsPerPage;
       apiLink += '&offset=' + offset;
@@ -23696,13 +23711,11 @@ var CardList = function (_React$Component) {
         return response.json();
       }).then(function (json) {
         var currentPosts = _this7.state.posts;
-        //when i put this into this.setState, it breaks, what do?
         Array.prototype.push.apply(currentPosts, json);
         //increment our Current Page
         _this7.setState(function (state) {
           return {
             currentPage: state.currentPage + 1,
-            //posts: Array.prototype.push.apply(currentPosts, json), //need to jam in new json here
             loading: false
           };
         });

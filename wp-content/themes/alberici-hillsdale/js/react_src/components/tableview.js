@@ -24,7 +24,7 @@ class TableList extends React.Component {
   componentWillMount() {
       this.setState({
         loading: true,
-        currentPage: 0,
+        currentPage: 0,//ReactPaginate is 0 indexed, so this is 0 for inital load
         projects: [],
         postsPerPage: 2,
         market_categories: [],
@@ -44,7 +44,6 @@ class TableList extends React.Component {
     this.getPosts(this.buildAPILink());
     this.getMarketCats();
     this.getServiceCats();
-    this.baseState = this.state;
   }
 
   //Fetch posts
@@ -65,14 +64,13 @@ class TableList extends React.Component {
       }
       baseLink += `&per_page=${this.state.postsPerPage}`
     }
-    console.log('buildAPILink url', baseLink);
+    // console.log('buildAPILink url', baseLink);
     return baseLink;
   }
 
   //Get All Posts
   getPosts(apiLink){
     apiLink += `&per_page=${this.state.postsPerPage}`
-    console.log(apiLink);
     //Gotta pass Basic Auth for the prompt from WP Engine
     //Ref: https://stackoverflow.com/questions/30203044/using-an-authorization-header-with-fetch-in-react-native
     fetch(apiLink, {
@@ -92,9 +90,9 @@ class TableList extends React.Component {
   getFilteredPosts(apiLink) {
     fetch(apiLink)
       .then( response => {
-        //console.log('response get response header', response.headers.get('X-WP-Total'))
         this.setState({
-          totalProjects: parseInt( response.headers.get('X-WP-Total') )// WP this is BS man.
+          // WP API gives the Total Page Count in the Headers, of all places :\
+          totalProjects: parseInt( response.headers.get('X-WP-Total') )
         })
         return(response.json());
       }).then(json => {
@@ -117,12 +115,10 @@ class TableList extends React.Component {
     }, () => this.getFilteredPosts(this.buildAPILink()) );
   }
 
+  //Works with React Paginate to pass info along
   handlePageChange(pageData) {
-    console.log('handlePage', pageData);
-    console.log('handlePage page', pageData.page);
     let selected = pageData.selected;
     let offset = Math.ceil(selected * this.state.postsPerPage);
-    console.log('handPage', offset);
     this.setState({
       currentPage: selected,
       loading : true
@@ -130,24 +126,19 @@ class TableList extends React.Component {
   };
 
   //Load More functionality
-  // TODO: Load more is pagination in this view, so will be different from CardList view
     loadMorePosts(offset) {
-      //need to fetch the next amount of posts and add them
-      //getPosts loads the page and uses postsPerPage
       let apiLink = this.buildAPILink();
       apiLink += `&per_page=${this.state.postsPerPage}&offset=${offset}`
 
-      console.log('offset loadMorePosts', offset);
-      console.log('load more offset', apiLink);
+      // console.log('offset loadMorePosts', offset);
+      // console.log('load more offset', apiLink);
 
-      //PRESENT Lindsay
-      // This needs to be different if isFiltered is true
       fetch(apiLink)
         .then( response => {
           return(response.json());
         })
         .then( json => {
-          console.log('load more json', json);
+          // console.log('load more json', json);
           let currentPosts = this.state.projects;
           if (this.state.isFiltered) {
             this.setState( (state) => ({
@@ -157,7 +148,7 @@ class TableList extends React.Component {
           } else {
             //NonFiltered Change
             this.setState( (state) => ({
-              projects: json, //TODO: update for isFiltered
+              projects: json,
               loading: false,
             }));
           }
@@ -166,7 +157,6 @@ class TableList extends React.Component {
 
 
   render() {
-    console.log('base state', this.baseState);
     let postGroup = '';
     let loadMoreBtn = '';
     let loadMoreLabel = 'View More Projects';
@@ -195,9 +185,8 @@ class TableList extends React.Component {
               />
 
       displayNumber = postGroup.props.posts.length;
-      console.log('postgroup', postGroup.props.posts);
+
     } else if ( filterPosts && this.state.isFiltered === true ) {
-      console.log('if filteredPosts', filterPosts);
       postGroup = <Table
                     posts = {this.state.filteredProjects}
                     markets = {this.state.market_categories}
@@ -208,8 +197,6 @@ class TableList extends React.Component {
                   />
       displayNumber = postGroup.props.posts.length;
       pageCount =  Math.ceil(totalResults / this.state.postsPerPage);
-      console.log('pageCount filtered', pageCount)
-      console.log('pageCount postgroup', postGroup.props.posts)
       //Get the names of filtered service categories for display purposes
       if (this.state.service_categories && this.state.filteredService) {
         filteredServiceName = this.getCatName(this.state.filteredService, this.state.service_categories);
