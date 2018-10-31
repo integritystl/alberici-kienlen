@@ -24,7 +24,7 @@ class CardList extends React.Component {
         loading: true,
         currentPage: 1,
         posts: [],
-        postsPerPage: 6,
+        postsPerPage: 2,
         postDataType: document.getElementById('cardList_app').getAttribute('data-post'),
         market_categories: [],
         service_categories: [],
@@ -81,8 +81,9 @@ class CardList extends React.Component {
           } else {
             return baseLink;
           }
+          baseLink += `&per_page=${this.state.postsPerPage}`
         }
-        console.log(baseLink);
+        // console.log(baseLink);
       }
       return baseLink;
     }
@@ -120,12 +121,9 @@ class CardList extends React.Component {
     //Check to see what's set for our data-filter attribute and call the appropriate custom taxonomy endpoint
     setFilterCats() {
       let filterDataType = document.getElementById('cardList_app').getAttribute('data-filter');
-      console.log('set filter cats', filterDataType);
       if (filterDataType === 'service') {
-        console.log('check filter service');
         this.getServiceCats();
       } else {
-        console.log('filter is location?')
         this.getLocationCats();
       }
     }
@@ -174,11 +172,10 @@ class CardList extends React.Component {
       //need to fetch the next amount of posts and add them
       //getPosts loads the page and uses postsPerPage
       let apiLink = this.buildAPILink();
-
+      console.log('loadmore api link', apiLink);
       let offset = 0;
       if (this.state.isFiltered) {
         offset = this.state.filteredPosts.length;
-        //TODO add in some stuff here Lindsay
       } else {
         offset = this.state.currentPage * this.state.postsPerPage;
         apiLink += `&offset=${offset}`;
@@ -188,12 +185,10 @@ class CardList extends React.Component {
           })
           .then( json => {
             let currentPosts = this.state.posts;
-            //when i put this into this.setState, it breaks, what do?
             Array.prototype.push.apply(currentPosts, json);
             //increment our Current Page
             this.setState( (state) => ({
               currentPage: state.currentPage + 1,
-              //posts: Array.prototype.push.apply(currentPosts, json), //need to jam in new json here
               loading: false,
             }));
           })
