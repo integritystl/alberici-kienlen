@@ -51,9 +51,8 @@ get_header();
 		<aside id="secondary" class="sidebar-area" role="complementary">
 			<?php //include(locate_template('template-parts/share-menu.php')); ?>
 			<div class="news-latest-3">
-				<span>Related Articles</span>
+				<h3>Related Articles</h3>
 				<?php get_template_part( 'template-parts/widget', 'latest-posts' ); ?>
-				<!-- <a href="<?php //echo get_permalink('259'); ?>" class="button all-news">View All News</a> -->
 			</div>
 		</aside>
 	</div>
