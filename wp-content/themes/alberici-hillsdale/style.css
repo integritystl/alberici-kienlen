@@ -2490,6 +2490,72 @@ footer a {
     margin: 40px 280px;
     min-width: 400px; } }
 
+.news-detail {
+  display: block; }
+
+@media only screen and (min-width: 801px) {
+  .news-detail {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex; } }
+
+.news-detail .news-content {
+  width: auto;
+  margin-bottom: 0; }
+
+@media only screen and (min-width: 801px) {
+  .news-detail .news-content {
+    width: 130%;
+    margin-bottom: 100px; } }
+
+.news-detail .news-content a {
+  text-decoration: none; }
+
+.news-detail .news-content .entry-header {
+  margin-top: 40px; }
+
+.news-detail .news-content .posted-on {
+  text-transform: uppercase;
+  color: #526079; }
+
+.news-detail .news-content .post-date {
+  margin-bottom: 25px; }
+
+.news-detail .news-content .post-category span, .news-detail .news-content .post-category a {
+  text-transform: uppercase;
+  color: #526079; }
+
+.news-detail .news-content .post-category span:after {
+  content: "|";
+  padding-left: 7px;
+  padding-right: 3px; }
+
+.news-detail .news-content .post-thumbnail img {
+  height: auto; }
+
+.news-detail .news-content .entry-content {
+  margin: 30px 0 50px 0; }
+
+.news-detail .sidebar-area {
+  margin: 60px 10px; }
+
+@media only screen and (min-width: 801px) {
+  .news-detail .sidebar-area {
+    margin: 120px 0 0 80px; } }
+
+.news-detail .sidebar-area .share-menu {
+  margin-bottom: 30px; }
+
+.news-detail .sidebar-area .news-latest-3 span {
+  color: #526079; }
+
+.news-detail .sidebar-area .news-latest-3 ul li {
+  line-height: 1.25;
+  margin: 20px 0; }
+
+.news-detail .sidebar-area .news-latest-3 ul li a {
+  text-decoration: none; }
+
 .alberici-kienlen .serivces-content {
   margin-top: 40px;
   margin-bottom: 50px; }
