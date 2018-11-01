@@ -11107,7 +11107,7 @@ var FilterBar = function (_React$Component) {
           { className: 'screen-reader-text' },
           'Location'
         ),
-        _react2.default.createElement(_filterSelect2.default, { label: 'Locations',
+        _react2.default.createElement(_filterSelect2.default, { label: 'Location',
           selectID: 'filterbar-select-location',
           options: this.props.locations,
           onFilterChange: this.filterLocations
@@ -11301,7 +11301,6 @@ function resetFilter() {
 
   //Change the state based on the Page Template
   if (this.state.projects) {
-    console.log('projects reset');
     this.setState({
       isFiltered: false,
       filteredProjects: [],
@@ -23587,7 +23586,6 @@ var CardList = function (_React$Component) {
           return baseLink;
         }
       }
-      console.log('buildAPILink url', baseLink);
     }
     baseLink += '&per_page=' + this.state.postsPerPage;
     return baseLink;
@@ -23663,7 +23661,6 @@ var CardList = function (_React$Component) {
   CardList.prototype.handleLocationChange = function handleLocationChange(id) {
     var _this5 = this;
 
-    console.log('handleLocationChange', id);
     if (id === 'Location') {
       id = '';
     }
@@ -23702,7 +23699,6 @@ var CardList = function (_React$Component) {
 
     //need to fetch the next amount of posts and add them
     var apiLink = this.buildAPILink();
-    console.log('loadmore api link start', apiLink);
     var offset = 0;
     if (this.state.isFiltered) {
       offset = this.state.filteredPosts.length;
@@ -23710,7 +23706,6 @@ var CardList = function (_React$Component) {
       offset = this.state.currentPage * this.state.postsPerPage;
     }
     apiLink += '&offset=' + offset;
-    console.log('loadmore api link offset', apiLink);
 
     fetch(apiLink).then(function (response) {
       return response.json();
@@ -23814,7 +23809,6 @@ var CardList = function (_React$Component) {
         );
       }
     }
-
     return _react2.default.createElement(
       'div',
       { className: 'news-posts-container' },
@@ -23919,8 +23913,6 @@ var Card = function (_React$Component) {
   }
 
   Card.prototype.render = function render() {
-    //  console.log('card props', this.props);
-
 
     return _react2.default.createElement(
       "article",

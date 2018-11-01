@@ -64,7 +64,6 @@ class TableList extends React.Component {
       }
       baseLink += `&per_page=${this.state.postsPerPage}`
     }
-    // console.log('buildAPILink url', baseLink);
     return baseLink;
   }
 
@@ -130,15 +129,11 @@ class TableList extends React.Component {
       let apiLink = this.buildAPILink();
       apiLink += `&per_page=${this.state.postsPerPage}&offset=${offset}`
 
-      // console.log('offset loadMorePosts', offset);
-      // console.log('load more offset', apiLink);
-
       fetch(apiLink)
         .then( response => {
           return(response.json());
         })
         .then( json => {
-          // console.log('load more json', json);
           if (this.state.isFiltered) {
             this.setState( (state) => ({
               filteredProjects: json,

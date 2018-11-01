@@ -82,7 +82,6 @@ class CardList extends React.Component {
             return baseLink;
           }
         }
-         console.log('buildAPILink url', baseLink);
       }
       baseLink += `&per_page=${this.state.postsPerPage}`
       return baseLink;
@@ -147,7 +146,6 @@ class CardList extends React.Component {
 
     //Handle Location Filter
     handleLocationChange(id) {
-      console.log('handleLocationChange', id);
       if (id === 'Location') {
         id = ''
       }
@@ -174,7 +172,6 @@ class CardList extends React.Component {
     loadMorePosts() {
       //need to fetch the next amount of posts and add them
       let apiLink = this.buildAPILink();
-      console.log('loadmore api link start', apiLink);
       let offset = 0;
       if (this.state.isFiltered) {
         offset = this.state.filteredPosts.length;
@@ -182,7 +179,6 @@ class CardList extends React.Component {
         offset = this.state.currentPage * this.state.postsPerPage;
       }
       apiLink += `&offset=${offset}`;
-      console.log('loadmore api link offset', apiLink);
 
       fetch(apiLink)
         .then( response => {
@@ -279,7 +275,6 @@ class CardList extends React.Component {
                         </button>;
         }
       }
-
       return(
         <div className="news-posts-container">
           <FilterBar
