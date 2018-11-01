@@ -26,7 +26,7 @@ class TableList extends React.Component {
         loading: true,
         currentPage: 0,//ReactPaginate is 0 indexed, so this is 0 for inital load
         projects: [],
-        postsPerPage: 2,
+        postsPerPage: 10,
         market_categories: [],
         service_categories: [],
         isFiltered: false,
