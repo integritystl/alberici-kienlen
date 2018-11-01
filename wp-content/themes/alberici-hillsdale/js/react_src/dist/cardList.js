@@ -444,7 +444,7 @@ module.exports = warning;
 
 var _prodInvariant = __webpack_require__(2);
 
-var DOMProperty = __webpack_require__(13);
+var DOMProperty = __webpack_require__(14);
 var ReactDOMComponentFlags = __webpack_require__(57);
 
 var invariant = __webpack_require__(1);
@@ -1782,6 +1782,16 @@ module.exports = emptyFunction;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+
+
+module.exports = __webpack_require__(21);
+
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
 /* WEBPACK VAR INJECTION */(function(process) {/**
  * Copyright (c) 2013-present, Facebook, Inc.
  *
@@ -1989,16 +1999,6 @@ var DOMProperty = {
 
 module.exports = DOMProperty;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
-
-/***/ }),
-/* 14 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-module.exports = __webpack_require__(21);
-
 
 /***/ }),
 /* 15 */
@@ -7021,7 +7021,7 @@ module.exports = PooledClass.addPoolingTo(CallbackQueue);
 
 
 
-var DOMProperty = __webpack_require__(13);
+var DOMProperty = __webpack_require__(14);
 var ReactDOMComponentTree = __webpack_require__(4);
 var ReactInstrumentation = __webpack_require__(8);
 
@@ -7744,7 +7744,7 @@ module.exports = ReactInputSelection;
 var _prodInvariant = __webpack_require__(2);
 
 var DOMLazyTree = __webpack_require__(19);
-var DOMProperty = __webpack_require__(13);
+var DOMProperty = __webpack_require__(14);
 var React = __webpack_require__(21);
 var ReactBrowserEventEmitter = __webpack_require__(28);
 var ReactCurrentOwner = __webpack_require__(10);
@@ -10940,7 +10940,7 @@ module.exports = function(isValidElement, throwOnDirectAccess) {
 "use strict";
 
 
-var _react = __webpack_require__(14);
+var _react = __webpack_require__(13);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -11011,7 +11011,7 @@ module.exports = Select;
 "use strict";
 
 
-var _react = __webpack_require__(14);
+var _react = __webpack_require__(13);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -11299,17 +11299,35 @@ function resetFilter() {
     secondarySelect.value = 'Location';
   }
 
-  this.setState({
-    isFiltered: false,
-    filteredPosts: [],
-    filteredMarket: '',
-    filteredService: '',
-    filteredLocation: '',
-    hasSearchTerm: false,
-    searchTerm: ''
-  }, function () {
-    return _this5.getPosts(_this5.buildAPILink());
-  });
+  //Change the state based on the Page Template
+  if (this.state.projects) {
+    console.log('projects reset');
+    this.setState({
+      isFiltered: false,
+      filteredProjects: [],
+      filteredMarket: '',
+      filteredService: '',
+      hasSearchTerm: false,
+      searchTerm: '',
+      totalProjects: parseInt(wpObj.totalProjects.publish)
+    }, function () {
+      return _this5.getPosts(_this5.buildAPILink());
+    });
+  } else {
+    // It's CardListView
+    this.setState({
+      isFiltered: false,
+      filteredPosts: [],
+      filteredMarket: '',
+      filteredService: '',
+      filteredLocation: '',
+      hasSearchTerm: false,
+      searchTerm: '',
+      totalPosts: parseInt(document.getElementById('cardList_app').getAttribute('data-total'))
+    }, function () {
+      return _this5.getPosts(_this5.buildAPILink());
+    });
+  }
 }
 
 function removeFilterTerm(currentTermId) {
@@ -12880,7 +12898,7 @@ module.exports = FallbackCompositionState;
 
 
 
-var DOMProperty = __webpack_require__(13);
+var DOMProperty = __webpack_require__(14);
 
 var MUST_USE_PROPERTY = DOMProperty.injection.MUST_USE_PROPERTY;
 var HAS_BOOLEAN_VALUE = DOMProperty.injection.HAS_BOOLEAN_VALUE;
@@ -14336,7 +14354,7 @@ var AutoFocusUtils = __webpack_require__(96);
 var CSSPropertyOperations = __webpack_require__(98);
 var DOMLazyTree = __webpack_require__(19);
 var DOMNamespaces = __webpack_require__(36);
-var DOMProperty = __webpack_require__(13);
+var DOMProperty = __webpack_require__(14);
 var DOMPropertyOperations = __webpack_require__(56);
 var EventPluginHub = __webpack_require__(23);
 var EventPluginRegistry = __webpack_require__(27);
@@ -15794,7 +15812,7 @@ module.exports = ReactDOMInput;
 
 
 
-var DOMProperty = __webpack_require__(13);
+var DOMProperty = __webpack_require__(14);
 var ReactComponentTreeHook = __webpack_require__(7);
 
 var warning = __webpack_require__(3);
@@ -16749,7 +16767,7 @@ module.exports = {
 
 
 
-var DOMProperty = __webpack_require__(13);
+var DOMProperty = __webpack_require__(14);
 var EventPluginRegistry = __webpack_require__(27);
 var ReactComponentTreeHook = __webpack_require__(7);
 
@@ -17643,7 +17661,7 @@ module.exports = ReactHostOperationHistoryHook;
 
 
 
-var DOMProperty = __webpack_require__(13);
+var DOMProperty = __webpack_require__(14);
 var EventPluginHub = __webpack_require__(23);
 var EventPluginUtils = __webpack_require__(37);
 var ReactComponentEnvironment = __webpack_require__(40);
@@ -23461,7 +23479,7 @@ module.exports = factory;
 "use strict";
 
 
-var _react = __webpack_require__(14);
+var _react = __webpack_require__(13);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -23509,7 +23527,7 @@ var CardList = function (_React$Component) {
       loading: true,
       currentPage: 1,
       posts: [],
-      postsPerPage: 6,
+      postsPerPage: 2,
       postDataType: document.getElementById('cardList_app').getAttribute('data-post'),
       market_categories: [],
       service_categories: [],
@@ -23568,8 +23586,9 @@ var CardList = function (_React$Component) {
         } else {
           return baseLink;
         }
+        baseLink += '&per_page=' + this.state.postsPerPage;
       }
-      console.log(baseLink);
+      // console.log(baseLink);
     }
     return baseLink;
   };
@@ -23612,12 +23631,9 @@ var CardList = function (_React$Component) {
 
   CardList.prototype.setFilterCats = function setFilterCats() {
     var filterDataType = document.getElementById('cardList_app').getAttribute('data-filter');
-    console.log('set filter cats', filterDataType);
     if (filterDataType === 'service') {
-      console.log('check filter service');
       this.getServiceCats();
     } else {
-      console.log('filter is location?');
       this.getLocationCats();
     }
   };
@@ -23684,11 +23700,10 @@ var CardList = function (_React$Component) {
     //need to fetch the next amount of posts and add them
     //getPosts loads the page and uses postsPerPage
     var apiLink = this.buildAPILink();
-
+    console.log('loadmore api link', apiLink);
     var offset = 0;
     if (this.state.isFiltered) {
       offset = this.state.filteredPosts.length;
-      //TODO add in some stuff here Lindsay
     } else {
       offset = this.state.currentPage * this.state.postsPerPage;
       apiLink += '&offset=' + offset;
@@ -23696,13 +23711,11 @@ var CardList = function (_React$Component) {
         return response.json();
       }).then(function (json) {
         var currentPosts = _this7.state.posts;
-        //when i put this into this.setState, it breaks, what do?
         Array.prototype.push.apply(currentPosts, json);
         //increment our Current Page
         _this7.setState(function (state) {
           return {
             currentPage: state.currentPage + 1,
-            //posts: Array.prototype.push.apply(currentPosts, json), //need to jam in new json here
             loading: false
           };
         });
@@ -23826,7 +23839,7 @@ module.exports = CardList;
 "use strict";
 
 
-var _react = __webpack_require__(14);
+var _react = __webpack_require__(13);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -23867,7 +23880,7 @@ new AppInitializer().run();
 "use strict";
 
 
-var _react = __webpack_require__(14);
+var _react = __webpack_require__(13);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -23926,7 +23939,7 @@ module.exports = Card;
 "use strict";
 
 
-var _react = __webpack_require__(14);
+var _react = __webpack_require__(13);
 
 var _react2 = _interopRequireDefault(_react);
 

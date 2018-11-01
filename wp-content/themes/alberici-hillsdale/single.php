@@ -11,9 +11,18 @@ get_header();
 ?>
 
 <main id="main" class="site-main">
-	<div class="container">
-		<div id="primary" class="content-area">
-			<p class="breadcrumb"><a class="arrow-link left-arrow" href="<?php echo get_permalink( get_option( 'page_for_posts' ) ); ?>">Back to News</a></p>
+	<div class="news-detail container">
+		<div id="primary" class="content-area news-content">
+		<nav class="breadcrumbs container" aria-label="Breadcrumb navigation">
+			<?php
+			if ( function_exists('yoast_breadcrumb') ) {
+				yoast_breadcrumb( '
+				<p id="breadcrumbs">','</p>
+				' );
+			}
+			?>
+		</nav>
+			
 			<?php
 			if ( have_posts() ) :
 				/* Start the Loop */
@@ -40,13 +49,10 @@ get_header();
 		</div><!-- #primary -->
 
 		<aside id="secondary" class="sidebar-area" role="complementary">
-			<?php include(locate_template('template-parts/share-menu.php')); ?>
-			<div class="news news-latest-3">
-				<div class="container">
-					<p class="headline-lines"><span>Related Articles</span></p>
-					<?php get_template_part( 'template-parts/widget', 'latest-posts' ); ?>
-					<!-- <a href="<?php //echo get_permalink('259'); ?>" class="button all-news">View All News</a> -->
-				</div>
+			<?php //include(locate_template('template-parts/share-menu.php')); ?>
+			<div class="news-latest-3">
+				<h3>Related Articles</h3>
+				<?php get_template_part( 'template-parts/widget', 'latest-posts' ); ?>
 			</div>
 		</aside>
 	</div>
