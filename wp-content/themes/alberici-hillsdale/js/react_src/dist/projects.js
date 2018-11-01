@@ -11087,7 +11087,7 @@ var FilterBar = function (_React$Component) {
           { className: 'select' },
           _react2.default.createElement(
             'label',
-            { className: 'screen-reader-text' },
+            { className: 'screen-reader-text', htmlFor: 'filterbar-select-service' },
             'Service'
           ),
           _react2.default.createElement(_filterSelect2.default, { label: 'Service',
@@ -11104,7 +11104,7 @@ var FilterBar = function (_React$Component) {
         { className: 'select' },
         _react2.default.createElement(
           'label',
-          { className: 'screen-reader-text' },
+          { className: 'screen-reader-text', htmlFor: 'filterbar-select-location' },
           'Location'
         ),
         _react2.default.createElement(_filterSelect2.default, { label: 'Location',
@@ -11161,7 +11161,7 @@ var FilterBar = function (_React$Component) {
       { className: 'filterbar' },
       _react2.default.createElement(
         'label',
-        { className: 'screen-reader-text' },
+        { className: 'screen-reader-text', htmlFor: 'filterbar-search' },
         'Search'
       ),
       _react2.default.createElement('input', { id: 'filterbar-search',
@@ -11176,7 +11176,7 @@ var FilterBar = function (_React$Component) {
         { className: 'select' },
         _react2.default.createElement(
           'label',
-          { className: 'screen-reader-text' },
+          { className: 'screen-reader-text', htmlFor: 'filterbar-select-market' },
           'Market'
         ),
         _react2.default.createElement(_filterSelect2.default, { label: 'Market',

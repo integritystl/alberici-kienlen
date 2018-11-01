@@ -11087,7 +11087,7 @@ var FilterBar = function (_React$Component) {
           { className: 'select' },
           _react2.default.createElement(
             'label',
-            { className: 'screen-reader-text' },
+            { className: 'screen-reader-text', htmlFor: 'filterbar-select-service' },
             'Service'
           ),
           _react2.default.createElement(_filterSelect2.default, { label: 'Service',
@@ -11104,7 +11104,7 @@ var FilterBar = function (_React$Component) {
         { className: 'select' },
         _react2.default.createElement(
           'label',
-          { className: 'screen-reader-text' },
+          { className: 'screen-reader-text', htmlFor: 'filterbar-select-location' },
           'Location'
         ),
         _react2.default.createElement(_filterSelect2.default, { label: 'Location',
@@ -11161,7 +11161,7 @@ var FilterBar = function (_React$Component) {
       { className: 'filterbar' },
       _react2.default.createElement(
         'label',
-        { className: 'screen-reader-text' },
+        { className: 'screen-reader-text', htmlFor: 'filterbar-search' },
         'Search'
       ),
       _react2.default.createElement('input', { id: 'filterbar-search',
@@ -11176,7 +11176,7 @@ var FilterBar = function (_React$Component) {
         { className: 'select' },
         _react2.default.createElement(
           'label',
-          { className: 'screen-reader-text' },
+          { className: 'screen-reader-text', htmlFor: 'filterbar-select-market' },
           'Market'
         ),
         _react2.default.createElement(_filterSelect2.default, { label: 'Market',
@@ -23921,7 +23921,8 @@ var Card = function (_React$Component) {
       _react2.default.createElement("img", {
         src: this.props.image,
         srcSet: this.props.imageSrcset,
-        sizes: "(max-width: 600px) 100vw, 600px" }),
+        sizes: "(max-width: 600px) 100vw, 600px",
+        alt: this.props.imgAlt }),
       _react2.default.createElement(
         "a",
         { href: this.props.link },
@@ -23993,6 +23994,7 @@ var CardGroup = function (_React$Component) {
       postComponents = this.props.posts.map(function (item, index) {
         var imageSrc = '';
         var imageSrcSet = '';
+        var imageAlt = '';
         var serviceName = [];
         var marketName = [];
         var locationName = [];
@@ -24001,6 +24003,7 @@ var CardGroup = function (_React$Component) {
           //Media Paths to help with srcSets
           var imageSrcSetMed = item._embedded['wp:featuredmedia'][0].media_details.sizes.medium;
           var imageSrcSetBlog = item._embedded['wp:featuredmedia'][0].media_details.sizes.blog_image;
+          imageAlt = item._embedded['wp:featuredmedia'][0].alt_text;
 
           //use the custom Blog size as our img src fallback
           imageSrc = imageSrcSetBlog.source_url;
@@ -24041,6 +24044,7 @@ var CardGroup = function (_React$Component) {
           id: item.id,
           image: imageSrc,
           imageSrcset: imageSrcSet,
+          imgAlt: imageAlt,
           title: item.title.rendered,
           market: item.market_category,
           service: item.service_category,
