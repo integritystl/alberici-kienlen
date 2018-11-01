@@ -11105,9 +11105,9 @@ var FilterBar = function (_React$Component) {
         _react2.default.createElement(
           'label',
           { className: 'screen-reader-text' },
-          'Locations'
+          'Location'
         ),
-        _react2.default.createElement(_filterSelect2.default, { label: 'Locations',
+        _react2.default.createElement(_filterSelect2.default, { label: 'Location',
           selectID: 'filterbar-select-location',
           options: this.props.locations,
           onFilterChange: this.filterLocations
@@ -11301,7 +11301,6 @@ function resetFilter() {
 
   //Change the state based on the Page Template
   if (this.state.projects) {
-    console.log('projects reset');
     this.setState({
       isFiltered: false,
       filteredProjects: [],
@@ -23527,7 +23526,7 @@ var CardList = function (_React$Component) {
       loading: true,
       currentPage: 1,
       posts: [],
-      postsPerPage: 2,
+      postsPerPage: 6,
       postDataType: document.getElementById('cardList_app').getAttribute('data-post'),
       market_categories: [],
       service_categories: [],
@@ -23586,10 +23585,9 @@ var CardList = function (_React$Component) {
         } else {
           return baseLink;
         }
-        baseLink += '&per_page=' + this.state.postsPerPage;
       }
-      // console.log(baseLink);
     }
+    baseLink += '&per_page=' + this.state.postsPerPage;
     return baseLink;
   };
   //Get All Posts
@@ -23598,7 +23596,6 @@ var CardList = function (_React$Component) {
   CardList.prototype.getPosts = function getPosts(apiLink) {
     var _this2 = this;
 
-    apiLink += '&per_page=' + this.state.postsPerPage;
     //Gotta pass Basic Auth for the prompt from WP Engine
     //Ref: https://stackoverflow.com/questions/30203044/using-an-authorization-header-with-fetch-in-react-native
     fetch(apiLink, {
@@ -23617,6 +23614,10 @@ var CardList = function (_React$Component) {
     var _this3 = this;
 
     fetch(apiLink).then(function (response) {
+      _this3.setState({
+        // WP API gives the Total Page Count in the Headers, of all places :\
+        totalPosts: parseInt(response.headers.get('X-WP-Total'))
+      });
       return response.json();
     }).then(function (json) {
       _this3.setState({
@@ -23660,7 +23661,6 @@ var CardList = function (_React$Component) {
   CardList.prototype.handleLocationChange = function handleLocationChange(id) {
     var _this5 = this;
 
-    console.log('handleLocationChange', id);
     if (id === 'Location') {
       id = '';
     }
@@ -23698,29 +23698,33 @@ var CardList = function (_React$Component) {
     var _this7 = this;
 
     //need to fetch the next amount of posts and add them
-    //getPosts loads the page and uses postsPerPage
     var apiLink = this.buildAPILink();
-    console.log('loadmore api link', apiLink);
     var offset = 0;
     if (this.state.isFiltered) {
       offset = this.state.filteredPosts.length;
     } else {
       offset = this.state.currentPage * this.state.postsPerPage;
-      apiLink += '&offset=' + offset;
-      fetch(apiLink).then(function (response) {
-        return response.json();
-      }).then(function (json) {
-        var currentPosts = _this7.state.posts;
-        Array.prototype.push.apply(currentPosts, json);
-        //increment our Current Page
-        _this7.setState(function (state) {
-          return {
-            currentPage: state.currentPage + 1,
-            loading: false
-          };
-        });
-      });
     }
+    apiLink += '&offset=' + offset;
+
+    fetch(apiLink).then(function (response) {
+      return response.json();
+    }).then(function (json) {
+      var currentPosts = '';
+      if (_this7.state.isFiltered) {
+        currentPosts = _this7.state.filteredPosts;
+      } else {
+        currentPosts = _this7.state.posts;
+      }
+      Array.prototype.push.apply(currentPosts, json);
+      //increment our Current Page
+      _this7.setState(function (state) {
+        return {
+          currentPage: state.currentPage + 1,
+          loading: false
+        };
+      });
+    });
   };
 
   CardList.prototype.render = function render() {
@@ -23764,7 +23768,9 @@ var CardList = function (_React$Component) {
       if (allPostsOffset < this.state.totalPosts && this.state.totalPosts % this.state.postsPerPage != 0) {
         loadMoreBtn = _react2.default.createElement(
           'button',
-          { onClick: this.loadMorePosts.bind(this), className: 'btn-load-more' },
+          {
+            onClick: this.loadMorePosts.bind(this),
+            className: 'btn-load-more' },
           loadMoreLabel
         );
       }
@@ -23788,16 +23794,21 @@ var CardList = function (_React$Component) {
       if (this.state.market_categories && this.state.filteredMarket) {
         filteredMarketName = this.getCatName(this.state.filteredMarket, this.state.market_categories);
       }
-
       //Get the names of filtered markets for display purposes
       if (this.state.location_categories && this.state.filteredLocation) {
         filteredLocationName = this.getCatName(this.state.filteredLocation, this.state.location_categories);
       }
-    } else if (filterPosts === 0 && this.state.isFiltered === true) {
-      postGroup = 'No results';
-      loadMoreBtn = '';
+      //Load More for Filtered Posts
+      if (allPostsOffset < this.state.totalPosts && this.state.totalPosts % this.state.postsPerPage != 0) {
+        loadMoreBtn = _react2.default.createElement(
+          'button',
+          {
+            onClick: this.loadMorePosts.bind(this),
+            className: 'btn-load-more' },
+          loadMoreLabel
+        );
+      }
     }
-
     return _react2.default.createElement(
       'div',
       { className: 'news-posts-container' },
@@ -23902,8 +23913,6 @@ var Card = function (_React$Component) {
   }
 
   Card.prototype.render = function render() {
-    //  console.log('card props', this.props);
-
 
     return _react2.default.createElement(
       "article",
@@ -24049,7 +24058,7 @@ var CardGroup = function (_React$Component) {
         _react2.default.createElement(
           'h3',
           null,
-          'Sorry, no posts.'
+          'No results found.'
         )
       );
     }
