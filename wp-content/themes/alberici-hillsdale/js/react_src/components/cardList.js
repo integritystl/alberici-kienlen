@@ -278,9 +278,6 @@ class CardList extends React.Component {
                             {loadMoreLabel}
                         </button>;
         }
-      } else if (filterPosts === 0 && this.state.isFiltered === true) {
-        postGroup = 'No results';
-        loadMoreBtn = '';
       }
 
       return(

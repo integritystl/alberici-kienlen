@@ -11105,7 +11105,7 @@ var FilterBar = function (_React$Component) {
         _react2.default.createElement(
           'label',
           { className: 'screen-reader-text' },
-          'Locations'
+          'Location'
         ),
         _react2.default.createElement(_filterSelect2.default, { label: 'Locations',
           selectID: 'filterbar-select-location',
@@ -23813,9 +23813,6 @@ var CardList = function (_React$Component) {
           loadMoreLabel
         );
       }
-    } else if (filterPosts === 0 && this.state.isFiltered === true) {
-      postGroup = 'No results';
-      loadMoreBtn = '';
     }
 
     return _react2.default.createElement(
@@ -24069,7 +24066,7 @@ var CardGroup = function (_React$Component) {
         _react2.default.createElement(
           'h3',
           null,
-          'Sorry, no posts.'
+          'No results found.'
         )
       );
     }

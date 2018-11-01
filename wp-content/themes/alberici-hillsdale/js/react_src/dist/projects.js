@@ -11105,7 +11105,7 @@ var FilterBar = function (_React$Component) {
         _react2.default.createElement(
           'label',
           { className: 'screen-reader-text' },
-          'Locations'
+          'Location'
         ),
         _react2.default.createElement(_filterSelect2.default, { label: 'Locations',
           selectID: 'filterbar-select-location',
@@ -23734,9 +23734,6 @@ var TableList = function (_React$Component) {
       if (this.state.market_categories && this.state.filteredMarket) {
         filteredMarketName = this.getCatName(this.state.filteredMarket, this.state.market_categories);
       }
-    } else if (filterPosts === 0 && this.state.isFiltered === true) {
-      postGroup = 'No results';
-      loadMoreBtn = '';
     }
 
     //Pagination
@@ -23945,7 +23942,11 @@ var Table = function (_React$Component) {
       results = _react2.default.createElement(
         'div',
         { className: 'no-results' },
-        'No projects available.'
+        _react2.default.createElement(
+          'h3',
+          null,
+          'No projects found.'
+        )
       );
     }
 

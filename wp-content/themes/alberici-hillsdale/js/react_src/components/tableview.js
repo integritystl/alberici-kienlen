@@ -204,9 +204,6 @@ class TableList extends React.Component {
       if (this.state.market_categories && this.state.filteredMarket) {
         filteredMarketName = this.getCatName(this.state.filteredMarket, this.state.market_categories);
       }
-    } else if (filterPosts === 0 && this.state.isFiltered === true) {
-      postGroup = 'No results';
-      loadMoreBtn = '';
     }
 
     //Pagination
