@@ -139,7 +139,6 @@ class TableList extends React.Component {
         })
         .then( json => {
           // console.log('load more json', json);
-          let currentPosts = this.state.projects;
           if (this.state.isFiltered) {
             this.setState( (state) => ({
               filteredProjects: json,

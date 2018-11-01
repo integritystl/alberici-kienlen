@@ -23663,7 +23663,6 @@ var TableList = function (_React$Component) {
       return response.json();
     }).then(function (json) {
       // console.log('load more json', json);
-      var currentPosts = _this6.state.projects;
       if (_this6.state.isFiltered) {
         _this6.setState(function (state) {
           return {

@@ -24,7 +24,7 @@ class CardList extends React.Component {
         loading: true,
         currentPage: 1,
         posts: [],
-        postsPerPage: 2,
+        postsPerPage: 6,
         postDataType: document.getElementById('cardList_app').getAttribute('data-post'),
         market_categories: [],
         service_categories: [],
@@ -81,15 +81,14 @@ class CardList extends React.Component {
           } else {
             return baseLink;
           }
-          baseLink += `&per_page=${this.state.postsPerPage}`
         }
-        // console.log(baseLink);
+         console.log('buildAPILink url', baseLink);
       }
+      baseLink += `&per_page=${this.state.postsPerPage}`
       return baseLink;
     }
     //Get All Posts
     getPosts(apiLink){
-      apiLink += `&per_page=${this.state.postsPerPage}`
       //Gotta pass Basic Auth for the prompt from WP Engine
       //Ref: https://stackoverflow.com/questions/30203044/using-an-authorization-header-with-fetch-in-react-native
       fetch(apiLink, {
@@ -109,6 +108,10 @@ class CardList extends React.Component {
     getFilteredPosts(apiLink) {
       fetch(apiLink)
         .then( response => {
+          this.setState({
+            // WP API gives the Total Page Count in the Headers, of all places :\
+            totalPosts: parseInt( response.headers.get('X-WP-Total') )
+          })
           return(response.json());
         }).then(json => {
           this.setState({
@@ -170,29 +173,35 @@ class CardList extends React.Component {
     //Load More functionality
     loadMorePosts() {
       //need to fetch the next amount of posts and add them
-      //getPosts loads the page and uses postsPerPage
       let apiLink = this.buildAPILink();
-      console.log('loadmore api link', apiLink);
+      console.log('loadmore api link start', apiLink);
       let offset = 0;
       if (this.state.isFiltered) {
         offset = this.state.filteredPosts.length;
       } else {
         offset = this.state.currentPage * this.state.postsPerPage;
-        apiLink += `&offset=${offset}`;
-        fetch(apiLink)
-          .then( response => {
-            return(response.json());
-          })
-          .then( json => {
-            let currentPosts = this.state.posts;
-            Array.prototype.push.apply(currentPosts, json);
-            //increment our Current Page
-            this.setState( (state) => ({
-              currentPage: state.currentPage + 1,
-              loading: false,
-            }));
-          })
       }
+      apiLink += `&offset=${offset}`;
+      console.log('loadmore api link offset', apiLink);
+
+      fetch(apiLink)
+        .then( response => {
+          return(response.json());
+        })
+        .then( json => {
+          let currentPosts = '';
+          if (this.state.isFiltered) {
+            currentPosts = this.state.filteredPosts;
+          } else {
+            currentPosts = this.state.posts;
+          }
+          Array.prototype.push.apply(currentPosts, json);
+          //increment our Current Page
+          this.setState( (state) => ({
+            currentPage: state.currentPage + 1,
+            loading: false,
+          }));
+        })
     }
 
 
@@ -231,7 +240,11 @@ class CardList extends React.Component {
                       getCatName = {this.getCatName}
                       />
         if ( allPostsOffset < this.state.totalPosts && this.state.totalPosts % this.state.postsPerPage != 0) {
-          loadMoreBtn = <button onClick={this.loadMorePosts.bind(this)}  className="btn-load-more">{loadMoreLabel}</button>;
+          loadMoreBtn = <button
+                          onClick={this.loadMorePosts.bind(this)}
+                          className="btn-load-more">
+                            {loadMoreLabel}
+                        </button>;
         }
       } else if ( filterPosts && this.state.isFiltered === true ) {
         postGroup = <CardGroup
@@ -253,12 +266,18 @@ class CardList extends React.Component {
         if (this.state.market_categories && this.state.filteredMarket) {
           filteredMarketName = this.getCatName(this.state.filteredMarket, this.state.market_categories);
         }
-
         //Get the names of filtered markets for display purposes
         if (this.state.location_categories && this.state.filteredLocation) {
           filteredLocationName = this.getCatName(this.state.filteredLocation, this.state.location_categories);
         }
-
+        //Load More for Filtered Posts
+        if ( allPostsOffset < this.state.totalPosts && this.state.totalPosts % this.state.postsPerPage != 0) {
+          loadMoreBtn = <button
+                          onClick={this.loadMorePosts.bind(this)}
+                          className="btn-load-more">
+                            {loadMoreLabel}
+                        </button>;
+        }
       } else if (filterPosts === 0 && this.state.isFiltered === true) {
         postGroup = 'No results';
         loadMoreBtn = '';
