@@ -51,7 +51,9 @@ class FilterBar extends React.Component {
       if (this.props.services) {
         secondarySelect =
           <div className="select">
-            <label className="screen-reader-text">Service</label>
+            <label className="screen-reader-text" htmlFor="filterbar-select-service">
+              Service
+            </label>
             <Select label="Service"
               selectID= "filterbar-select-service"
               options={this.props.services}
@@ -63,7 +65,9 @@ class FilterBar extends React.Component {
       //It must be locations
       secondarySelect =
         <div className="select">
-          <label className="screen-reader-text">Location</label>
+          <label className="screen-reader-text" htmlFor="filterbar-select-location">
+            Location
+          </label>
           <Select label="Location"
             selectID= "filterbar-select-location"
             options={this.props.locations}
@@ -89,7 +93,9 @@ class FilterBar extends React.Component {
 
     return(
       <div className="filterbar">
-        <label className="screen-reader-text">Search</label>
+        <label className="screen-reader-text" htmlFor="filterbar-search">
+          Search
+        </label>
         <input id="filterbar-search"
           type="search"
           placeholder="Search by keywords"
@@ -97,7 +103,9 @@ class FilterBar extends React.Component {
         />
 
         <div className="select">
-          <label className="screen-reader-text">Market</label>
+          <label className="screen-reader-text" htmlFor="filterbar-select-market">
+            Market
+          </label>
           <Select label="Market"
             selectID= "filterbar-select-market"
             options={this.props.markets}
