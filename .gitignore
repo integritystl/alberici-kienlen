@@ -43,6 +43,7 @@ sitemap.xml.gz
 s/*
 wp-content/plugins/psn-pagespeed-ninja/admin/sessions/*
 wp-content/plugins/psn-pagespeed-ninja/ress/cache/*
+wp-content/plugins/psn-pagespeed-ninja/cache/*
 
 !wp-content/themes/alberici-hillsdale/index.php
 
