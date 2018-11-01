@@ -63,8 +63,8 @@ class FilterBar extends React.Component {
       //It must be locations
       secondarySelect =
         <div className="select">
-          <label className="screen-reader-text">Locations</label>
-          <Select label="Locations"
+          <label className="screen-reader-text">Location</label>
+          <Select label="Location"
             selectID= "filterbar-select-location"
             options={this.props.locations}
             onFilterChange={this.filterLocations}

@@ -2,8 +2,6 @@ import React from 'react';
 
 class Card extends React.Component {
   render() {
-  //  console.log('card props', this.props);
-
 
     return(
       <article className="card-post card-news post">

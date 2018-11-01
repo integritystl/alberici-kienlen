@@ -85,6 +85,10 @@
       }
     }
   }
+  //Also used in Card Group
+  .no-results {
+    text-align: center;
+  }
 }
 
 .blog-content_posts {
@@ -150,5 +154,10 @@
     h3 {
       font-size: 28px;
     }
+  }
+
+  //When there's posts returned
+  .no-results {
+    grid-column: 3 / span 8;
   }
 }
