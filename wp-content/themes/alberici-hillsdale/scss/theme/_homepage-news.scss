@@ -1,3 +1,4 @@
+
 .news {
     background: $medium-blue;
     padding-top: 45px;
@@ -26,7 +27,7 @@
                     margin-top:36px;
                 }
             }
-        
+
             a {
                 @extend .inverse-link;
                 position: relative;
@@ -67,7 +68,7 @@
                         max-width: 300px;
                     }
                 }
-            }            
+            }
         }
     }
     .btn-secondary {
