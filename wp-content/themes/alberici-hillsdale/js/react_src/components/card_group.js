@@ -21,6 +21,7 @@ class CardGroup extends React.Component {
       postComponents = this.props.posts.map((item, index) => {
         let imageSrc = '';
         let imageSrcSet = '';
+        let imageAlt = '';
         let serviceName = [];
         let marketName = [];
         let locationName = [];
@@ -29,6 +30,7 @@ class CardGroup extends React.Component {
           //Media Paths to help with srcSets
           let imageSrcSetMed = item._embedded['wp:featuredmedia'][0].media_details.sizes.medium;
           let imageSrcSetBlog = item._embedded['wp:featuredmedia'][0].media_details.sizes.blog_image;
+          imageAlt = item._embedded['wp:featuredmedia'][0].alt_text;
 
            //use the custom Blog size as our img src fallback
           imageSrc = imageSrcSetBlog.source_url;
@@ -69,6 +71,7 @@ class CardGroup extends React.Component {
                   id={item.id}
                   image={imageSrc}
                   imageSrcset={imageSrcSet}
+                  imgAlt={imageAlt}
                   title={item.title.rendered}
                   market={item.market_category}
                   service={item.service_category}
@@ -83,7 +86,7 @@ class CardGroup extends React.Component {
     } else {
       postComponents = (
         <div className="no-results">
-          <h3>Sorry, no posts.</h3>
+          <h3>No results found.</h3>
         </div>
       );
     }

@@ -71,7 +71,6 @@ export function resetFilter(){
 
   //Change the state based on the Page Template
   if (this.state.projects) {
-    console.log('projects reset')
     this.setState({
       isFiltered: false,
       filteredProjects: [],

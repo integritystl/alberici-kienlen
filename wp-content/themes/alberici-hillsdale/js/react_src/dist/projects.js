@@ -10795,7 +10795,7 @@ var FilterBar = function (_React$Component) {
           { className: 'select' },
           _react2.default.createElement(
             'label',
-            { className: 'screen-reader-text' },
+            { className: 'screen-reader-text', htmlFor: 'filterbar-select-service' },
             'Service'
           ),
           _react2.default.createElement(_filterSelect2.default, { label: 'Service',
@@ -10812,10 +10812,10 @@ var FilterBar = function (_React$Component) {
         { className: 'select' },
         _react2.default.createElement(
           'label',
-          { className: 'screen-reader-text' },
-          'Locations'
+          { className: 'screen-reader-text', htmlFor: 'filterbar-select-location' },
+          'Location'
         ),
-        _react2.default.createElement(_filterSelect2.default, { label: 'Locations',
+        _react2.default.createElement(_filterSelect2.default, { label: 'Location',
           selectID: 'filterbar-select-location',
           options: this.props.locations,
           onFilterChange: this.filterLocations
@@ -10869,7 +10869,7 @@ var FilterBar = function (_React$Component) {
       { className: 'filterbar' },
       _react2.default.createElement(
         'label',
-        { className: 'screen-reader-text' },
+        { className: 'screen-reader-text', htmlFor: 'filterbar-search' },
         'Search'
       ),
       _react2.default.createElement('input', { id: 'filterbar-search',
@@ -10884,7 +10884,7 @@ var FilterBar = function (_React$Component) {
         { className: 'select' },
         _react2.default.createElement(
           'label',
-          { className: 'screen-reader-text' },
+          { className: 'screen-reader-text', htmlFor: 'filterbar-select-market' },
           'Market'
         ),
         _react2.default.createElement(_filterSelect2.default, { label: 'Market',
@@ -11009,7 +11009,6 @@ function resetFilter() {
 
   //Change the state based on the Page Template
   if (this.state.projects) {
-    console.log('projects reset');
     this.setState({
       isFiltered: false,
       filteredProjects: [],
@@ -23184,7 +23183,6 @@ var TableList = function (_React$Component) {
       }
       baseLink += '&per_page=' + this.state.postsPerPage;
     }
-    // console.log('buildAPILink url', baseLink);
     return baseLink;
   };
 
@@ -23267,14 +23265,9 @@ var TableList = function (_React$Component) {
     var apiLink = this.buildAPILink();
     apiLink += '&per_page=' + this.state.postsPerPage + '&offset=' + offset;
 
-    // console.log('offset loadMorePosts', offset);
-    // console.log('load more offset', apiLink);
-
     fetch(apiLink).then(function (response) {
       return response.json();
     }).then(function (json) {
-      // console.log('load more json', json);
-      var currentPosts = _this6.state.projects;
       if (_this6.state.isFiltered) {
         _this6.setState(function (state) {
           return {
@@ -23346,9 +23339,6 @@ var TableList = function (_React$Component) {
       if (this.state.market_categories && this.state.filteredMarket) {
         filteredMarketName = this.getCatName(this.state.filteredMarket, this.state.market_categories);
       }
-    } else if (filterPosts === 0 && this.state.isFiltered === true) {
-      postGroup = 'No results';
-      loadMoreBtn = '';
     }
 
     //Pagination
@@ -23557,7 +23547,11 @@ var Table = function (_React$Component) {
       results = _react2.default.createElement(
         'div',
         { className: 'no-results' },
-        'No projects available.'
+        _react2.default.createElement(
+          'h3',
+          null,
+          'No projects found.'
+        )
       );
     }
 

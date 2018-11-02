@@ -75,7 +75,9 @@ class Table extends React.Component {
 
 
     } else {
-      results = <div className="no-results">No projects available.</div>
+      results = <div className="no-results">
+          <h3>No projects found.</h3>
+        </div>
     }
 
 
