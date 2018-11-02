@@ -23305,6 +23305,9 @@ var TableList = function (_React$Component) {
     var totalResults = this.state.totalProjects;
     var displayNumber = ''; //This should be a count of current Visible Posts
 
+    var pagination = '';
+    var pageInfo = '';
+
     if (this.state.loading) {
       postGroup = _react2.default.createElement(
         'div',
@@ -23340,10 +23343,8 @@ var TableList = function (_React$Component) {
         filteredMarketName = this.getCatName(this.state.filteredMarket, this.state.market_categories);
       }
     }
-
     //Pagination
-    var pagination = '';
-    if (!this.state.loading) {
+    if (!this.state.loading && totalResults !== 0) {
 
       pagination = _react2.default.createElement(_reactPaginate2.default, { previousLabel: "previous",
         nextLabel: "next",
@@ -23360,6 +23361,28 @@ var TableList = function (_React$Component) {
         containerClassName: "pagination",
         subContainerClassName: "pages pagination",
         activeClassName: "active" });
+
+      pageInfo = _react2.default.createElement(
+        'div',
+        { className: 'table-projects-results' },
+        _react2.default.createElement(
+          'div',
+          { className: 'table-project-results--current' },
+          'Page ',
+          currentPageDisplay,
+          ' of ',
+          pageCount
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'table-project-results--total' },
+          ' ',
+          displayNumber,
+          ' of ',
+          totalResults,
+          ' Total Results'
+        )
+      );
     }
 
     return _react2.default.createElement(
@@ -23389,27 +23412,7 @@ var TableList = function (_React$Component) {
           { className: 'table-projects-pagination' },
           pagination
         ),
-        _react2.default.createElement(
-          'div',
-          { className: 'table-projects-results' },
-          _react2.default.createElement(
-            'div',
-            { className: 'table-project-results--current' },
-            'Page ',
-            currentPageDisplay,
-            ' of ',
-            pageCount
-          ),
-          _react2.default.createElement(
-            'div',
-            { className: 'table-project-results--total' },
-            ' ',
-            displayNumber,
-            ' of ',
-            totalResults,
-            ' Total Results'
-          )
-        )
+        pageInfo
       )
     );
   };
