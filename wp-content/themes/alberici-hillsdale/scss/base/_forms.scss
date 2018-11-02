@@ -83,7 +83,8 @@ textarea {
   width: 100%;
 }
 
-.select {
+.select,
+.ginput_container_select  {
   position: relative;
   select {
     margin-bottom: $small-spacing;
@@ -91,11 +92,11 @@ textarea {
     -webkit-appearance: none;
     appearance: none;
     background-color: transparent;
-    border: $base-border;
+    border: 1px solid #d6d6d6;
     border-radius: $base-border-radius;
     box-sizing: border-box;
     margin-bottom: $small-spacing;
-    padding: 14px 10px;
+    padding: 12px 0 12px 30px;
     transition: border-color $base-duration $base-timing;
     width: 100%;
     letter-spacing: .5px;
@@ -114,8 +115,6 @@ textarea {
   }
 }
 
-
-
 [type="checkbox"],
 [type="radio"],
 [type="file"],
@@ -130,4 +129,36 @@ select {
     box-shadow: $_form-box-shadow-focus;
     outline: none;
   }
+}
+
+.validation_error {
+  font-weight: 500;
+  color: $red;
+  margin-bottom: 10px;
+}
+
+.validation_message {
+  font-size: 12px;
+  margin-top: -5px;
+  color: $red;
+  font-style: italic;
+}
+
+.instruction {
+  margin-bottom: 5px;
+}
+
+.gfield_error {
+  input,
+  select,
+  textarea {
+    border: 1px solid $red;
+    background-color: rgba($red, .05);
+  }
+}
+
+
+.contact-people .gform_wrapper,
+.job-callout .gform_wrapper {
+  max-width: 435px;
 }
