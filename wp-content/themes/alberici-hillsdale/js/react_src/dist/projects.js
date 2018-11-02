@@ -23732,9 +23732,8 @@ var TableList = function (_React$Component) {
         filteredMarketName = this.getCatName(this.state.filteredMarket, this.state.market_categories);
       }
     }
-    console.log('filteredPosted', filterPosts.length);
     //Pagination
-    if (!this.state.loading) {
+    if (!this.state.loading && totalResults !== 0) {
 
       pagination = _react2.default.createElement(_reactPaginate2.default, { previousLabel: "previous",
         nextLabel: "next",
