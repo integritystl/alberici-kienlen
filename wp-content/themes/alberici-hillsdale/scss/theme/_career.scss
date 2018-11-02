@@ -36,24 +36,24 @@
                 input {
                     padding: 12px 0 12px 30px;
                 }
-                select {
-                    -webkit-appearance: none; 
-                    -moz-appearance: none;
-                    padding: 12px 0 12px 30px;
-                    border-radius: 0;
-                    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.06);
-                    background-color: transparent;
-                    border: 1px solid #f2f2f2;
-                    color: rgb(129, 129, 129);
-                    &:hover {
-                        border-color: #c2c2c2;
-                    }
-                    &:focus {
-                        border-color: #526079;
-                        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.06), 0 0 5px rgba(82, 96, 121, 0.7);
-                        outline: none;
-                    }
-                }
+                // select {
+                //     -webkit-appearance: none;
+                //     -moz-appearance: none;
+                //     padding: 12px 0 12px 30px;
+                //     border-radius: 0;
+                //     box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.06);
+                //     background-color: transparent;
+                //     border: 1px solid #f2f2f2;
+                //     color: rgb(129, 129, 129);
+                //     &:hover {
+                //         border-color: #c2c2c2;
+                //     }
+                //     &:focus {
+                //         border-color: #526079;
+                //         box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.06), 0 0 5px rgba(82, 96, 121, 0.7);
+                //         outline: none;
+                //     }
+                // }
             }
         }
     }

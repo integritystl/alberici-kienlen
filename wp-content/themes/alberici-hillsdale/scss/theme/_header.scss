@@ -27,14 +27,21 @@
             font-size: 12px;
             margin-left: 30px;
             font-weight: 300;
+            &.current-menu-item {
+              a {
+                opacity: .8;
+                color: white!important;
+              }
+            }
             a {
               @extend .inverse-link;
               position: relative;
               text-transform: uppercase;
               @include grid-media($headerMenu-min) {
                 &:hover {
-                  opacity: 1;
-                  color: $medium-gray;
+                  opacity: .8;
+                  color: white;
+                  //color: $medium-gray;
                 }
               }
               &:before {
@@ -56,7 +63,7 @@
     }
 
     .main-header {
-        background: $overlay;
+        background: rgba(#383838, 0.8);
         padding-top: 12px;
         padding-bottom: 12px;
         transition: all $base-duration $base-timing;

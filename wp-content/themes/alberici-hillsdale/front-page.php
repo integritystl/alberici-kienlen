@@ -47,7 +47,7 @@ $HeroButtonLink = get_field('homepage_hero_button_link');
 			endif;
 		?>
 
-
+		<?php if ( $theme_config === 'kienlen') { ?>
 			<!-- News Section for Kienlen -->
 			<?php $the_query = new WP_Query( 'posts_per_page=3' ); ?>
 			<?php if ( $the_query -> have_posts() ): ?>
@@ -87,6 +87,7 @@ $HeroButtonLink = get_field('homepage_hero_button_link');
 				</div>
 			</div>
 			<?php endif; ?>
+		<?php } ?>
 		</main><!-- #main -->
 	</div><!-- #primary -->
 

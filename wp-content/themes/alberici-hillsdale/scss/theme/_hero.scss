@@ -1,11 +1,19 @@
 .hero-image {
+  display: block;
   min-height: 300px;
   background-size: cover;
   background-repeat: no-repeat;
-  @extend .grid-container;
-  grid-template-rows: 75% 25%;
   margin-top: -75px;
   background-color: $dark-blue;
+  overflow: hidden;
+
+  @include grid-media($medium-min) {
+    display: grid;
+    grid-gap: 20px;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: 77% 23%;
+    max-height: 650px;
+  }
 
   > .container {
     grid-column: span 12;
@@ -17,11 +25,11 @@
     grid-row-start: 1;
     grid-row-end: 1;
     text-align: center;
-    padding: 150px 0 90px;
+    padding: 140px 0 60px;
     margin: 0;
     color: white;
     @include grid-media($medium-min) {
-      padding: 240px 0 160px;
+      padding: 200px 0 150px;
     }
   }
   .hero-content {
@@ -67,7 +75,7 @@
   margin-top: -68px;
   display: flex;
   align-items: center;
-  background-position: 50% 70%; 
+  background-position: 50% 70%;
   @include grid-media($medium-min) {
     min-height:450px;
   }
