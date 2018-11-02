@@ -168,6 +168,9 @@ class TableList extends React.Component {
     let totalResults = this.state.totalProjects;
     let displayNumber = ''; //This should be a count of current Visible Posts
 
+    let pagination = '';
+    let pageInfo = '';
+
     if (this.state.loading) {
       postGroup = <div className="loading-spinner">Loading...</div>;
     } else if (allPosts && this.state.isFiltered === false) {
@@ -200,9 +203,8 @@ class TableList extends React.Component {
         filteredMarketName = this.getCatName(this.state.filteredMarket, this.state.market_categories);
       }
     }
-
+    console.log('filteredPosted',filterPosts.length)
     //Pagination
-    let pagination = '';
     if (!this.state.loading) {
 
       pagination =  <ReactPaginate previousLabel={"previous"}
@@ -216,6 +218,11 @@ class TableList extends React.Component {
                        containerClassName={"pagination"}
                        subContainerClassName={"pages pagination"}
                        activeClassName={"active"} />
+
+      pageInfo = <div className="table-projects-results">
+                  <div className="table-project-results--current">Page {currentPageDisplay} of {pageCount}</div>
+                  <div className="table-project-results--total"> {displayNumber} of {totalResults} Total Results</div>
+                </div>
 
     }
 
@@ -243,10 +250,8 @@ class TableList extends React.Component {
              {pagination}
           </div>
 
-          <div className="table-projects-results">
-            <div className="table-project-results--current">Page {currentPageDisplay} of {pageCount}</div>
-            <div className="table-project-results--total"> {displayNumber} of {totalResults} Total Results</div>
-          </div>
+          {pageInfo}
+
         </div>
       </div>
     );
