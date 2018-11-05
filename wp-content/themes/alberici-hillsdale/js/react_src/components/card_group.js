@@ -26,7 +26,9 @@ class CardGroup extends React.Component {
         let marketName = [];
         let locationName = [];
 
-        if (item._embedded['wp:featuredmedia']) {
+        //One of the featured images is giving this error: "code": "rest_forbidden"
+        //avoiding object that only has this "code" error message
+        if (item._embedded['wp:featuredmedia'] && !item._embedded['wp:featuredmedia'][0].code) {
           //Media Paths to help with srcSets
           let imageSrcSetMed = item._embedded['wp:featuredmedia'][0].media_details.sizes.medium;
           let imageSrcSetBlog = item._embedded['wp:featuredmedia'][0].media_details.sizes.blog_image;
