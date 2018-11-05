@@ -18,7 +18,9 @@
    z-index: 1;
    a {
      margin-top: 15px;
-     min-width: 100%;
+     max-width: 460px;
+     width: 100%;
+
    }
 
    @include grid-media($medium-min) {
@@ -26,10 +28,15 @@
      max-width: 460px;
      a {
        margin-top: 30px;
+
      }
    }
    @include grid-media($large-min) {
      flex-basis: 47%;
+   }
+   @include grid-media($large-extra) {
+     flex-basis: 75%;
+     max-width: 850px;
    }
  }
 

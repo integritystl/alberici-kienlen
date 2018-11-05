@@ -2,6 +2,7 @@
 $small: 650px;
 $medium: 800px;
 $large: 980px;
+$extraLarge: 1500px;
 
 //Menu-specific Breakpoints
 $headerMenu: 940px;
@@ -11,6 +12,7 @@ $headerMenu: 940px;
 $small-min: (columns: 12, gutter: 0, media: $small + 1);
 $medium-min: (columns: 12, gutter: 20px, media: $medium + 1);
 $large-min: (columns: 12, gutter: 20px, media: $large + 1);
+$large-extra: (columns: 12, gutter: 20px, media: $extraLarge + 1);
 $headerMenu-min: (columns: 12, gutter: 20px, media: $headerMenu + 1);
 
 //Define main areas with CSS grid
