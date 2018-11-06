@@ -4,7 +4,7 @@ footer {
   color: #fff;
   letter-spacing: 1px;
   a {
-    color: #fff;
+    @extend .inverse-link;
     text-decoration: none;
   }
 }
