@@ -71,7 +71,7 @@ class ACFOptionsPage {
 
 			acf_add_local_field_group(array(
 				'key' => 'group_5bca218e17c58',
-				'title' => 'Set to Kienlen',
+				'title' => 'Set Site Layout',
 				'fields' => array(
 					array(
 						'key' => 'field_5bca21976f78c',
@@ -116,7 +116,7 @@ class ACFOptionsPage {
 				'active' => 1,
 				'description' => '',
 			));
-			
+
 			endif;
 
 		if( function_exists('acf_add_local_field_group') ):
@@ -184,7 +184,7 @@ class ACFOptionsPage {
 				'active' => 1,
 				'description' => '',
 			));
-			
+
 			endif;
 
 
