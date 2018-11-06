@@ -7,7 +7,7 @@
 
 .news-posts-container, .projects-posts-container {
   @extend .container;
-
+  padding-bottom: 80px;
   .filterbar {
     @extend .grid-container;
     padding: 20px 0 0;
