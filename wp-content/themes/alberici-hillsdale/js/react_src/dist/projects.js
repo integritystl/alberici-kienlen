@@ -11379,7 +11379,10 @@ function getCatName(filteredCatId, categories) {
   var catObj = categories.filter(function (item) {
     return item.id === filteredCatId;
   });
-  var filteredCatName = catObj[0].name;
+  var filteredCatName = "";
+  if (catObj[0]) {
+    filteredCatName = catObj[0].name;
+  }
   return filteredCatName;
 }
 
