@@ -113,7 +113,7 @@
 }
 //For News List View
 .card-overlay {
-  background: rgba(56, 56, 56, 0.6);
+  background: $overlay;
   transition: all $base-duration $base-timing;
   z-index: 10;
   position: absolute;
@@ -136,11 +136,6 @@
       font-size: 13px;
       text-transform: uppercase;
       margin-bottom: 15px;
-
-      // span.card-post--market:after {
-      //   content: ', ';
-      // }
-      //
     }
     img {
       z-index: 0;
