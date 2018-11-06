@@ -138,6 +138,9 @@ export function getCatName(filteredCatId, categories){
   let catObj = categories.filter( (item) => {
     return item.id === filteredCatId;
   });
-  let filteredCatName = catObj[0].name;
+  let filteredCatName = "";
+  if(catObj[0]){
+    filteredCatName = catObj[0].name;
+  }
   return filteredCatName;
 }
