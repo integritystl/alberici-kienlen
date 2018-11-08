@@ -5,7 +5,7 @@
 //  @extend .grid-container;
 }
 
-.news-posts-container, .projects-posts-container {
+.news-posts-container, .projects-posts-container, .services-list{
   @extend .container;
   padding-bottom: 80px;
   .filterbar {
