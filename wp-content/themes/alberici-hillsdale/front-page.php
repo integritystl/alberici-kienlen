@@ -18,6 +18,7 @@ $HeroHeadline = get_field('homepage_hero_title');
 $HeroContent = get_field('homepage_hero_content');
 $HeroButtonText = get_field('homepage_hero_button_text');
 $HeroButtonLink = get_field('homepage_hero_button_link');
+$theme_config = get_field('set_site', 'options');
 ?>
 
 	<div id="primary" class="content-area">
