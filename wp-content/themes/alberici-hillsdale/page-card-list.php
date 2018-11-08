@@ -32,6 +32,8 @@ get_header();
 			}
 			?>
 			<div id="cardList_app" data-post="<?php echo $postData; ?>" data-filter="<?php echo $filterCat; ?>" data-total="<?php echo $totalPosts->publish; ?>"></div>
+
+			<?php get_template_part( 'template-parts/footer-callout' ); ?>
 	</div>
 </div>
 
