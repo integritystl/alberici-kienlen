@@ -53,7 +53,7 @@ $projectIntro = get_field('project_intro');
 							</div>
 						</div>
 					</div><!-- .single-project-hero -->
-					<nav class="breadcrumbs container" aria-label="Breadcrumb navigation">
+					<nav class="project-breadcrumbs container" aria-label="Breadcrumb navigation">
 						<?php
 						if ( function_exists('yoast_breadcrumb') ) {
 							yoast_breadcrumb( '
