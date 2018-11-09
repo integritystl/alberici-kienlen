@@ -259,6 +259,7 @@ function remove_menus(){
 add_action( 'admin_menu', 'remove_menus' );
 
 function remove_sub_menus(){
+  remove_submenu_page( 'themes.php', 'widgets.php' );    //Appearance - Widgets
 	remove_submenu_page('edit.php', 'edit-tags.php?taxonomy=post_tag');   //Posts - Tags
 	unregister_taxonomy_for_object_type( 'post_tag', 'post' );
 }
@@ -326,8 +327,8 @@ return $urls;
 add_action( 'widgets_init', 'theme_slug_widgets_init' );
 function theme_slug_widgets_init() {
     register_sidebar( array(
-        'name' => __( 'Main Sidebar', 'theme-slug' ),
-        'id' => 'sidebar-1',
+        'name' => __( 'Right Sidebar', 'theme-slug' ),
+        'id' => 'right-sidebar',
         'description' => __( 'Widgets in this area will be shown on all posts and pages.', 'theme-slug' ),
         'before_widget' => '<li id="%1$s" class="widget %2$s">',
 	'after_widget'  => '</li>',
