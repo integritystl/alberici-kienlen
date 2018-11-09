@@ -580,7 +580,7 @@ class ACFTemplateFields
 												'key' => 'field_5b71e9605ef5f',
 												'label' => 'Content',
 												'name' => 'content',
-												'type' => 'textarea',
+												'type' => 'wysiwyg',
 												'instructions' => '',
 												'required' => 0,
 												'conditional_logic' => 0,
