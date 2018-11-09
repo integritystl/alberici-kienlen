@@ -114,11 +114,11 @@
     }
 }
 
-.breadcrumbs {
+.project-breadcrumbs {
     margin-top: 10px;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     @include grid-media($medium-min) {
-      margin-top: 40px;
+      margin-top: 30px;
     }
 }
 
@@ -189,7 +189,6 @@
           margin: 0;
       }
       .service-list {
-        margin: 40px 0 50px;
           h3 {
               margin-bottom: 25px;
               text-align: center;
@@ -216,8 +215,7 @@
                 border: 1px solid $blue;
               }
               @include grid-media($medium-min) {
-                  display: inline-block;
-                  margin: 0 5px 20px 0;
+                  margin: 0 200px 25px 0;
                   white-space: nowrap;
               }
 
