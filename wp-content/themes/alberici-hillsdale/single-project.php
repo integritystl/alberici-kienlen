@@ -43,7 +43,7 @@ $projectIntro = get_field('project_intro');
 								<?php if( have_rows('project_metrics') ):
 									while ( have_rows('project_metrics') ) : the_row(); 
 										$info_title = get_sub_field('project_metric_label');
-										$info_content = get_sub_field('project_information_content'); ?>
+										$info_content = get_sub_field('project_metric'); ?>
 										<div class="project-info-metric">
 											<h5><?php echo $info_title; ?></h5>
 											<p class="project-client"><?php echo $info_content; ?></p>
@@ -53,7 +53,7 @@ $projectIntro = get_field('project_intro');
 							</div>
 						</div>
 					</div><!-- .single-project-hero -->
-					<nav class="breadcrumbs container" aria-label="Breadcrumb navigation">
+					<nav class="project-breadcrumbs breadcrumbs container" aria-label="Breadcrumb navigation">
 						<?php
 						if ( function_exists('yoast_breadcrumb') ) {
 							yoast_breadcrumb( '
@@ -80,6 +80,7 @@ $projectIntro = get_field('project_intro');
 
 						<div class="single-project-content">
 							<?php the_content(); ?>
+							<hr/>
 								<?php
 								if( have_rows('project_services') ): ?>
 									<div class="service-list">
