@@ -2,7 +2,9 @@ $_button-background-color: $primary-action-color;
 $_button-background-color-hover: shade($primary-action-color, 20%);
 
 #{$all-buttons},
-.btn {
+.btn,
+.gform_footer input[type="submit"]
+ {
   appearance: none;
   background-color: $_button-background-color;
   border: 0;
@@ -27,7 +29,7 @@ $_button-background-color-hover: shade($primary-action-color, 20%);
     min-width: 400px;
   }
 
-  &:after {
+  &:before {
     font-family: "Font Awesome 5 Pro";
   	font-weight: 300;
   	content:'\f061';

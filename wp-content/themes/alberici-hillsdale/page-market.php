@@ -29,26 +29,32 @@ get_header();
                 $market_callout_image = get_sub_field('market_callouts_image');
 
                 if ( $market_callout_post ) : ?>
+
                     <div class="market-item">
+											<a href="<?php the_permalink(); ?>">
+
                         <?php
-                        $size = 'thumbnail'; // (thumbnail, medium, large, full or custom size)
-                        if( $market_callout_image ) {
-                            echo wp_get_attachment_image( $market_callout_image, $size );
-                        }
+                        if( $market_callout_image ) { ?>
+													<div class="market-icon">
+												  	<?php	echo file_get_contents($market_callout_image); ?>
+													</div>
+                        <?php }
                         if( $market_callout_post ):
                             // override $post
                             $post = $market_callout_post;
                             setup_postdata( $post );
                             ?>
-                            <h3><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
+                            <h5><?php the_title(); ?></h5>
                             <?php wp_reset_postdata(); // IMPORTANT - reset the $post object so the rest of the page works correctly ?>
                         <?php endif;?>
+											</a>
                     </div>
+
                 <?php endif;
             endwhile; ?>
             </div>
         <?php endif;?>
-        
+
         <h2 class="headline-lines container"></h2>
 
         <h2 class="services-title container">Services</h2>
