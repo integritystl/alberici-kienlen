@@ -9,9 +9,6 @@
 
 get_header();
 $HeroImage = get_field('general_hero_featured_image');
-$client = get_field('project_client');
-$owner = get_field('project_owner');
-$project_size = get_field('project_size');
 $projectIntro = get_field('project_intro');
 ?>
 
@@ -43,28 +40,20 @@ $projectIntro = get_field('project_intro');
 						</div>
 						<div class="project-info">
 							<div class="container">
-							<?php if ($client) : ?>
-								<div class="project-info-metric">
-									<h5>Client</h5>
-									<p class="project-client"><?php echo $client; ?></p>
-								</div>
-							<?php endif; ?>
-							<?php if ($owner) : ?>
-								<div class="project-info-metric">
-									<h5>Owner</h5>
-									<p class="project-owner"><?php echo $owner; ?></p>
-								</div>
-							<?php endif; ?>
-							<?php if ($project_size) : ?>
-								<div class="project-info-metric">
-									<h5>Project Size</h5>
-									<p class="project-size"><?php echo $project_size; ?></p>
-								</div>
-							<?php endif; ?>
+								<?php if( have_rows('project_metrics') ):
+									while ( have_rows('project_metrics') ) : the_row(); 
+										$info_title = get_sub_field('project_metric_label');
+										$info_content = get_sub_field('project_information_content'); ?>
+										<div class="project-info-metric">
+											<h5><?php echo $info_title; ?></h5>
+											<p class="project-client"><?php echo $info_content; ?></p>
+										</div>
+									<?php endwhile;
+								endif; ?>
 							</div>
 						</div>
 					</div><!-- .single-project-hero -->
-					<nav class="project-breadcrumbs container" aria-label="Breadcrumb navigation">
+					<nav class="breadcrumbs container" aria-label="Breadcrumb navigation">
 						<?php
 						if ( function_exists('yoast_breadcrumb') ) {
 							yoast_breadcrumb( '
