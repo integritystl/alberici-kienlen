@@ -18,25 +18,16 @@ $HeroImage = get_field('general_hero_featured_image');
 				while ( have_posts() ) :
 					the_post();?>
 					<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
-					<div class="hero-area" style="background-image: url(<?php if ($HeroImage): echo $HeroImage; endif; ?>);">
-						<h1 class="entry-title"><?php the_title(); ?></h1>
-					</div><!-- .hero-area -->
-					<nav class="breadcrumbs container" aria-label="Breadcrumb navigation">
-						<?php
-						if ( function_exists('yoast_breadcrumb') ) {
-							yoast_breadcrumb( '
-							<p id="breadcrumbs">','</p>
-							' );
-						}
-						?>
-					</nav>
-					<div class="service-detail">
-						<?php alberici_hillsdale_post_thumbnail(); ?>
-						<div class="service-content">
-							<?php the_content(); ?>
-						</div>
-					</div><!-- .service-detail -->
-				</article><!-- #post-<?php the_ID(); ?> -->
+						
+						<?php get_template_part( 'template-parts/hero' );?>
+						
+						<div class="service-detail">
+							<?php alberici_hillsdale_post_thumbnail(); ?>
+							<div class="service-content">
+								<?php the_content(); ?>
+							</div>
+						</div><!-- .service-detail -->
+					</article><!-- #post-<?php the_ID(); ?> -->
 
 
 				<?php endwhile;
