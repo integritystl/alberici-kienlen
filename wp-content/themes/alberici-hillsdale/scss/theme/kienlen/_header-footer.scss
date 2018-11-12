@@ -33,7 +33,11 @@
             }
             a {
                 background-color: white;
-                color: black;
+                color: $dark-blue;
+                &:hover {
+                  background-color: $blue;
+                  color: white;
+                }
             }
         }
     }
