@@ -9,7 +9,7 @@
     }
 }
 .flex_fifty_fifty {
-    margin-top: 50px;
+    margin-top: 30px;
     p:nth-child(1) {
         margin-bottom: 30px;
         margin-top: 15px;
@@ -19,7 +19,7 @@
     }
 }
 .footer-callout {
-    margin-top: 50px;
+    margin-top: 30px;
     @include grid-media($medium-min) {
         margin-top: 70px;
     }

@@ -1,18 +1,15 @@
 .career-template {
-    .headline-lines {
-        margin-top: 62px;
-        margin-bottom: 0;
-    }
     .job-callout{
         display: block;
-        margin-top: 40px;
+        border-top: $base-border;
+        padding-top: 30px;
+
         @include grid-media($medium-min) {
             display: flex;
+              padding-top: 70px;
         }
         .callout-content {
-            h2 {
-                margin-bottom: 32px;
-            }
+        
             a {
                 text-transform: uppercase;
                 margin-top: 20px;

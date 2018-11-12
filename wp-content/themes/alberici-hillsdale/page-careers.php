@@ -17,7 +17,7 @@ $jobsCalloutgform = get_field('jobs_callout_careers_form');
 	<main id="main" class="site-main">
         <div class="career-template">
             <?php get_template_part( 'template-parts/hero' );?>
-        
+
             <?php if ( get_the_content() ) { ?>
                 <div class="career-content container">
                     <?php
@@ -36,7 +36,6 @@ $jobsCalloutgform = get_field('jobs_callout_careers_form');
                 </div>
                 <?php echo $jobsCalloutgform; ?>
             </div>
-            <h2 class="headline-lines container"></h2>
 
             <?php
                 if(have_rows('flexible_content', get_the_ID())):
@@ -49,10 +48,10 @@ $jobsCalloutgform = get_field('jobs_callout_careers_form');
             <?php get_template_part( 'template-parts/footer-callout' );?>
         </div>
 
-        
+
 	</main><!-- #main -->
 </div><!-- #primary -->
-    
+
 <?php
 
 get_footer();

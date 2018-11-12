@@ -37,9 +37,12 @@ h1 {
 }
 
 h2 {
-  font-size: 28px;
+  font-size: 24px;
   font-weight: 300;
   margin-bottom: 15px;
+  @include grid-media($medium-min) {
+    font-size: 28px;
+  }
 }
 
 
