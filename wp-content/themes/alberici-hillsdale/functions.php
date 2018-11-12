@@ -259,7 +259,6 @@ function remove_menus(){
 add_action( 'admin_menu', 'remove_menus' );
 
 function remove_sub_menus(){
-  remove_submenu_page( 'themes.php', 'widgets.php' );    //Appearance - Widgets
 	remove_submenu_page('edit.php', 'edit-tags.php?taxonomy=post_tag');   //Posts - Tags
 	unregister_taxonomy_for_object_type( 'post_tag', 'post' );
 }
