@@ -323,12 +323,12 @@ $urls = array_diff( $urls, array( $emoji_svg_url ) );
 return $urls;
 }
 
-add_action( 'widgets_init', 'theme_slug_widgets_init' );
-function theme_slug_widgets_init() {
+add_action( 'widgets_init', 'alberici_hillsdale_theme_widgets_init' );
+function alberici_hillsdale_theme_widgets_init() {
     register_sidebar( array(
-        'name' => __( 'Right Sidebar', 'theme-slug' ),
+        'name' => __( 'Right Sidebar', 'alberici_hillsdale_theme' ),
         'id' => 'right-sidebar',
-        'description' => __( 'Widgets in this area will be shown on all posts and pages.', 'theme-slug' ),
+        'description' => __( 'Widgets in this area will be shown on all posts and pages.', 'alberici_hillsdale_theme' ),
         'before_widget' => '<li id="%1$s" class="widget %2$s">',
 	'after_widget'  => '</li>',
 	'before_title'  => '<h2 class="widgettitle">',
