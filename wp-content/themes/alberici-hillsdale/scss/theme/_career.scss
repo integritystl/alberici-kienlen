@@ -27,12 +27,22 @@
             @include grid-media($medium-min) {
                 width: 90%;
             }
-            .gform_body ul li {
+            .gform_body ul li:not(.file) {
                 margin-bottom: 25px;
                 label {
                     @include hide-visually;
                 }
             }
+            .file {
+                margin-bottom: 25px;
+                label {
+                    font-weight: 500;
+                }
+            }
         }
+    }
+    .single_tile_content ul {
+        list-style-type: disc;
+        margin-left: 43px;
     }
 }
