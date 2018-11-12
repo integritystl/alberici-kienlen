@@ -44,7 +44,7 @@ get_header();
                             $post = $market_callout_post;
                             setup_postdata( $post );
                             ?>
-                            <h5><?php the_title(); ?></h5>
+                            <h3><?php the_title(); ?></h3>
                             <?php wp_reset_postdata(); // IMPORTANT - reset the $post object so the rest of the page works correctly ?>
                         <?php endif;?>
 											</a>
@@ -54,8 +54,6 @@ get_header();
             endwhile; ?>
             </div>
         <?php endif;?>
-
-        <h2 class="headline-lines container"></h2>
 
         <h2 class="services-title container">Services</h2>
         <?php

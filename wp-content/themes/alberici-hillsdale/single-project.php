@@ -81,7 +81,6 @@ $projectIntro = get_field('project_intro');
 
 						<div class="single-project-content">
 							<?php the_content(); ?>
-							<hr/>
 								<?php
 								if( have_rows('project_services') ): ?>
 									<div class="service-list">

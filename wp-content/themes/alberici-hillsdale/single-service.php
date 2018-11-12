@@ -3,7 +3,7 @@
  * The template for displaying single service
  *
  * @link https://developer.wordpress.org/themes/basics/template-hierarchy/#single-post
- * 
+ *
  * @package alberici-hillsdale
  */
 
@@ -15,7 +15,7 @@ $HeroImage = get_field('general_hero_featured_image');
 		<main id="main" class="site-main">
 			<?php
 			if ( have_posts() ) :
-				while ( have_posts() ) : 
+				while ( have_posts() ) :
 					the_post();?>
 					<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 					<div class="hero-area" style="background-image: url(<?php if ($HeroImage): echo $HeroImage; endif; ?>);">
@@ -37,7 +37,7 @@ $HeroImage = get_field('general_hero_featured_image');
 						</div>
 					</div><!-- .service-detail -->
 				</article><!-- #post-<?php the_ID(); ?> -->
-				
+
 
 				<?php endwhile;
 			else :
@@ -73,11 +73,10 @@ $HeroImage = get_field('general_hero_featured_image');
 				);
 				$latest_query = new WP_Query( $latest_args );
 
-			} 
+			}
 
 			if ( $latest_query->have_posts() ) : ?>
 				<div class="services services-latest-3 container">
-				<span class="headline-lines"></span>
 				<h2>Related Projects</h2>
 				<ul>
 				<?php while( $latest_query->have_posts() ) : $latest_query->the_post();
