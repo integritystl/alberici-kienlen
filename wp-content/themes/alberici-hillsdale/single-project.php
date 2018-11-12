@@ -41,7 +41,7 @@ $projectIntro = get_field('project_intro');
 						<div class="project-info">
 							<div class="container">
 								<?php if( have_rows('project_metrics') ):
-									while ( have_rows('project_metrics') ) : the_row(); 
+									while ( have_rows('project_metrics') ) : the_row();
 										$info_title = get_sub_field('project_metric_label');
 										$info_content = get_sub_field('project_metric'); ?>
 										<div class="project-info-metric">
@@ -52,6 +52,7 @@ $projectIntro = get_field('project_intro');
 								endif; ?>
 							</div>
 						</div>
+						<div class="hero-overlay"></div>
 					</div><!-- .single-project-hero -->
 					<nav class="project-breadcrumbs breadcrumbs container" aria-label="Breadcrumb navigation">
 						<?php
@@ -80,7 +81,6 @@ $projectIntro = get_field('project_intro');
 
 						<div class="single-project-content">
 							<?php the_content(); ?>
-							<hr/>
 								<?php
 								if( have_rows('project_services') ): ?>
 									<div class="service-list">

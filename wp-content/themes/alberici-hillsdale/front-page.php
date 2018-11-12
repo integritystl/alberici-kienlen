@@ -36,6 +36,7 @@ $theme_config = get_field('set_site', 'options');
 								<?php endif; ?>
 							</div>
 						</div>
+						<div class="hero-overlay"></div>
 
 				</div>
 			<?php endif; ?>
