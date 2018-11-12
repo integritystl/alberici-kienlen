@@ -195,7 +195,13 @@
           margin: 0;
       }
       .service-list {
-          padding-top: 50px;
+          margin-top: 30px;
+          padding-top: 30px;
+          border-top: $base-border;
+          @include grid-media($medium-min) {
+            margin-top: 50px;
+            padding-top: 50px;
+          }
           h3 {
               margin-bottom: 25px;
               text-align: center;
@@ -221,8 +227,11 @@
                 color: white;
                 border: 1px solid $blue;
               }
+              &:last-child {
+                margin-bottom: 40px;
+              }
               @include grid-media($medium-min) {
-                  margin: 0 200px 25px 0;
+                  margin: 0 200px 10px 0;
                   white-space: nowrap;
               }
 
