@@ -40,7 +40,7 @@
     }
 }
 .gform_wrapper {
-    .gform_body ul li {
+    .gform_body ul li:not(.file) {
         margin-bottom: 20px;
         .gfield_label {
             @include hide-visually;
