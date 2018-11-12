@@ -46,20 +46,22 @@
         @include grid-media($medium-min) {
             margin: 120px 0 0 70px;
         }
-        .share-menu {
-            margin-bottom: 30px;
-        }
         .news-latest-3 {
             span {
                 color: $blue;
             }
-            ul li {
-                line-height: 1.25;
-                margin: 20px 0;
-                a {
-                    text-decoration: none;
+            ul {
+                li {
+                    line-height: 1.25;
+                    margin: 20px 0;
+                    a {
+                        text-decoration: none;
+                    }
                 }
-            }
+                .widget {
+                    margin-bottom: 60px;
+                }
+            }                       
         }
     }
 }
