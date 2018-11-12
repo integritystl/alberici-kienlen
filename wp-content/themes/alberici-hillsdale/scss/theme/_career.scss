@@ -1,12 +1,12 @@
 .career-template {
     .job-callout{
         display: block;
-        border-top: $base-border;
-        padding-top: 30px;
+        border-bottom: $base-border;
+        padding: 30px 10px 50px 10px;
 
         @include grid-media($medium-min) {
             display: flex;
-              padding-top: 70px;
+              padding: 70px 0;
         }
         .callout-content {
         
