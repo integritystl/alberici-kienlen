@@ -61,6 +61,7 @@ $theme_config = get_field('set_site', 'options');
 						<li>
 							<div class="taxonomies">
 								<?php
+								$news_page_link = get_field('news_page_link', 'option');
 								$market_taxonomy = get_the_terms( get_the_ID(), 'market_category' );
 								$service_taxonomy = get_the_terms( get_the_ID(), 'service_category' );
 								if ($market_taxonomy) { ?>
@@ -85,7 +86,7 @@ $theme_config = get_field('set_site', 'options');
 					endwhile;
 					wp_reset_postdata(); ?>
 					</ul>
-					<a href="<?php echo get_permalink( get_option( 'page_for_posts' ) ); ?>" class="btn-secondary">View More News</a>
+					<a href="<?php echo $news_page_link; ?>" class="btn-secondary">View More News</a>
 				</div>
 			</div>
 			<?php endif; ?>
