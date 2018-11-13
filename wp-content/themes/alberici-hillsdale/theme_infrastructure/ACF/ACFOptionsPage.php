@@ -113,6 +113,55 @@ class ACFOptionsPage {
 		if( function_exists('acf_add_local_field_group') ):
 
 			acf_add_local_field_group(array(
+				'key' => 'group_5beb17061feef',
+				'title' => 'News Page Link',
+				'fields' => array(
+					array(
+						'key' => 'field_5beb1710c3dde',
+						'label' => 'Link',
+						'name' => 'news_page_link',
+						'type' => 'page_link',
+						'instructions' => '',
+						'required' => 0,
+						'conditional_logic' => 0,
+						'wrapper' => array(
+							'width' => '',
+							'class' => '',
+							'id' => '',
+						),
+						'post_type' => array(
+							0 => 'page',
+						),
+						'taxonomy' => '',
+						'allow_null' => 0,
+						'allow_archives' => 1,
+						'multiple' => 0,
+					),
+				),
+				'location' => array(
+					array(
+						array(
+							'param' => 'options_page',
+							'operator' => '==',
+							'value' => 'global-settings',
+						),
+					),
+				),
+				'menu_order' => 0,
+				'position' => 'normal',
+				'style' => 'default',
+				'label_placement' => 'top',
+				'instruction_placement' => 'label',
+				'hide_on_screen' => '',
+				'active' => 1,
+				'description' => '',
+			));
+			
+		endif;
+
+		if( function_exists('acf_add_local_field_group') ):
+
+			acf_add_local_field_group(array(
 				'key' => 'group_5bca218e17c58',
 				'title' => 'Set Site Layout',
 				'fields' => array(
