@@ -3,7 +3,7 @@ import React from 'react';
 
 import FilterBar from './filterbar.js'
 import CardGroup from './card_group.js'
-import {handleSearch, getMarketCats, getServiceCats, resetFilter, removeFilterTerm, checkFilterStatus, handleMarketChange, getCatName} from './helpers/helpers.js'
+import {siteConfig, handleSearch, getMarketCats, getServiceCats, resetFilter, removeFilterTerm, checkFilterStatus, handleMarketChange, getCatName} from './helpers/helpers.js'
 
 class CardList extends React.Component {
   constructor(props) {
@@ -17,6 +17,7 @@ class CardList extends React.Component {
     this.checkFilterStatus = checkFilterStatus.bind(this);
     this.handleMarketChange = handleMarketChange.bind(this);
     this.getCatName = getCatName.bind(this);
+    this.siteConfig = siteConfig.bind(this);
   }
 
   componentWillMount() {
@@ -36,6 +37,7 @@ class CardList extends React.Component {
         filteredLocation: '',
         hasSearchTerm: false,
         searchTerm: '',
+        siteConfig: '',
         totalPosts: parseInt( document.getElementById('cardList_app').getAttribute('data-total') ),
       })
     }
@@ -44,6 +46,7 @@ class CardList extends React.Component {
       this.getPosts(this.buildAPILink());
       this.getMarketCats();
       this.setFilterCats();
+      this.siteConfig();
     }
 
     //Fetch posts
@@ -83,6 +86,7 @@ class CardList extends React.Component {
           }
         }
       }
+      console.log('buildAPILink', baseLink);
       baseLink += `&per_page=${this.state.postsPerPage}`
       return baseLink;
     }
@@ -207,12 +211,17 @@ class CardList extends React.Component {
       let loadMoreLabel = '';
       let secondarySelect = '';
 
+      if (this.state.siteConfig === 'hillsdale') {
+        secondarySelect = 'location';
+      } else {
+        //Falls back to kienlen and its secondary select
+        secondarySelect = 'services';
+      }
+
       if (this.state.postDataType === 'news') {
         loadMoreLabel = 'View More Posts';
-        secondarySelect = 'services';
       } else {
         loadMoreLabel = 'View More Projects';
-        secondarySelect = 'location';
       }
 
       let allPosts = this.state.posts;

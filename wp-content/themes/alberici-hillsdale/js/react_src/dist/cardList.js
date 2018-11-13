@@ -11210,6 +11210,7 @@ module.exports = FilterBar;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.siteConfig = siteConfig;
 exports.handleSearch = handleSearch;
 exports.getMarketCats = getMarketCats;
 exports.handleMarketChange = handleMarketChange;
@@ -11219,6 +11220,15 @@ exports.removeFilterTerm = removeFilterTerm;
 exports.checkFilterStatus = checkFilterStatus;
 exports.getCatName = getCatName;
 //This houses shared functionality used between CardList and Table List
+
+//Site Config Option that determines if the site is Hillsdale or Kienlen
+function siteConfig() {
+  var currentSiteConfig = wpObj.site_config;
+  console.log('site config?', currentSiteConfig);
+  this.setState({
+    siteConfig: currentSiteConfig
+  });
+}
 
 //Search Input Filter
 function handleSearch(term) {
@@ -23521,6 +23531,7 @@ var CardList = function (_React$Component) {
     _this.checkFilterStatus = _helpers.checkFilterStatus.bind(_this);
     _this.handleMarketChange = _helpers.handleMarketChange.bind(_this);
     _this.getCatName = _helpers.getCatName.bind(_this);
+    _this.siteConfig = _helpers.siteConfig.bind(_this);
     return _this;
   }
 
@@ -23541,6 +23552,7 @@ var CardList = function (_React$Component) {
       filteredLocation: '',
       hasSearchTerm: false,
       searchTerm: '',
+      siteConfig: '',
       totalPosts: parseInt(document.getElementById('cardList_app').getAttribute('data-total'))
     });
   };
@@ -23549,6 +23561,7 @@ var CardList = function (_React$Component) {
     this.getPosts(this.buildAPILink());
     this.getMarketCats();
     this.setFilterCats();
+    this.siteConfig();
   };
 
   //Fetch posts
@@ -23590,6 +23603,7 @@ var CardList = function (_React$Component) {
         }
       }
     }
+    console.log('buildAPILink', baseLink);
     baseLink += '&per_page=' + this.state.postsPerPage;
     return baseLink;
   };
@@ -23736,12 +23750,17 @@ var CardList = function (_React$Component) {
     var loadMoreLabel = '';
     var secondarySelect = '';
 
+    if (this.state.siteConfig === 'hillsdale') {
+      secondarySelect = 'location';
+    } else {
+      //Falls back to kienlen and its secondary select
+      secondarySelect = 'services';
+    }
+
     if (this.state.postDataType === 'news') {
       loadMoreLabel = 'View More Posts';
-      secondarySelect = 'services';
     } else {
       loadMoreLabel = 'View More Projects';
-      secondarySelect = 'location';
     }
 
     var allPosts = this.state.posts;

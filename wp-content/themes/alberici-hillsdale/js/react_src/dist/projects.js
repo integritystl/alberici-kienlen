@@ -11210,6 +11210,7 @@ module.exports = FilterBar;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.siteConfig = siteConfig;
 exports.handleSearch = handleSearch;
 exports.getMarketCats = getMarketCats;
 exports.handleMarketChange = handleMarketChange;
@@ -11219,6 +11220,15 @@ exports.removeFilterTerm = removeFilterTerm;
 exports.checkFilterStatus = checkFilterStatus;
 exports.getCatName = getCatName;
 //This houses shared functionality used between CardList and Table List
+
+//Site Config Option that determines if the site is Hillsdale or Kienlen
+function siteConfig() {
+  var currentSiteConfig = wpObj.site_config;
+  console.log('site config?', currentSiteConfig);
+  this.setState({
+    siteConfig: currentSiteConfig
+  });
+}
 
 //Search Input Filter
 function handleSearch(term) {
@@ -23528,6 +23538,7 @@ var TableList = function (_React$Component) {
     _this.checkFilterStatus = _helpers.checkFilterStatus.bind(_this);
     _this.handleMarketChange = _helpers.handleMarketChange.bind(_this);
     _this.getCatName = _helpers.getCatName.bind(_this);
+    _this.siteConfig = _helpers.siteConfig.bind(_this);
     return _this;
   }
 
@@ -23545,6 +23556,7 @@ var TableList = function (_React$Component) {
       filteredService: '',
       hasSearchTerm: false,
       searchTerm: '',
+      siteConfig: '',
       totalProjects: parseInt(wpObj.totalProjects.publish)
     });
   };
@@ -23553,6 +23565,7 @@ var TableList = function (_React$Component) {
     this.getPosts(this.buildAPILink());
     this.getMarketCats();
     this.getServiceCats();
+    this.siteConfig();
   };
 
   //Fetch posts

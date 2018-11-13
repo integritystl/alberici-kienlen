@@ -218,7 +218,8 @@ function alberici_hillsdale_scripts() {
 				'projects_endpoint' => home_url('/wp-json/wp/v2/project?_embed'),
 				'marketCat_endpoint' => home_url('/wp-json/wp/v2/market_category'),
 				'serviceCat_endpoint' => home_url('/wp-json/wp/v2/service_category'),
-				'locationCat_endpoint' => home_url('/wp-json/wp/v2/location_category'), 
+				'locationCat_endpoint' => home_url('/wp-json/wp/v2/location_category'),
+				'site_config' => get_field('set_site', 'options')
 			));
 	}
 	if (is_page_template('page-projects.php')) {
@@ -230,6 +231,7 @@ function alberici_hillsdale_scripts() {
 					'serviceCat_endpoint' => home_url('/wp-json/wp/v2/service_category'),
 				'locationCat_endpoint' => home_url('/wp-json/wp/v2/location_category'),
 				'totalProjects' => wp_count_posts('project'),
+				'site_config' => get_field('set_site', 'options')
 			));
 	}
 }

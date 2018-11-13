@@ -1,5 +1,14 @@
 //This houses shared functionality used between CardList and Table List
 
+//Site Config Option that determines if the site is Hillsdale or Kienlen
+export function siteConfig(){
+  let currentSiteConfig = wpObj.site_config;
+  console.log('site config?', currentSiteConfig);
+  this.setState({
+    siteConfig: currentSiteConfig,
+  })
+}
+
 //Search Input Filter
 export function handleSearch(term) {
   this.setState({
