@@ -28,34 +28,32 @@ get_header();
                 $market_callout_post = get_sub_field('market_callouts_market');
                 $market_callout_image = get_sub_field('market_callouts_image');
 
-                if ( $market_callout_post ) : ?>
+                if ( $market_callout_post ) : 
+                    // override $post
+                    $post = $market_callout_post;
+                    setup_postdata( $post );?>
 
                     <div class="market-item">
-											<a href="<?php the_permalink(); ?>">
+                        <a href="<?php the_permalink(); ?>">
 
-                        <?php
-                        if( $market_callout_image ) { ?>
-													<div class="market-icon">
-												  	<?php
-														// Basic auth for locked WPEngine staging
-														$auth = base64_encode("demo:alberici");
-														$context = stream_context_create([
-														    "http" => [
-														        "header" => "Authorization: Basic $auth"
-														    ]
-														]);
-														echo file_get_contents($market_callout_image, false, $context); ?>
-													</div>
-                        <?php }
-                        if( $market_callout_post ):
-                            // override $post
-                            $post = $market_callout_post;
-                            setup_postdata( $post );
-                            ?>
-                            <h3><?php the_title(); ?></h3>
-                            <?php wp_reset_postdata(); // IMPORTANT - reset the $post object so the rest of the page works correctly ?>
-                        <?php endif;?>
-											</a>
+                            <?php
+                            if( $market_callout_image ) { ?>
+                                <div class="market-icon">
+                                <?php
+                                    // Basic auth for locked WPEngine staging
+                                    $auth = base64_encode("demo:alberici");
+                                    $context = stream_context_create([
+                                        "http" => [
+                                            "header" => "Authorization: Basic $auth"
+                                        ]
+                                    ]);
+                                    echo file_get_contents($market_callout_image, false, $context); ?>
+                                </div>
+                            <?php } ?>
+                                <h3><?php the_title(); ?></h3>
+                                <?php wp_reset_postdata(); ?>
+                            
+					    </a>
                     </div>
 
                 <?php endif;
