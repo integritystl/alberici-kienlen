@@ -444,7 +444,7 @@ module.exports = warning;
 
 var _prodInvariant = __webpack_require__(2);
 
-var DOMProperty = __webpack_require__(13);
+var DOMProperty = __webpack_require__(14);
 var ReactDOMComponentFlags = __webpack_require__(57);
 
 var invariant = __webpack_require__(1);
@@ -1782,6 +1782,16 @@ module.exports = emptyFunction;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+
+
+module.exports = __webpack_require__(21);
+
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
 /* WEBPACK VAR INJECTION */(function(process) {/**
  * Copyright (c) 2013-present, Facebook, Inc.
  *
@@ -1989,16 +1999,6 @@ var DOMProperty = {
 
 module.exports = DOMProperty;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
-
-/***/ }),
-/* 14 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-module.exports = __webpack_require__(21);
-
 
 /***/ }),
 /* 15 */
@@ -7021,7 +7021,7 @@ module.exports = PooledClass.addPoolingTo(CallbackQueue);
 
 
 
-var DOMProperty = __webpack_require__(13);
+var DOMProperty = __webpack_require__(14);
 var ReactDOMComponentTree = __webpack_require__(4);
 var ReactInstrumentation = __webpack_require__(8);
 
@@ -7744,7 +7744,7 @@ module.exports = ReactInputSelection;
 var _prodInvariant = __webpack_require__(2);
 
 var DOMLazyTree = __webpack_require__(19);
-var DOMProperty = __webpack_require__(13);
+var DOMProperty = __webpack_require__(14);
 var React = __webpack_require__(21);
 var ReactBrowserEventEmitter = __webpack_require__(28);
 var ReactCurrentOwner = __webpack_require__(10);
@@ -10940,7 +10940,7 @@ module.exports = function(isValidElement, throwOnDirectAccess) {
 "use strict";
 
 
-var _react = __webpack_require__(14);
+var _react = __webpack_require__(13);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -11011,7 +11011,7 @@ module.exports = Select;
 "use strict";
 
 
-var _react = __webpack_require__(14);
+var _react = __webpack_require__(13);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -11087,7 +11087,7 @@ var FilterBar = function (_React$Component) {
           { className: 'select' },
           _react2.default.createElement(
             'label',
-            { className: 'screen-reader-text' },
+            { className: 'screen-reader-text', htmlFor: 'filterbar-select-service' },
             'Service'
           ),
           _react2.default.createElement(_filterSelect2.default, { label: 'Service',
@@ -11104,10 +11104,10 @@ var FilterBar = function (_React$Component) {
         { className: 'select' },
         _react2.default.createElement(
           'label',
-          { className: 'screen-reader-text' },
-          'Locations'
+          { className: 'screen-reader-text', htmlFor: 'filterbar-select-location' },
+          'Location'
         ),
-        _react2.default.createElement(_filterSelect2.default, { label: 'Locations',
+        _react2.default.createElement(_filterSelect2.default, { label: 'Location',
           selectID: 'filterbar-select-location',
           options: this.props.locations,
           onFilterChange: this.filterLocations
@@ -11161,7 +11161,7 @@ var FilterBar = function (_React$Component) {
       { className: 'filterbar' },
       _react2.default.createElement(
         'label',
-        { className: 'screen-reader-text' },
+        { className: 'screen-reader-text', htmlFor: 'filterbar-search' },
         'Search'
       ),
       _react2.default.createElement('input', { id: 'filterbar-search',
@@ -11176,7 +11176,7 @@ var FilterBar = function (_React$Component) {
         { className: 'select' },
         _react2.default.createElement(
           'label',
-          { className: 'screen-reader-text' },
+          { className: 'screen-reader-text', htmlFor: 'filterbar-select-market' },
           'Market'
         ),
         _react2.default.createElement(_filterSelect2.default, { label: 'Market',
@@ -11210,6 +11210,7 @@ module.exports = FilterBar;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.siteConfig = siteConfig;
 exports.handleSearch = handleSearch;
 exports.getMarketCats = getMarketCats;
 exports.handleMarketChange = handleMarketChange;
@@ -11219,6 +11220,14 @@ exports.removeFilterTerm = removeFilterTerm;
 exports.checkFilterStatus = checkFilterStatus;
 exports.getCatName = getCatName;
 //This houses shared functionality used between CardList and Table List
+
+//Site Config Option that determines if the site is Hillsdale or Kienlen
+function siteConfig() {
+  var currentSiteConfig = wpObj.site_config;
+  this.setState({
+    siteConfig: currentSiteConfig
+  });
+}
 
 //Search Input Filter
 function handleSearch(term) {
@@ -11290,8 +11299,8 @@ function resetFilter() {
   searchInput.value = '';
   //I'm cheating :\
   marketSelect.value = 'Market';
-  //Table List View also uses 'Service', so check if we're using its state
-  if (this.state.postDataType === 'news' || this.state.projects) {
+  //If we're on Kienlen, use Service
+  if (this.state.siteConfig === 'kienlen') {
     secondarySelect = document.getElementById('filterbar-select-service');
     secondarySelect.value = 'Service';
   } else {
@@ -11299,17 +11308,34 @@ function resetFilter() {
     secondarySelect.value = 'Location';
   }
 
-  this.setState({
-    isFiltered: false,
-    filteredPosts: [],
-    filteredMarket: '',
-    filteredService: '',
-    filteredLocation: '',
-    hasSearchTerm: false,
-    searchTerm: ''
-  }, function () {
-    return _this5.getPosts(_this5.buildAPILink());
-  });
+  //Change the state based on the Page Template
+  if (this.state.projects) {
+    this.setState({
+      isFiltered: false,
+      filteredProjects: [],
+      filteredMarket: '',
+      filteredService: '',
+      hasSearchTerm: false,
+      searchTerm: '',
+      totalProjects: parseInt(wpObj.totalProjects.publish)
+    }, function () {
+      return _this5.getPosts(_this5.buildAPILink());
+    });
+  } else {
+    // It's CardListView
+    this.setState({
+      isFiltered: false,
+      filteredPosts: [],
+      filteredMarket: '',
+      filteredService: '',
+      filteredLocation: '',
+      hasSearchTerm: false,
+      searchTerm: '',
+      totalPosts: parseInt(document.getElementById('cardList_app').getAttribute('data-total'))
+    }, function () {
+      return _this5.getPosts(_this5.buildAPILink());
+    });
+  }
 }
 
 function removeFilterTerm(currentTermId) {
@@ -11342,9 +11368,8 @@ function removeFilterTerm(currentTermId) {
 }
 
 function checkFilterStatus() {
-  //check which postDataType it is
   var secondaryFilter = '';
-  if (this.state.postDataType === 'news') {
+  if (this.state.siteConfig === 'kienlen') {
     secondaryFilter = !this.state.filteredService;
   } else {
     secondaryFilter = !this.state.filteredLocation;
@@ -11362,7 +11387,10 @@ function getCatName(filteredCatId, categories) {
   var catObj = categories.filter(function (item) {
     return item.id === filteredCatId;
   });
-  var filteredCatName = catObj[0].name;
+  var filteredCatName = "";
+  if (catObj[0]) {
+    filteredCatName = catObj[0].name;
+  }
   return filteredCatName;
 }
 
@@ -12880,7 +12908,7 @@ module.exports = FallbackCompositionState;
 
 
 
-var DOMProperty = __webpack_require__(13);
+var DOMProperty = __webpack_require__(14);
 
 var MUST_USE_PROPERTY = DOMProperty.injection.MUST_USE_PROPERTY;
 var HAS_BOOLEAN_VALUE = DOMProperty.injection.HAS_BOOLEAN_VALUE;
@@ -14336,7 +14364,7 @@ var AutoFocusUtils = __webpack_require__(96);
 var CSSPropertyOperations = __webpack_require__(98);
 var DOMLazyTree = __webpack_require__(19);
 var DOMNamespaces = __webpack_require__(36);
-var DOMProperty = __webpack_require__(13);
+var DOMProperty = __webpack_require__(14);
 var DOMPropertyOperations = __webpack_require__(56);
 var EventPluginHub = __webpack_require__(23);
 var EventPluginRegistry = __webpack_require__(27);
@@ -15794,7 +15822,7 @@ module.exports = ReactDOMInput;
 
 
 
-var DOMProperty = __webpack_require__(13);
+var DOMProperty = __webpack_require__(14);
 var ReactComponentTreeHook = __webpack_require__(7);
 
 var warning = __webpack_require__(3);
@@ -16749,7 +16777,7 @@ module.exports = {
 
 
 
-var DOMProperty = __webpack_require__(13);
+var DOMProperty = __webpack_require__(14);
 var EventPluginRegistry = __webpack_require__(27);
 var ReactComponentTreeHook = __webpack_require__(7);
 
@@ -17643,7 +17671,7 @@ module.exports = ReactHostOperationHistoryHook;
 
 
 
-var DOMProperty = __webpack_require__(13);
+var DOMProperty = __webpack_require__(14);
 var EventPluginHub = __webpack_require__(23);
 var EventPluginUtils = __webpack_require__(37);
 var ReactComponentEnvironment = __webpack_require__(40);
@@ -23462,13 +23490,13 @@ module.exports = factory;
 "use strict";
 
 
-var _react = __webpack_require__(14);
+var _react = __webpack_require__(13);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactPaginating = __webpack_require__(204);
+var _reactPaginate = __webpack_require__(206);
 
-var _reactPaginating2 = _interopRequireDefault(_reactPaginating);
+var _reactPaginate2 = _interopRequireDefault(_reactPaginate);
 
 var _helpers = __webpack_require__(92);
 
@@ -23508,15 +23536,16 @@ var TableList = function (_React$Component) {
     _this.checkFilterStatus = _helpers.checkFilterStatus.bind(_this);
     _this.handleMarketChange = _helpers.handleMarketChange.bind(_this);
     _this.getCatName = _helpers.getCatName.bind(_this);
+    _this.siteConfig = _helpers.siteConfig.bind(_this);
     return _this;
   }
 
   TableList.prototype.componentWillMount = function componentWillMount() {
     this.setState({
       loading: true,
-      currentPage: 1,
+      currentPage: 0, //ReactPaginate is 0 indexed, so this is 0 for inital load
       projects: [],
-      postsPerPage: 2,
+      postsPerPage: 10,
       market_categories: [],
       service_categories: [],
       isFiltered: false,
@@ -23525,6 +23554,7 @@ var TableList = function (_React$Component) {
       filteredService: '',
       hasSearchTerm: false,
       searchTerm: '',
+      siteConfig: '',
       totalProjects: parseInt(wpObj.totalProjects.publish)
     });
   };
@@ -23533,6 +23563,7 @@ var TableList = function (_React$Component) {
     this.getPosts(this.buildAPILink());
     this.getMarketCats();
     this.getServiceCats();
+    this.siteConfig();
   };
 
   //Fetch posts
@@ -23553,6 +23584,7 @@ var TableList = function (_React$Component) {
       } else {
         return baseLink;
       }
+      baseLink += '&per_page=' + this.state.postsPerPage;
     }
     return baseLink;
   };
@@ -23564,7 +23596,6 @@ var TableList = function (_React$Component) {
     var _this2 = this;
 
     apiLink += '&per_page=' + this.state.postsPerPage;
-    console.log(apiLink);
     //Gotta pass Basic Auth for the prompt from WP Engine
     //Ref: https://stackoverflow.com/questions/30203044/using-an-authorization-header-with-fetch-in-react-native
     fetch(apiLink, {
@@ -23583,6 +23614,10 @@ var TableList = function (_React$Component) {
     var _this3 = this;
 
     fetch(apiLink).then(function (response) {
+      _this3.setState({
+        // WP API gives the Total Page Count in the Headers, of all places :\
+        totalProjects: parseInt(response.headers.get('X-WP-Total'))
+      });
       return response.json();
     }).then(function (json) {
       _this3.setState({
@@ -23610,77 +23645,56 @@ var TableList = function (_React$Component) {
     });
   };
 
-  TableList.prototype.handlePageChange = function handlePageChange(page) {
+  //Works with React Paginate to pass info along
+
+
+  TableList.prototype.handlePageChange = function handlePageChange(pageData) {
     var _this5 = this;
 
-    console.log('handlePage');
+    var selected = pageData.selected;
+    var offset = Math.ceil(selected * this.state.postsPerPage);
     this.setState({
-      currentPage: page
+      currentPage: selected,
+      loading: true
     }, function () {
-      return _this5.loadMorePosts();
+      return _this5.loadMorePosts(offset);
     });
   };
 
   //Load More functionality
-  // TODO: Load more is pagination in this view, so will be different from CardList view
-  TableList.prototype.loadMorePosts = function loadMorePosts() {
+  TableList.prototype.loadMorePosts = function loadMorePosts(offset) {
     var _this6 = this;
 
-    //need to fetch the next amount of posts and add them
-    //getPosts loads the page and uses postsPerPage
     var apiLink = this.buildAPILink();
-    console.log('load more', apiLink);
-
-    var offset = this.state.currentPage * this.state.postsPerPage;
-    apiLink += '&offset=' + offset;
-    console.log('load more offset', apiLink);
+    apiLink += '&per_page=' + this.state.postsPerPage + '&offset=' + offset;
 
     fetch(apiLink).then(function (response) {
       return response.json();
     }).then(function (json) {
-      console.log(json);
-      var currentPosts = _this6.state.projects;
-      //when i put this into this.setState, it breaks, what do?
-      Array.prototype.push.apply(currentPosts, json);
-      //increment our Current Page
-      _this6.setState(function (state) {
-        return {
-          currentPage: state.currentPage + 1,
-          //posts: Array.prototype.push.apply(currentPosts, json), //need to jam in new json here
-          loading: false
-        };
-      });
+      if (_this6.state.isFiltered) {
+        _this6.setState(function (state) {
+          return {
+            filteredProjects: json,
+            loading: false
+          };
+        });
+      } else {
+        //NonFiltered Change
+        _this6.setState(function (state) {
+          return {
+            projects: json,
+            loading: false
+          };
+        });
+      }
     });
-
-    // let offset = 0;
-    // if (this.state.isFiltered) {
-    //   offset = this.state.filteredProjects.length;
-    //   //TODO add in some stuff here Lindsay
-    // } else {
-    //   offset = this.state.currentPage * this.state.postsPerPage;
-    //   apiLink += `&offset=${offset}`;
-    //   fetch(apiLink)
-    //     .then( response => {
-    //       return(response.json());
-    //     })
-    //     .then( json => {
-    //       let currentPosts = this.state.projects;
-    //       //when i put this into this.setState, it breaks, what do?
-    //       Array.prototype.push.apply(currentPosts, json);
-    //       //increment our Current Page
-    //       this.setState( (state) => ({
-    //         currentPage: state.currentPage + 1,
-    //         //posts: Array.prototype.push.apply(currentPosts, json), //need to jam in new json here
-    //         loading: false,
-    //       }));
-    //     })
-    // }
   };
 
   TableList.prototype.render = function render() {
     var postGroup = '';
     var loadMoreBtn = '';
     var loadMoreLabel = 'View More Projects';
+    var secondarySelect = '';
 
     var allPosts = this.state.projects;
     var filterPosts = this.state.filteredProjects;
@@ -23688,14 +23702,22 @@ var TableList = function (_React$Component) {
     var filteredServiceName = '';
     var filteredMarketName = '';
 
-    var currentPage = this.state.currentPage;
-    var allPostsOffset = currentPage * this.state.postsPerPage;
-    console.log('allposts offset', allPostsOffset);
-    // let maxPages = this.state.totalProjects / this.state.postsPerPage;
-    // console.log('max', Math.ceil(maxPages) );
+    if (this.state.siteConfig === 'hillsdale') {
+      secondarySelect = 'location';
+    } else {
+      //Falls back to kienlen and its secondary select
+      secondarySelect = 'services';
+    }
 
+    var currentPage = this.state.currentPage;
+    //to display the current page we're on + make up for 0 index of pagination
+    var currentPageDisplay = currentPage + 1;
+    var pageCount = Math.ceil(this.state.totalProjects / this.state.postsPerPage);
     var totalResults = this.state.totalProjects;
     var displayNumber = ''; //This should be a count of current Visible Posts
+
+    var pagination = '';
+    var pageInfo = '';
 
     if (this.state.loading) {
       postGroup = _react2.default.createElement(
@@ -23713,8 +23735,6 @@ var TableList = function (_React$Component) {
 
       displayNumber = postGroup.props.posts.length;
     } else if (filterPosts && this.state.isFiltered === true) {
-
-      totalResults = this.state.filteredProjects.length;
       postGroup = _react2.default.createElement(_table2.default, {
         posts: this.state.filteredProjects,
         markets: this.state.market_categories,
@@ -23724,6 +23744,7 @@ var TableList = function (_React$Component) {
         filteredMarket: this.state.filteredMarket
       });
       displayNumber = postGroup.props.posts.length;
+      pageCount = Math.ceil(totalResults / this.state.postsPerPage);
       //Get the names of filtered service categories for display purposes
       if (this.state.service_categories && this.state.filteredService) {
         filteredServiceName = this.getCatName(this.state.filteredService, this.state.service_categories);
@@ -23732,9 +23753,47 @@ var TableList = function (_React$Component) {
       if (this.state.market_categories && this.state.filteredMarket) {
         filteredMarketName = this.getCatName(this.state.filteredMarket, this.state.market_categories);
       }
-    } else if (filterPosts === 0 && this.state.isFiltered === true) {
-      postGroup = 'No results';
-      loadMoreBtn = '';
+    }
+    //Pagination
+    if (!this.state.loading && totalResults !== 0) {
+
+      pagination = _react2.default.createElement(_reactPaginate2.default, { previousLabel: "previous",
+        nextLabel: "next",
+        breakLabel: _react2.default.createElement(
+          'a',
+          { href: '' },
+          '...'
+        ),
+        breakClassName: "break-me",
+        pageCount: pageCount,
+        pageRangeDisplayed: 5,
+        forcePage: currentPage //changes the counter, not data
+        , onPageChange: this.handlePageChange.bind(this),
+        containerClassName: "pagination",
+        subContainerClassName: "pages pagination",
+        activeClassName: "active" });
+
+      pageInfo = _react2.default.createElement(
+        'div',
+        { className: 'table-projects-results' },
+        _react2.default.createElement(
+          'div',
+          { className: 'table-project-results--current' },
+          'Page ',
+          currentPageDisplay,
+          ' of ',
+          pageCount
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'table-project-results--total' },
+          ' ',
+          displayNumber,
+          ' of ',
+          totalResults,
+          ' Total Results'
+        )
+      );
     }
 
     return _react2.default.createElement(
@@ -23749,7 +23808,7 @@ var TableList = function (_React$Component) {
         serviceFilter: this.state.filteredService,
         serviceFilterName: filteredServiceName,
         serviceChange: this.handleServiceChange.bind(this),
-        secondarySelect: 'services',
+        secondarySelect: secondarySelect,
         isFiltered: this.state.isFiltered,
         filterSearch: this.handleSearch,
         resetFilter: this.resetFilter,
@@ -23760,43 +23819,11 @@ var TableList = function (_React$Component) {
         'div',
         { className: 'table-projects-info' },
         _react2.default.createElement(
-          'ul',
-          { className: 'table-projects-pagination' },
-          _react2.default.createElement(
-            'li',
-            null,
-            '1'
-          ),
-          _react2.default.createElement(
-            'li',
-            null,
-            '2'
-          ),
-          _react2.default.createElement(
-            'li',
-            null,
-            '3'
-          )
-        ),
-        _react2.default.createElement(
           'div',
-          { className: 'table-projects-results' },
-          _react2.default.createElement(
-            'div',
-            { className: 'table-project-results--current' },
-            'Page ',
-            currentPage
-          ),
-          _react2.default.createElement(
-            'div',
-            { className: 'table-project-results--total' },
-            ' ',
-            displayNumber,
-            ' of ',
-            totalResults,
-            ' Results'
-          )
-        )
+          { className: 'table-projects-pagination' },
+          pagination
+        ),
+        pageInfo
       )
     );
   };
@@ -23816,7 +23843,7 @@ module.exports = TableList;
 "use strict";
 
 
-var _react = __webpack_require__(14);
+var _react = __webpack_require__(13);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -23934,7 +23961,11 @@ var Table = function (_React$Component) {
       results = _react2.default.createElement(
         'div',
         { className: 'no-results' },
-        'No projects available.'
+        _react2.default.createElement(
+          'h3',
+          null,
+          'No projects found.'
+        )
       );
     }
 
@@ -23957,7 +23988,7 @@ module.exports = Table;
 "use strict";
 
 
-var _react = __webpack_require__(14);
+var _react = __webpack_require__(13);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -24014,7 +24045,7 @@ module.exports = TableItem;
 "use strict";
 
 
-var _react = __webpack_require__(14);
+var _react = __webpack_require__(13);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -24159,148 +24190,26 @@ if (process.env.NODE_ENV !== 'production') {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
 
-var _react = _interopRequireWildcard(__webpack_require__(14));
+var _react = __webpack_require__(13);
 
-var _propTypes = _interopRequireDefault(__webpack_require__(202));
-
-var _utils = __webpack_require__(205);
+var _react2 = _interopRequireDefault(_react);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+var BreakView = function BreakView(props) {
+  var label = props.breakLabel;
+  var className = props.breakClassName || 'break';
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-var Pagination =
-/*#__PURE__*/
-function (_Component) {
-  _inherits(Pagination, _Component);
-
-  function Pagination() {
-    var _this;
-
-    _classCallCheck(this, Pagination);
-
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(Pagination).call(this));
-
-    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "_getPageItemProps", function (props) {
-      var pageValue = props.pageValue,
-          handlePageChange = props.onPageChange;
-
-      var onPageChange = function onPageChange() {
-        if (typeof handlePageChange === 'function') {
-          handlePageChange(pageValue);
-        }
-
-        _this.setState({
-          currentPage: pageValue
-        });
-      };
-
-      return {
-        onClick: onPageChange
-      };
-    });
-
-    _this.state = {
-      currentPage: 0
-    };
-    return _this;
-  }
-
-  _createClass(Pagination, [{
-    key: "UNSAFE_componentWillMount",
-    value: function UNSAFE_componentWillMount() {
-      if (this.props.currentPage) {
-        this.setState({
-          currentPage: parseInt(this.props.currentPage, 10)
-        });
-      }
-    }
-  }, {
-    key: "UNSAFE_componentWillReceiveProps",
-    value: function UNSAFE_componentWillReceiveProps(nextProps) {
-      if (nextProps.currentPage !== this.props.currentPage) {
-        this.setState({
-          currentPage: parseInt(nextProps.currentPage, 10)
-        });
-      }
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      var _this$props = this.props,
-          total = _this$props.total,
-          limit = _this$props.limit,
-          pageCount = _this$props.pageCount;
-      var currentPage = this.state.currentPage;
-      var pageInfo = (0, _utils.getPageInfo)({
-        limit: limit,
-        pageCount: pageCount,
-        total: total,
-        page: currentPage
-      });
-      var firstPage = pageInfo.firstPage,
-          lastPage = pageInfo.lastPage,
-          hasNextPage = pageInfo.hasNextPage,
-          hasPreviousPage = pageInfo.hasPreviousPage,
-          previousPage = pageInfo.previousPage,
-          nextPage = pageInfo.nextPage,
-          totalPages = pageInfo.totalPages;
-      var pages = total ? (0, _utils.getRange)(firstPage, lastPage) : [];
-      return _react.default.createElement("div", null, this.props.children({
-        pages: pages,
-        previousPage: previousPage,
-        nextPage: nextPage,
-        totalPages: totalPages,
-        currentPage: currentPage,
-        hasNextPage: hasNextPage,
-        hasPreviousPage: hasPreviousPage,
-        getPageItemProps: this._getPageItemProps
-      }));
-    }
-  }]);
-
-  return Pagination;
-}(_react.Component);
-
-Pagination.propTypes = {
-  total: _propTypes.default.number.isRequired,
-  limit: _propTypes.default.number,
-  pageCount: _propTypes.default.number,
-  currentPage: _propTypes.default.number,
-  pageValue: _propTypes.default.number,
-  children: _propTypes.default.func.isRequired,
-  onPageChange: _propTypes.default.func
+  return _react2.default.createElement(
+    'li',
+    { className: className },
+    label
+  );
 };
-Pagination.defaultProps = {
-  limit: 10,
-  pageCount: 5,
-  currentPage: 0,
-  pageValue: 0
-};
-var _default = Pagination;
-exports.default = _default;
+
+exports.default = BreakView;
+//# sourceMappingURL=BreakView.js.map
 
 /***/ }),
 /* 204 */
@@ -24312,14 +24221,51 @@ exports.default = _default;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
 
-var _Pagination = _interopRequireDefault(__webpack_require__(203));
+var _react = __webpack_require__(13);
+
+var _react2 = _interopRequireDefault(_react);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var _default = _Pagination.default;
-exports.default = _default;
+var PageView = function PageView(props) {
+  var cssClassName = props.pageClassName;
+  var linkClassName = props.pageLinkClassName;
+  var onClick = props.onClick;
+  var href = props.href;
+  var ariaLabel = 'Page ' + props.page + (props.extraAriaContext ? ' ' + props.extraAriaContext : '');
+  var ariaCurrent = null;
+
+  if (props.selected) {
+    ariaCurrent = 'page';
+    ariaLabel = 'Page ' + props.page + ' is your current page';
+    if (typeof cssClassName !== 'undefined') {
+      cssClassName = cssClassName + ' ' + props.activeClassName;
+    } else {
+      cssClassName = props.activeClassName;
+    }
+  }
+
+  return _react2.default.createElement(
+    'li',
+    { className: cssClassName },
+    _react2.default.createElement(
+      'a',
+      { onClick: onClick,
+        role: 'button',
+        className: linkClassName,
+        href: href,
+        tabIndex: '0',
+        'aria-label': ariaLabel,
+        'aria-current': ariaCurrent,
+        onKeyPress: onClick },
+      props.page
+    )
+  );
+};
+
+exports.default = PageView;
+//# sourceMappingURL=PageView.js.map
 
 /***/ }),
 /* 205 */
@@ -24331,79 +24277,322 @@ exports.default = _default;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.getRange = getRange;
-exports.getPageInfo = getPageInfo;
 
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+var _react = __webpack_require__(13);
 
-function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+var _react2 = _interopRequireDefault(_react);
 
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+var _propTypes = __webpack_require__(202);
 
-function getRange(start, end) {
-  return _toConsumableArray(Array(end - start + 1)).map(function (_, i) {
-    return start + i;
-  });
-}
+var _propTypes2 = _interopRequireDefault(_propTypes);
 
-function getPageInfo(_ref) {
-  var limit = _ref.limit,
-      pageCount = _ref.pageCount,
-      total = _ref.total,
-      page = _ref.page;
-  var totalPages = Math.ceil(total / limit);
-  var totalResults = parseInt(total, 10);
-  var currentPage = parseInt(page, 10);
+var _PageView = __webpack_require__(204);
 
-  if (currentPage < 1) {
-    currentPage = 1;
+var _PageView2 = _interopRequireDefault(_PageView);
+
+var _BreakView = __webpack_require__(203);
+
+var _BreakView2 = _interopRequireDefault(_BreakView);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var PaginationBoxView = function (_Component) {
+  _inherits(PaginationBoxView, _Component);
+
+  function PaginationBoxView(props) {
+    _classCallCheck(this, PaginationBoxView);
+
+    var _this = _possibleConstructorReturn(this, (PaginationBoxView.__proto__ || Object.getPrototypeOf(PaginationBoxView)).call(this, props));
+
+    _this.handlePreviousPage = function (evt) {
+      var selected = _this.state.selected;
+
+      evt.preventDefault ? evt.preventDefault() : evt.returnValue = false;
+      if (selected > 0) {
+        _this.handlePageSelected(selected - 1, evt);
+      }
+    };
+
+    _this.handleNextPage = function (evt) {
+      var selected = _this.state.selected;
+      var pageCount = _this.props.pageCount;
+
+
+      evt.preventDefault ? evt.preventDefault() : evt.returnValue = false;
+      if (selected < pageCount - 1) {
+        _this.handlePageSelected(selected + 1, evt);
+      }
+    };
+
+    _this.handlePageSelected = function (selected, evt) {
+      evt.preventDefault ? evt.preventDefault() : evt.returnValue = false;
+
+      if (_this.state.selected === selected) return;
+
+      _this.setState({ selected: selected });
+
+      // Call the callback with the new selected item:
+      _this.callCallback(selected);
+    };
+
+    _this.callCallback = function (selectedItem) {
+      if (typeof _this.props.onPageChange !== "undefined" && typeof _this.props.onPageChange === "function") {
+        _this.props.onPageChange({ selected: selectedItem });
+      }
+    };
+
+    _this.pagination = function () {
+      var items = [];
+      var _this$props = _this.props,
+          pageRangeDisplayed = _this$props.pageRangeDisplayed,
+          pageCount = _this$props.pageCount,
+          marginPagesDisplayed = _this$props.marginPagesDisplayed,
+          breakLabel = _this$props.breakLabel,
+          breakClassName = _this$props.breakClassName;
+      var selected = _this.state.selected;
+
+
+      if (pageCount <= pageRangeDisplayed) {
+
+        for (var index = 0; index < pageCount; index++) {
+          items.push(_this.getPageElement(index));
+        }
+      } else {
+
+        var leftSide = pageRangeDisplayed / 2;
+        var rightSide = pageRangeDisplayed - leftSide;
+
+        if (selected > pageCount - pageRangeDisplayed / 2) {
+          rightSide = pageCount - selected;
+          leftSide = pageRangeDisplayed - rightSide;
+        } else if (selected < pageRangeDisplayed / 2) {
+          leftSide = selected;
+          rightSide = pageRangeDisplayed - leftSide;
+        }
+
+        var _index = void 0;
+        var page = void 0;
+        var breakView = void 0;
+        var createPageView = function createPageView(index) {
+          return _this.getPageElement(index);
+        };
+
+        for (_index = 0; _index < pageCount; _index++) {
+
+          page = _index + 1;
+
+          if (page <= marginPagesDisplayed) {
+            items.push(createPageView(_index));
+            continue;
+          }
+
+          if (page > pageCount - marginPagesDisplayed) {
+            items.push(createPageView(_index));
+            continue;
+          }
+
+          if (_index >= selected - leftSide && _index <= selected + rightSide) {
+            items.push(createPageView(_index));
+            continue;
+          }
+
+          if (breakLabel && items[items.length - 1] !== breakView) {
+            breakView = _react2.default.createElement(_BreakView2.default, {
+              key: _index,
+              breakLabel: breakLabel,
+              breakClassName: breakClassName
+            });
+            items.push(breakView);
+          }
+        }
+      }
+
+      return items;
+    };
+
+    _this.state = {
+      selected: props.initialPage ? props.initialPage : props.forcePage ? props.forcePage : 0
+    };
+    return _this;
   }
 
-  if (currentPage > totalPages) {
-    currentPage = totalPages;
-  }
+  _createClass(PaginationBoxView, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      var _props = this.props,
+          initialPage = _props.initialPage,
+          disableInitialCallback = _props.disableInitialCallback;
+      // Call the callback with the initialPage item:
 
-  var firstPage = Math.max(1, currentPage - Math.floor(pageCount / 2));
-  var lastPage = Math.min(totalPages, currentPage + Math.floor(pageCount / 2));
-
-  if (lastPage - firstPage + 1 < pageCount) {
-    if (currentPage < totalPages / 2) {
-      lastPage = Math.min(totalPages, lastPage + (pageCount - (lastPage - firstPage)));
-    } else {
-      firstPage = Math.max(1, firstPage - (pageCount - (lastPage - firstPage)));
+      if (typeof initialPage !== 'undefined' && !disableInitialCallback) {
+        this.callCallback(initialPage);
+      }
     }
-  }
-
-  if (lastPage - firstPage + 1 > pageCount) {
-    if (currentPage > totalPages / 2) {
-      // eslint-disable-next-line
-      firstPage++;
-    } else {
-      // eslint-disable-next-line
-      lastPage--;
+  }, {
+    key: 'componentWillReceiveProps',
+    value: function componentWillReceiveProps(nextProps) {
+      if (typeof nextProps.forcePage !== 'undefined' && this.props.forcePage !== nextProps.forcePage) {
+        this.setState({ selected: nextProps.forcePage });
+      }
     }
-  }
+  }, {
+    key: 'hrefBuilder',
+    value: function hrefBuilder(pageIndex) {
+      var _props2 = this.props,
+          hrefBuilder = _props2.hrefBuilder,
+          pageCount = _props2.pageCount;
 
-  var firstResult = limit * (currentPage - 1);
-  var lastResult = limit * currentPage - 1;
-  return {
-    totalPages: totalPages,
-    pages: Math.min(lastPage - firstPage + 1, totalPages),
-    currentPage: currentPage,
-    firstPage: firstPage,
-    lastPage: lastPage,
-    previousPage: currentPage - 1,
-    nextPage: currentPage + 1,
-    hasPreviousPage: currentPage > 1,
-    hasNextPage: currentPage < totalPages,
-    totalResults: totalResults,
-    results: Math.min(lastResult - firstResult + 1, totalResults),
-    firstResult: firstResult,
-    lastResult: lastResult
-  };
-}
+      if (hrefBuilder && pageIndex !== this.state.selected && pageIndex >= 0 && pageIndex < pageCount) {
+        return hrefBuilder(pageIndex + 1);
+      }
+    }
+  }, {
+    key: 'getPageElement',
+    value: function getPageElement(index) {
+      var selected = this.state.selected;
+      var _props3 = this.props,
+          pageClassName = _props3.pageClassName,
+          pageLinkClassName = _props3.pageLinkClassName,
+          activeClassName = _props3.activeClassName,
+          extraAriaContext = _props3.extraAriaContext;
+
+
+      return _react2.default.createElement(_PageView2.default, {
+        key: index,
+        onClick: this.handlePageSelected.bind(null, index),
+        selected: selected === index,
+        pageClassName: pageClassName,
+        pageLinkClassName: pageLinkClassName,
+        activeClassName: activeClassName,
+        extraAriaContext: extraAriaContext,
+        href: this.hrefBuilder(index),
+        page: index + 1 });
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var _props4 = this.props,
+          disabledClassName = _props4.disabledClassName,
+          previousClassName = _props4.previousClassName,
+          nextClassName = _props4.nextClassName,
+          pageCount = _props4.pageCount,
+          containerClassName = _props4.containerClassName,
+          previousLinkClassName = _props4.previousLinkClassName,
+          previousLabel = _props4.previousLabel,
+          nextLinkClassName = _props4.nextLinkClassName,
+          nextLabel = _props4.nextLabel;
+      var selected = this.state.selected;
+
+
+      var previousClasses = previousClassName + (selected === 0 ? ' ' + disabledClassName : '');
+      var nextClasses = nextClassName + (selected === pageCount - 1 ? ' ' + disabledClassName : '');
+
+      return _react2.default.createElement(
+        'ul',
+        { className: containerClassName },
+        _react2.default.createElement(
+          'li',
+          { className: previousClasses },
+          _react2.default.createElement(
+            'a',
+            { onClick: this.handlePreviousPage,
+              className: previousLinkClassName,
+              href: this.hrefBuilder(selected - 1),
+              tabIndex: '0',
+              role: 'button',
+              onKeyPress: this.handlePreviousPage },
+            previousLabel
+          )
+        ),
+        this.pagination(),
+        _react2.default.createElement(
+          'li',
+          { className: nextClasses },
+          _react2.default.createElement(
+            'a',
+            { onClick: this.handleNextPage,
+              className: nextLinkClassName,
+              href: this.hrefBuilder(selected + 1),
+              tabIndex: '0',
+              role: 'button',
+              onKeyPress: this.handleNextPage },
+            nextLabel
+          )
+        )
+      );
+    }
+  }]);
+
+  return PaginationBoxView;
+}(_react.Component);
+
+PaginationBoxView.propTypes = {
+  pageCount: _propTypes2.default.number.isRequired,
+  pageRangeDisplayed: _propTypes2.default.number.isRequired,
+  marginPagesDisplayed: _propTypes2.default.number.isRequired,
+  previousLabel: _propTypes2.default.node,
+  nextLabel: _propTypes2.default.node,
+  breakLabel: _propTypes2.default.node,
+  hrefBuilder: _propTypes2.default.func,
+  onPageChange: _propTypes2.default.func,
+  initialPage: _propTypes2.default.number,
+  forcePage: _propTypes2.default.number,
+  disableInitialCallback: _propTypes2.default.bool,
+  containerClassName: _propTypes2.default.string,
+  pageClassName: _propTypes2.default.string,
+  pageLinkClassName: _propTypes2.default.string,
+  activeClassName: _propTypes2.default.string,
+  previousClassName: _propTypes2.default.string,
+  nextClassName: _propTypes2.default.string,
+  previousLinkClassName: _propTypes2.default.string,
+  nextLinkClassName: _propTypes2.default.string,
+  disabledClassName: _propTypes2.default.string,
+  breakClassName: _propTypes2.default.string
+};
+PaginationBoxView.defaultProps = {
+  pageCount: 10,
+  pageRangeDisplayed: 2,
+  marginPagesDisplayed: 3,
+  activeClassName: "selected",
+  previousClassName: "previous",
+  nextClassName: "next",
+  previousLabel: "Previous",
+  nextLabel: "Next",
+  breakLabel: "...",
+  disabledClassName: "disabled",
+  disableInitialCallback: false
+};
+exports.default = PaginationBoxView;
+;
+//# sourceMappingURL=PaginationBoxView.js.map
+
+/***/ }),
+/* 206 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _PaginationBoxView = __webpack_require__(205);
+
+var _PaginationBoxView2 = _interopRequireDefault(_PaginationBoxView);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = _PaginationBoxView2.default;
+//# sourceMappingURL=index.js.map
 
 /***/ })
 /******/ ]);

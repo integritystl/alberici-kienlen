@@ -218,10 +218,11 @@ function alberici_hillsdale_scripts() {
 				'projects_endpoint' => home_url('/wp-json/wp/v2/project?_embed'),
 				'marketCat_endpoint' => home_url('/wp-json/wp/v2/market_category'),
 				'serviceCat_endpoint' => home_url('/wp-json/wp/v2/service_category'),
-				'locationCat_endpoint' => home_url('/wp-json/wp/v2/location_category'), 
+				'locationCat_endpoint' => home_url('/wp-json/wp/v2/location_category'),
+				'site_config' => get_field('set_site', 'options')
 			));
 	}
-	if (is_page_template('page-projects.php')) {
+	if (is_page_template('page-project-table-view.php')) {
 			wp_register_script('alberici-hillsdale-project-table', get_template_directory_uri() . '/js/react_src/dist/projects.js', array(), time(), true );
 			wp_enqueue_script('alberici-hillsdale-project-table', get_template_directory_uri() . '/js/react_src/dist/projects.js', array(), time(), true );
 			wp_localize_script('alberici-hillsdale-project-table', 'wpObj', array(
@@ -230,6 +231,7 @@ function alberici_hillsdale_scripts() {
 					'serviceCat_endpoint' => home_url('/wp-json/wp/v2/service_category'),
 				'locationCat_endpoint' => home_url('/wp-json/wp/v2/location_category'),
 				'totalProjects' => wp_count_posts('project'),
+				'site_config' => get_field('set_site', 'options')
 			));
 	}
 }
@@ -259,7 +261,6 @@ function remove_menus(){
 add_action( 'admin_menu', 'remove_menus' );
 
 function remove_sub_menus(){
-  remove_submenu_page( 'themes.php', 'widgets.php' );    //Appearance - Widgets
 	remove_submenu_page('edit.php', 'edit-tags.php?taxonomy=post_tag');   //Posts - Tags
 	unregister_taxonomy_for_object_type( 'post_tag', 'post' );
 }
@@ -322,4 +323,17 @@ $urls = array_diff( $urls, array( $emoji_svg_url ) );
  }
 
 return $urls;
+}
+
+add_action( 'widgets_init', 'alberici_hillsdale_theme_widgets_init' );
+function alberici_hillsdale_theme_widgets_init() {
+    register_sidebar( array(
+        'name' => __( 'Right Sidebar', 'alberici_hillsdale_theme' ),
+        'id' => 'right-sidebar',
+        'description' => __( 'Widgets in this area will be shown on all posts and pages.', 'alberici_hillsdale_theme' ),
+        'before_widget' => '<li id="%1$s" class="widget %2$s">',
+	'after_widget'  => '</li>',
+	'before_title'  => '<h2 class="widgettitle">',
+	'after_title'   => '</h2>',
+    ) );
 }

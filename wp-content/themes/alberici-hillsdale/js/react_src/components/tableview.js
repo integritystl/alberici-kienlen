@@ -1,7 +1,7 @@
 //This is for the table view of Projects
 import React from 'react';
-import Pagination from 'react-paginating';
-import {handleSearch, getMarketCats, getServiceCats, resetFilter, removeFilterTerm, checkFilterStatus, handleMarketChange, getCatName} from './helpers/helpers.js'
+import ReactPaginate from 'react-paginate';
+import {siteConfig, handleSearch, getMarketCats, getServiceCats, resetFilter, removeFilterTerm, checkFilterStatus, handleMarketChange, getCatName} from './helpers/helpers.js'
 import FilterBar from './filterbar.js'
 import Table from './table.js'
 
@@ -19,14 +19,15 @@ class TableList extends React.Component {
     this.checkFilterStatus = checkFilterStatus.bind(this);
     this.handleMarketChange = handleMarketChange.bind(this);
     this.getCatName = getCatName.bind(this);
+    this.siteConfig = siteConfig.bind(this);
   }
 
   componentWillMount() {
       this.setState({
         loading: true,
-        currentPage: 1,
+        currentPage: 0,//ReactPaginate is 0 indexed, so this is 0 for inital load
         projects: [],
-        postsPerPage: 2,
+        postsPerPage: 10,
         market_categories: [],
         service_categories: [],
         isFiltered: false,
@@ -35,6 +36,7 @@ class TableList extends React.Component {
         filteredService: '',
         hasSearchTerm: false,
         searchTerm: '',
+        siteConfig: '',
         totalProjects: parseInt(wpObj.totalProjects.publish),
       })
     }
@@ -44,6 +46,7 @@ class TableList extends React.Component {
     this.getPosts(this.buildAPILink());
     this.getMarketCats();
     this.getServiceCats();
+    this.siteConfig();
   }
 
   //Fetch posts
@@ -62,6 +65,7 @@ class TableList extends React.Component {
       } else {
         return baseLink;
       }
+      baseLink += `&per_page=${this.state.postsPerPage}`
     }
     return baseLink;
   }
@@ -69,7 +73,6 @@ class TableList extends React.Component {
   //Get All Posts
   getPosts(apiLink){
     apiLink += `&per_page=${this.state.postsPerPage}`
-    console.log(apiLink);
     //Gotta pass Basic Auth for the prompt from WP Engine
     //Ref: https://stackoverflow.com/questions/30203044/using-an-authorization-header-with-fetch-in-react-native
     fetch(apiLink, {
@@ -89,6 +92,10 @@ class TableList extends React.Component {
   getFilteredPosts(apiLink) {
     fetch(apiLink)
       .then( response => {
+        this.setState({
+          // WP API gives the Total Page Count in the Headers, of all places :\
+          totalProjects: parseInt( response.headers.get('X-WP-Total') )
+        })
         return(response.json());
       }).then(json => {
         this.setState({
@@ -110,65 +117,39 @@ class TableList extends React.Component {
     }, () => this.getFilteredPosts(this.buildAPILink()) );
   }
 
-  handlePageChange(page) {
-    console.log('handlePage');
+  //Works with React Paginate to pass info along
+  handlePageChange(pageData) {
+    let selected = pageData.selected;
+    let offset = Math.ceil(selected * this.state.postsPerPage);
     this.setState({
-      currentPage: page
-    }, () => this.loadMorePosts() );
+      currentPage: selected,
+      loading : true
+    }, () => this.loadMorePosts(offset) );
   };
 
   //Load More functionality
-  // TODO: Load more is pagination in this view, so will be different from CardList view
-    loadMorePosts() {
-      //need to fetch the next amount of posts and add them
-      //getPosts loads the page and uses postsPerPage
+    loadMorePosts(offset) {
       let apiLink = this.buildAPILink();
-      console.log('load more', apiLink);
-
-      let offset = this.state.currentPage * this.state.postsPerPage;
-      apiLink += `&offset=${offset}`;
-      console.log('load more offset', apiLink);
+      apiLink += `&per_page=${this.state.postsPerPage}&offset=${offset}`
 
       fetch(apiLink)
         .then( response => {
           return(response.json());
         })
         .then( json => {
-          console.log(json);
-          let currentPosts = this.state.projects;
-          //when i put this into this.setState, it breaks, what do?
-          Array.prototype.push.apply(currentPosts, json);
-          //increment our Current Page
-          this.setState( (state) => ({
-            currentPage: state.currentPage + 1,
-            //posts: Array.prototype.push.apply(currentPosts, json), //need to jam in new json here
-            loading: false,
-          }));
+          if (this.state.isFiltered) {
+            this.setState( (state) => ({
+              filteredProjects: json,
+              loading: false,
+            }));
+          } else {
+            //NonFiltered Change
+            this.setState( (state) => ({
+              projects: json,
+              loading: false,
+            }));
+          }
         })
-
-      // let offset = 0;
-      // if (this.state.isFiltered) {
-      //   offset = this.state.filteredProjects.length;
-      //   //TODO add in some stuff here Lindsay
-      // } else {
-      //   offset = this.state.currentPage * this.state.postsPerPage;
-      //   apiLink += `&offset=${offset}`;
-      //   fetch(apiLink)
-      //     .then( response => {
-      //       return(response.json());
-      //     })
-      //     .then( json => {
-      //       let currentPosts = this.state.projects;
-      //       //when i put this into this.setState, it breaks, what do?
-      //       Array.prototype.push.apply(currentPosts, json);
-      //       //increment our Current Page
-      //       this.setState( (state) => ({
-      //         currentPage: state.currentPage + 1,
-      //         //posts: Array.prototype.push.apply(currentPosts, json), //need to jam in new json here
-      //         loading: false,
-      //       }));
-      //     })
-      // }
     }
 
 
@@ -176,6 +157,7 @@ class TableList extends React.Component {
     let postGroup = '';
     let loadMoreBtn = '';
     let loadMoreLabel = 'View More Projects';
+    let secondarySelect = '';
 
     let allPosts = this.state.projects;
     let filterPosts = this.state.filteredProjects;
@@ -183,14 +165,22 @@ class TableList extends React.Component {
     let filteredServiceName = '';
     let filteredMarketName = '';
 
-    let currentPage = this.state.currentPage;
-    let allPostsOffset = currentPage * this.state.postsPerPage;
-    console.log('allposts offset', allPostsOffset);
-    // let maxPages = this.state.totalProjects / this.state.postsPerPage;
-    // console.log('max', Math.ceil(maxPages) );
+    if (this.state.siteConfig === 'hillsdale') {
+      secondarySelect = 'location';
+    } else {
+      //Falls back to kienlen and its secondary select
+      secondarySelect = 'services';
+    }
 
+    let currentPage = this.state.currentPage;
+    //to display the current page we're on + make up for 0 index of pagination
+    let currentPageDisplay = currentPage + 1;
+    let pageCount = Math.ceil(this.state.totalProjects / this.state.postsPerPage);
     let totalResults = this.state.totalProjects;
     let displayNumber = ''; //This should be a count of current Visible Posts
+
+    let pagination = '';
+    let pageInfo = '';
 
     if (this.state.loading) {
       postGroup = <div className="loading-spinner">Loading...</div>;
@@ -205,8 +195,6 @@ class TableList extends React.Component {
       displayNumber = postGroup.props.posts.length;
 
     } else if ( filterPosts && this.state.isFiltered === true ) {
-
-      totalResults = this.state.filteredProjects.length;
       postGroup = <Table
                     posts = {this.state.filteredProjects}
                     markets = {this.state.market_categories}
@@ -216,6 +204,7 @@ class TableList extends React.Component {
                     filteredMarket = {this.state.filteredMarket}
                   />
       displayNumber = postGroup.props.posts.length;
+      pageCount =  Math.ceil(totalResults / this.state.postsPerPage);
       //Get the names of filtered service categories for display purposes
       if (this.state.service_categories && this.state.filteredService) {
         filteredServiceName = this.getCatName(this.state.filteredService, this.state.service_categories);
@@ -224,11 +213,28 @@ class TableList extends React.Component {
       if (this.state.market_categories && this.state.filteredMarket) {
         filteredMarketName = this.getCatName(this.state.filteredMarket, this.state.market_categories);
       }
-    } else if (filterPosts === 0 && this.state.isFiltered === true) {
-      postGroup = 'No results';
-      loadMoreBtn = '';
     }
+    //Pagination
+    if (!this.state.loading && totalResults !== 0 ) {
 
+      pagination =  <ReactPaginate previousLabel={"previous"}
+                       nextLabel={"next"}
+                       breakLabel={<a href="">...</a>}
+                       breakClassName={"break-me"}
+                       pageCount={pageCount}
+                       pageRangeDisplayed={5}
+                       forcePage={currentPage} //changes the counter, not data
+                       onPageChange={this.handlePageChange.bind(this)}
+                       containerClassName={"pagination"}
+                       subContainerClassName={"pages pagination"}
+                       activeClassName={"active"} />
+
+      pageInfo = <div className="table-projects-results">
+                  <div className="table-project-results--current">Page {currentPageDisplay} of {pageCount}</div>
+                  <div className="table-project-results--total"> {displayNumber} of {totalResults} Total Results</div>
+                </div>
+
+    }
 
     return(
       <div className="projects-posts-container">
@@ -241,7 +247,7 @@ class TableList extends React.Component {
           serviceFilter = {this.state.filteredService}
           serviceFilterName = {filteredServiceName}
           serviceChange = {this.handleServiceChange.bind(this)}
-          secondarySelect = 'services'
+          secondarySelect = {secondarySelect}
           isFiltered = {this.state.isFiltered}
           filterSearch = {this.handleSearch}
           resetFilter = {this.resetFilter}
@@ -250,16 +256,12 @@ class TableList extends React.Component {
 
         {postGroup}
         <div className="table-projects-info">
-          <ul className="table-projects-pagination">
-            <li>1</li>
-            <li>2</li>
-            <li>3</li>
-          </ul>
-          <div className="table-projects-results">
-
-            <div className="table-project-results--current">Page {currentPage}</div>
-            <div className="table-project-results--total"> {displayNumber} of {totalResults} Results</div>
+          <div className="table-projects-pagination">
+             {pagination}
           </div>
+
+          {pageInfo}
+
         </div>
       </div>
     );

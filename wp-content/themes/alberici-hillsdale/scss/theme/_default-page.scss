@@ -1,10 +1,7 @@
 .entry-content {
-    margin: 20px 0 0 0;
-    p {
-        margin: 30px 0px 0 0px;
-    }
+    // margin: 20px 0 0 0;
     @include grid-media($medium-min) {
-    margin: 50px 0 50px 0;
+    // margin: 20px 0 20px 0;
         .alignleft {
             float: left;
             margin-right: 30px;
@@ -12,7 +9,7 @@
     }
 }
 .flex_fifty_fifty {
-    margin-top: 50px;
+    margin-top: 30px;
     p:nth-child(1) {
         margin-bottom: 30px;
         margin-top: 15px;
@@ -22,7 +19,7 @@
     }
 }
 .footer-callout {
-    margin-top: 50px;
+    margin-top: 30px;
     @include grid-media($medium-min) {
         margin-top: 70px;
     }

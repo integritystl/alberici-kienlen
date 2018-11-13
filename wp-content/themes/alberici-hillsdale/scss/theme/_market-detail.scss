@@ -16,24 +16,19 @@
     }
 }
 .markets-latest-3 {
-    margin: 0 15px;
+    border-top: $base-border;
+  
+    padding-top: 30px;
+
     @include grid-media($medium-min) {
         margin: auto;
+        padding-top: 60px;
     }
-    .headline-lines {
-        &:after {
-            display: block;
-            content: " ";
-            background-color: $blue;
-            opacity: 0.5;
-            height: 1px;
-            width: 100%;
-        }
-    }
+
     h2 {
-        margin-top: 30px;
         color: $blue;
     }
+
     ul {
         margin-bottom: 10px;
         display: block;
@@ -85,7 +80,7 @@
             display: flex;
             flex-wrap: initial;
             margin-bottom: 40px;
-        } 
+        }
     }
     .btn {
         color: white;

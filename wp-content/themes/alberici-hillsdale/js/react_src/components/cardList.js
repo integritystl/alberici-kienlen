@@ -3,7 +3,7 @@ import React from 'react';
 
 import FilterBar from './filterbar.js'
 import CardGroup from './card_group.js'
-import {handleSearch, getMarketCats, getServiceCats, resetFilter, removeFilterTerm, checkFilterStatus, handleMarketChange, getCatName} from './helpers/helpers.js'
+import {siteConfig, handleSearch, getMarketCats, getServiceCats, resetFilter, removeFilterTerm, checkFilterStatus, handleMarketChange, getCatName} from './helpers/helpers.js'
 
 class CardList extends React.Component {
   constructor(props) {
@@ -17,6 +17,7 @@ class CardList extends React.Component {
     this.checkFilterStatus = checkFilterStatus.bind(this);
     this.handleMarketChange = handleMarketChange.bind(this);
     this.getCatName = getCatName.bind(this);
+    this.siteConfig = siteConfig.bind(this);
   }
 
   componentWillMount() {
@@ -36,6 +37,7 @@ class CardList extends React.Component {
         filteredLocation: '',
         hasSearchTerm: false,
         searchTerm: '',
+        siteConfig: '',
         totalPosts: parseInt( document.getElementById('cardList_app').getAttribute('data-total') ),
       })
     }
@@ -44,6 +46,7 @@ class CardList extends React.Component {
       this.getPosts(this.buildAPILink());
       this.getMarketCats();
       this.setFilterCats();
+      this.siteConfig();
     }
 
     //Fetch posts
@@ -59,8 +62,8 @@ class CardList extends React.Component {
         if (this.state.hasSearchTerm) {
           baseLink += `&search=${this.state.searchTerm}`;
         }
-        //Build the API call with the taxonomies that the Post Type uses
-        if (this.state.postDataType === 'news') {
+        //Build the API call with the taxonomies that the Site Configured uses
+        if (this.state.siteConfig === 'kienlen') {
           if (this.state.filteredMarket && this.state.filteredService) {
             baseLink += `&market_category=${this.state.filteredMarket}&service_category=${this.state.filteredService}`;
           } else if (this.state.filteredService) {
@@ -71,7 +74,7 @@ class CardList extends React.Component {
             return baseLink;
           }
         } else {
-          //Projects only uses Locations
+          // If it's not Kienlen, it's Hillsdale, which uses Locations
           if (this.state.filteredMarket && this.state.filteredLocation) {
             baseLink += `&market_category=${this.state.filteredMarket}&location_category=${this.state.filteredLocation}`;
           } else if (this.state.filteredLocation) {
@@ -82,13 +85,13 @@ class CardList extends React.Component {
             return baseLink;
           }
         }
-        console.log(baseLink);
       }
+      // console.log('buildAPILink', baseLink);
+      baseLink += `&per_page=${this.state.postsPerPage}`
       return baseLink;
     }
     //Get All Posts
     getPosts(apiLink){
-      apiLink += `&per_page=${this.state.postsPerPage}`
       //Gotta pass Basic Auth for the prompt from WP Engine
       //Ref: https://stackoverflow.com/questions/30203044/using-an-authorization-header-with-fetch-in-react-native
       fetch(apiLink, {
@@ -108,6 +111,10 @@ class CardList extends React.Component {
     getFilteredPosts(apiLink) {
       fetch(apiLink)
         .then( response => {
+          this.setState({
+            // WP API gives the Total Page Count in the Headers, of all places :\
+            totalPosts: parseInt( response.headers.get('X-WP-Total') )
+          })
           return(response.json());
         }).then(json => {
           this.setState({
@@ -120,12 +127,9 @@ class CardList extends React.Component {
     //Check to see what's set for our data-filter attribute and call the appropriate custom taxonomy endpoint
     setFilterCats() {
       let filterDataType = document.getElementById('cardList_app').getAttribute('data-filter');
-      console.log('set filter cats', filterDataType);
       if (filterDataType === 'service') {
-        console.log('check filter service');
         this.getServiceCats();
       } else {
-        console.log('filter is location?')
         this.getLocationCats();
       }
     }
@@ -146,7 +150,6 @@ class CardList extends React.Component {
 
     //Handle Location Filter
     handleLocationChange(id) {
-      console.log('handleLocationChange', id);
       if (id === 'Location') {
         id = ''
       }
@@ -172,32 +175,33 @@ class CardList extends React.Component {
     //Load More functionality
     loadMorePosts() {
       //need to fetch the next amount of posts and add them
-      //getPosts loads the page and uses postsPerPage
       let apiLink = this.buildAPILink();
-
       let offset = 0;
       if (this.state.isFiltered) {
         offset = this.state.filteredPosts.length;
-        //TODO add in some stuff here Lindsay
       } else {
         offset = this.state.currentPage * this.state.postsPerPage;
-        apiLink += `&offset=${offset}`;
-        fetch(apiLink)
-          .then( response => {
-            return(response.json());
-          })
-          .then( json => {
-            let currentPosts = this.state.posts;
-            //when i put this into this.setState, it breaks, what do?
-            Array.prototype.push.apply(currentPosts, json);
-            //increment our Current Page
-            this.setState( (state) => ({
-              currentPage: state.currentPage + 1,
-              //posts: Array.prototype.push.apply(currentPosts, json), //need to jam in new json here
-              loading: false,
-            }));
-          })
       }
+      apiLink += `&offset=${offset}`;
+
+      fetch(apiLink)
+        .then( response => {
+          return(response.json());
+        })
+        .then( json => {
+          let currentPosts = '';
+          if (this.state.isFiltered) {
+            currentPosts = this.state.filteredPosts;
+          } else {
+            currentPosts = this.state.posts;
+          }
+          Array.prototype.push.apply(currentPosts, json);
+          //increment our Current Page
+          this.setState( (state) => ({
+            currentPage: state.currentPage + 1,
+            loading: false,
+          }));
+        })
     }
 
 
@@ -207,12 +211,17 @@ class CardList extends React.Component {
       let loadMoreLabel = '';
       let secondarySelect = '';
 
+      if (this.state.siteConfig === 'hillsdale') {
+        secondarySelect = 'location';
+      } else {
+        //Falls back to kienlen and its secondary select
+        secondarySelect = 'services';
+      }
+
       if (this.state.postDataType === 'news') {
         loadMoreLabel = 'View More Posts';
-        secondarySelect = 'services';
       } else {
         loadMoreLabel = 'View More Projects';
-        secondarySelect = 'location';
       }
 
       let allPosts = this.state.posts;
@@ -236,7 +245,11 @@ class CardList extends React.Component {
                       getCatName = {this.getCatName}
                       />
         if ( allPostsOffset < this.state.totalPosts && this.state.totalPosts % this.state.postsPerPage != 0) {
-          loadMoreBtn = <button onClick={this.loadMorePosts.bind(this)}  className="btn-load-more">{loadMoreLabel}</button>;
+          loadMoreBtn = <button
+                          onClick={this.loadMorePosts.bind(this)}
+                          className="btn-load-more">
+                            {loadMoreLabel}
+                        </button>;
         }
       } else if ( filterPosts && this.state.isFiltered === true ) {
         postGroup = <CardGroup
@@ -258,17 +271,19 @@ class CardList extends React.Component {
         if (this.state.market_categories && this.state.filteredMarket) {
           filteredMarketName = this.getCatName(this.state.filteredMarket, this.state.market_categories);
         }
-
         //Get the names of filtered markets for display purposes
         if (this.state.location_categories && this.state.filteredLocation) {
           filteredLocationName = this.getCatName(this.state.filteredLocation, this.state.location_categories);
         }
-
-      } else if (filterPosts === 0 && this.state.isFiltered === true) {
-        postGroup = 'No results';
-        loadMoreBtn = '';
+        //Load More for Filtered Posts
+        if ( allPostsOffset < this.state.totalPosts && this.state.totalPosts % this.state.postsPerPage != 0) {
+          loadMoreBtn = <button
+                          onClick={this.loadMorePosts.bind(this)}
+                          className="btn-load-more">
+                            {loadMoreLabel}
+                        </button>;
+        }
       }
-
       return(
         <div className="news-posts-container">
           <FilterBar

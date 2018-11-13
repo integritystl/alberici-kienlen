@@ -5,9 +5,9 @@
 //  @extend .grid-container;
 }
 
-.news-posts-container, .projects-posts-container {
+.news-posts-container, .projects-posts-container, .services-list{
   @extend .container;
-
+  padding-bottom: 80px;
   .filterbar {
     @extend .grid-container;
     padding: 20px 0 0;
@@ -22,7 +22,7 @@
         grid-column: span 4;
       }
       @include grid-media($medium-min) {
-        grid-column: span 6;
+        grid-column: span 4;
       }
     }
     .select {
@@ -31,7 +31,7 @@
         grid-column: span 4;
       }
       @include grid-media($medium-min) {
-        grid-column: span 3;
+        grid-column: span 4;
       }
       select {
         margin-bottom: 0px;
@@ -85,6 +85,10 @@
       }
     }
   }
+  //Also used in Card Group
+  .no-results {
+    text-align: center;
+  }
 }
 
 .blog-content_posts {
@@ -94,6 +98,10 @@
     padding: 10px;
     grid-column: span 12;
     @include grid-media($small-min) {
+      grid-column: span 6;
+    }
+
+    @include grid-media($medium-min) {
       grid-column: span 4;
     }
 
@@ -105,7 +113,7 @@
 }
 //For News List View
 .card-overlay {
-  background: rgba(#383838, .4);
+  background: $overlay;
   transition: all $base-duration $base-timing;
   z-index: 10;
   position: absolute;
@@ -127,7 +135,7 @@
     .news-meta {
       font-size: 13px;
       text-transform: uppercase;
-      margin-bottom: 5px;
+      margin-bottom: 15px;
     }
     img {
       z-index: 0;
@@ -135,7 +143,7 @@
       display: block;
     }
     a {
-      padding: 25px 30px;
+      padding: 25px 20px;
       position: absolute;
       top: 0;
       left: 0;
@@ -148,7 +156,14 @@
     }
 
     h3 {
-      font-size: 28px;
+      font-size: 24px;
+      margin: 0;
+      line-height: 1.25;
     }
+  }
+
+  //When there's posts returned
+  .no-results {
+    grid-column: 3 / span 8;
   }
 }

@@ -444,7 +444,7 @@ module.exports = warning;
 
 var _prodInvariant = __webpack_require__(2);
 
-var DOMProperty = __webpack_require__(13);
+var DOMProperty = __webpack_require__(14);
 var ReactDOMComponentFlags = __webpack_require__(57);
 
 var invariant = __webpack_require__(1);
@@ -1782,6 +1782,16 @@ module.exports = emptyFunction;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+
+
+module.exports = __webpack_require__(21);
+
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
 /* WEBPACK VAR INJECTION */(function(process) {/**
  * Copyright (c) 2013-present, Facebook, Inc.
  *
@@ -1989,16 +1999,6 @@ var DOMProperty = {
 
 module.exports = DOMProperty;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
-
-/***/ }),
-/* 14 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-module.exports = __webpack_require__(21);
-
 
 /***/ }),
 /* 15 */
@@ -7021,7 +7021,7 @@ module.exports = PooledClass.addPoolingTo(CallbackQueue);
 
 
 
-var DOMProperty = __webpack_require__(13);
+var DOMProperty = __webpack_require__(14);
 var ReactDOMComponentTree = __webpack_require__(4);
 var ReactInstrumentation = __webpack_require__(8);
 
@@ -7744,7 +7744,7 @@ module.exports = ReactInputSelection;
 var _prodInvariant = __webpack_require__(2);
 
 var DOMLazyTree = __webpack_require__(19);
-var DOMProperty = __webpack_require__(13);
+var DOMProperty = __webpack_require__(14);
 var React = __webpack_require__(21);
 var ReactBrowserEventEmitter = __webpack_require__(28);
 var ReactCurrentOwner = __webpack_require__(10);
@@ -10940,7 +10940,7 @@ module.exports = function(isValidElement, throwOnDirectAccess) {
 "use strict";
 
 
-var _react = __webpack_require__(14);
+var _react = __webpack_require__(13);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -11011,7 +11011,7 @@ module.exports = Select;
 "use strict";
 
 
-var _react = __webpack_require__(14);
+var _react = __webpack_require__(13);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -11087,7 +11087,7 @@ var FilterBar = function (_React$Component) {
           { className: 'select' },
           _react2.default.createElement(
             'label',
-            { className: 'screen-reader-text' },
+            { className: 'screen-reader-text', htmlFor: 'filterbar-select-service' },
             'Service'
           ),
           _react2.default.createElement(_filterSelect2.default, { label: 'Service',
@@ -11104,10 +11104,10 @@ var FilterBar = function (_React$Component) {
         { className: 'select' },
         _react2.default.createElement(
           'label',
-          { className: 'screen-reader-text' },
-          'Locations'
+          { className: 'screen-reader-text', htmlFor: 'filterbar-select-location' },
+          'Location'
         ),
-        _react2.default.createElement(_filterSelect2.default, { label: 'Locations',
+        _react2.default.createElement(_filterSelect2.default, { label: 'Location',
           selectID: 'filterbar-select-location',
           options: this.props.locations,
           onFilterChange: this.filterLocations
@@ -11161,7 +11161,7 @@ var FilterBar = function (_React$Component) {
       { className: 'filterbar' },
       _react2.default.createElement(
         'label',
-        { className: 'screen-reader-text' },
+        { className: 'screen-reader-text', htmlFor: 'filterbar-search' },
         'Search'
       ),
       _react2.default.createElement('input', { id: 'filterbar-search',
@@ -11176,7 +11176,7 @@ var FilterBar = function (_React$Component) {
         { className: 'select' },
         _react2.default.createElement(
           'label',
-          { className: 'screen-reader-text' },
+          { className: 'screen-reader-text', htmlFor: 'filterbar-select-market' },
           'Market'
         ),
         _react2.default.createElement(_filterSelect2.default, { label: 'Market',
@@ -11210,6 +11210,7 @@ module.exports = FilterBar;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.siteConfig = siteConfig;
 exports.handleSearch = handleSearch;
 exports.getMarketCats = getMarketCats;
 exports.handleMarketChange = handleMarketChange;
@@ -11219,6 +11220,14 @@ exports.removeFilterTerm = removeFilterTerm;
 exports.checkFilterStatus = checkFilterStatus;
 exports.getCatName = getCatName;
 //This houses shared functionality used between CardList and Table List
+
+//Site Config Option that determines if the site is Hillsdale or Kienlen
+function siteConfig() {
+  var currentSiteConfig = wpObj.site_config;
+  this.setState({
+    siteConfig: currentSiteConfig
+  });
+}
 
 //Search Input Filter
 function handleSearch(term) {
@@ -11290,8 +11299,8 @@ function resetFilter() {
   searchInput.value = '';
   //I'm cheating :\
   marketSelect.value = 'Market';
-  //Table List View also uses 'Service', so check if we're using its state
-  if (this.state.postDataType === 'news' || this.state.projects) {
+  //If we're on Kienlen, use Service
+  if (this.state.siteConfig === 'kienlen') {
     secondarySelect = document.getElementById('filterbar-select-service');
     secondarySelect.value = 'Service';
   } else {
@@ -11299,17 +11308,34 @@ function resetFilter() {
     secondarySelect.value = 'Location';
   }
 
-  this.setState({
-    isFiltered: false,
-    filteredPosts: [],
-    filteredMarket: '',
-    filteredService: '',
-    filteredLocation: '',
-    hasSearchTerm: false,
-    searchTerm: ''
-  }, function () {
-    return _this5.getPosts(_this5.buildAPILink());
-  });
+  //Change the state based on the Page Template
+  if (this.state.projects) {
+    this.setState({
+      isFiltered: false,
+      filteredProjects: [],
+      filteredMarket: '',
+      filteredService: '',
+      hasSearchTerm: false,
+      searchTerm: '',
+      totalProjects: parseInt(wpObj.totalProjects.publish)
+    }, function () {
+      return _this5.getPosts(_this5.buildAPILink());
+    });
+  } else {
+    // It's CardListView
+    this.setState({
+      isFiltered: false,
+      filteredPosts: [],
+      filteredMarket: '',
+      filteredService: '',
+      filteredLocation: '',
+      hasSearchTerm: false,
+      searchTerm: '',
+      totalPosts: parseInt(document.getElementById('cardList_app').getAttribute('data-total'))
+    }, function () {
+      return _this5.getPosts(_this5.buildAPILink());
+    });
+  }
 }
 
 function removeFilterTerm(currentTermId) {
@@ -11342,9 +11368,8 @@ function removeFilterTerm(currentTermId) {
 }
 
 function checkFilterStatus() {
-  //check which postDataType it is
   var secondaryFilter = '';
-  if (this.state.postDataType === 'news') {
+  if (this.state.siteConfig === 'kienlen') {
     secondaryFilter = !this.state.filteredService;
   } else {
     secondaryFilter = !this.state.filteredLocation;
@@ -11362,7 +11387,10 @@ function getCatName(filteredCatId, categories) {
   var catObj = categories.filter(function (item) {
     return item.id === filteredCatId;
   });
-  var filteredCatName = catObj[0].name;
+  var filteredCatName = "";
+  if (catObj[0]) {
+    filteredCatName = catObj[0].name;
+  }
   return filteredCatName;
 }
 
@@ -12880,7 +12908,7 @@ module.exports = FallbackCompositionState;
 
 
 
-var DOMProperty = __webpack_require__(13);
+var DOMProperty = __webpack_require__(14);
 
 var MUST_USE_PROPERTY = DOMProperty.injection.MUST_USE_PROPERTY;
 var HAS_BOOLEAN_VALUE = DOMProperty.injection.HAS_BOOLEAN_VALUE;
@@ -14336,7 +14364,7 @@ var AutoFocusUtils = __webpack_require__(96);
 var CSSPropertyOperations = __webpack_require__(98);
 var DOMLazyTree = __webpack_require__(19);
 var DOMNamespaces = __webpack_require__(36);
-var DOMProperty = __webpack_require__(13);
+var DOMProperty = __webpack_require__(14);
 var DOMPropertyOperations = __webpack_require__(56);
 var EventPluginHub = __webpack_require__(23);
 var EventPluginRegistry = __webpack_require__(27);
@@ -15794,7 +15822,7 @@ module.exports = ReactDOMInput;
 
 
 
-var DOMProperty = __webpack_require__(13);
+var DOMProperty = __webpack_require__(14);
 var ReactComponentTreeHook = __webpack_require__(7);
 
 var warning = __webpack_require__(3);
@@ -16749,7 +16777,7 @@ module.exports = {
 
 
 
-var DOMProperty = __webpack_require__(13);
+var DOMProperty = __webpack_require__(14);
 var EventPluginRegistry = __webpack_require__(27);
 var ReactComponentTreeHook = __webpack_require__(7);
 
@@ -17643,7 +17671,7 @@ module.exports = ReactHostOperationHistoryHook;
 
 
 
-var DOMProperty = __webpack_require__(13);
+var DOMProperty = __webpack_require__(14);
 var EventPluginHub = __webpack_require__(23);
 var EventPluginUtils = __webpack_require__(37);
 var ReactComponentEnvironment = __webpack_require__(40);
@@ -23461,7 +23489,7 @@ module.exports = factory;
 "use strict";
 
 
-var _react = __webpack_require__(14);
+var _react = __webpack_require__(13);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -23501,6 +23529,7 @@ var CardList = function (_React$Component) {
     _this.checkFilterStatus = _helpers.checkFilterStatus.bind(_this);
     _this.handleMarketChange = _helpers.handleMarketChange.bind(_this);
     _this.getCatName = _helpers.getCatName.bind(_this);
+    _this.siteConfig = _helpers.siteConfig.bind(_this);
     return _this;
   }
 
@@ -23521,6 +23550,7 @@ var CardList = function (_React$Component) {
       filteredLocation: '',
       hasSearchTerm: false,
       searchTerm: '',
+      siteConfig: '',
       totalPosts: parseInt(document.getElementById('cardList_app').getAttribute('data-total'))
     });
   };
@@ -23529,6 +23559,7 @@ var CardList = function (_React$Component) {
     this.getPosts(this.buildAPILink());
     this.getMarketCats();
     this.setFilterCats();
+    this.siteConfig();
   };
 
   //Fetch posts
@@ -23546,8 +23577,8 @@ var CardList = function (_React$Component) {
       if (this.state.hasSearchTerm) {
         baseLink += '&search=' + this.state.searchTerm;
       }
-      //Build the API call with the taxonomies that the Post Type uses
-      if (this.state.postDataType === 'news') {
+      //Build the API call with the taxonomies that the Site Configured uses
+      if (this.state.siteConfig === 'kienlen') {
         if (this.state.filteredMarket && this.state.filteredService) {
           baseLink += '&market_category=' + this.state.filteredMarket + '&service_category=' + this.state.filteredService;
         } else if (this.state.filteredService) {
@@ -23558,7 +23589,7 @@ var CardList = function (_React$Component) {
           return baseLink;
         }
       } else {
-        //Projects only uses Locations
+        // If it's not Kienlen, it's Hillsdale, which uses Locations
         if (this.state.filteredMarket && this.state.filteredLocation) {
           baseLink += '&market_category=' + this.state.filteredMarket + '&location_category=' + this.state.filteredLocation;
         } else if (this.state.filteredLocation) {
@@ -23569,8 +23600,9 @@ var CardList = function (_React$Component) {
           return baseLink;
         }
       }
-      console.log(baseLink);
     }
+    // console.log('buildAPILink', baseLink);
+    baseLink += '&per_page=' + this.state.postsPerPage;
     return baseLink;
   };
   //Get All Posts
@@ -23579,7 +23611,6 @@ var CardList = function (_React$Component) {
   CardList.prototype.getPosts = function getPosts(apiLink) {
     var _this2 = this;
 
-    apiLink += '&per_page=' + this.state.postsPerPage;
     //Gotta pass Basic Auth for the prompt from WP Engine
     //Ref: https://stackoverflow.com/questions/30203044/using-an-authorization-header-with-fetch-in-react-native
     fetch(apiLink, {
@@ -23598,6 +23629,10 @@ var CardList = function (_React$Component) {
     var _this3 = this;
 
     fetch(apiLink).then(function (response) {
+      _this3.setState({
+        // WP API gives the Total Page Count in the Headers, of all places :\
+        totalPosts: parseInt(response.headers.get('X-WP-Total'))
+      });
       return response.json();
     }).then(function (json) {
       _this3.setState({
@@ -23612,12 +23647,9 @@ var CardList = function (_React$Component) {
 
   CardList.prototype.setFilterCats = function setFilterCats() {
     var filterDataType = document.getElementById('cardList_app').getAttribute('data-filter');
-    console.log('set filter cats', filterDataType);
     if (filterDataType === 'service') {
-      console.log('check filter service');
       this.getServiceCats();
     } else {
-      console.log('filter is location?');
       this.getLocationCats();
     }
   };
@@ -23644,7 +23676,6 @@ var CardList = function (_React$Component) {
   CardList.prototype.handleLocationChange = function handleLocationChange(id) {
     var _this5 = this;
 
-    console.log('handleLocationChange', id);
     if (id === 'Location') {
       id = '';
     }
@@ -23682,32 +23713,33 @@ var CardList = function (_React$Component) {
     var _this7 = this;
 
     //need to fetch the next amount of posts and add them
-    //getPosts loads the page and uses postsPerPage
     var apiLink = this.buildAPILink();
-
     var offset = 0;
     if (this.state.isFiltered) {
       offset = this.state.filteredPosts.length;
-      //TODO add in some stuff here Lindsay
     } else {
       offset = this.state.currentPage * this.state.postsPerPage;
-      apiLink += '&offset=' + offset;
-      fetch(apiLink).then(function (response) {
-        return response.json();
-      }).then(function (json) {
-        var currentPosts = _this7.state.posts;
-        //when i put this into this.setState, it breaks, what do?
-        Array.prototype.push.apply(currentPosts, json);
-        //increment our Current Page
-        _this7.setState(function (state) {
-          return {
-            currentPage: state.currentPage + 1,
-            //posts: Array.prototype.push.apply(currentPosts, json), //need to jam in new json here
-            loading: false
-          };
-        });
-      });
     }
+    apiLink += '&offset=' + offset;
+
+    fetch(apiLink).then(function (response) {
+      return response.json();
+    }).then(function (json) {
+      var currentPosts = '';
+      if (_this7.state.isFiltered) {
+        currentPosts = _this7.state.filteredPosts;
+      } else {
+        currentPosts = _this7.state.posts;
+      }
+      Array.prototype.push.apply(currentPosts, json);
+      //increment our Current Page
+      _this7.setState(function (state) {
+        return {
+          currentPage: state.currentPage + 1,
+          loading: false
+        };
+      });
+    });
   };
 
   CardList.prototype.render = function render() {
@@ -23716,12 +23748,17 @@ var CardList = function (_React$Component) {
     var loadMoreLabel = '';
     var secondarySelect = '';
 
+    if (this.state.siteConfig === 'hillsdale') {
+      secondarySelect = 'location';
+    } else {
+      //Falls back to kienlen and its secondary select
+      secondarySelect = 'services';
+    }
+
     if (this.state.postDataType === 'news') {
       loadMoreLabel = 'View More Posts';
-      secondarySelect = 'services';
     } else {
       loadMoreLabel = 'View More Projects';
-      secondarySelect = 'location';
     }
 
     var allPosts = this.state.posts;
@@ -23751,7 +23788,9 @@ var CardList = function (_React$Component) {
       if (allPostsOffset < this.state.totalPosts && this.state.totalPosts % this.state.postsPerPage != 0) {
         loadMoreBtn = _react2.default.createElement(
           'button',
-          { onClick: this.loadMorePosts.bind(this), className: 'btn-load-more' },
+          {
+            onClick: this.loadMorePosts.bind(this),
+            className: 'btn-load-more' },
           loadMoreLabel
         );
       }
@@ -23775,16 +23814,21 @@ var CardList = function (_React$Component) {
       if (this.state.market_categories && this.state.filteredMarket) {
         filteredMarketName = this.getCatName(this.state.filteredMarket, this.state.market_categories);
       }
-
       //Get the names of filtered markets for display purposes
       if (this.state.location_categories && this.state.filteredLocation) {
         filteredLocationName = this.getCatName(this.state.filteredLocation, this.state.location_categories);
       }
-    } else if (filterPosts === 0 && this.state.isFiltered === true) {
-      postGroup = 'No results';
-      loadMoreBtn = '';
+      //Load More for Filtered Posts
+      if (allPostsOffset < this.state.totalPosts && this.state.totalPosts % this.state.postsPerPage != 0) {
+        loadMoreBtn = _react2.default.createElement(
+          'button',
+          {
+            onClick: this.loadMorePosts.bind(this),
+            className: 'btn-load-more' },
+          loadMoreLabel
+        );
+      }
     }
-
     return _react2.default.createElement(
       'div',
       { className: 'news-posts-container' },
@@ -23826,7 +23870,7 @@ module.exports = CardList;
 "use strict";
 
 
-var _react = __webpack_require__(14);
+var _react = __webpack_require__(13);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -23867,7 +23911,7 @@ new AppInitializer().run();
 "use strict";
 
 
-var _react = __webpack_require__(14);
+var _react = __webpack_require__(13);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -23889,8 +23933,6 @@ var Card = function (_React$Component) {
   }
 
   Card.prototype.render = function render() {
-    //  console.log('card props', this.props);
-
 
     return _react2.default.createElement(
       "article",
@@ -23899,7 +23941,8 @@ var Card = function (_React$Component) {
       _react2.default.createElement("img", {
         src: this.props.image,
         srcSet: this.props.imageSrcset,
-        sizes: "(max-width: 600px) 100vw, 600px" }),
+        sizes: "(max-width: 600px) 100vw, 600px",
+        alt: this.props.imgAlt }),
       _react2.default.createElement(
         "a",
         { href: this.props.link },
@@ -23926,7 +23969,7 @@ module.exports = Card;
 "use strict";
 
 
-var _react = __webpack_require__(14);
+var _react = __webpack_require__(13);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -23971,14 +24014,18 @@ var CardGroup = function (_React$Component) {
       postComponents = this.props.posts.map(function (item, index) {
         var imageSrc = '';
         var imageSrcSet = '';
+        var imageAlt = '';
         var serviceName = [];
         var marketName = [];
         var locationName = [];
 
-        if (item._embedded['wp:featuredmedia']) {
+        //One of the featured images is giving this error: "code": "rest_forbidden"
+        //avoiding object that only has this "code" error message
+        if (item._embedded['wp:featuredmedia'] && !item._embedded['wp:featuredmedia'][0].code) {
           //Media Paths to help with srcSets
           var imageSrcSetMed = item._embedded['wp:featuredmedia'][0].media_details.sizes.medium;
           var imageSrcSetBlog = item._embedded['wp:featuredmedia'][0].media_details.sizes.blog_image;
+          imageAlt = item._embedded['wp:featuredmedia'][0].alt_text;
 
           //use the custom Blog size as our img src fallback
           imageSrc = imageSrcSetBlog.source_url;
@@ -24019,6 +24066,7 @@ var CardGroup = function (_React$Component) {
           id: item.id,
           image: imageSrc,
           imageSrcset: imageSrcSet,
+          imgAlt: imageAlt,
           title: item.title.rendered,
           market: item.market_category,
           service: item.service_category,
@@ -24036,7 +24084,7 @@ var CardGroup = function (_React$Component) {
         _react2.default.createElement(
           'h3',
           null,
-          'Sorry, no posts.'
+          'No results found.'
         )
       );
     }

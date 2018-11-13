@@ -20,7 +20,7 @@
     }
     .contact-people-component {
         margin-bottom: 40px;
-    
+
         img {
             float: left;
             width: 100px;
@@ -29,7 +29,7 @@
             margin-top: 10px;
             margin-right: 25px;
             margin-bottom: 30px;
-
+            clear: both;
         }
         p {
             margin-bottom: 0;
@@ -40,13 +40,10 @@
     }
 }
 .gform_wrapper {
-    .gform_body ul li {
+    .gform_body ul li:not(.file) {
         margin-bottom: 20px;
         .gfield_label {
             @include hide-visually;
-        }
-        input, textarea {
-            padding: 12px 0 12px 30px;
         }
     }
     .gform_footer {

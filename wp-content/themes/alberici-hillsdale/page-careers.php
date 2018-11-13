@@ -17,7 +17,7 @@ $jobsCalloutgform = get_field('jobs_callout_careers_form');
 	<main id="main" class="site-main">
         <div class="career-template">
             <?php get_template_part( 'template-parts/hero' );?>
-        
+
             <?php if ( get_the_content() ) { ?>
                 <div class="career-content container">
                     <?php
@@ -25,16 +25,6 @@ $jobsCalloutgform = get_field('jobs_callout_careers_form');
                     ?>
                 </div><!-- .career-content -->
             <?php } ?>
-
-            <?php
-                if(have_rows('flexible_content', get_the_ID())):
-                    while(have_rows('flexible_content')): the_row();
-                        include(locate_template('template-parts/flex-content/content-' . get_row_layout() . '.php'));
-                    endwhile;
-                endif;
-            ?>
-            
-            <h2 class="headline-lines container"></h2>
 
             <div class="job-callout container">
                 <div class="callout-content">
@@ -46,13 +36,22 @@ $jobsCalloutgform = get_field('jobs_callout_careers_form');
                 </div>
                 <?php echo $jobsCalloutgform; ?>
             </div>
+
+            <?php
+                if(have_rows('flexible_content', get_the_ID())):
+                    while(have_rows('flexible_content')): the_row();
+                        include(locate_template('template-parts/flex-content/content-' . get_row_layout() . '.php'));
+                    endwhile;
+                endif;
+            ?>
+
             <?php get_template_part( 'template-parts/footer-callout' );?>
         </div>
 
-        
+
 	</main><!-- #main -->
 </div><!-- #primary -->
-    
+
 <?php
 
 get_footer();

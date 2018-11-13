@@ -31,7 +31,7 @@
     </div>
 
     <?php if ($StackedTileLink) : ?>
-      <a href="<?php echo $StackedTileLink; ?>" class="btn">Learn More</a>
+      <a href="<?php echo $StackedTileLink; ?>" class="btn" aria-label="Learn more about <?php echo $StackedTileHeader;?>">Learn More</a>
     <?php endif; ?>
 
   </div>

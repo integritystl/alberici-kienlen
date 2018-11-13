@@ -3,11 +3,15 @@
     background-size: cover;
     background-repeat: no-repeat;
     @extend .grid-container;
-    grid-template-rows: 75% 25%;
+    grid-template-rows: auto auto;
     margin-top: -75px;
+    background-color: $dark-gray;
+    position: relative;
+    overflow: hidden;
 
     > .container {
       grid-column: span 12;
+      z-index: 1;
     }
     .headline {
         grid-column: 1 / span 12;
@@ -15,6 +19,7 @@
         grid-row-start: 1;
         grid-row-end: 1;
         margin-bottom: 40px;
+        z-index: 1;
         @include grid-media($medium-min) {
           margin-bottom: 90px;
         }
@@ -53,9 +58,10 @@
 
     }
     .project-info {
-        background-color: $overlay;
+        background-color: rgba(#383838, 0.8);
         grid-column: span 12;
         color: white;
+        z-index: 1;
 
         .container {
           display: block;
@@ -114,11 +120,11 @@
     }
 }
 
-.breadcrumbs {
+.project-breadcrumbs {
     margin-top: 10px;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     @include grid-media($medium-min) {
-      margin-top: 40px;
+      margin-top: 30px;
     }
 }
 
@@ -189,7 +195,13 @@
           margin: 0;
       }
       .service-list {
-        margin: 40px 0 50px;
+          margin-top: 30px;
+          padding-top: 30px;
+          border-top: $base-border;
+          @include grid-media($medium-min) {
+            margin-top: 50px;
+            padding-top: 50px;
+          }
           h3 {
               margin-bottom: 25px;
               text-align: center;
@@ -215,9 +227,11 @@
                 color: white;
                 border: 1px solid $blue;
               }
+              &:last-child {
+                margin-bottom: 40px;
+              }
               @include grid-media($medium-min) {
-                  display: inline-block;
-                  margin: 0 5px 20px 0;
+                  margin: 0 200px 10px 0;
                   white-space: nowrap;
               }
 

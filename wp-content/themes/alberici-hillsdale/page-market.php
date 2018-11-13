@@ -28,28 +28,38 @@ get_header();
                 $market_callout_post = get_sub_field('market_callouts_market');
                 $market_callout_image = get_sub_field('market_callouts_image');
 
-                if ( $market_callout_post ) : ?>
+                if ( $market_callout_post ) : 
+                    // override $post
+                    $post = $market_callout_post;
+                    setup_postdata( $post );?>
+
                     <div class="market-item">
-                        <?php
-                        $size = 'thumbnail'; // (thumbnail, medium, large, full or custom size)
-                        if( $market_callout_image ) {
-                            echo wp_get_attachment_image( $market_callout_image, $size );
-                        }
-                        if( $market_callout_post ):
-                            // override $post
-                            $post = $market_callout_post;
-                            setup_postdata( $post );
-                            ?>
-                            <h3><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
-                            <?php wp_reset_postdata(); // IMPORTANT - reset the $post object so the rest of the page works correctly ?>
-                        <?php endif;?>
+                        <a href="<?php the_permalink(); ?>">
+
+                            <?php
+                            if( $market_callout_image ) { ?>
+                                <div class="market-icon">
+                                <?php
+                                    // Basic auth for locked WPEngine staging
+                                    $auth = base64_encode("demo:alberici");
+                                    $context = stream_context_create([
+                                        "http" => [
+                                            "header" => "Authorization: Basic $auth"
+                                        ]
+                                    ]);
+                                    echo file_get_contents($market_callout_image, false, $context); ?>
+                                </div>
+                            <?php } ?>
+                                <h3><?php the_title(); ?></h3>
+                                <?php wp_reset_postdata(); ?>
+                            
+					    </a>
                     </div>
+
                 <?php endif;
             endwhile; ?>
             </div>
         <?php endif;?>
-        
-        <h2 class="headline-lines container"></h2>
 
         <h2 class="services-title container">Services</h2>
         <?php

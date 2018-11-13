@@ -4,6 +4,7 @@ html {
   font-size: $base-font-size;
   line-height: $base-line-height;
   box-sizing: border-box;
+  letter-spacing: .25px;
 }
 
 h1,
@@ -36,9 +37,12 @@ h1 {
 }
 
 h2 {
-  font-size: 28px;
+  font-size: 24px;
   font-weight: 300;
   margin-bottom: 15px;
+  @include grid-media($medium-min) {
+    font-size: 28px;
+  }
 }
 
 
@@ -88,7 +92,7 @@ a {
   color: #fff;
   text-decoration: none;
   &:hover {
-    color: $medium-gray;
+    color: $light-gray;
   }
 }
 

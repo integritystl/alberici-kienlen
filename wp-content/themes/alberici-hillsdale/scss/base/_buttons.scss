@@ -2,7 +2,8 @@ $_button-background-color: $primary-action-color;
 $_button-background-color-hover: shade($primary-action-color, 20%);
 
 #{$all-buttons},
-.btn {
+.btn,
+ {
   appearance: none;
   background-color: $_button-background-color;
   border: 0;
@@ -15,7 +16,7 @@ $_button-background-color-hover: shade($primary-action-color, 20%);
   -webkit-font-smoothing: antialiased;
   font-weight: 400;
   line-height: 1;
-  min-width: 400px;
+  min-width: 100%;
   padding: 15px 30px;
   text-align: left;
   text-decoration: none;
@@ -23,12 +24,71 @@ $_button-background-color-hover: shade($primary-action-color, 20%);
   user-select: none;
   vertical-align: middle;
   white-space: nowrap;
+  @include grid-media($medium-min) {
+    min-width: 400px;
+  }
 
   &:after {
     font-family: "Font Awesome 5 Pro";
   	font-weight: 300;
   	content:'\f061';
     float: right;
+  }
+
+  &:hover {
+    background-color: $_button-background-color-hover;
+    color: contrast-switch($_button-background-color-hover);
+  }
+
+  &:focus {
+    outline: $focus-outline;
+    outline-offset: $focus-outline-offset;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+
+    &:hover {
+      background-color: $_button-background-color;
+    }
+  }
+}
+
+.gform_footer {
+  appearance: none;
+  background-color: $_button-background-color;
+  border: 0;
+  border-radius: $base-border-radius;
+  color: white;
+  cursor: pointer;
+  display: inline-block;
+  font-family: $base-font-family;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  font-weight: 400;
+  line-height: 1;
+  min-width: 100%;
+  width: 100%;
+  //padding: 15px 30px;
+  text-align: left;
+  text-decoration: none;
+  transition: background-color $base-duration $base-timing;
+  user-select: none;
+  vertical-align: middle;
+  white-space: nowrap;
+  @include grid-media($medium-min) {
+    min-width: 400px;
+  }
+
+  &:before {
+    font-family: "Font Awesome 5 Pro";
+    font-weight: 300;
+    content:'\f061';
+    float: right;
+    right: 30px;
+    top: 15px;
+    position: relative;
   }
 
   &:hover {

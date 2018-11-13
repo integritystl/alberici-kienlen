@@ -3,7 +3,7 @@
  * The template for displaying single market
  *
  * @link https://developer.wordpress.org/themes/basics/template-hierarchy/#single-post
- * 
+ *
  * @package alberici-hillsdale
  */
 
@@ -15,31 +15,21 @@ $HeroImage = get_field('general_hero_featured_image');
 	<main id="main" class="site-main">
 		<?php
 		if ( have_posts() ) :
-			while ( have_posts() ) : 
+			while ( have_posts() ) :
 				the_post();?>
 				<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
-					<div class="hero-area" style="background-image: url(<?php if ($HeroImage): echo $HeroImage; endif; ?>);">
-						<h1 class="entry-title"><?php the_title(); ?></h1>
-					</div><!-- .hero-area -->
-							<nav class="container breadcrumbs" aria-label="Breadcrumb navigation">
-								<?php
-								if ( function_exists('yoast_breadcrumb') ) {
-									yoast_breadcrumb( '
-									<p id="breadcrumbs">','</p>
-									' );
-								}
-								?>
-							</nav>
-						<div class="market-detail">
-							<?php alberici_hillsdale_post_thumbnail(); ?>
-						
-							<div class="market-content">
-								<?php the_content(); ?>
-							</div><!-- .market-content -->
-						</div>
-					<!-- </div> -->
+					
+					<?php get_template_part( 'template-parts/hero' );?>
+					
+					<div class="market-detail">
+						<?php alberici_hillsdale_post_thumbnail(); ?>
+
+						<div class="market-content">
+							<?php the_content(); ?>
+						</div><!-- .market-content -->
+					</div>
 				</article><!-- #post-<?php the_ID(); ?> -->
-			
+
 
 			<?php endwhile;
 		else :
@@ -76,12 +66,11 @@ $HeroImage = get_field('general_hero_featured_image');
 				);
 				$latest_query = new WP_Query( $latest_args );
 
-			} 
-			
+			}
+
 			if ( $latest_query->have_posts() ) : ?>
 			<div class="container">
 				<div class="markets markets-latest-3">
-					<span class="headline-lines"></span>
 					<h2>Related Projects</h2>
 					<ul>
 						<?php while( $latest_query->have_posts() ) : $latest_query->the_post();

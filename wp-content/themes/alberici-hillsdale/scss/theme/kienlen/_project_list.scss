@@ -1,51 +1,161 @@
-.alberici-kienlen {
-    .projects-posts-container .filterbar {
-        border-bottom: none;
-    }
-    .table-projects{
-        table-layout: auto;
-        margin-top: 3%;
-        th {
-            padding: 3%;
-        }
-        tbody tr {
-            border-bottom: none;
-            h3 {
-                font-size: 16px;
-                font-weight: 400;
-            }
-            td {
-                padding: 3%;
-                span {
-                        word-break: break-word;
-                    }
-            }
-            td:first-child {
-                width: 45%;
-            }
+// .alberici-kienlen {
 
-        }
-        tr:nth-child(even) {
-            background-color: $light-gray;
-        }
+// }
+
+.projects-posts-container .filterbar {
+    border-bottom: none;
+    padding: 0;
+    margin: 0;
+}
+.table-projects{
+    table-layout: auto;
+    margin: 10px 0 20px;
+    th {
+        padding: 10px 0 10px 30px;
+        @extend h5;
     }
-    .table-projects-info {
-        display:flex;
-        justify-content: space-between;
-        ul {
-            li {
-                display: inline;
-                margin-right: 10px;
+    tbody tr {
+        border-bottom: none;
+        h3 {
+            font-size: 16px;
+            font-weight: 400;
+        }
+        td {
+            padding: 20px 10px 20px 30px;
+            font-size: 14px;
+
+            vertical-align: middle;
+            span {
+              word-break: break-word;
+            }
+            a {
+              //font-weight: 600;
+              color: $blue;
+              //text-decoration: none;
             }
         }
-        .table-projects-results {
-            display: flex;
-            .table-project-results--total {
-                &:before {
-                    content:'|';
-                    padding-left: 12px;
-                    padding-right: 8px;
-                }
+        td:first-child {
+            width: 44%;
+        }
+
+        td {
+            width: 28%;
+        }
+
+        .table-item--owner {
+          display: block;
+        }
+
+    }
+    tr:nth-child(even) {
+        background-color: #F2F2F2;
+    }
+}
+.table-projects-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    @include grid-media($medium-min) {
+      flex-direction: row;
+      justify-content: space-between;
+    }
+
+    font-size: 14px;
+    margin-bottom: 20px;
+
+    .previous {
+      a {
+        text-indent: -999999px;
+        display: inline-block;
+        height: 15px;
+        width: 15px;
+        position: relative;
+        text-indent: 30px;
+        overflow: hidden;
+        &:before {
+          font-family: "Font Awesome 5 Pro";
+          font-weight: 300;
+          content: '\f060';
+          position: absolute;
+          right: 0;
+          top: 0;
+          text-indent: 0px;
+        }
+        &:hover {
+          &:after {
+            color: $red;
+            cursor: pointer;
+          }
+        }
+      }
+      &.disabled {
+        opacity: .25;
+      }
+    }
+
+    .next {
+      a {
+        text-indent: -999999px;
+        display: inline-block;
+        height: 15px;
+        width: 15px;
+        position: relative;
+        text-indent: -30px;
+        overflow: hidden;
+        &:after {
+          font-family: "Font Awesome 5 Pro";
+          font-weight: 300;
+          content: '\f061';
+          position: absolute;
+          right: 0;
+          top: 0;
+          text-indent: 30px;
+        }
+        &:hover {
+          &:after {
+            color: $red;
+            cursor: pointer;
+          }
+        }
+      }
+      &.disabled {
+        opacity: .25;
+      }
+    }
+
+    ul {
+        li {
+            display: inline;
+            margin-right: 20px;
+            &:last-child {
+              margin-right: 0px;
+            }
+            a {
+              &:hover {
+                color: $red;
+                cursor: pointer;
+              }
+            }
+        }
+    }
+    .active {
+      a {
+        color: $red;
+      }
+    }
+    .table-projects-results {
+        display: flex;
+        margin-top: 15px;
+        @include grid-media($medium-min) {
+            margin: 0;
+        }
+
+        .table-project-results--total {
+            &:before {
+                content:'|';
+                padding-left: 12px;
+                padding-right: 8px;
             }
         }
     }

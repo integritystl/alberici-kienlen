@@ -1,5 +1,13 @@
 //This houses shared functionality used between CardList and Table List
 
+//Site Config Option that determines if the site is Hillsdale or Kienlen
+export function siteConfig(){
+  let currentSiteConfig = wpObj.site_config;
+  this.setState({
+    siteConfig: currentSiteConfig,
+  })
+}
+
 //Search Input Filter
 export function handleSearch(term) {
   this.setState({
@@ -60,8 +68,8 @@ export function resetFilter(){
   searchInput.value = '';
   //I'm cheating :\
   marketSelect.value = 'Market';
-  //Table List View also uses 'Service', so check if we're using its state
-  if (this.state.postDataType === 'news' || this.state.projects) {
+  //If we're on Kienlen, use Service
+  if (this.state.siteConfig === 'kienlen') {
     secondarySelect = document.getElementById('filterbar-select-service');
     secondarySelect.value = 'Service';
   } else {
@@ -69,15 +77,31 @@ export function resetFilter(){
     secondarySelect.value = 'Location';
   }
 
-  this.setState({
-    isFiltered: false,
-    filteredPosts: [],
-    filteredMarket: '',
-    filteredService: '',
-    filteredLocation: '',
-    hasSearchTerm: false,
-    searchTerm: ''
-  }, () => this.getPosts(this.buildAPILink()))
+  //Change the state based on the Page Template
+  if (this.state.projects) {
+    this.setState({
+      isFiltered: false,
+      filteredProjects: [],
+      filteredMarket: '',
+      filteredService: '',
+      hasSearchTerm: false,
+      searchTerm: '',
+      totalProjects: parseInt(wpObj.totalProjects.publish),
+    }, () => this.getPosts(this.buildAPILink()))
+  } else {
+    // It's CardListView
+    this.setState({
+      isFiltered: false,
+      filteredPosts: [],
+      filteredMarket: '',
+      filteredService: '',
+      filteredLocation: '',
+      hasSearchTerm: false,
+      searchTerm: '',
+      totalPosts: parseInt( document.getElementById('cardList_app').getAttribute('data-total') )
+    }, () => this.getPosts(this.buildAPILink()))
+  }
+
 }
 
 export function removeFilterTerm(currentTermId){
@@ -102,9 +126,8 @@ export function removeFilterTerm(currentTermId){
     }
 
 export function checkFilterStatus(){
-  //check which postDataType it is
   let secondaryFilter = '';
-  if (this.state.postDataType === 'news') {
+  if (this.state.siteConfig === 'kienlen') {
     secondaryFilter = !this.state.filteredService;
   } else {
     secondaryFilter = !this.state.filteredLocation;
@@ -122,6 +145,9 @@ export function getCatName(filteredCatId, categories){
   let catObj = categories.filter( (item) => {
     return item.id === filteredCatId;
   });
-  let filteredCatName = catObj[0].name;
+  let filteredCatName = "";
+  if(catObj[0]){
+    filteredCatName = catObj[0].name;
+  }
   return filteredCatName;
 }
