@@ -1,7 +1,7 @@
 //This is for the table view of Projects
 import React from 'react';
 import ReactPaginate from 'react-paginate';
-import {handleSearch, getMarketCats, getServiceCats, resetFilter, removeFilterTerm, checkFilterStatus, handleMarketChange, getCatName} from './helpers/helpers.js'
+import {siteConfig, handleSearch, getMarketCats, getServiceCats, resetFilter, removeFilterTerm, checkFilterStatus, handleMarketChange, getCatName} from './helpers/helpers.js'
 import FilterBar from './filterbar.js'
 import Table from './table.js'
 
@@ -19,6 +19,7 @@ class TableList extends React.Component {
     this.checkFilterStatus = checkFilterStatus.bind(this);
     this.handleMarketChange = handleMarketChange.bind(this);
     this.getCatName = getCatName.bind(this);
+    this.siteConfig = siteConfig.bind(this);
   }
 
   componentWillMount() {
@@ -35,6 +36,7 @@ class TableList extends React.Component {
         filteredService: '',
         hasSearchTerm: false,
         searchTerm: '',
+        siteConfig: '',
         totalProjects: parseInt(wpObj.totalProjects.publish),
       })
     }
@@ -44,6 +46,7 @@ class TableList extends React.Component {
     this.getPosts(this.buildAPILink());
     this.getMarketCats();
     this.getServiceCats();
+    this.siteConfig();
   }
 
   //Fetch posts
@@ -154,12 +157,20 @@ class TableList extends React.Component {
     let postGroup = '';
     let loadMoreBtn = '';
     let loadMoreLabel = 'View More Projects';
+    let secondarySelect = '';
 
     let allPosts = this.state.projects;
     let filterPosts = this.state.filteredProjects;
 
     let filteredServiceName = '';
     let filteredMarketName = '';
+
+    if (this.state.siteConfig === 'hillsdale') {
+      secondarySelect = 'location';
+    } else {
+      //Falls back to kienlen and its secondary select
+      secondarySelect = 'services';
+    }
 
     let currentPage = this.state.currentPage;
     //to display the current page we're on + make up for 0 index of pagination
@@ -236,7 +247,7 @@ class TableList extends React.Component {
           serviceFilter = {this.state.filteredService}
           serviceFilterName = {filteredServiceName}
           serviceChange = {this.handleServiceChange.bind(this)}
-          secondarySelect = 'services'
+          secondarySelect = {secondarySelect}
           isFiltered = {this.state.isFiltered}
           filterSearch = {this.handleSearch}
           resetFilter = {this.resetFilter}

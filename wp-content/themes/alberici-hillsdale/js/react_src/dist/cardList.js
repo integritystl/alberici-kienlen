@@ -11210,6 +11210,7 @@ module.exports = FilterBar;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.siteConfig = siteConfig;
 exports.handleSearch = handleSearch;
 exports.getMarketCats = getMarketCats;
 exports.handleMarketChange = handleMarketChange;
@@ -11219,6 +11220,14 @@ exports.removeFilterTerm = removeFilterTerm;
 exports.checkFilterStatus = checkFilterStatus;
 exports.getCatName = getCatName;
 //This houses shared functionality used between CardList and Table List
+
+//Site Config Option that determines if the site is Hillsdale or Kienlen
+function siteConfig() {
+  var currentSiteConfig = wpObj.site_config;
+  this.setState({
+    siteConfig: currentSiteConfig
+  });
+}
 
 //Search Input Filter
 function handleSearch(term) {
@@ -11290,8 +11299,8 @@ function resetFilter() {
   searchInput.value = '';
   //I'm cheating :\
   marketSelect.value = 'Market';
-  //Table List View also uses 'Service', so check if we're using its state
-  if (this.state.postDataType === 'news' || this.state.projects) {
+  //If we're on Kienlen, use Service
+  if (this.state.siteConfig === 'kienlen') {
     secondarySelect = document.getElementById('filterbar-select-service');
     secondarySelect.value = 'Service';
   } else {
@@ -11359,9 +11368,8 @@ function removeFilterTerm(currentTermId) {
 }
 
 function checkFilterStatus() {
-  //check which postDataType it is
   var secondaryFilter = '';
-  if (this.state.postDataType === 'news') {
+  if (this.state.siteConfig === 'kienlen') {
     secondaryFilter = !this.state.filteredService;
   } else {
     secondaryFilter = !this.state.filteredLocation;
@@ -23521,6 +23529,7 @@ var CardList = function (_React$Component) {
     _this.checkFilterStatus = _helpers.checkFilterStatus.bind(_this);
     _this.handleMarketChange = _helpers.handleMarketChange.bind(_this);
     _this.getCatName = _helpers.getCatName.bind(_this);
+    _this.siteConfig = _helpers.siteConfig.bind(_this);
     return _this;
   }
 
@@ -23541,6 +23550,7 @@ var CardList = function (_React$Component) {
       filteredLocation: '',
       hasSearchTerm: false,
       searchTerm: '',
+      siteConfig: '',
       totalPosts: parseInt(document.getElementById('cardList_app').getAttribute('data-total'))
     });
   };
@@ -23549,6 +23559,7 @@ var CardList = function (_React$Component) {
     this.getPosts(this.buildAPILink());
     this.getMarketCats();
     this.setFilterCats();
+    this.siteConfig();
   };
 
   //Fetch posts
@@ -23566,8 +23577,8 @@ var CardList = function (_React$Component) {
       if (this.state.hasSearchTerm) {
         baseLink += '&search=' + this.state.searchTerm;
       }
-      //Build the API call with the taxonomies that the Post Type uses
-      if (this.state.postDataType === 'news') {
+      //Build the API call with the taxonomies that the Site Configured uses
+      if (this.state.siteConfig === 'kienlen') {
         if (this.state.filteredMarket && this.state.filteredService) {
           baseLink += '&market_category=' + this.state.filteredMarket + '&service_category=' + this.state.filteredService;
         } else if (this.state.filteredService) {
@@ -23578,7 +23589,7 @@ var CardList = function (_React$Component) {
           return baseLink;
         }
       } else {
-        //Projects only uses Locations
+        // If it's not Kienlen, it's Hillsdale, which uses Locations
         if (this.state.filteredMarket && this.state.filteredLocation) {
           baseLink += '&market_category=' + this.state.filteredMarket + '&location_category=' + this.state.filteredLocation;
         } else if (this.state.filteredLocation) {
@@ -23590,6 +23601,7 @@ var CardList = function (_React$Component) {
         }
       }
     }
+    // console.log('buildAPILink', baseLink);
     baseLink += '&per_page=' + this.state.postsPerPage;
     return baseLink;
   };
@@ -23736,12 +23748,17 @@ var CardList = function (_React$Component) {
     var loadMoreLabel = '';
     var secondarySelect = '';
 
+    if (this.state.siteConfig === 'hillsdale') {
+      secondarySelect = 'location';
+    } else {
+      //Falls back to kienlen and its secondary select
+      secondarySelect = 'services';
+    }
+
     if (this.state.postDataType === 'news') {
       loadMoreLabel = 'View More Posts';
-      secondarySelect = 'services';
     } else {
       loadMoreLabel = 'View More Projects';
-      secondarySelect = 'location';
     }
 
     var allPosts = this.state.posts;

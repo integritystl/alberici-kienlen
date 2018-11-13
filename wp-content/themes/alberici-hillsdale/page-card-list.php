@@ -9,6 +9,8 @@
  */
 
 $postDataType =	get_field('post_list_data_type');
+//Check which site we're configured to for the Filter data
+$theme_config = get_field('set_site', 'options');
 
 get_header();
 	if(have_posts()): while(have_posts()): the_post();
@@ -22,13 +24,17 @@ get_header();
 			//Market as a custom taxonomy is on both Projects and News. The other filter varies.
 			if ($postDataType === 'is_news') {
 				$postData = 'news';
-				$filterCat = 'service';
 				$totalPosts = wp_count_posts();
 			} else {
 				//assume it's Projects
 				$postData = 'projects';
-				$filterCat = 'location';
 				$totalPosts = wp_count_posts('project');
+			}
+
+			if ( $theme_config === 'kienlen') {
+				$filterCat = 'service';
+			} else {
+				$filterCat = 'location';
 			}
 			?>
 			<div id="cardList_app" data-post="<?php echo $postData; ?>" data-filter="<?php echo $filterCat; ?>" data-total="<?php echo $totalPosts->publish; ?>"></div>

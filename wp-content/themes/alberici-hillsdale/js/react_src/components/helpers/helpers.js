@@ -1,5 +1,13 @@
 //This houses shared functionality used between CardList and Table List
 
+//Site Config Option that determines if the site is Hillsdale or Kienlen
+export function siteConfig(){
+  let currentSiteConfig = wpObj.site_config;
+  this.setState({
+    siteConfig: currentSiteConfig,
+  })
+}
+
 //Search Input Filter
 export function handleSearch(term) {
   this.setState({
@@ -60,8 +68,8 @@ export function resetFilter(){
   searchInput.value = '';
   //I'm cheating :\
   marketSelect.value = 'Market';
-  //Table List View also uses 'Service', so check if we're using its state
-  if (this.state.postDataType === 'news' || this.state.projects) {
+  //If we're on Kienlen, use Service
+  if (this.state.siteConfig === 'kienlen') {
     secondarySelect = document.getElementById('filterbar-select-service');
     secondarySelect.value = 'Service';
   } else {
@@ -118,9 +126,8 @@ export function removeFilterTerm(currentTermId){
     }
 
 export function checkFilterStatus(){
-  //check which postDataType it is
   let secondaryFilter = '';
-  if (this.state.postDataType === 'news') {
+  if (this.state.siteConfig === 'kienlen') {
     secondaryFilter = !this.state.filteredService;
   } else {
     secondaryFilter = !this.state.filteredLocation;
