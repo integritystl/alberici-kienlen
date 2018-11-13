@@ -165,3 +165,61 @@ select {
 .job-callout .gform_wrapper {
   max-width: 435px;
 }
+
+li.file-upload {
+  margin-top: -5px;
+	label {
+		clip:auto!important;
+		-webkit-clip-path: auto!important;
+		clip-path: none!important;
+		height: auto!important;
+		overflow: hidden!important;
+		padding: 0!important;
+		position: relative!important;
+		white-space: nowrap!important;
+		width: auto!important;
+    font-weight: 300;
+	}
+
+  .gform_drop_area {
+    background: rgba($blue, .05);
+    padding: 15px 20px;
+    border: $base-border;
+    border-style: dashed;
+    font-size: 14px;
+
+
+    .gform_drop_instructions,
+    .moxie-shim,
+    .ginput_preview {
+      font-weight: 300;
+      //opacity: .75;
+    }
+
+    input[type="button"] {
+      padding: 8px 10px;
+      font-size: 14px;
+      min-width: auto;
+      background-color: $blue;
+      margin-left: 8px;
+    }
+  }
+
+  .ginput_preview:first-of-type {
+    margin-top: 20px;
+  }
+
+  .ginput_preview {
+    strong {
+      font-weight: 300;
+      font-size: 14px;
+    }
+  }
+
+  .validation_message {
+    margin-top: 10px;
+    li {
+      margin-bottom: 0px!important;
+    }
+  }
+}
