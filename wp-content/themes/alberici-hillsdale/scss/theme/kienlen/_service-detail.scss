@@ -18,21 +18,12 @@
     }
     .services-latest-3 {
         margin: 0 15px;
+        border-top: $base-border;
         @include grid-media($medium-min) {
+            padding-top: 60px;
             margin: auto;
         }
-        .headline-lines {
-            &:after {
-                display: block;
-                content: " ";
-                background-color: $blue;
-                opacity: 0.5;
-                height: 1px;
-                width: 100%;
-            }
-        }
         h2 {
-            margin-top: 30px;
             color: $blue;
         }
         ul {
