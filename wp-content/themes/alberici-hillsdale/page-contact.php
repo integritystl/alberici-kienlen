@@ -37,7 +37,7 @@ $ContactForm = get_field('contact_people_form');
                         $ContactFax = get_sub_field('contact_people_fax');
                         ?>
                         <?php if ($ContactProfileImg) : ?>
-                          <?php echo wp_get_attachment_image($ContactProfileImg, 'large'); ?>
+                          <?php echo wp_get_attachment_image($ContactProfileImg, 'thumbnail'); ?>
                         <?php endif; ?>
                         <?php if ($ContactType) : ?>
                           <p class="contact-type"><?php echo $ContactType; ?></p>
