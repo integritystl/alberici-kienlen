@@ -13,7 +13,7 @@ class ACFTemplateFields
 	self::setupJobsCalloutFields();
 	self::setupContactPeopleFields();
 	self::setupMarketCalloutsFields();
-	self::setupOurOwnersFields();
+	self::setupOurClientsFields();
   }
 
   private static function setupHomePageFields()
@@ -1232,17 +1232,17 @@ class ACFTemplateFields
 
 		endif;
   }
-  private static function setupOurOwnersFields() {
+  private static function setupOurClientsFields() {
 	if( function_exists('acf_add_local_field_group') ):
 
 		acf_add_local_field_group(array(
 			'key' => 'group_5bc8b89510051',
-			'title' => 'Our Owners',
+			'title' => 'Our Clients',
 			'fields' => array(
 				array(
 					'key' => 'field_5bc8b97871247',
-					'label' => 'Our Owners',
-					'name' => 'our_owners',
+					'label' => 'Our Clients',
+					'name' => 'our_clients',
 					'type' => 'repeater',
 					'instructions' => '',
 					'required' => 0,
@@ -1261,7 +1261,7 @@ class ACFTemplateFields
 						array(
 							'key' => 'field_5bc8b98771248',
 							'label' => 'Image',
-							'name' => 'our_owners_image',
+							'name' => 'our_clients_image',
 							'type' => 'image',
 							'instructions' => '',
 							'required' => 0,
