@@ -222,7 +222,7 @@ function alberici_hillsdale_scripts() {
 				'site_config' => get_field('set_site', 'options')
 			));
 	}
-	if (is_page_template('page-projects.php')) {
+	if (is_page_template('page-project-table-view.php')) {
 			wp_register_script('alberici-hillsdale-project-table', get_template_directory_uri() . '/js/react_src/dist/projects.js', array(), time(), true );
 			wp_enqueue_script('alberici-hillsdale-project-table', get_template_directory_uri() . '/js/react_src/dist/projects.js', array(), time(), true );
 			wp_localize_script('alberici-hillsdale-project-table', 'wpObj', array(

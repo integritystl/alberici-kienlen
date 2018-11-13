@@ -62,8 +62,8 @@ class CardList extends React.Component {
         if (this.state.hasSearchTerm) {
           baseLink += `&search=${this.state.searchTerm}`;
         }
-        //Build the API call with the taxonomies that the Post Type uses
-        if (this.state.postDataType === 'news') {
+        //Build the API call with the taxonomies that the Site Configured uses
+        if (this.state.siteConfig === 'kienlen') {
           if (this.state.filteredMarket && this.state.filteredService) {
             baseLink += `&market_category=${this.state.filteredMarket}&service_category=${this.state.filteredService}`;
           } else if (this.state.filteredService) {
@@ -74,7 +74,7 @@ class CardList extends React.Component {
             return baseLink;
           }
         } else {
-          //Projects only uses Locations
+          // If it's not Kienlen, it's Hillsdale, which uses Locations
           if (this.state.filteredMarket && this.state.filteredLocation) {
             baseLink += `&market_category=${this.state.filteredMarket}&location_category=${this.state.filteredLocation}`;
           } else if (this.state.filteredLocation) {
@@ -86,7 +86,7 @@ class CardList extends React.Component {
           }
         }
       }
-      console.log('buildAPILink', baseLink);
+      // console.log('buildAPILink', baseLink);
       baseLink += `&per_page=${this.state.postsPerPage}`
       return baseLink;
     }

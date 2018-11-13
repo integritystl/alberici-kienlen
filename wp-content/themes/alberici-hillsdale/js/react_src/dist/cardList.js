@@ -11224,7 +11224,6 @@ exports.getCatName = getCatName;
 //Site Config Option that determines if the site is Hillsdale or Kienlen
 function siteConfig() {
   var currentSiteConfig = wpObj.site_config;
-  console.log('site config?', currentSiteConfig);
   this.setState({
     siteConfig: currentSiteConfig
   });
@@ -11300,8 +11299,8 @@ function resetFilter() {
   searchInput.value = '';
   //I'm cheating :\
   marketSelect.value = 'Market';
-  //Table List View also uses 'Service', so check if we're using its state
-  if (this.state.postDataType === 'news' || this.state.projects) {
+  //If we're on Kienlen, use Service
+  if (this.state.siteConfig === 'kienlen') {
     secondarySelect = document.getElementById('filterbar-select-service');
     secondarySelect.value = 'Service';
   } else {
@@ -11369,9 +11368,8 @@ function removeFilterTerm(currentTermId) {
 }
 
 function checkFilterStatus() {
-  //check which postDataType it is
   var secondaryFilter = '';
-  if (this.state.postDataType === 'news') {
+  if (this.state.siteConfig === 'kienlen') {
     secondaryFilter = !this.state.filteredService;
   } else {
     secondaryFilter = !this.state.filteredLocation;
@@ -23579,8 +23577,8 @@ var CardList = function (_React$Component) {
       if (this.state.hasSearchTerm) {
         baseLink += '&search=' + this.state.searchTerm;
       }
-      //Build the API call with the taxonomies that the Post Type uses
-      if (this.state.postDataType === 'news') {
+      //Build the API call with the taxonomies that the Site Configured uses
+      if (this.state.siteConfig === 'kienlen') {
         if (this.state.filteredMarket && this.state.filteredService) {
           baseLink += '&market_category=' + this.state.filteredMarket + '&service_category=' + this.state.filteredService;
         } else if (this.state.filteredService) {
@@ -23591,7 +23589,7 @@ var CardList = function (_React$Component) {
           return baseLink;
         }
       } else {
-        //Projects only uses Locations
+        // If it's not Kienlen, it's Hillsdale, which uses Locations
         if (this.state.filteredMarket && this.state.filteredLocation) {
           baseLink += '&market_category=' + this.state.filteredMarket + '&location_category=' + this.state.filteredLocation;
         } else if (this.state.filteredLocation) {
@@ -23603,7 +23601,7 @@ var CardList = function (_React$Component) {
         }
       }
     }
-    console.log('buildAPILink', baseLink);
+    // console.log('buildAPILink', baseLink);
     baseLink += '&per_page=' + this.state.postsPerPage;
     return baseLink;
   };

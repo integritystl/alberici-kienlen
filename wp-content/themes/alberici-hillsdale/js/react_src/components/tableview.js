@@ -157,12 +157,20 @@ class TableList extends React.Component {
     let postGroup = '';
     let loadMoreBtn = '';
     let loadMoreLabel = 'View More Projects';
+    let secondarySelect = '';
 
     let allPosts = this.state.projects;
     let filterPosts = this.state.filteredProjects;
 
     let filteredServiceName = '';
     let filteredMarketName = '';
+
+    if (this.state.siteConfig === 'hillsdale') {
+      secondarySelect = 'location';
+    } else {
+      //Falls back to kienlen and its secondary select
+      secondarySelect = 'services';
+    }
 
     let currentPage = this.state.currentPage;
     //to display the current page we're on + make up for 0 index of pagination
@@ -239,7 +247,7 @@ class TableList extends React.Component {
           serviceFilter = {this.state.filteredService}
           serviceFilterName = {filteredServiceName}
           serviceChange = {this.handleServiceChange.bind(this)}
-          secondarySelect = 'services'
+          secondarySelect = {secondarySelect}
           isFiltered = {this.state.isFiltered}
           filterSearch = {this.handleSearch}
           resetFilter = {this.resetFilter}
