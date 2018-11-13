@@ -1,6 +1,6 @@
 <?php
 /**
- * Template Name: Projects List
+ * Template Name: Project Table View
  *
  * This template renders the Projects Post Types through a small React App
  *

@@ -11210,6 +11210,7 @@ module.exports = FilterBar;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.siteConfig = siteConfig;
 exports.handleSearch = handleSearch;
 exports.getMarketCats = getMarketCats;
 exports.handleMarketChange = handleMarketChange;
@@ -11219,6 +11220,14 @@ exports.removeFilterTerm = removeFilterTerm;
 exports.checkFilterStatus = checkFilterStatus;
 exports.getCatName = getCatName;
 //This houses shared functionality used between CardList and Table List
+
+//Site Config Option that determines if the site is Hillsdale or Kienlen
+function siteConfig() {
+  var currentSiteConfig = wpObj.site_config;
+  this.setState({
+    siteConfig: currentSiteConfig
+  });
+}
 
 //Search Input Filter
 function handleSearch(term) {
@@ -11290,8 +11299,8 @@ function resetFilter() {
   searchInput.value = '';
   //I'm cheating :\
   marketSelect.value = 'Market';
-  //Table List View also uses 'Service', so check if we're using its state
-  if (this.state.postDataType === 'news' || this.state.projects) {
+  //If we're on Kienlen, use Service
+  if (this.state.siteConfig === 'kienlen') {
     secondarySelect = document.getElementById('filterbar-select-service');
     secondarySelect.value = 'Service';
   } else {
@@ -11359,9 +11368,8 @@ function removeFilterTerm(currentTermId) {
 }
 
 function checkFilterStatus() {
-  //check which postDataType it is
   var secondaryFilter = '';
-  if (this.state.postDataType === 'news') {
+  if (this.state.siteConfig === 'kienlen') {
     secondaryFilter = !this.state.filteredService;
   } else {
     secondaryFilter = !this.state.filteredLocation;
@@ -23528,6 +23536,7 @@ var TableList = function (_React$Component) {
     _this.checkFilterStatus = _helpers.checkFilterStatus.bind(_this);
     _this.handleMarketChange = _helpers.handleMarketChange.bind(_this);
     _this.getCatName = _helpers.getCatName.bind(_this);
+    _this.siteConfig = _helpers.siteConfig.bind(_this);
     return _this;
   }
 
@@ -23545,6 +23554,7 @@ var TableList = function (_React$Component) {
       filteredService: '',
       hasSearchTerm: false,
       searchTerm: '',
+      siteConfig: '',
       totalProjects: parseInt(wpObj.totalProjects.publish)
     });
   };
@@ -23553,6 +23563,7 @@ var TableList = function (_React$Component) {
     this.getPosts(this.buildAPILink());
     this.getMarketCats();
     this.getServiceCats();
+    this.siteConfig();
   };
 
   //Fetch posts
@@ -23683,12 +23694,20 @@ var TableList = function (_React$Component) {
     var postGroup = '';
     var loadMoreBtn = '';
     var loadMoreLabel = 'View More Projects';
+    var secondarySelect = '';
 
     var allPosts = this.state.projects;
     var filterPosts = this.state.filteredProjects;
 
     var filteredServiceName = '';
     var filteredMarketName = '';
+
+    if (this.state.siteConfig === 'hillsdale') {
+      secondarySelect = 'location';
+    } else {
+      //Falls back to kienlen and its secondary select
+      secondarySelect = 'services';
+    }
 
     var currentPage = this.state.currentPage;
     //to display the current page we're on + make up for 0 index of pagination
@@ -23789,7 +23808,7 @@ var TableList = function (_React$Component) {
         serviceFilter: this.state.filteredService,
         serviceFilterName: filteredServiceName,
         serviceChange: this.handleServiceChange.bind(this),
-        secondarySelect: 'services',
+        secondarySelect: secondarySelect,
         isFiltered: this.state.isFiltered,
         filterSearch: this.handleSearch,
         resetFilter: this.resetFilter,
