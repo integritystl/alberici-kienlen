@@ -91,6 +91,21 @@ class FilterBar extends React.Component {
       resetBtn = <button onClick={() => this.resetFilter() } className="btn-reset-filter">Clear Filters</button>;
     }
 
+    //Small cheat because client doesn't have any Markets currently at launch
+    let marketSelect = '';
+    if (this.props.markets && this.props.markets.length) {
+      marketSelect =  <div className="select">
+                  <label className="screen-reader-text" htmlFor="filterbar-select-market">
+                    Market
+                  </label>
+                  <Select label="Market"
+                    selectID= "filterbar-select-market"
+                    options={this.props.markets}
+                    onFilterChange={this.filterMarkets}
+                  />
+              </div>
+    }
+
     return(
       <div className="filterbar">
         <label className="screen-reader-text" htmlFor="filterbar-search">
@@ -102,16 +117,7 @@ class FilterBar extends React.Component {
           onChange={(event) => this.filterSearch(event)}
         />
 
-        <div className="select">
-          <label className="screen-reader-text" htmlFor="filterbar-select-market">
-            Market
-          </label>
-          <Select label="Market"
-            selectID= "filterbar-select-market"
-            options={this.props.markets}
-            onFilterChange={this.filterMarkets}
-          />
-        </div>
+        {marketSelect}
 
         {secondarySelect}
 
