@@ -11156,6 +11156,25 @@ var FilterBar = function (_React$Component) {
       );
     }
 
+    //Small cheat because client doesn't have any Markets currently at launch
+    var marketSelect = '';
+    if (this.props.markets && this.props.markets.length) {
+      marketSelect = _react2.default.createElement(
+        'div',
+        { className: 'select' },
+        _react2.default.createElement(
+          'label',
+          { className: 'screen-reader-text', htmlFor: 'filterbar-select-market' },
+          'Market'
+        ),
+        _react2.default.createElement(_filterSelect2.default, { label: 'Market',
+          selectID: 'filterbar-select-market',
+          options: this.props.markets,
+          onFilterChange: this.filterMarkets
+        })
+      );
+    }
+
     return _react2.default.createElement(
       'div',
       { className: 'filterbar' },
@@ -11171,20 +11190,7 @@ var FilterBar = function (_React$Component) {
           return _this2.filterSearch(event);
         }
       }),
-      _react2.default.createElement(
-        'div',
-        { className: 'select' },
-        _react2.default.createElement(
-          'label',
-          { className: 'screen-reader-text', htmlFor: 'filterbar-select-market' },
-          'Market'
-        ),
-        _react2.default.createElement(_filterSelect2.default, { label: 'Market',
-          selectID: 'filterbar-select-market',
-          options: this.props.markets,
-          onFilterChange: this.filterMarkets
-        })
-      ),
+      marketSelect,
       secondarySelect,
       _react2.default.createElement(
         'div',
