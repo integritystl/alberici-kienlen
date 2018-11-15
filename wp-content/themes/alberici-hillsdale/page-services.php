@@ -24,7 +24,9 @@ get_header();
         <?php
         $servicePosts = get_posts( array(
             'post_type' => 'service',
-            'posts_per_page' => 6
+            'posts_per_page' => 6,
+            'orderby'=>'title',
+            'order'=>'ASC'
         ) );
         
         if ( $servicePosts ) { ?>
