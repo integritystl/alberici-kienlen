@@ -65,9 +65,12 @@ export function resetFilter(){
   let marketSelect = document.getElementById('filterbar-select-market');
   let secondarySelect = '';
 
+  //Check if Market is being used before setting default value
+  if (marketSelect) {
+    marketSelect.value = 'Market';
+  }
   searchInput.value = '';
-  //I'm cheating :\
-  marketSelect.value = 'Market';
+
   //If we're on Kienlen, use Service
   if (this.state.siteConfig === 'kienlen') {
     secondarySelect = document.getElementById('filterbar-select-service');
