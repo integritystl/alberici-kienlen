@@ -268,7 +268,7 @@
     }
 
     @include grid-media($medium-min) {
-      position: absolute;
+      // position: absolute;
       right: 0px;
       bottom: 0px;
       max-width: 48%;

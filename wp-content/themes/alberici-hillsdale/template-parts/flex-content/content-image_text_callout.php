@@ -19,8 +19,8 @@ $imageTextButtonLink = get_sub_field('button_link');
             <a href="<?php echo $imageTextButtonLink; ?>" class="btn"><?php echo $imageTextButtonText; ?></a>
         <?php endif; ?>
     </div>
-  </div>
-  <div class="image-text_img">
-      <?php echo wp_get_attachment_image($imageTextImage, 'full'); ?>
+    <div class="image-text_img">
+        <?php echo wp_get_attachment_image($imageTextImage, 'full'); ?>
+    </div>
   </div>
 </div>
