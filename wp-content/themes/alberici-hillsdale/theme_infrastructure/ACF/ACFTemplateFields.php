@@ -1240,6 +1240,25 @@ class ACFTemplateFields
 			'title' => 'Our Clients',
 			'fields' => array(
 				array(
+					'key' => 'field_5bf433c2c87d3',
+					'label' => 'Title',
+					'name' => 'our_client_title',
+					'type' => 'text',
+					'instructions' => '',
+					'required' => 0,
+					'conditional_logic' => 0,
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'default_value' => '',
+					'placeholder' => '',
+					'prepend' => '',
+					'append' => '',
+					'maxlength' => '',
+				),
+				array(
 					'key' => 'field_5bc8b97871247',
 					'label' => 'Our Clients',
 					'name' => 'our_clients',
