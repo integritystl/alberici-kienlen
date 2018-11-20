@@ -46,10 +46,10 @@ $ContactForm = get_field('contact_people_form');
                           <p><?php echo $ContactName; ?></p>
                         <?php endif; ?>
                         <?php if ($ContactEmail) : ?>
-                          <p>Email: <?php echo $ContactEmail; ?></p>
+                          <p><?php echo $ContactEmail; ?></p>
                         <?php endif; ?>
                         <?php if ($ContactOfficePhone) : ?>
-                          <p>Office: <?php echo $ContactOfficePhone; ?></p>
+                          <p><?php echo $ContactOfficePhone; ?></p>
                         <?php endif; ?>
                         <?php if ($ContactFax) : ?>
                           <p>Fax: <?php echo $ContactFax; ?></p>
