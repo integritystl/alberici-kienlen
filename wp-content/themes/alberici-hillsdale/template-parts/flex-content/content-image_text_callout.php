@@ -20,7 +20,7 @@ $imageTextButtonLink = get_sub_field('button_link');
         <?php endif; ?>
     </div>
     <div class="image-text_img">
-        <?php echo wp_get_attachment_image($imageTextImage, 'full'); ?>
+        <?php echo wp_get_attachment_image($imageTextImage, 'large'); ?>
     </div>
   </div>
 </div>
