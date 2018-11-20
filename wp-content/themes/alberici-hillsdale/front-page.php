@@ -64,6 +64,10 @@ $theme_config = get_field('set_site', 'options');
 								$news_page_link = get_field('news_page_link', 'option');
 								$market_taxonomy = get_the_terms( get_the_ID(), 'market_category' );
 								$service_taxonomy = get_the_terms( get_the_ID(), 'service_category' );
+								$base_category = get_the_terms( get_the_ID(), 'category' );
+								if ($base_category && $base_category[0]->name !== 'Uncategorized' && $base_category[0]->name !== 'Project Update' ) { ?>
+									<p><?php echo $base_category[0]->name;?></p>
+								<?php }
 								if ($market_taxonomy) { ?>
 									<p><?php echo $market_taxonomy[0]->name;?></p>
 								<?php }
