@@ -13,6 +13,7 @@
  */
 
 get_header();
+$client_title = get_field('our_client_title');
 ?>
 
 	<div id="primary" class="content-area">
@@ -41,7 +42,7 @@ get_header();
 
 			<?php if( have_rows('our_clients') ): ?>
 			<div class="our-clients container">
-				<h2>Projects Include</h2>
+				<h2><?php echo $client_title; ?></h2>
 				<div class="clients-img">
 				<?php while ( have_rows('our_clients') ) : the_row(); ?>
 					<?php echo wp_get_attachment_image(get_sub_field('our_clients_image'), 'medium'); ?>
