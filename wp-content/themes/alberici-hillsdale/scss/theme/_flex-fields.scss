@@ -268,11 +268,10 @@
     }
 
     @include grid-media($medium-min) {
-      position: absolute;
       right: 0px;
       bottom: 0px;
       max-width: 48%;
-      margin: 0;
+      margin: 0 0 0 22px;
     }
   }
 }
