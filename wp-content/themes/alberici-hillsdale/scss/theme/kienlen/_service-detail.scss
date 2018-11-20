@@ -80,10 +80,11 @@
             } 
         }
         .btn {
-            color: white;
-            font-weight: 400;
             margin-left: 0;
             min-width: 100%;
+            color: white;
+            font-weight: 400;
+            text-transform: uppercase;
             @include grid-media($small-min) {
                 margin-left: 29%;
                 min-width: 400px;
