@@ -72,9 +72,9 @@ $HeroImage = get_field('general_hero_featured_image');
 						<?php endwhile; ?>
 					</div>
 					<a href="<?php echo get_home_url(); ?>/projects" class="btn"> view more projects </a>
-				<?php endif; wp_reset_postdata(); ?>
-				
-			</div>
+				</div>
+			<?php endif; wp_reset_postdata(); ?>
+			
 			<?php get_template_part( 'template-parts/footer-callout' ); ?>
 		</main><!-- #main -->
 	</div><!-- #primary -->
