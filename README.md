@@ -19,7 +19,9 @@
 
 ## Overview
 
-This is a WordPress site for Alberici Hillsdale Fabricators. It's built so that we can use it on more than 1 site. The other site this is build for is Kienlan Constructors.
+This is a WordPress site for Alberici Hillsdale Fabricators. It's built so that we can use it on more than 1 site. The other site this is built for is Kienlan Constructors.
+
+Because this repo is used on more than 1 site, you'll occasionally need to pull content data from one or the other. Saving a profile in Migrate DB Pro for each site helps speed this up a bit.
 
 ## :money_with_wings: Working with Code
 
@@ -63,13 +65,13 @@ We're using the `ACF to Rest API` plugin to get ACF data on the React components
 ## React
 We have some small React-powered sections of the site for filtering of Posts and Project Custom Post Types. These files live in `themes/alberici-hillsdale/js/react_src` and are compiled using Webpack inside the `webpack.config.js` file in the root directory.
 
-
+To compile the changes made to the React files, run `npm run start` in your Terminal.
 
 ---
 ### :memo: Resources / Documentation
 - [Wireframes](https://drive.google.com/open?id=1ZdQqsbJduhIipOJydXcZeBZRqI3E-m2i)
 - [XD Designs](https://xd.adobe.com/spec/88fb363a-09a1-45ec-62f3-c2798da6b202-feca/screen/9c6546c3-4eed-4a0d-80b7-f9cbcbaad18f/Kienlen-Homepage/)
-- [Ticket Board in Axosoft](https://integritystl.axosoft.com/)
+- [Ticket Board](https://www.pivotaltracker.com/n/projects/2225349)
 - [Basecamp](https://basecamp.com/1771322/projects/15334547)
 - [Google Drive](https://drive.google.com/drive/folders/167tGb1-gzrTDeE2krt5lSgczEEhsNTtJ)
 - [Cost Summary](https://docs.google.com/spreadsheets/d/1OiuAjvElrhwzCJ_entVzQn-115cSZRV92oel30lpIUY/edit#gid=1352354711)
