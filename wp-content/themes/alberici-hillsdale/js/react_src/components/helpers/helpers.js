@@ -1,3 +1,5 @@
+import {localStorageKeys, deleteLocalStorage, setLocalStorageItem} from './localstorage-handler.js'
+
 //This houses shared functionality used between CardList and Table List
 
 //Site Config Option that determines if the site is Hillsdale or Kienlen
@@ -43,6 +45,7 @@ export function handleMarketChange(id) {
     isFiltered: true,
     loading: true
   }, () => this.getFilteredPosts(this.buildAPILink() ));
+  setLocalStorageItem(localStorageKeys.cards_market, id)
 }
 
 //Fetch our Services Categories
@@ -64,6 +67,8 @@ export function resetFilter(){
   let searchInput = document.getElementById('filterbar-search');
   let marketSelect = document.getElementById('filterbar-select-market');
   let secondarySelect = '';
+
+  deleteLocalStorage();
 
   //Check if Market is being used before setting default value
   if (marketSelect) {

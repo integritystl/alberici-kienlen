@@ -10967,7 +10967,7 @@ var Select = function (_React$Component) {
   Select.prototype.componentWillMount = function componentWillMount() {
     var defaultValue = this.props.defaultValue ? this.props.defaultValue : this.props.label;
     this.setState({
-      selected: this.props.label
+      selected: this.props.selected ? this.props.selected : this.props.label
     });
   };
 
@@ -11091,6 +11091,7 @@ var FilterBar = function (_React$Component) {
             'Service'
           ),
           _react2.default.createElement(_filterSelect2.default, { label: 'Service',
+            selected: this.props.serviceFilter,
             selectID: 'filterbar-select-service',
             options: this.props.services,
             onFilterChange: this.filterServices
@@ -11108,6 +11109,7 @@ var FilterBar = function (_React$Component) {
           'Location'
         ),
         _react2.default.createElement(_filterSelect2.default, { label: 'Location',
+          selected: this.props.locationFilter,
           selectID: 'filterbar-select-location',
           options: this.props.locations,
           onFilterChange: this.filterLocations
@@ -11168,6 +11170,7 @@ var FilterBar = function (_React$Component) {
           'Market'
         ),
         _react2.default.createElement(_filterSelect2.default, { label: 'Market',
+          selected: this.props.marketFilter,
           selectID: 'filterbar-select-market',
           options: this.props.markets,
           onFilterChange: this.filterMarkets
@@ -11186,6 +11189,7 @@ var FilterBar = function (_React$Component) {
       _react2.default.createElement('input', { id: 'filterbar-search',
         type: 'search',
         placeholder: 'Search by keywords',
+        value: this.props.searchTerm,
         onChange: function onChange(event) {
           return _this2.filterSearch(event);
         }
@@ -11278,6 +11282,7 @@ function handleMarketChange(id) {
   }, function () {
     return _this3.getFilteredPosts(_this3.buildAPILink());
   });
+  localStorage.setItem(localStorageKeys.cards_market, id);
 }
 
 //Fetch our Services Categories
@@ -11294,6 +11299,22 @@ function getServiceCats() {
   });
 }
 
+var localStorageKeys = exports.localStorageKeys = {
+  cards_search: 'CardSearch',
+  cards_market: 'CardMarket',
+  cards_location: 'CardLocation',
+  cards_service: 'CardService',
+  cards_page: 'CardsPage'
+};
+
+function deleteLocalStorage() {
+  Object.keys(localStorageKeys).forEach(function (key, index) {
+    if (localStorage.getItem(localStorageKeys[key])) {
+      localStorage.removeItem(localStorageKeys[key]);
+    }
+  });
+}
+
 function resetFilter() {
   var _this5 = this;
 
@@ -11301,6 +11322,8 @@ function resetFilter() {
   var searchInput = document.getElementById('filterbar-search');
   var marketSelect = document.getElementById('filterbar-select-market');
   var secondarySelect = '';
+
+  deleteLocalStorage();
 
   //Check if Market is being used before setting default value
   if (marketSelect) {
@@ -23543,22 +23566,31 @@ var CardList = function (_React$Component) {
   }
 
   CardList.prototype.componentWillMount = function componentWillMount() {
+    var defaultSearch = localStorage.getItem(_helpers.localStorageKeys.cards_search);
+    var defaultMarket = localStorage.getItem(_helpers.localStorageKeys.cards_market);
+    var defaultLocation = localStorage.getItem(_helpers.localStorageKeys.cards_location);
+    var defaultService = localStorage.getItem(_helpers.localStorageKeys.cards_service);
+    var defaultOffset = localStorage.getItem(_helpers.localStorageKeys.cards_page);
+
+    var isFiltered = !!defaultSearch || !!defaultMarket || !!defaultLocation || !!defaultService || !!defaultOffset;
+
     this.setState({
       loading: true,
       currentPage: 1,
+      defaultOffset: defaultOffset ? defaultOffset : null,
       posts: [],
       postsPerPage: 6,
       postDataType: document.getElementById('cardList_app').getAttribute('data-post'),
       market_categories: [],
       service_categories: [],
       location_categories: [],
-      isFiltered: false,
+      isFiltered: isFiltered,
       filteredPosts: [],
-      filteredMarket: '',
-      filteredService: '',
-      filteredLocation: '',
-      hasSearchTerm: false,
-      searchTerm: '',
+      filteredMarket: defaultMarket ? defaultMarket : '',
+      filteredService: defaultService ? defaultService : '',
+      filteredLocation: defaultLocation ? defaultLocation : '',
+      hasSearchTerm: !!defaultSearch,
+      searchTerm: defaultSearch ? defaultSearch : '',
       siteConfig: '',
       totalPosts: parseInt(document.getElementById('cardList_app').getAttribute('data-total'))
     });
@@ -23568,7 +23600,12 @@ var CardList = function (_React$Component) {
     this.getPosts(this.buildAPILink());
     this.getMarketCats();
     this.setFilterCats();
-    this.siteConfig();
+    this.siteConfig(this);
+  };
+
+  CardList.prototype.filterSearch = function filterSearch(term) {
+    this.handleSearch(term);
+    localStorage.setItem(_helpers.localStorageKeys.cards_search, term);
   };
 
   //Fetch posts
@@ -23594,8 +23631,6 @@ var CardList = function (_React$Component) {
           baseLink += '&service_category=' + this.state.filteredService;
         } else if (this.state.filteredMarket) {
           baseLink += '&market_category=' + this.state.filteredMarket;
-        } else {
-          return baseLink;
         }
       } else {
         // If it's not Kienlen, it's Hillsdale, which uses Locations
@@ -23605,13 +23640,16 @@ var CardList = function (_React$Component) {
           baseLink += '&location_category=' + this.state.filteredLocation;
         } else if (this.state.filteredMarket) {
           baseLink += '&market_category=' + this.state.filteredMarket;
-        } else {
-          return baseLink;
         }
       }
     }
     // console.log('buildAPILink', baseLink);
-    baseLink += '&per_page=' + this.state.postsPerPage;
+    if (this.state.defaultOffset) {
+      baseLink += '&per_page=' + this.state.defaultOffset;
+    } else {
+      baseLink += '&per_page=' + this.state.postsPerPage;
+    }
+
     return baseLink;
   };
   //Get All Posts
@@ -23645,7 +23683,7 @@ var CardList = function (_React$Component) {
       return response.json();
     }).then(function (json) {
       _this3.setState({
-        filteredPosts: json,
+        posts: json,
         loading: false
       });
     });
@@ -23695,6 +23733,7 @@ var CardList = function (_React$Component) {
     }, function () {
       return _this5.getFilteredPosts(_this5.buildAPILink());
     });
+    localStorage.setItem(_helpers.localStorageKeys.cards_location, id);
   };
 
   //Handles Service Filter
@@ -23713,6 +23752,7 @@ var CardList = function (_React$Component) {
     }, function () {
       return _this6.getFilteredPosts(_this6.buildAPILink());
     });
+    localStorage.setItem(_helpers.localStorageKeys.cards_service, id);
   };
 
   //Load More functionality
@@ -23725,7 +23765,7 @@ var CardList = function (_React$Component) {
     var apiLink = this.buildAPILink();
     var offset = 0;
     if (this.state.isFiltered) {
-      offset = this.state.filteredPosts.length;
+      offset = this.state.posts.length;
     } else {
       offset = this.state.currentPage * this.state.postsPerPage;
     }
@@ -23735,19 +23775,14 @@ var CardList = function (_React$Component) {
       return response.json();
     }).then(function (json) {
       var currentPosts = '';
-      if (_this7.state.isFiltered) {
-        currentPosts = _this7.state.filteredPosts;
-      } else {
-        currentPosts = _this7.state.posts;
-      }
-      Array.prototype.push.apply(currentPosts, json);
+      Array.prototype.push.apply(_this7.state.posts, json);
       //increment our Current Page
-      _this7.setState(function (state) {
-        return {
-          currentPage: state.currentPage + 1,
-          loading: false
-        };
+      var newPage = _this7.state.currentPage + 1;
+      _this7.setState({
+        currentPage: newPage,
+        loading: false
       });
+      localStorage.setItem(_helpers.localStorageKeys.cards_page, _this7.state.posts.length);
     });
   };
 
@@ -23771,7 +23806,7 @@ var CardList = function (_React$Component) {
     }
 
     var allPosts = this.state.posts;
-    var filterPosts = this.state.filteredPosts;
+    var filterPosts = this.state.posts;
 
     var filteredLocationName = '';
     var filteredServiceName = '';
@@ -23805,7 +23840,7 @@ var CardList = function (_React$Component) {
       }
     } else if (filterPosts && this.state.isFiltered === true) {
       postGroup = _react2.default.createElement(_card_group2.default, {
-        posts: this.state.filteredPosts,
+        posts: this.state.posts,
         postDataType: this.state.postDataType,
         markets: this.state.market_categories,
         services: this.state.service_categories,
@@ -23857,7 +23892,8 @@ var CardList = function (_React$Component) {
         locationFilterName: filteredLocationName,
         locationChange: this.handleLocationChange.bind(this),
         isFiltered: this.state.isFiltered,
-        filterSearch: this.handleSearch,
+        searchTerm: this.state.searchTerm,
+        filterSearch: this.filterSearch.bind(this),
         resetFilter: this.resetFilter,
         removeFilterTerm: this.removeFilterTerm
       }),

@@ -62,8 +62,6 @@ class TableList extends React.Component {
         baseLink += `&service_category=${this.state.filteredService}`;
       } else if (this.state.filteredMarket) {
         baseLink += `&market_category=${this.state.filteredMarket}`;
-      } else {
-        return baseLink;
       }
       baseLink += `&per_page=${this.state.postsPerPage}`
     }

@@ -10967,7 +10967,7 @@ var Select = function (_React$Component) {
   Select.prototype.componentWillMount = function componentWillMount() {
     var defaultValue = this.props.defaultValue ? this.props.defaultValue : this.props.label;
     this.setState({
-      selected: this.props.label
+      selected: this.props.selected ? this.props.selected : this.props.label
     });
   };
 
@@ -11091,6 +11091,7 @@ var FilterBar = function (_React$Component) {
             'Service'
           ),
           _react2.default.createElement(_filterSelect2.default, { label: 'Service',
+            selected: this.props.serviceFilter,
             selectID: 'filterbar-select-service',
             options: this.props.services,
             onFilterChange: this.filterServices
@@ -11108,6 +11109,7 @@ var FilterBar = function (_React$Component) {
           'Location'
         ),
         _react2.default.createElement(_filterSelect2.default, { label: 'Location',
+          selected: this.props.locationFilter,
           selectID: 'filterbar-select-location',
           options: this.props.locations,
           onFilterChange: this.filterLocations
@@ -11168,6 +11170,7 @@ var FilterBar = function (_React$Component) {
           'Market'
         ),
         _react2.default.createElement(_filterSelect2.default, { label: 'Market',
+          selected: this.props.marketFilter,
           selectID: 'filterbar-select-market',
           options: this.props.markets,
           onFilterChange: this.filterMarkets
@@ -11186,6 +11189,7 @@ var FilterBar = function (_React$Component) {
       _react2.default.createElement('input', { id: 'filterbar-search',
         type: 'search',
         placeholder: 'Search by keywords',
+        value: this.props.searchTerm,
         onChange: function onChange(event) {
           return _this2.filterSearch(event);
         }
@@ -11278,6 +11282,7 @@ function handleMarketChange(id) {
   }, function () {
     return _this3.getFilteredPosts(_this3.buildAPILink());
   });
+  localStorage.setItem(localStorageKeys.cards_market, id);
 }
 
 //Fetch our Services Categories
@@ -11294,6 +11299,22 @@ function getServiceCats() {
   });
 }
 
+var localStorageKeys = exports.localStorageKeys = {
+  cards_search: 'CardSearch',
+  cards_market: 'CardMarket',
+  cards_location: 'CardLocation',
+  cards_service: 'CardService',
+  cards_page: 'CardsPage'
+};
+
+function deleteLocalStorage() {
+  Object.keys(localStorageKeys).forEach(function (key, index) {
+    if (localStorage.getItem(localStorageKeys[key])) {
+      localStorage.removeItem(localStorageKeys[key]);
+    }
+  });
+}
+
 function resetFilter() {
   var _this5 = this;
 
@@ -11301,6 +11322,8 @@ function resetFilter() {
   var searchInput = document.getElementById('filterbar-search');
   var marketSelect = document.getElementById('filterbar-select-market');
   var secondarySelect = '';
+
+  deleteLocalStorage();
 
   //Check if Market is being used before setting default value
   if (marketSelect) {
