@@ -3,7 +3,7 @@ import React from 'react';
 
 import FilterBar from './filterbar.js'
 import CardGroup from './card_group.js'
-import {siteConfig, handleSearch, getMarketCats, getServiceCats, resetFilter, removeFilterTerm, checkFilterStatus, handleMarketChange, getCatName, localStorageKeys} from './helpers/helpers.js'
+import {siteConfig, handleSearch, getMarketCats, getServiceCats, resetFilter, removeFilterTerm, checkFilterStatus, handleMarketChange, getCatName} from './helpers/helpers.js'
 import {localStorageKeys, setLocalStorageItem, getLocalStorageItem} from './helpers/localstorage-handler.js'
 
 class CardList extends React.Component {
@@ -32,7 +32,7 @@ class CardList extends React.Component {
 
       this.setState({
         loading: true,
-        currentPage: 1,
+        currentPage: defaultOffset ? Math.ceil(defaultOffset/6) : 1,
         defaultOffset: defaultOffset ? defaultOffset : null,
         posts: [],
         postsPerPage: 6,
@@ -115,12 +115,16 @@ class CardList extends React.Component {
           headers: new Headers({'Authorization': 'Basic ' + btoa("demo:alberici") }),
         })
         .then( response => {
+          this.setState({
+            // WP API gives the Total Page Count in the Headers, of all places :\
+            totalPosts: parseInt( response.headers.get('X-WP-Total') )
+          })
           return(response.json());
         })
         .then(json => {
           this.setState( {
             posts: json,
-            loading: false
+            loading: false,
           })
         })
     }
