@@ -41,7 +41,6 @@ class CardList extends React.Component {
         service_categories: [],
         location_categories: [],
         isFiltered: isFiltered,
-        filteredPosts: [],
         filteredMarket: defaultMarket ? defaultMarket : '',
         filteredService: defaultService ? defaultService : '',
         filteredLocation: defaultLocation ? defaultLocation : '',
@@ -246,7 +245,6 @@ class CardList extends React.Component {
       }
 
       let allPosts = this.state.posts;
-      let filterPosts = this.state.posts;
 
       let filteredLocationName = '';
       let filteredServiceName = '';
@@ -265,14 +263,14 @@ class CardList extends React.Component {
                       locations = {this.state.location_categories}
                       getCatName = {this.getCatName}
                       />
-        if ( allPostsOffset < this.state.totalPosts && this.state.totalPosts % this.state.postsPerPage != 0) {
+        if ( allPostsOffset < this.state.totalPosts) {
           loadMoreBtn = <button
                           onClick={this.loadMorePosts.bind(this)}
                           className="btn-load-more">
                             {loadMoreLabel}
                         </button>;
         }
-      } else if ( filterPosts && this.state.isFiltered === true ) {
+      } else if ( allPosts && this.state.isFiltered === true ) {
         postGroup = <CardGroup
                       posts = {this.state.posts}
                       postDataType = {this.state.postDataType}

@@ -100,7 +100,6 @@ export function resetFilter(){
     // It's CardListView
     this.setState({
       isFiltered: false,
-      filteredPosts: [],
       filteredMarket: '',
       filteredService: '',
       filteredLocation: '',

@@ -11389,7 +11389,6 @@ function resetFilter() {
     // It's CardListView
     this.setState({
       isFiltered: false,
-      filteredPosts: [],
       filteredMarket: '',
       filteredService: '',
       filteredLocation: '',
@@ -23619,7 +23618,6 @@ var CardList = function (_React$Component) {
       service_categories: [],
       location_categories: [],
       isFiltered: isFiltered,
-      filteredPosts: [],
       filteredMarket: defaultMarket ? defaultMarket : '',
       filteredService: defaultService ? defaultService : '',
       filteredLocation: defaultLocation ? defaultLocation : '',
@@ -23847,7 +23845,6 @@ var CardList = function (_React$Component) {
     }
 
     var allPosts = this.state.posts;
-    var filterPosts = this.state.posts;
 
     var filteredLocationName = '';
     var filteredServiceName = '';
@@ -23870,7 +23867,7 @@ var CardList = function (_React$Component) {
         locations: this.state.location_categories,
         getCatName: this.getCatName
       });
-      if (allPostsOffset < this.state.totalPosts && this.state.totalPosts % this.state.postsPerPage != 0) {
+      if (allPostsOffset < this.state.totalPosts) {
         loadMoreBtn = _react2.default.createElement(
           'button',
           {
@@ -23879,7 +23876,7 @@ var CardList = function (_React$Component) {
           loadMoreLabel
         );
       }
-    } else if (filterPosts && this.state.isFiltered === true) {
+    } else if (allPosts && this.state.isFiltered === true) {
       postGroup = _react2.default.createElement(_card_group2.default, {
         posts: this.state.posts,
         postDataType: this.state.postDataType,
