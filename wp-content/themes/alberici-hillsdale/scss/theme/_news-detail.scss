@@ -19,6 +19,15 @@
         .posted-on {
             text-transform: uppercase;
             color: $blue;
+            display: block;
+          @include grid-media($small-min) {
+            display: inline-block;
+            &:after {
+                content: "|";
+                padding-left: 7px;
+                padding-right: 3px;
+            }
+          }
         }
         .post-date {
             margin-bottom: 25px;
@@ -61,7 +70,7 @@
                 .widget {
                     margin-bottom: 60px;
                 }
-            }                       
+            }
         }
     }
 }

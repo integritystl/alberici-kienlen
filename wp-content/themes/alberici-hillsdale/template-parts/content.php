@@ -23,15 +23,12 @@
 					<span class="post-category">
 						<?php if ($market_taxonomy) { ?>
 							<span><?php echo $market_taxonomy[0]->name;?></span>
-						<?php }
-						if ($service_taxonomy) { ?>
-							<span><?php echo $service_taxonomy[0]->name;?></span>
 						<?php } ?>
 						<?php echo get_the_category_list(' | '); ?>
 					</span>
 				</p>
 			</div>
-		<?php 
+		<?php
 		else :
 			the_title( '<h2 class="entry-title"><a href="' . esc_url( get_permalink() ) . '" rel="bookmark">', '</a></h2>' ); ?>
 			<span class="post-category"><?php echo get_the_category_list(' | '); ?>
