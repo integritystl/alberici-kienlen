@@ -13,7 +13,8 @@
     border-bottom: $base-border;
     margin-bottom: 20px;
 
-    input {
+    input,
+    .select {
       grid-column: span 12;
       margin: 0;
       @include grid-media($small-min) {
@@ -24,22 +25,15 @@
       }
     }
     .select {
-      grid-column: span 12;
-      @include grid-media($small-min) {
-        grid-column: span 4;
-      }
-      @include grid-media($medium-min) {
-        grid-column: span 4;
-      }
       select {
         margin-bottom: 0px;
       }
     }
+
     .filter-info {
       grid-column: span 12;
       display: flex;
       align-items: center;
-
 
       span {
         display: flex;

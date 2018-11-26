@@ -1,0 +1,15 @@
+.alberici-kienlen {
+  .news-posts-container, .projects-posts-container {
+    .filterbar {
+      input,
+      .select {
+        @include grid-media($small-min) {
+          grid-column: span 6;
+        }
+        @include grid-media($medium-min) {
+          grid-column: span 6;
+        }
+      }
+    } // filterbar
+  }
+}
