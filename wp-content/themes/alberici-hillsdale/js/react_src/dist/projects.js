@@ -11280,11 +11280,11 @@ var _localstorageHandler = __webpack_require__(89);
 //This houses shared functionality used between CardList and Table List
 
 //Site Config Option that determines if the site is Hillsdale or Kienlen
-function siteConfig() {
+function siteConfig(callback) {
   var currentSiteConfig = wpObj.site_config;
   this.setState({
     siteConfig: currentSiteConfig
-  });
+  }, callback);
 }
 
 //Search Input Filter

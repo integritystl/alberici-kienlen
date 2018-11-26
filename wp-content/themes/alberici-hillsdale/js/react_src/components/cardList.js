@@ -54,10 +54,11 @@ class CardList extends React.Component {
 
 
     componentDidMount() {
-      this.getPosts(this.buildAPILink());
-      this.getMarketCats();
-      this.setFilterCats();
-      this.siteConfig(this);
+      this.siteConfig(() => {
+        this.getPosts(this.buildAPILink());
+        this.getMarketCats();
+        this.setFilterCats();
+      });
     }
 
     filterSearch(term) {

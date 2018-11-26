@@ -3,11 +3,11 @@ import {localStorageKeys, deleteLocalStorage, setLocalStorageItem} from './local
 //This houses shared functionality used between CardList and Table List
 
 //Site Config Option that determines if the site is Hillsdale or Kienlen
-export function siteConfig(){
+export function siteConfig(callback){
   let currentSiteConfig = wpObj.site_config;
   this.setState({
     siteConfig: currentSiteConfig,
-  })
+  }, callback)
 }
 
 //Search Input Filter

@@ -11280,11 +11280,11 @@ var _localstorageHandler = __webpack_require__(89);
 //This houses shared functionality used between CardList and Table List
 
 //Site Config Option that determines if the site is Hillsdale or Kienlen
-function siteConfig() {
+function siteConfig(callback) {
   var currentSiteConfig = wpObj.site_config;
   this.setState({
     siteConfig: currentSiteConfig
-  });
+  }, callback);
 }
 
 //Search Input Filter
@@ -23631,10 +23631,13 @@ var CardList = function (_React$Component) {
   };
 
   CardList.prototype.componentDidMount = function componentDidMount() {
-    this.getPosts(this.buildAPILink());
-    this.getMarketCats();
-    this.setFilterCats();
-    this.siteConfig(this);
+    var _this2 = this;
+
+    this.siteConfig(function () {
+      _this2.getPosts(_this2.buildAPILink());
+      _this2.getMarketCats();
+      _this2.setFilterCats();
+    });
   };
 
   CardList.prototype.filterSearch = function filterSearch(term) {
@@ -23690,20 +23693,20 @@ var CardList = function (_React$Component) {
 
 
   CardList.prototype.getPosts = function getPosts(apiLink) {
-    var _this2 = this;
+    var _this3 = this;
 
     //Gotta pass Basic Auth for the prompt from WP Engine
     //Ref: https://stackoverflow.com/questions/30203044/using-an-authorization-header-with-fetch-in-react-native
     fetch(apiLink, {
       headers: new Headers({ 'Authorization': 'Basic ' + btoa("demo:alberici") })
     }).then(function (response) {
-      _this2.setState({
+      _this3.setState({
         // WP API gives the Total Page Count in the Headers, of all places :\
         totalPosts: parseInt(response.headers.get('X-WP-Total'))
       });
       return response.json();
     }).then(function (json) {
-      _this2.setState({
+      _this3.setState({
         posts: json,
         loading: false
       });
@@ -23711,16 +23714,16 @@ var CardList = function (_React$Component) {
   };
 
   CardList.prototype.getFilteredPosts = function getFilteredPosts(apiLink) {
-    var _this3 = this;
+    var _this4 = this;
 
     fetch(apiLink).then(function (response) {
-      _this3.setState({
+      _this4.setState({
         // WP API gives the Total Page Count in the Headers, of all places :\
         totalPosts: parseInt(response.headers.get('X-WP-Total'))
       });
       return response.json();
     }).then(function (json) {
-      _this3.setState({
+      _this4.setState({
         posts: json,
         loading: false
       });
@@ -23743,13 +23746,13 @@ var CardList = function (_React$Component) {
 
 
   CardList.prototype.getLocationCats = function getLocationCats() {
-    var _this4 = this;
+    var _this5 = this;
 
     var locationCatApi = wpObj.locationCat_endpoint;
     fetch(locationCatApi).then(function (response) {
       return response.json();
     }).then(function (json) {
-      _this4.setState({
+      _this5.setState({
         location_categories: json
       });
     });
@@ -23759,7 +23762,7 @@ var CardList = function (_React$Component) {
 
 
   CardList.prototype.handleLocationChange = function handleLocationChange(id) {
-    var _this5 = this;
+    var _this6 = this;
 
     if (id === 'Location') {
       id = '';
@@ -23769,7 +23772,7 @@ var CardList = function (_React$Component) {
       isFiltered: true,
       loading: true
     }, function () {
-      return _this5.getFilteredPosts(_this5.buildAPILink());
+      return _this6.getFilteredPosts(_this6.buildAPILink());
     });
     (0, _localstorageHandler.setLocalStorageItem)(_localstorageHandler.localStorageKeys.cards_location, id);
   };
@@ -23778,7 +23781,7 @@ var CardList = function (_React$Component) {
 
 
   CardList.prototype.handleServiceChange = function handleServiceChange(id) {
-    var _this6 = this;
+    var _this7 = this;
 
     if (id === 'Service') {
       id = '';
@@ -23788,7 +23791,7 @@ var CardList = function (_React$Component) {
       isFiltered: true,
       loading: true
     }, function () {
-      return _this6.getFilteredPosts(_this6.buildAPILink());
+      return _this7.getFilteredPosts(_this7.buildAPILink());
     });
     (0, _localstorageHandler.setLocalStorageItem)(_localstorageHandler.localStorageKeys.cards_service, id);
   };
@@ -23797,7 +23800,7 @@ var CardList = function (_React$Component) {
 
 
   CardList.prototype.loadMorePosts = function loadMorePosts() {
-    var _this7 = this;
+    var _this8 = this;
 
     //need to fetch the next amount of posts and add them
     var apiLink = this.buildAPILink();
@@ -23813,14 +23816,14 @@ var CardList = function (_React$Component) {
       return response.json();
     }).then(function (json) {
       var currentPosts = '';
-      Array.prototype.push.apply(_this7.state.posts, json);
+      Array.prototype.push.apply(_this8.state.posts, json);
       //increment our Current Page
-      var newPage = _this7.state.currentPage + 1;
-      _this7.setState({
+      var newPage = _this8.state.currentPage + 1;
+      _this8.setState({
         currentPage: newPage,
         loading: false
       });
-      (0, _localstorageHandler.setLocalStorageItem)(_localstorageHandler.localStorageKeys.cards_page, _this7.state.posts.length);
+      (0, _localstorageHandler.setLocalStorageItem)(_localstorageHandler.localStorageKeys.cards_page, _this8.state.posts.length);
     });
   };
 
