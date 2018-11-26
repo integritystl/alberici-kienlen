@@ -11326,7 +11326,8 @@ function handleMarketChange(id) {
   this.setState({
     filteredMarket: parseInt(id),
     isFiltered: true,
-    loading: true
+    loading: true,
+    currentPage: 1
   }, function () {
     return _this3.getFilteredPosts(_this3.buildAPILink());
   });
@@ -11394,6 +11395,7 @@ function resetFilter() {
       filteredLocation: '',
       hasSearchTerm: false,
       searchTerm: '',
+      currentPage: 1,
       totalPosts: parseInt(document.getElementById('cardList_app').getAttribute('data-total'))
     }, function () {
       return _this5.getPosts(_this5.buildAPILink());

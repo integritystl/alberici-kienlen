@@ -11326,7 +11326,8 @@ function handleMarketChange(id) {
   this.setState({
     filteredMarket: parseInt(id),
     isFiltered: true,
-    loading: true
+    loading: true,
+    currentPage: 1
   }, function () {
     return _this3.getFilteredPosts(_this3.buildAPILink());
   });
@@ -11394,6 +11395,7 @@ function resetFilter() {
       filteredLocation: '',
       hasSearchTerm: false,
       searchTerm: '',
+      currentPage: 1,
       totalPosts: parseInt(document.getElementById('cardList_app').getAttribute('data-total'))
     }, function () {
       return _this5.getPosts(_this5.buildAPILink());
@@ -23605,7 +23607,7 @@ var CardList = function (_React$Component) {
     var defaultService = (0, _localstorageHandler.getLocalStorageItem)(_localstorageHandler.localStorageKeys.cards_service);
     var defaultOffset = (0, _localstorageHandler.getLocalStorageItem)(_localstorageHandler.localStorageKeys.cards_page);
 
-    var isFiltered = !!defaultSearch || !!defaultMarket || !!defaultLocation || !!defaultService || !!defaultOffset;
+    var isFiltered = !!defaultSearch || !!defaultMarket || !!defaultLocation || !!defaultService;
 
     this.setState({
       loading: true,
@@ -23768,6 +23770,7 @@ var CardList = function (_React$Component) {
     this.setState({
       filteredLocation: parseInt(id),
       isFiltered: true,
+      currentPage: 1,
       loading: true
     }, function () {
       return _this6.getFilteredPosts(_this6.buildAPILink());
@@ -23787,7 +23790,8 @@ var CardList = function (_React$Component) {
     this.setState({
       filteredService: parseInt(id),
       isFiltered: true,
-      loading: true
+      loading: true,
+      currentPage: 1
     }, function () {
       return _this7.getFilteredPosts(_this7.buildAPILink());
     });

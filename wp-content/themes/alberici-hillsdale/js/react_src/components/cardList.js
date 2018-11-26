@@ -28,7 +28,7 @@ class CardList extends React.Component {
       let defaultService = getLocalStorageItem(localStorageKeys.cards_service);
       let defaultOffset = getLocalStorageItem(localStorageKeys.cards_page);
 
-      let isFiltered = !!defaultSearch || !!defaultMarket || !!defaultLocation || !!defaultService || !!defaultOffset
+      let isFiltered = !!defaultSearch || !!defaultMarket || !!defaultLocation || !!defaultService
 
       this.setState({
         loading: true,
@@ -177,6 +177,7 @@ class CardList extends React.Component {
       this.setState({
         filteredLocation: parseInt(id),
         isFiltered: true,
+        currentPage: 1,
         loading: true
       }, () => this.getFilteredPosts(this.buildAPILink()) );
       setLocalStorageItem(localStorageKeys.cards_location, id)
@@ -190,7 +191,8 @@ class CardList extends React.Component {
       this.setState({
         filteredService: parseInt(id),
         isFiltered: true,
-        loading: true
+        loading: true,
+        currentPage: 1,
       }, () => this.getFilteredPosts(this.buildAPILink()) );
       setLocalStorageItem(localStorageKeys.cards_service, id)
     }

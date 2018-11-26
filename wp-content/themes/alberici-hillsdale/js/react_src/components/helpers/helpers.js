@@ -43,7 +43,8 @@ export function handleMarketChange(id) {
   this.setState({
     filteredMarket: parseInt(id),
     isFiltered: true,
-    loading: true
+    loading: true,
+    currentPage: 1,
   }, () => this.getFilteredPosts(this.buildAPILink() ));
   setLocalStorageItem(localStorageKeys.cards_market, id)
 }
@@ -105,6 +106,7 @@ export function resetFilter(){
       filteredLocation: '',
       hasSearchTerm: false,
       searchTerm: '',
+      currentPage: 1,
       totalPosts: parseInt( document.getElementById('cardList_app').getAttribute('data-total') )
     }, () => this.getPosts(this.buildAPILink()))
   }
