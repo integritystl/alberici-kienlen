@@ -62,17 +62,9 @@ $theme_config = get_field('set_site', 'options');
 							<div class="taxonomies">
 								<?php
 								$news_page_link = get_field('news_page_link', 'option');
-								$market_taxonomy = get_the_terms( get_the_ID(), 'market_category' );
-								$service_taxonomy = get_the_terms( get_the_ID(), 'service_category' );
 								$base_category = get_the_terms( get_the_ID(), 'category' );
-								if ($base_category && $base_category[0]->name !== 'Uncategorized' && $base_category[0]->name !== 'Project Update' ) { ?>
+								if ($base_category && $base_category[0]->name !== 'Uncategorized' ) { ?>
 									<p><?php echo $base_category[0]->name;?></p>
-								<?php }
-								if ($market_taxonomy) { ?>
-									<p><?php echo $market_taxonomy[0]->name;?></p>
-								<?php }
-								if ($service_taxonomy) { ?>
-									<p><?php echo $service_taxonomy[0]->name;?></p>
 								<?php } ?>
 							</div>
 							<a href="<?php the_permalink(); ?>">

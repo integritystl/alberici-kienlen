@@ -24,14 +24,15 @@
 						<?php if ($market_taxonomy) { ?>
 							<span><?php echo $market_taxonomy[0]->name;?></span>
 						<?php }
-						if ($service_taxonomy) { ?>
-							<span><?php echo $service_taxonomy[0]->name;?></span>
+						$base_category = get_the_terms( get_the_ID(), 'category' );
+						if ($base_category && $base_category[0]->name !== 'Uncategorized' ) { ?>
+							<span><?php echo $base_category[0]->name;?></span>
 						<?php } ?>
-						<?php echo get_the_category_list(' | '); ?>
+						<?php //echo get_the_category_list(' | '); ?>
 					</span>
 				</p>
 			</div>
-		<?php 
+		<?php
 		else :
 			the_title( '<h2 class="entry-title"><a href="' . esc_url( get_permalink() ) . '" rel="bookmark">', '</a></h2>' ); ?>
 			<span class="post-category"><?php echo get_the_category_list(' | '); ?>

@@ -20,6 +20,38 @@ export function handleSearch(term) {
   },() => this.getFilteredPosts(this.buildAPILink() ));
 }
 
+
+//Fetch default WP Categories
+export function getCats() {
+  let catApi = wpObj.categories_endpoint;
+  fetch(catApi)
+    .then( response => {
+      return(response.json());
+    })
+    .then(json => {
+      this.setState({
+        categories: json,
+      })
+    });
+}
+
+
+//Handles Category Filter
+export function handleCategoryChange(id) {
+  if (id === 'Category') {
+    id = ''
+  }
+
+  this.setState({
+    filteredCategory: parseInt(id),
+    isFiltered: true,
+    loading: true,
+    currentPage: 1,
+  }, () => this.getFilteredPosts(this.buildAPILink() ));
+  setLocalStorageItem(localStorageKeys.cards_category, id)
+}
+
+
 //Fetch our Market Categories
 export function getMarketCats() {
   let marketCatApi = wpObj.marketCat_endpoint;
@@ -66,6 +98,7 @@ export function getServiceCats() {
 export function resetFilter(){
   //TODO set the selects back to default value and the search box to empty
   let searchInput = document.getElementById('filterbar-search');
+  let categorySelect = document.getElementById('filterbar-select-category');
   let marketSelect = document.getElementById('filterbar-select-market');
   let secondarySelect = '';
 
@@ -75,42 +108,34 @@ export function resetFilter(){
   if (marketSelect) {
     marketSelect.value = 'Market';
   }
+  if (categorySelect) {
+    categorySelect.value = 'Category';
+  }
   searchInput.value = '';
 
-  //If we're on Kienlen, use Service
-  if (this.state.siteConfig === 'kienlen') {
-    secondarySelect = document.getElementById('filterbar-select-service');
-    secondarySelect.value = 'Service';
-  } else {
-    secondarySelect = document.getElementById('filterbar-select-location');
-    secondarySelect.value = 'Location';
+  //If we're on Kienlen Projects, use Service
+  if (this.props.postDataType === 'projects') {
+    if (this.state.siteConfig === 'kienlen') {
+      secondarySelect = document.getElementById('filterbar-select-service');
+      secondarySelect.value = 'Service';
+    } else {
+      secondarySelect = document.getElementById('filterbar-select-location');
+      secondarySelect.value = 'Location';
+    }
   }
 
-  //Change the state based on the Page Template
-  if (this.state.projects) {
-    this.setState({
-      isFiltered: false,
-      filteredProjects: [],
-      filteredMarket: '',
-      filteredService: '',
-      hasSearchTerm: false,
-      searchTerm: '',
-      totalProjects: parseInt(wpObj.totalProjects.publish),
-    }, () => this.getPosts(this.buildAPILink()))
-  } else {
-    // It's CardListView
-    this.setState({
-      isFiltered: false,
-      filteredMarket: '',
-      filteredService: '',
-      filteredLocation: '',
-      hasSearchTerm: false,
-      searchTerm: '',
-      currentPage: 1,
-      totalPosts: parseInt( document.getElementById('cardList_app').getAttribute('data-total') )
-    }, () => this.getPosts(this.buildAPILink()))
-  }
-
+  this.setState({
+    isFiltered: false,
+    loading: true,
+    filteredCategory: '',
+    filteredMarket: '',
+    filteredService: '',
+    filteredLocation: '',
+    hasSearchTerm: false,
+    searchTerm: '',
+    currentPage: 1,
+    totalPosts: parseInt( document.getElementById('cardList_app').getAttribute('data-total') )
+  }, () => this.getPosts(this.buildAPILink()))
 }
 
 export function removeFilterTerm(currentTermId){
@@ -131,6 +156,12 @@ export function removeFilterTerm(currentTermId){
           filteredLocation: '',
         }, () => this.checkFilterStatus())
         document.getElementById('filterbar-select-location').value = 'Location';
+      } else {
+        //it's News so it's categories
+        this.setState({
+          filteredCategory: '',
+        }, () => this.checkFilterStatus())
+          document.getElementById('filterbar-select-category').value = 'Category';
       }
     }
 
@@ -142,18 +173,23 @@ export function checkFilterStatus(){
     secondaryFilter = !this.state.filteredLocation;
   }
 
-  if (!this.state.filteredMarket && secondaryFilter && !this.state.hasSearchTerm) {
+  if (!this.state.filteredCategory && !this.state.filteredMarket && secondaryFilter && !this.state.hasSearchTerm) {
+    deleteLocalStorage();
+
     this.setState({
       isFiltered: false,
-    })
+      loading: true,
+    }, () => this.getPosts(this.buildAPILink()))
   }
 }
 
 //Get name of filtered category from object
 export function getCatName(filteredCatId, categories){
+
   let catObj = categories.filter( (item) => {
-    return item.id === filteredCatId;
+    return item.id == filteredCatId;
   });
+
   let filteredCatName = "";
   if(catObj[0]){
     filteredCatName = catObj[0].name;
