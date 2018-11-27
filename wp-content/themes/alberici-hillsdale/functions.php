@@ -74,7 +74,7 @@ function add_service_taxonomy() {
 		),
 
 	);
-	register_taxonomy('service_category', array('post', 'project'), $args);
+	register_taxonomy('service_category', array('project'), $args);
 }
 add_action('init', 'add_service_taxonomy', 10);
 
