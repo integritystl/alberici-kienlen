@@ -37,7 +37,7 @@ $HeroImage = get_field('general_hero_featured_image');
 
 			
 			if ( is_single() && 'service' === get_post_type()) {
-				$term = get_post()->post_name;
+				$term = get_field('project_service_category');
 				$latest_args = array(
 					'post_type' => 'project',
 					'posts_per_page' => 3,
@@ -47,7 +47,7 @@ $HeroImage = get_field('general_hero_featured_image');
 					'tax_query' => array(
 						array(
 							'taxonomy' => 'service_category',
-							'field' => 'slug',
+							'field' => 'id',
 							'terms' => $term
 						)
 					)
