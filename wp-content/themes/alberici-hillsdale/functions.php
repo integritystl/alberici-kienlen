@@ -219,6 +219,7 @@ function alberici_hillsdale_scripts() {
 				'marketCat_endpoint' => home_url('/wp-json/wp/v2/market_category'),
 				'serviceCat_endpoint' => home_url('/wp-json/wp/v2/service_category'),
 				'locationCat_endpoint' => home_url('/wp-json/wp/v2/location_category'),
+				'post_id' => get_the_ID(), //send to front end to make sure our local storage filter settings are only for a certain post
 				'site_config' => get_field('set_site', 'options')
 			));
 	}

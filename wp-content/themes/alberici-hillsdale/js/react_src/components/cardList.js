@@ -4,6 +4,7 @@ import React from 'react';
 import FilterBar from './filterbar.js'
 import CardGroup from './card_group.js'
 import {siteConfig, handleSearch, getMarketCats, getServiceCats, resetFilter, removeFilterTerm, checkFilterStatus, handleMarketChange, getCatName} from './helpers/helpers.js'
+import {localStorageKeys, setLocalStorageItem, getLocalStorageItem} from './helpers/localstorage-handler.js'
 
 class CardList extends React.Component {
   constructor(props) {
@@ -21,32 +22,47 @@ class CardList extends React.Component {
   }
 
   componentWillMount() {
+      let defaultSearch = getLocalStorageItem(localStorageKeys.cards_search);
+      let defaultMarket = getLocalStorageItem(localStorageKeys.cards_market);
+      let defaultLocation = getLocalStorageItem(localStorageKeys.cards_location);
+      let defaultService = getLocalStorageItem(localStorageKeys.cards_service);
+      let defaultOffset = getLocalStorageItem(localStorageKeys.cards_page);
+
+      let isFiltered = !!defaultSearch || !!defaultMarket || !!defaultLocation || !!defaultService
+
       this.setState({
         loading: true,
-        currentPage: 1,
+        currentPage: defaultOffset ? Math.ceil(defaultOffset/6) : 1,
+        defaultOffset: defaultOffset ? defaultOffset : null,
         posts: [],
         postsPerPage: 6,
         postDataType: document.getElementById('cardList_app').getAttribute('data-post'),
         market_categories: [],
         service_categories: [],
         location_categories: [],
-        isFiltered: false,
-        filteredPosts: [],
-        filteredMarket: '',
-        filteredService: '',
-        filteredLocation: '',
-        hasSearchTerm: false,
-        searchTerm: '',
+        isFiltered: isFiltered,
+        filteredMarket: defaultMarket ? defaultMarket : '',
+        filteredService: defaultService ? defaultService : '',
+        filteredLocation: defaultLocation ? defaultLocation : '',
+        hasSearchTerm: !!defaultSearch,
+        searchTerm: defaultSearch ? defaultSearch : '',
         siteConfig: '',
         totalPosts: parseInt( document.getElementById('cardList_app').getAttribute('data-total') ),
       })
     }
 
+
     componentDidMount() {
-      this.getPosts(this.buildAPILink());
-      this.getMarketCats();
-      this.setFilterCats();
-      this.siteConfig();
+      this.siteConfig(() => {
+        this.getPosts(this.buildAPILink());
+        this.getMarketCats();
+        this.setFilterCats();
+      });
+    }
+
+    filterSearch(term) {
+      this.handleSearch(term)
+      setLocalStorageItem(localStorageKeys.cards_search, term)
     }
 
     //Fetch posts
@@ -70,8 +86,6 @@ class CardList extends React.Component {
             baseLink += `&service_category=${this.state.filteredService}`;
           } else if (this.state.filteredMarket) {
             baseLink += `&market_category=${this.state.filteredMarket}`;
-          } else {
-            return baseLink;
           }
         } else {
           // If it's not Kienlen, it's Hillsdale, which uses Locations
@@ -81,13 +95,16 @@ class CardList extends React.Component {
             baseLink += `&location_category=${this.state.filteredLocation}`;
           } else if (this.state.filteredMarket) {
             baseLink += `&market_category=${this.state.filteredMarket}`;
-          } else {
-            return baseLink;
           }
         }
       }
       // console.log('buildAPILink', baseLink);
-      baseLink += `&per_page=${this.state.postsPerPage}`
+      if(this.state.defaultOffset){
+        baseLink += `&per_page=${this.state.defaultOffset}`
+      }else {
+        baseLink += `&per_page=${this.state.postsPerPage}`
+      }
+
       return baseLink;
     }
     //Get All Posts
@@ -98,12 +115,16 @@ class CardList extends React.Component {
           headers: new Headers({'Authorization': 'Basic ' + btoa("demo:alberici") }),
         })
         .then( response => {
+          this.setState({
+            // WP API gives the Total Page Count in the Headers, of all places :\
+            totalPosts: parseInt( response.headers.get('X-WP-Total') )
+          })
           return(response.json());
         })
         .then(json => {
           this.setState( {
             posts: json,
-            loading: false
+            loading: false,
           })
         })
     }
@@ -118,7 +139,7 @@ class CardList extends React.Component {
           return(response.json());
         }).then(json => {
           this.setState({
-            filteredPosts: json,
+            posts: json,
             loading: false
           })
         })
@@ -156,8 +177,10 @@ class CardList extends React.Component {
       this.setState({
         filteredLocation: parseInt(id),
         isFiltered: true,
+        currentPage: 1,
         loading: true
       }, () => this.getFilteredPosts(this.buildAPILink()) );
+      setLocalStorageItem(localStorageKeys.cards_location, id)
     }
 
     //Handles Service Filter
@@ -168,8 +191,10 @@ class CardList extends React.Component {
       this.setState({
         filteredService: parseInt(id),
         isFiltered: true,
-        loading: true
+        loading: true,
+        currentPage: 1,
       }, () => this.getFilteredPosts(this.buildAPILink()) );
+      setLocalStorageItem(localStorageKeys.cards_service, id)
     }
 
     //Load More functionality
@@ -178,7 +203,7 @@ class CardList extends React.Component {
       let apiLink = this.buildAPILink();
       let offset = 0;
       if (this.state.isFiltered) {
-        offset = this.state.filteredPosts.length;
+        offset = this.state.posts.length;
       } else {
         offset = this.state.currentPage * this.state.postsPerPage;
       }
@@ -190,17 +215,14 @@ class CardList extends React.Component {
         })
         .then( json => {
           let currentPosts = '';
-          if (this.state.isFiltered) {
-            currentPosts = this.state.filteredPosts;
-          } else {
-            currentPosts = this.state.posts;
-          }
-          Array.prototype.push.apply(currentPosts, json);
+          Array.prototype.push.apply(this.state.posts, json);
           //increment our Current Page
-          this.setState( (state) => ({
-            currentPage: state.currentPage + 1,
+          let newPage = this.state.currentPage + 1
+          this.setState({
+            currentPage: newPage,
             loading: false,
-          }));
+          });
+          setLocalStorageItem(localStorageKeys.cards_page, this.state.posts.length)
         })
     }
 
@@ -225,7 +247,6 @@ class CardList extends React.Component {
       }
 
       let allPosts = this.state.posts;
-      let filterPosts = this.state.filteredPosts;
 
       let filteredLocationName = '';
       let filteredServiceName = '';
@@ -244,16 +265,16 @@ class CardList extends React.Component {
                       locations = {this.state.location_categories}
                       getCatName = {this.getCatName}
                       />
-        if ( allPostsOffset < this.state.totalPosts && this.state.totalPosts % this.state.postsPerPage != 0) {
+        if ( allPostsOffset < this.state.totalPosts) {
           loadMoreBtn = <button
                           onClick={this.loadMorePosts.bind(this)}
                           className="btn-load-more">
                             {loadMoreLabel}
                         </button>;
         }
-      } else if ( filterPosts && this.state.isFiltered === true ) {
+      } else if ( allPosts && this.state.isFiltered === true ) {
         postGroup = <CardGroup
-                      posts = {this.state.filteredPosts}
+                      posts = {this.state.posts}
                       postDataType = {this.state.postDataType}
                       markets = {this.state.market_categories}
                       services = {this.state.service_categories}
@@ -302,7 +323,8 @@ class CardList extends React.Component {
             locationFilterName = {filteredLocationName}
             locationChange = {this.handleLocationChange.bind(this)}
             isFiltered = {this.state.isFiltered}
-            filterSearch = {this.handleSearch}
+            searchTerm = {this.state.searchTerm}
+            filterSearch = {this.filterSearch.bind(this)}
             resetFilter = {this.resetFilter}
             removeFilterTerm = {this.removeFilterTerm}
           />
