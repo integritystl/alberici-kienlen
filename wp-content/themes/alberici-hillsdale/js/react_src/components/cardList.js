@@ -32,7 +32,7 @@ class CardList extends React.Component {
       let defaultService = getLocalStorageItem(localStorageKeys.cards_service);
       let defaultOffset = getLocalStorageItem(localStorageKeys.cards_page);
 
-      let isFiltered = !!defaultSearch || !!defaultMarket || !!defaultLocation || !!defaultService
+      let isFiltered = !!defaultSearch || !!defaultCategory || !!defaultMarket || !!defaultLocation || !!defaultService
 
       this.setState({
         loading: true,

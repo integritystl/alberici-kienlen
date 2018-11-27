@@ -185,9 +185,11 @@ export function checkFilterStatus(){
 
 //Get name of filtered category from object
 export function getCatName(filteredCatId, categories){
+
   let catObj = categories.filter( (item) => {
-    return item.id === filteredCatId;
+    return item.id == filteredCatId;
   });
+
   let filteredCatName = "";
   if(catObj[0]){
     filteredCatName = catObj[0].name;

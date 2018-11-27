@@ -9997,7 +9997,7 @@ var CardList = function (_React$Component) {
     var defaultService = (0, _localstorageHandler.getLocalStorageItem)(_localstorageHandler.localStorageKeys.cards_service);
     var defaultOffset = (0, _localstorageHandler.getLocalStorageItem)(_localstorageHandler.localStorageKeys.cards_page);
 
-    var isFiltered = !!defaultSearch || !!defaultMarket || !!defaultLocation || !!defaultService;
+    var isFiltered = !!defaultSearch || !!defaultCategory || !!defaultMarket || !!defaultLocation || !!defaultService;
 
     this.setState({
       loading: true,
@@ -11643,9 +11643,11 @@ function checkFilterStatus() {
 
 //Get name of filtered category from object
 function getCatName(filteredCatId, categories) {
+
   var catObj = categories.filter(function (item) {
-    return item.id === filteredCatId;
+    return item.id == filteredCatId;
   });
+
   var filteredCatName = "";
   if (catObj[0]) {
     filteredCatName = catObj[0].name;
