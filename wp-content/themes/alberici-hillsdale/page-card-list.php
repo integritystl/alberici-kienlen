@@ -25,17 +25,21 @@ get_header();
 			if ($postDataType === 'is_news') {
 				$postData = 'news';
 				$totalPosts = wp_count_posts();
+				//If it's News, we're only using default WP Category
+				$filterCat = 'category';
 			} else {
 				//assume it's Projects
 				$postData = 'projects';
 				$totalPosts = wp_count_posts('project');
+
+				if ( $theme_config === 'kienlen') {
+					$filterCat = 'service';
+				} else {
+					$filterCat = 'location';
+				}
 			}
 
-			if ( $theme_config === 'kienlen') {
-				$filterCat = 'service';
-			} else {
-				$filterCat = 'location';
-			}
+
 			?>
 			<div id="cardList_app" data-post="<?php echo $postData; ?>" data-filter="<?php echo $filterCat; ?>" data-total="<?php echo $totalPosts->publish; ?>"></div>
 
