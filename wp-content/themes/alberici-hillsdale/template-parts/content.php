@@ -23,8 +23,12 @@
 					<span class="post-category">
 						<?php if ($market_taxonomy) { ?>
 							<span><?php echo $market_taxonomy[0]->name;?></span>
+						<?php }
+						$base_category = get_the_terms( get_the_ID(), 'category' );
+						if ($base_category && $base_category[0]->name !== 'Uncategorized' ) { ?>
+							<span><?php echo $base_category[0]->name;?></span>
 						<?php } ?>
-						<?php echo get_the_category_list(' | '); ?>
+						<?php //echo get_the_category_list(' | '); ?>
 					</span>
 				</p>
 			</div>
