@@ -37,14 +37,35 @@
         }
         .posts_2 {
             margin-top: 40px;
+            max-width: 600px;
+            display: block;
             article:first-child {
-                grid-column: 3 / span 4;
+                margin-bottom: 20px;
+            }
+            @include grid-media($small-min){
+                display: grid;
+                max-width: 620px;
+                grid-gap: 20px;
+                grid-template-columns: repeat(8, 1fr);
+                margin-left: calc((100% - 620px)/2);
+                margin-right: calc((100% - 620px)/2);
+                article {
+                    grid-column: span 4;
+                }
+                article:first-child {
+                    margin-bottom: 0;
+                }
             }
         }
         .posts_1 {
             margin-top: 40px;
-            article {
-                grid-column: 5 / span 4;
+            display: block;
+            width: 100%;
+            max-width: 600px;
+            @include grid-media($small-min){
+                margin-left: calc((100% - 300px)/2);
+                margin-right: calc((100% - 300px)/2);
+                width: 300px;
             }
         }
         .btn {
@@ -54,7 +75,8 @@
             font-weight: 400;
             text-transform: uppercase;
             @include grid-media($small-min) {
-                margin-left: 29%;
+                margin-left: calc((100% - 400px)/2);
+                margin-right: calc((100% - 400px)/2);
                 min-width: 400px;
             }
         }
