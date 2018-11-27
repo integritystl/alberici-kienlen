@@ -26,12 +26,25 @@
             color: $blue;
         }
         .card-group {
+            margin-top: 20px;
             margin-bottom: 45px;
             img{
                 height: 300px;
             }
             .news-meta {
                 text-transform: capitalize;
+            }
+        }
+        .posts_2 {
+            margin-top: 40px;
+            article:first-child {
+                grid-column: 3 / span 4;
+            }
+        }
+        .posts_1 {
+            margin-top: 40px;
+            article {
+                grid-column: 5 / span 4;
             }
         }
         .btn {
