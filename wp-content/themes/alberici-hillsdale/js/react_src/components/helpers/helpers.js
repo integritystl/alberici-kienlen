@@ -111,7 +111,6 @@ export function resetFilter(){
   if (categorySelect) {
     categorySelect.value = 'Category';
   }
-
   searchInput.value = '';
 
   //If we're on Kienlen Projects, use Service
@@ -175,9 +174,12 @@ export function checkFilterStatus(){
   }
 
   if (!this.state.filteredCategory && !this.state.filteredMarket && secondaryFilter && !this.state.hasSearchTerm) {
+    deleteLocalStorage();
+
     this.setState({
       isFiltered: false,
-    })
+      loading: true,
+    }, () => this.getPosts(this.buildAPILink()))
   }
 }
 

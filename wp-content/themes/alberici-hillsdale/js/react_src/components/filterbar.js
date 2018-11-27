@@ -67,17 +67,19 @@ class FilterBar extends React.Component {
                   />
               </div>
     } else {
-      primarySelect =  <div className="select">
-                  <label className="screen-reader-text" htmlFor="filterbar-select-market">
-                    Market
-                  </label>
-                  <Select label="Market"
-                    selected={this.props.marketFilter}
-                    selectID= "filterbar-select-market"
-                    options={this.props.markets}
-                    onFilterChange={this.filterMarkets}
-                  />
-              </div>
+      if (this.props.markets && this.props.markets.length) {
+        primarySelect =  <div className="select">
+                    <label className="screen-reader-text" htmlFor="filterbar-select-market">
+                      Market
+                    </label>
+                    <Select label="Market"
+                      selected={this.props.marketFilter}
+                      selectID= "filterbar-select-market"
+                      options={this.props.markets}
+                      onFilterChange={this.filterMarkets}
+                    />
+                </div>
+      }
     }
 
     //News doesn't have a secondary select

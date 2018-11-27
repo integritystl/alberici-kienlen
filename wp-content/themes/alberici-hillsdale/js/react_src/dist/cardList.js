@@ -11253,21 +11253,23 @@ var FilterBar = function (_React$Component) {
         })
       );
     } else {
-      primarySelect = _react2.default.createElement(
-        'div',
-        { className: 'select' },
-        _react2.default.createElement(
-          'label',
-          { className: 'screen-reader-text', htmlFor: 'filterbar-select-market' },
-          'Market'
-        ),
-        _react2.default.createElement(_filterSelect2.default, { label: 'Market',
-          selected: this.props.marketFilter,
-          selectID: 'filterbar-select-market',
-          options: this.props.markets,
-          onFilterChange: this.filterMarkets
-        })
-      );
+      if (this.props.markets && this.props.markets.length) {
+        primarySelect = _react2.default.createElement(
+          'div',
+          { className: 'select' },
+          _react2.default.createElement(
+            'label',
+            { className: 'screen-reader-text', htmlFor: 'filterbar-select-market' },
+            'Market'
+          ),
+          _react2.default.createElement(_filterSelect2.default, { label: 'Market',
+            selected: this.props.marketFilter,
+            selectID: 'filterbar-select-market',
+            options: this.props.markets,
+            onFilterChange: this.filterMarkets
+          })
+        );
+      }
     }
 
     //News doesn't have a secondary select
@@ -11551,7 +11553,6 @@ function resetFilter() {
   if (categorySelect) {
     categorySelect.value = 'Category';
   }
-
   searchInput.value = '';
 
   //If we're on Kienlen Projects, use Service
@@ -11619,6 +11620,8 @@ function removeFilterTerm(currentTermId) {
 }
 
 function checkFilterStatus() {
+  var _this9 = this;
+
   var secondaryFilter = '';
   if (this.state.siteConfig === 'kienlen') {
     secondaryFilter = !this.state.filteredService;
@@ -11627,8 +11630,13 @@ function checkFilterStatus() {
   }
 
   if (!this.state.filteredCategory && !this.state.filteredMarket && secondaryFilter && !this.state.hasSearchTerm) {
+    (0, _localstorageHandler.deleteLocalStorage)();
+
     this.setState({
-      isFiltered: false
+      isFiltered: false,
+      loading: true
+    }, function () {
+      return _this9.getPosts(_this9.buildAPILink());
     });
   }
 }
