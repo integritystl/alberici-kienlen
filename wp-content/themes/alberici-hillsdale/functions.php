@@ -74,7 +74,7 @@ function add_service_taxonomy() {
 		),
 
 	);
-	register_taxonomy('service_category', array('post', 'project'), $args);
+	register_taxonomy('service_category', array('project'), $args);
 }
 add_action('init', 'add_service_taxonomy', 10);
 
@@ -216,21 +216,11 @@ function alberici_hillsdale_scripts() {
 			wp_localize_script('alberici-hillsdale-news', 'wpObj', array(
 				'posts_endpoint' => home_url('/wp-json/wp/v2/posts?_embed'),
 				'projects_endpoint' => home_url('/wp-json/wp/v2/project?_embed'),
-				'marketCat_endpoint' => home_url('/wp-json/wp/v2/market_category'),
-				'serviceCat_endpoint' => home_url('/wp-json/wp/v2/service_category'),
-				'locationCat_endpoint' => home_url('/wp-json/wp/v2/location_category'),
-				'site_config' => get_field('set_site', 'options')
-			));
-	}
-	if (is_page_template('page-project-table-view.php')) {
-			wp_register_script('alberici-hillsdale-project-table', get_template_directory_uri() . '/js/react_src/dist/projects.js', array(), time(), true );
-			wp_enqueue_script('alberici-hillsdale-project-table', get_template_directory_uri() . '/js/react_src/dist/projects.js', array(), time(), true );
-			wp_localize_script('alberici-hillsdale-project-table', 'wpObj', array(
-				'projects_endpoint' => home_url('/wp-json/wp/v2/project?_embed'),
-				'marketCat_endpoint' => home_url('/wp-json/wp/v2/market_category'),
-					'serviceCat_endpoint' => home_url('/wp-json/wp/v2/service_category'),
-				'locationCat_endpoint' => home_url('/wp-json/wp/v2/location_category'),
-				'totalProjects' => wp_count_posts('project'),
+				'categories_endpoint' => home_url('/wp-json/wp/v2/categories?hide_empty=true'),
+				'marketCat_endpoint' => home_url('/wp-json/wp/v2/market_category?hide_empty=true'),
+				'serviceCat_endpoint' => home_url('/wp-json/wp/v2/service_category?hide_empty=true'),
+				'locationCat_endpoint' => home_url('/wp-json/wp/v2/location_category?hide_empty=true'),
+				'post_id' => get_the_ID(), //send to front end to make sure our local storage filter settings are only for a certain post
 				'site_config' => get_field('set_site', 'options')
 			));
 	}

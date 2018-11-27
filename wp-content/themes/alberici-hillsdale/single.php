@@ -22,7 +22,7 @@ get_header();
 			}
 			?>
 		</nav>
-			
+
 			<?php
 			if ( have_posts() ) :
 				/* Start the Loop */
@@ -49,11 +49,7 @@ get_header();
 		</div><!-- #primary -->
 
 		<aside id="secondary" class="sidebar-area" role="complementary">
-			<?php //include(locate_template('template-parts/share-menu.php')); ?>
 			<div class="news-latest-3">
-				<!-- <h3>Related Articles</h3> -->
-				<!-- <?php //get_template_part( 'template-parts/widget', 'latest-posts' ); ?> -->
-
 				<?php if ( is_active_sidebar( 'right-sidebar' ) ) : ?>
 					<ul id="sidebar">
 						<?php dynamic_sidebar( 'right-sidebar' ); ?>
