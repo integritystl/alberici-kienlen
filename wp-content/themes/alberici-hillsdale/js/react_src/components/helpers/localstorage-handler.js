@@ -1,5 +1,6 @@
 export const localStorageKeys = {
   cards_search : 'CardSearch',
+  cards_category : 'CardCategory',
   cards_market : 'CardMarket',
   cards_location : 'CardLocation',
   cards_service : 'CardService',

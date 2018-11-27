@@ -3,13 +3,15 @@ import React from 'react';
 
 import FilterBar from './filterbar.js'
 import CardGroup from './card_group.js'
-import {siteConfig, handleSearch, getMarketCats, getServiceCats, resetFilter, removeFilterTerm, checkFilterStatus, handleMarketChange, getCatName} from './helpers/helpers.js'
+import {siteConfig, handleSearch, getCats, getMarketCats, getServiceCats, resetFilter,
+  removeFilterTerm, checkFilterStatus, handleMarketChange, handleCategoryChange, getCatName} from './helpers/helpers.js'
 import {localStorageKeys, setLocalStorageItem, getLocalStorageItem} from './helpers/localstorage-handler.js'
 
 class CardList extends React.Component {
   constructor(props) {
     super(props);
     //bind our helpers
+    this.getCats = getCats.bind(this);
     this.getMarketCats = getMarketCats.bind(this);
     this.handleSearch = handleSearch.bind(this);
     this.getServiceCats = getServiceCats.bind(this);
@@ -17,18 +19,20 @@ class CardList extends React.Component {
     this.removeFilterTerm = removeFilterTerm.bind(this);
     this.checkFilterStatus = checkFilterStatus.bind(this);
     this.handleMarketChange = handleMarketChange.bind(this);
+    this.handleCategoryChange = handleCategoryChange.bind(this);
     this.getCatName = getCatName.bind(this);
     this.siteConfig = siteConfig.bind(this);
   }
 
   componentWillMount() {
       let defaultSearch = getLocalStorageItem(localStorageKeys.cards_search);
+      let defaultCategory = getLocalStorageItem(localStorageKeys.cards_category);
       let defaultMarket = getLocalStorageItem(localStorageKeys.cards_market);
       let defaultLocation = getLocalStorageItem(localStorageKeys.cards_location);
       let defaultService = getLocalStorageItem(localStorageKeys.cards_service);
       let defaultOffset = getLocalStorageItem(localStorageKeys.cards_page);
 
-      let isFiltered = !!defaultSearch || !!defaultMarket || !!defaultLocation || !!defaultService
+      let isFiltered = !!defaultSearch || !!defaultCategory || !!defaultMarket || !!defaultLocation || !!defaultService
 
       this.setState({
         loading: true,
@@ -37,10 +41,12 @@ class CardList extends React.Component {
         posts: [],
         postsPerPage: 6,
         postDataType: document.getElementById('cardList_app').getAttribute('data-post'),
+        categories: [],
         market_categories: [],
         service_categories: [],
         location_categories: [],
         isFiltered: isFiltered,
+        filteredCategory: defaultCategory ? defaultCategory : '',
         filteredMarket: defaultMarket ? defaultMarket : '',
         filteredService: defaultService ? defaultService : '',
         filteredLocation: defaultLocation ? defaultLocation : '',
@@ -78,6 +84,12 @@ class CardList extends React.Component {
         if (this.state.hasSearchTerm) {
           baseLink += `&search=${this.state.searchTerm}`;
         }
+        //This layout can be used by either News or Projects.
+        //If we're on News, we're only using default WP Categories for filtering
+        if (this.state.postDataType === 'news') {
+          baseLink += `&categories=${this.state.filteredCategory}`;
+        }
+
         //Build the API call with the taxonomies that the Site Configured uses
         if (this.state.siteConfig === 'kienlen') {
           if (this.state.filteredMarket && this.state.filteredService) {
@@ -150,8 +162,10 @@ class CardList extends React.Component {
       let filterDataType = document.getElementById('cardList_app').getAttribute('data-filter');
       if (filterDataType === 'service') {
         this.getServiceCats();
-      } else {
+      } else if (filterDataType === 'location') {
         this.getLocationCats();
+      } else {
+        this.getCats();
       }
     }
 
@@ -233,22 +247,24 @@ class CardList extends React.Component {
       let loadMoreLabel = '';
       let secondarySelect = '';
 
-      if (this.state.siteConfig === 'hillsdale') {
-        secondarySelect = 'location';
-      } else {
-        //Falls back to kienlen and its secondary select
-        secondarySelect = 'services';
-      }
-
       if (this.state.postDataType === 'news') {
         loadMoreLabel = 'View More Posts';
+        //News doesn't have a secondary select
       } else {
         loadMoreLabel = 'View More Projects';
+
+        if (this.state.siteConfig === 'hillsdale') {
+          secondarySelect = 'location';
+        } else {
+          //Falls back to kienlen and its secondary select
+          secondarySelect = 'services';
+        }
       }
 
       let allPosts = this.state.posts;
 
       let filteredLocationName = '';
+      let filteredCategoryName = '';
       let filteredServiceName = '';
       let filteredMarketName = '';
 
@@ -260,6 +276,7 @@ class CardList extends React.Component {
         postGroup = <CardGroup
                       posts = {this.state.posts}
                       postDataType = {this.state.postDataType}
+                      categories = {this.state.categories}
                       markets = {this.state.market_categories}
                       services = {this.state.service_categories}
                       locations = {this.state.location_categories}
@@ -276,6 +293,7 @@ class CardList extends React.Component {
         postGroup = <CardGroup
                       posts = {this.state.posts}
                       postDataType = {this.state.postDataType}
+                      categories = {this.state.categories}
                       markets = {this.state.market_categories}
                       services = {this.state.service_categories}
                       locations = {this.state.location_categories}
@@ -284,6 +302,10 @@ class CardList extends React.Component {
                       filteredMarket = {this.state.filteredMarket}
                     />
 
+        //Get the names of filtered WP categories for display purposes
+        if (this.state.categories && this.state.filteredCategory) {
+          filteredCategoryName = this.getCatName(this.state.filteredCategory, this.state.categories);
+        }
         //Get the names of filtered service categories for display purposes
         if (this.state.service_categories && this.state.filteredService) {
           filteredServiceName = this.getCatName(this.state.filteredService, this.state.service_categories);
@@ -309,6 +331,10 @@ class CardList extends React.Component {
         <div className="news-posts-container">
           <FilterBar
             postDataType = {this.state.postDataType}
+            categories = {this.state.categories}
+            categoryFilter = {this.state.filteredCategory}
+            categoryFilterName = {filteredCategoryName}
+            categoryChange = {this.handleCategoryChange}
             markets = {this.state.market_categories}
             marketFilter = {this.state.filteredMarket}
             marketFilterName = {filteredMarketName}
