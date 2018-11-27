@@ -1,11 +1,13 @@
+import {localStorageKeys, deleteLocalStorage, setLocalStorageItem} from './localstorage-handler.js'
+
 //This houses shared functionality used between CardList and Table List
 
 //Site Config Option that determines if the site is Hillsdale or Kienlen
-export function siteConfig(){
+export function siteConfig(callback){
   let currentSiteConfig = wpObj.site_config;
   this.setState({
     siteConfig: currentSiteConfig,
-  })
+  }, callback)
 }
 
 //Search Input Filter
@@ -41,8 +43,10 @@ export function handleMarketChange(id) {
   this.setState({
     filteredMarket: parseInt(id),
     isFiltered: true,
-    loading: true
+    loading: true,
+    currentPage: 1,
   }, () => this.getFilteredPosts(this.buildAPILink() ));
+  setLocalStorageItem(localStorageKeys.cards_market, id)
 }
 
 //Fetch our Services Categories
@@ -64,6 +68,8 @@ export function resetFilter(){
   let searchInput = document.getElementById('filterbar-search');
   let marketSelect = document.getElementById('filterbar-select-market');
   let secondarySelect = '';
+
+  deleteLocalStorage();
 
   //Check if Market is being used before setting default value
   if (marketSelect) {
@@ -95,12 +101,12 @@ export function resetFilter(){
     // It's CardListView
     this.setState({
       isFiltered: false,
-      filteredPosts: [],
       filteredMarket: '',
       filteredService: '',
       filteredLocation: '',
       hasSearchTerm: false,
       searchTerm: '',
+      currentPage: 1,
       totalPosts: parseInt( document.getElementById('cardList_app').getAttribute('data-total') )
     }, () => this.getPosts(this.buildAPILink()))
   }

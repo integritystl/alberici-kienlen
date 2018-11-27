@@ -10,7 +10,7 @@ class Select extends React.Component {
   componentWillMount(){
    let defaultValue = this.props.defaultValue ? this.props.defaultValue : this.props.label;
     this.setState({
-      selected: this.props.label,
+      selected: this.props.selected ? this.props.selected : this.props.label,
     })
 
   }
