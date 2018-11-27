@@ -55,6 +55,7 @@ class FilterBar extends React.Component {
               Service
             </label>
             <Select label="Service"
+              selected={this.props.serviceFilter}
               selectID= "filterbar-select-service"
               options={this.props.services}
               onFilterChange={this.filterServices}
@@ -69,6 +70,7 @@ class FilterBar extends React.Component {
             Location
           </label>
           <Select label="Location"
+            selected={this.props.locationFilter}
             selectID= "filterbar-select-location"
             options={this.props.locations}
             onFilterChange={this.filterLocations}
@@ -99,6 +101,7 @@ class FilterBar extends React.Component {
                     Market
                   </label>
                   <Select label="Market"
+                    selected={this.props.marketFilter}
                     selectID= "filterbar-select-market"
                     options={this.props.markets}
                     onFilterChange={this.filterMarkets}
@@ -114,6 +117,7 @@ class FilterBar extends React.Component {
         <input id="filterbar-search"
           type="search"
           placeholder="Search by keywords"
+          value={this.props.searchTerm}
           onChange={(event) => this.filterSearch(event)}
         />
 
