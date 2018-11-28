@@ -9,8 +9,23 @@
             background-color: white;
             .main-navigation {
                 .menu {
-                    a {
-                        color: $dark-gray;
+                    li {
+                        a {
+                            color: $dark-gray;
+                            @include grid-media($headerMenu-min) {
+                                &:hover {
+                                  color: $red;
+                                  opacity: 1;
+                                }
+                            }
+                        }
+                        &.current_page_item > a,
+                        &.current-menu-item > a,
+                        &.current_post_parent > a,
+                        &.current_page_ancestor > a,
+                        &.current-menu-ancestor > a {
+                          color: $red;
+                        }
                     }
                 }
             }
