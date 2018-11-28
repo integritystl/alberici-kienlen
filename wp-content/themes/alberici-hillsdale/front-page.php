@@ -59,14 +59,6 @@ $theme_config = get_field('set_site', 'options');
 					<ul class="blog-content_posts">
 					<?php while ($the_query -> have_posts()) : $the_query -> the_post(); ?>
 						<li>
-							<div class="taxonomies">
-								<?php
-								$news_page_link = get_field('news_page_link', 'option');
-								$base_category = get_the_terms( get_the_ID(), 'category' );
-								if ($base_category && $base_category[0]->name !== 'Uncategorized' ) { ?>
-									<p><?php echo $base_category[0]->name;?></p>
-								<?php } ?>
-							</div>
 							<a href="<?php the_permalink(); ?>">
 								<span class="news-meta">
 									<span class="card-overlay"></span>
@@ -82,7 +74,7 @@ $theme_config = get_field('set_site', 'options');
 					endwhile;
 					wp_reset_postdata(); ?>
 					</ul>
-					<a href="<?php echo $news_page_link; ?>" class="btn-secondary">View More News</a>
+					<a href="<?php the_field('news_page_link', 'option'); ?>" class="btn-secondary">View More News</a>
 				</div>
 			</div>
 			<?php endif; ?>
