@@ -147,7 +147,9 @@
   padding: 0 10px;
   @include grid-media($medium-min) {
     display: grid;
-    grid-gap: 40px;
+    // Using non-shorthand declarations for grid gap to avoid IE11 issues
+    grid-row-gap: 40px;
+    grid-column-gap: 40px;
     grid-template-columns: repeat(12, 1fr);
     grid-column: span 12;
     padding: 0px;

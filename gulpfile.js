@@ -27,7 +27,11 @@ gulp.task('sass', function(cb) {
 		gulp.src('./wp-content/themes/alberici-hillsdale/scss/style.scss'),
 		sourcemaps.init(),
 		sass(),
-		postcss([autoprefixer("last 2 versions")]),
+//		postcss([autoprefixer("last 2 versions")]),
+		postcss([autoprefixer({
+			browsers: "last 2 versions",
+			grid: "no-autoplace"
+		})]),
 		sass(),
 		sourcemaps.write(),
 		gulp.dest('./wp-content/themes/alberici-hillsdale/')

@@ -18,6 +18,8 @@ $headerMenu-min: (columns: 12, gutter: 20px, media: $headerMenu + 1);
 //Define main areas with CSS grid
 .grid-container {
   display: grid;
-  grid-gap: 20px;
+  // Using non-shorthand declarations for grid gap to avoid IE11 issues
+  grid-row-gap: 20px;
+  grid-column-gap: 20px;
   grid-template-columns: repeat(12, 1fr);
 }
