@@ -123,7 +123,9 @@
 
 .flex_stacked_tile {
   display: grid;
-  grid-gap: 10px;
+  // Using non-shorthand declarations for grid gap to avoid IE11 issues
+  grid-row-gap: 10px;
+  grid-column-gap: 10px;
   grid-template-columns: repeat(12, 1fr);
   grid-column: span 12;
   margin: 0 auto 20px;
