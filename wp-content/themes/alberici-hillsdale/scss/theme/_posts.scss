@@ -8,10 +8,13 @@
   min-height: 50vh;
   .filterbar {
     @extend .grid-container;
-    padding: 20px 0 0;
+    padding: 0;
     grid-template-rows: 48px;
     border-bottom: $base-border;
     margin-bottom: 20px;
+    @include grid-media($small-min) {
+      padding: 20px 0 0;
+    }
 
     input,
     .select {
