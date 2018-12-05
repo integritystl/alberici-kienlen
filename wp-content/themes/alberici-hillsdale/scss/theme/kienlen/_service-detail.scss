@@ -2,8 +2,14 @@
     .service-detail {
         display: block;
         margin: 6% 0;
-        .post-thumbnail img {
+        .post-thumbnail {
+            margin: 0 10px;
+            @include grid-media($medium-min) {
+                margin: 0;
+            }
+            img {
                 height: auto;
+            }
         }
         .service-content {
             margin: 0 20px;
