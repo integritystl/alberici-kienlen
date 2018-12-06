@@ -30,11 +30,11 @@
      max-width: 460px;
      a {
        margin-top: 30px;
-
+       min-width: auto;
      }
    }
    @include grid-media($large-min) {
-     flex-basis: 47%;
+     flex-basis: 40%;
    }
    @include grid-media($large-extra) {
      flex-basis: 75%;
