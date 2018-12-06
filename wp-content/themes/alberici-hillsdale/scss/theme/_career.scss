@@ -40,6 +40,17 @@
                 }
             }
         }
+        .gform_confirmation_message_1 {
+            font-family: $heading-font-family;
+            line-height: $heading-line-height;
+            margin: 0 0 $small-spacing;
+            font-size: 24px;
+            font-weight: 300;
+            margin-bottom: 15px;
+            @include grid-media($medium-min) {
+              font-size: 28px;
+            }
+        }
     }
     .single_tile_content ul {
         list-style-type: disc;
