@@ -62,7 +62,7 @@ $ContactForm = get_field('contact_people_form');
 
             </div>
         <?php endif; ?>
-    </main><!-- #main -->
+    </main><!-- #main -->
 </div><!-- #primary -->
 <?php
 get_footer();

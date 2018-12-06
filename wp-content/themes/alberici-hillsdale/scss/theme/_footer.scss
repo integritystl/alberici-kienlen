@@ -15,7 +15,7 @@ footer {
    grid-column: span 12;
    place-self: center;
    @include grid-media($medium-min) {
-    grid-column: span 6;
+    grid-column: span 7;
     place-self: stretch start;
    }
 
@@ -25,10 +25,12 @@ footer {
     margin: 4px 0 0;
     //for divider
     span {
-      &:after {
-        content:'|';
-        padding-left: 5px;
-        padding-right: 8px;
+      @include grid-media($small-min) {
+        &:after {
+          content:'|';
+          padding-left: 5px;
+          padding-right: 8px;
+        }
       }
     }
   }
@@ -49,7 +51,7 @@ footer {
    place-self: center;
    grid-column: span 12;
    @include grid-media($medium-min) {
-    grid-column: span 6;
+    grid-column: span 5;
     place-self: stretch end;
    }
    .footer-navigation {
