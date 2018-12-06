@@ -54,26 +54,24 @@ $theme_config = get_field('set_site', 'options');
 			<?php $the_query = new WP_Query( 'posts_per_page=3' ); ?>
 			<?php if ( $the_query -> have_posts() ): ?>
 			<div class="news">
-				<div class="container">
+				<div class="latest-news container">
 					<h2>News</h2>
-					<ul class="blog-content_posts">
+					<div class="card-group blog-content_posts">
 					<?php while ($the_query -> have_posts()) : $the_query -> the_post(); ?>
-						<li>
+						<div class="card-post card-news post">
+							<div class="card-overlay"></div>
+							<?php echo wp_get_attachment_image( get_post_thumbnail_id(get_the_ID()), 'blog_image', false );?>
 							<a href="<?php the_permalink(); ?>">
-								<span class="news-meta">
-									<span class="card-overlay"></span>
-									<?php echo wp_get_attachment_image( get_post_thumbnail_id(get_the_ID()), 'blog_image', false );?>
-									<span class="news-text">
-										<h3><?php  the_title();?></h3>
-									</span>
-								</span>
+								<div class="news-meta">
+									<h3><?php  the_title();?></h3>
+								</div>
 							</a>
-						</li>
+						</div>
 
 					<?php
 					endwhile;
 					wp_reset_postdata(); ?>
-					</ul>
+					</div>
 					<a href="<?php the_field('news_page_link', 'option'); ?>" class="btn-secondary">View More News</a>
 				</div>
 			</div>
