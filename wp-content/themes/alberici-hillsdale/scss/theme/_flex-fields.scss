@@ -86,6 +86,7 @@
      a {
        margin-top: 30px;
        min-width: 100%;
+       padding: 15px 17px;
      }
    }
 
@@ -116,6 +117,7 @@
       color: white;
       a {
         margin-top: 50px;
+        padding: 15px 30px;
       }
     }
   }
@@ -127,7 +129,7 @@
   grid-row-gap: 10px;
   grid-column-gap: 10px;
   grid-template-columns: repeat(12, 1fr);
-  grid-column: span 12;
+  //grid-column: span 12;
   margin: 0 auto 20px;
   padding: 0 10px;
   max-width: 1450px;
@@ -141,11 +143,11 @@
     display: flex;
     position: relative;
     flex-direction: column;
-    grid-column: span 12;
+    grid-column: 1 / span 12;
     margin: 10px 0 0;
 
     @include grid-media($medium-min) {
-      grid-column: span 6;
+      grid-column: 1 / span 6;
       align-items: flex-end;
     }
 
@@ -209,8 +211,10 @@
 
     &:nth-child(2) {
       align-items: flex-start;
+
       margin-top: 10px;
       @include grid-media($medium-min) {
+        grid-column: 7 / span 6;
         margin-top: 10px;
       }
       .single_tile_content,

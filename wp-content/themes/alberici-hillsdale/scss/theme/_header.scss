@@ -77,12 +77,11 @@
         .site-branding {
           max-width: 230px;
           max-height: 46px;
-          flex-basis: 75%;
+          flex: 0 1 75%;
         //   transition: $base-transition;
           @include grid-media($headerMenu-min) {
-            max-width: 230px;
             max-height: 65px;
-            flex-basis: 30%;
+            flex: 0 1 30%;
           }
           .custom-logo-link {
             display: block;
@@ -90,6 +89,8 @@
             transition: all $base-duration $base-timing;
             img {
               display: block;
+              max-width: 230px;
+              max-height: 65px;
             }
             @include grid-media($headerMenu-min) {
               &:hover {
@@ -101,6 +102,7 @@
 
           .scroll-logo {
             display: none;
+            visibility: hidden;
             transition: all $base-duration $base-timing;
             @include grid-media($headerMenu-min) {
               &:hover {
@@ -110,6 +112,8 @@
             }
             img {
               display: block;
+              max-width: 230px;
+              max-height: 65px;
             }
           }
         }
@@ -173,6 +177,7 @@
       .scroll-logo {
         display:  block;
         position: relative;
+        visibility: visible;
       }
     }
 

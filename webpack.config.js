@@ -3,12 +3,13 @@
 */
 const path = require('path');
 module.exports = {
-  entry: {
-    cardList: './wp-content/themes/alberici-hillsdale/js/react_src/card-list-view.js',
-  },
+  entry: [
+    '@babel/polyfill',
+    './wp-content/themes/alberici-hillsdale/js/react_src/card-list-view.js',
+  ],
   output: {
     path: path.resolve('wp-content/themes/alberici-hillsdale/js/react_src/dist'),
-    filename: '[name].js',
+    filename: 'cardList.js',
     publicPath: '/wp-content/themes/alberici-hillsdale/js/react_src/dist/'
   },
   resolve: {
