@@ -10,10 +10,10 @@ get_header();
 ?>
 
 <div id="primary" class="content-area">
-    <main id="main" class="site-main">
+    <main id="main" class="site-main">
 
-        <?php get_template_part( 'template-parts/hero' );?>
-        <?php if ( get_the_content() ) { ?>
+        <?php get_template_part( 'template-parts/hero' );?>       
+        <?php if ( get_the_content() ) { ?>
             <div class="serivces-content container">
                 <?php
                 the_content();
