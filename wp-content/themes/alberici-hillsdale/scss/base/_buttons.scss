@@ -23,7 +23,7 @@ $_button-background-color-hover: shade($primary-action-color, 20%);
   transition: background-color $base-duration $base-timing;
   user-select: none;
   vertical-align: middle;
-  white-space: nowrap;
+  // white-space: nowrap;
   @include grid-media($medium-min) {
     min-width: 400px;
   }
@@ -76,7 +76,7 @@ $_button-background-color-hover: shade($primary-action-color, 20%);
   transition: background-color $base-duration $base-timing;
   user-select: none;
   vertical-align: middle;
-  white-space: nowrap;
+  // white-space: nowrap;
   @include grid-media($medium-min) {
     min-width: 400px;
   }
