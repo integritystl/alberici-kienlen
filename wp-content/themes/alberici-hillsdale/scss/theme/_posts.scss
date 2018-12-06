@@ -8,10 +8,13 @@
   min-height: 50vh;
   .filterbar {
     @extend .grid-container;
-    padding: 20px 0 0;
+    padding: 0;
     grid-template-rows: 48px;
     border-bottom: $base-border;
     margin-bottom: 20px;
+    @include grid-media($small-min) {
+      padding: 20px 0 0;
+    }
 
     input,
     .select {
@@ -32,13 +35,19 @@
 
     .filter-info {
       grid-column: span 12;
-      display: flex;
+      display: block;
       align-items: center;
+      @include grid-media($small-min) {
+        display: flex;
+      }
 
       span {
         display: flex;
         align-items: center;
-        margin-bottom: 20px;
+        margin-bottom: 10px;
+        @include grid-media($small-min) {
+          margin-bottom: 20px;
+        }
       }
 
       button {
@@ -55,20 +64,23 @@
       .filter-info--term {
         @extend .btn-lined;
         min-width: 0;
-        margin: 0 5px;
+        margin: 5px 5px 0 5px;
         text-transform: normal;
-        padding: 9px 15px;
+        padding: 9px 14px;
         font-size: 14px;
         &:after {
           padding-left: 15px;
           content:'\f00d';
         }
+        @include grid-media($small-min) {
+          margin: 0 5px;
+        }
       }
 
       .btn-reset-filter {
         min-width: 0;
-        margin-left: 5px;
-        padding: 10px 15px;
+        margin: 0 0 20px 0;
+        padding: 10px 14px;
         font-size: 14px;
         &:after {
           padding-left: 15px;
