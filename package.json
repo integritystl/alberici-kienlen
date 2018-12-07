@@ -45,6 +45,7 @@
     "prop-types": "^15.5.6",
     "query-string": "^4.3.2",
     "react": "^15.5.3",
+    "react-debounce-input": "^3.2.0",
     "react-dom": "^15.5.3",
     "webpack-dev-server": "^2.4.2",
     "whatwg-fetch": "^2.0.3"
