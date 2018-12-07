@@ -106,7 +106,19 @@
     }
 
     @include grid-media($medium-min) {
-      grid-column: span 4;
+      grid-column: 1 / span 4;
+    }
+
+    //Have to be more specific because IE11 has no AutoPlacement with CSS Grid
+    &:nth-child(2n) {
+      @include grid-media($medium-min) {
+        grid-column: 5 / span 4;
+      }
+    }
+    &:nth-child(3n) {
+      @include grid-media($medium-min) {
+        grid-column: 9 / span 4;
+      }
     }
 
     a {

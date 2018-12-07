@@ -20,15 +20,12 @@
   }
 
   > .container {
-    grid-column: span 12;
+    grid-column: 1 / span 12;
     z-index: 1;
   }
 
   h1 {
     grid-column: 1 / span 12;
-    grid-column-start: 1;
-    grid-row-start: 1;
-    grid-row-end: 1;
     text-align: center;
     padding: 140px 0 60px;
     margin: 0;
@@ -40,7 +37,10 @@
   }
   .hero-content {
     background-color: rgba(#383838, 0.8);
-    grid-column: span 12;
+    grid-column: 1 / span 12;
+    //have to be more specific for IE11
+    grid-row-start: 2;
+    grid-row-end: 2;
     color: white;
     padding: 35px 0px 40px;
     z-index: 1;
@@ -57,7 +57,8 @@
       }
     }
     p {
-      flex-basis: 50%;
+    //  flex-basis: 50%;
+      flex: 0 1 50%;
       font-size: 16px;
       margin: 0;
       -webkit-font-smoothing: antialiased;
@@ -110,6 +111,9 @@
 .hero-overlay {
   position: absolute;
   top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
   z-index: -1;
   width: 100%;
   height: 100%;
