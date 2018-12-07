@@ -18,23 +18,29 @@
 
     input,
     .select {
-      grid-column: span 12;
+      grid-column: 1 / span 12;
       margin: 0;
+    }
+    //Can't use AutoPlacement for Grid with IE11, so being more specific on placment
+    input {
       @include grid-media($small-min) {
-        grid-column: span 4;
-      }
-      @include grid-media($medium-min) {
-        grid-column: span 4;
+        grid-column: 1 / span 4;
       }
     }
+
     .select {
+      @include grid-media($small-min) {
+        grid-column: 5 / span 4;
+      }
       select {
         margin-bottom: 0px;
       }
     }
 
     .filter-info {
-      grid-column: span 12;
+      grid-column: 1/ span 12;
+      grid-row-start: 2;
+      grid-row-end: 2;
       display: block;
       align-items: center;
       @include grid-media($small-min) {
