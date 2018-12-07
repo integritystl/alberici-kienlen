@@ -12,10 +12,10 @@ footer {
   clear: both;
 }
 .site-copyright {
-   grid-column: span 12;
+   grid-column: 1 / span 12;
    place-self: center;
    @include grid-media($medium-min) {
-    grid-column: span 7;
+    grid-column: 1 / span 7;
     place-self: stretch start;
    }
 
@@ -49,10 +49,10 @@ footer {
 
 .site-footer-menus {
    place-self: center;
-   grid-column: span 12;
+   grid-column: 1 / span 12;
    @include grid-media($medium-min) {
-    grid-column: span 5;
-    place-self: stretch end;
+    grid-column: 8 / span 5;
+    place-self: end;
    }
    .footer-navigation {
      li {
