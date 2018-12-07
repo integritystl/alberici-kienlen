@@ -1,15 +1,17 @@
 .alberici-kienlen {
   .news-posts-container, .projects-posts-container {
     .filterbar {
-      input,
-      .select {
+      input {
         @include grid-media($small-min) {
-          grid-column: span 6;
-        }
-        @include grid-media($medium-min) {
-          grid-column: span 6;
+          grid-column: 1 / span 6;
         }
       }
+      .select {
+        @include grid-media($small-min) {
+          grid-column: 7 / span 6;
+        }
+      }
+
     } // filterbar
   }
 }
