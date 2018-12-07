@@ -224,3 +224,8 @@ li.file-upload {
     }
   }
 }
+
+//remove IE10's select arrow
+select::-ms-expand {
+    display: none;
+}
