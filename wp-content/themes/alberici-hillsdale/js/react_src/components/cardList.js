@@ -116,7 +116,6 @@ class CardList extends React.Component {
       }else {
         baseLink += `&per_page=${this.state.postsPerPage}`
       }
-      console.log(baseLink);
       return baseLink;
     }
     //Get All Posts
@@ -144,14 +143,12 @@ class CardList extends React.Component {
     getFilteredPosts(apiLink) {
       fetch(apiLink)
         .then( response => {
-          console.log('response', response);
           this.setState({
             // WP API gives the Total Page Count in the Headers, of all places :\
             totalPosts: parseInt( response.headers.get('X-WP-Total') )
           })
           return(response.json());
         }).then(json => {
-          console.log('getFilteredPosts', json);
           this.setState({
             posts: json,
             loading: false //helps Projects load
@@ -275,7 +272,6 @@ class CardList extends React.Component {
       if (this.state.loading) {
         postGroup = <div className="loading-spinner">Loading...</div>;
       } else if (allPosts && this.state.isFiltered === false) {
-        console.log('FALSE isfiltered');
         postGroup = <CardGroup
                       posts = {this.state.posts}
                       postDataType = {this.state.postDataType}
@@ -293,7 +289,6 @@ class CardList extends React.Component {
                         </button>;
         }
       } else if ( allPosts && this.state.isFiltered === true ) {
-        console.log('TRUE isFiltered');
         postGroup = <CardGroup
                       posts = {this.state.posts}
                       postDataType = {this.state.postDataType}
