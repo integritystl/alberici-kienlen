@@ -1,4 +1,5 @@
 import React from 'react';
+import {DebounceInput} from 'react-debounce-input';
 
 import Select from './filter-select.js'
 
@@ -6,7 +7,7 @@ class FilterBar extends React.Component {
   constructor(props) {
     super(props);
     this.filterSearch = this.filterSearch.bind(this);
-        this.filterCategories = this.filterCategories.bind(this);
+    this.filterCategories = this.filterCategories.bind(this);
     this.filterMarkets = this.filterMarkets.bind(this);
     this.filterServices = this.filterServices.bind(this);
     this.filterLocations = this.filterLocations.bind(this);
@@ -17,6 +18,7 @@ class FilterBar extends React.Component {
   filterSearch(event) {
     let term = event.target.value;
     this.props.filterSearch(term);
+    //setTimeout(() => {this.props.filterSearch(term)}, 500);
   }
 
   filterCategories(id){
@@ -158,8 +160,9 @@ class FilterBar extends React.Component {
         <label className="screen-reader-text" htmlFor="filterbar-search">
           Search
         </label>
-        <input id="filterbar-search"
+        <DebounceInput id="filterbar-search"
           type="search"
+          debounceTimeout={500}
           placeholder="Search by keywords"
           value={this.props.searchTerm}
           onChange={(event) => this.filterSearch(event)}
