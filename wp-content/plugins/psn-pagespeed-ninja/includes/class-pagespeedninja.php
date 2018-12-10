@@ -20,7 +20,7 @@ class PagespeedNinja
     public function __construct() {
         $this->plugin_name     = 'pagespeedninja';
         $this->plugin_slug     = 'psn-pagespeed-ninja';
-        $this->version         = '0.9.31';
+        $this->version         = '0.9.32';
         $this->plugin_dir_path = plugin_dir_path(dirname(__FILE__));
     }
 

@@ -198,14 +198,13 @@ class PagespeedNinja_Public
      */
     public function ob_callback($buffer)
     {
-        // bypass amp pages (detected by <html amp> or <html ⚡>)
-        if (preg_match('/<html\s[^>]*?(?:⚡|\bamp\b)[^>]*>/u', $buffer)) {
-            $buffer = '';
-        }
-
+        $buffer = ltrim($buffer);
         if (
-                $buffer === ''
-                || (defined('DONOTMINIFY') && DONOTMINIFY)
+            $buffer === '' // empty page
+            || (defined('DONOTMINIFY') && DONOTMINIFY) // disabled optimization
+            || $buffer[0] !== '<' // bypass non-HTML (partials, json, etc.)
+            || strncmp($buffer, '<?xml ', 6) === 0 // bypass XML (sitemap, etc.)
+            || preg_match('/<html\s[^>]*?(?:⚡|\bamp\b)[^>]*>/u', $buffer) // bypass amp pages (detected by <html amp> or <html ⚡>)
         ) {
             return false;
         }
@@ -225,13 +224,13 @@ class PagespeedNinja_Public
         }
 
         $gzip = (bool)$options['html_gzip'];
-        if (
+        if ($gzip && (
             class_exists('W3_Plugin_TotalCache', false)
             || function_exists('check_richards_toolbox_gzip')
             || function_exists('wp_cache_phase2')
             || headers_sent()
             || in_array('ob_gzhandler', ob_list_handlers(), true)
-        ) {
+        )) {
             $gzip = false;
         }
 

@@ -50,6 +50,7 @@ class Ressio_Plugin
         }
         $params = json_decode(file_get_contents($filename));
         if ($override !== null) {
+            /** @var stdClass $override */
             foreach ($override as $key => $value) {
                 if (isset($params->$key)) {
                     $params->$key = $value;
