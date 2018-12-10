@@ -7,6 +7,9 @@
  * @license     GNU General Public License version 2
  */
 
+// @todo Ressio optimizer supports PHP 5.2 (minimal version required by WordPress),
+// @todo consider to rewrite it for modern PHP after WordPress changes it
+
 // @todo Use DI container instead of constants
 if (!defined('RESSIO_PATH')) {
     define('RESSIO_PATH', dirname(__FILE__));

@@ -747,8 +747,6 @@ class PagespeedNinja_Admin
             }
         }
 
-        $newConfig['apikey'] = trim($newConfig['apikey']);
-
         return $newConfig;
     }
 
