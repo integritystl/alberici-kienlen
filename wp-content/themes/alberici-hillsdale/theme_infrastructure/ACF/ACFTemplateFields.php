@@ -703,6 +703,11 @@ class ACFTemplateFields
 					'operator' => '!=',
 					'value' => 'front_page',
 					),
+          array(
+            'param' => 'post_type',
+            'operator' => '!=',
+            'value' => 'post',
+          ),
 				),
 			),
 			'menu_order' => 0,
@@ -829,6 +834,11 @@ class ACFTemplateFields
 							'operator' => '!=',
 							'value' => 'front_page',
 						),
+            array(
+              'param' => 'post_type',
+              'operator' => '!=',
+              'value' => 'post',
+            ),
 					),
 				),
 				'menu_order' => 0,
