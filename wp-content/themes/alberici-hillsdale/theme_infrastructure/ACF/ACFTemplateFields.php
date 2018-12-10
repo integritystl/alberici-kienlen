@@ -703,6 +703,11 @@ class ACFTemplateFields
 					'operator' => '!=',
 					'value' => 'front_page',
 					),
+          array(
+            'param' => 'post_type',
+            'operator' => '!=',
+            'value' => 'post',
+          ),
 				),
 			),
 			'menu_order' => 0,
@@ -799,7 +804,7 @@ class ACFTemplateFields
 					),
 				array(
 					'key' => 'field_5b6b23e30a94d',
-					'label' => 'Background Image',
+					'label' => 'Image',
 					'name' => 'footer_callout_background_image',
 					'type' => 'image',
 					'instructions' => '',
@@ -829,6 +834,11 @@ class ACFTemplateFields
 							'operator' => '!=',
 							'value' => 'front_page',
 						),
+            array(
+              'param' => 'post_type',
+              'operator' => '!=',
+              'value' => 'post',
+            ),
 					),
 				),
 				'menu_order' => 0,

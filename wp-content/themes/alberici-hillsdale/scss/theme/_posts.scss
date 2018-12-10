@@ -115,7 +115,8 @@
       grid-column: span 4;
     }
 
-    // //Have to be more specific because IE11 has no AutoPlacement with CSS Grid
+    // Have to be more specific because IE11 has no AutoPlacement with CSS Grid
+    //and we don't want to interfere with the autoplacement that works on Modern Things
     &:nth-child(2n) {
       @include grid-media($medium-min) {
         -ms-grid-column: 5;

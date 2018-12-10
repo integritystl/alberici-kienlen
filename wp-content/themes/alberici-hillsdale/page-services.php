@@ -12,7 +12,7 @@ get_header();
 <div id="primary" class="content-area">
     <main id="main" class="site-main">
 
-        <?php get_template_part( 'template-parts/hero' );?>       
+        <?php get_template_part( 'template-parts/hero' );?>
         <?php if ( get_the_content() ) { ?>
             <div class="serivces-content container">
                 <?php
@@ -28,7 +28,7 @@ get_header();
             'orderby'=>'title',
             'order'=>'ASC'
         ) );
-        
+
         if ( $servicePosts ) { ?>
         <div class="services-list container">
             <div class="card-group blog-content_posts">
@@ -37,7 +37,7 @@ get_header();
                 <?php if (get_the_post_thumbnail()): ?>
                     <article class="card-post card-news post">
                         <div class="card-overlay"></div>
-                        <?php echo wp_get_attachment_image( get_post_thumbnail_id($post->ID), 'full', false );?>
+                        <?php echo wp_get_attachment_image( get_post_thumbnail_id($post->ID), 'large', false );?>
                         <a href="<?php the_permalink(); ?>">
                             <div class="news-meta">
                                 <h3><?php the_title(); ?></h3>
@@ -50,7 +50,7 @@ get_header();
 
             <?php wp_reset_postdata(); ?>
             </div>
-        </div> 
+        </div>
         <?php }
         get_template_part( 'template-parts/footer-callout' );?>
 

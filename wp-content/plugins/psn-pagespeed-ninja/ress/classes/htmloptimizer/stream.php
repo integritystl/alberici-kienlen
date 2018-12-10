@@ -721,7 +721,7 @@ class Ressio_HtmlOptimizer_Stream extends Ressio_HtmlOptimizer_Base
                         if (
                             $this->config->js->skipinits
                             && strlen($scriptBlob) < 512
-                            && preg_match('#^var\s+\w+\s*=\s*(\{[^;]+?\}|\'[^\']+?\'|"[^"]+?");?\s*$#', $scriptBlob)
+                            && preg_match('#^var\s+\w+\s*=\s*(?:\{[^;]+?\}|\'[^\']+?\'|"[^"]+?"|\d+);?\s*$#', $scriptBlob)
                         ) {
                             // skip (probable page-dependent) js variables initialization from merging
                             $this->breakJs();

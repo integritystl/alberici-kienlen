@@ -4,7 +4,7 @@ Contributors: pagespeed
 Tags: page speed, optimizer, minification, gzip, render blocking css
 Requires at least: 4.0.1
 Tested up to: 5.0
-Stable tag: 0.9.31
+Stable tag: 0.9.32
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 
@@ -80,6 +80,12 @@ None
 
 
 == Changelog ==
+
+
+= 0.9.32 Beta Release [29 November 2018] =
+- Fixed processing of xml (e.g. in sitemap)
+- Removed copyright headers from minified Lazy Load XT files
+- Improvement of "Skip initialization scripts" setting
 
 = 0.9.31 Beta Release [13 September 2018] =
 - Fixed gzip compression for "headers sent" issue

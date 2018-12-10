@@ -13694,7 +13694,6 @@ var CardList = function (_React$Component) {
     } else {
       baseLink += '&per_page=' + this.state.postsPerPage;
     }
-    console.log(baseLink);
     return baseLink;
   };
   //Get All Posts
@@ -13725,14 +13724,12 @@ var CardList = function (_React$Component) {
     var _this4 = this;
 
     fetch(apiLink).then(function (response) {
-      console.log('response', response);
       _this4.setState({
         // WP API gives the Total Page Count in the Headers, of all places :\
         totalPosts: parseInt(response.headers.get('X-WP-Total'))
       });
       return response.json();
     }).then(function (json) {
-      console.log('getFilteredPosts', json);
       _this4.setState({
         posts: json,
         loading: false //helps Projects load
@@ -13877,7 +13874,6 @@ var CardList = function (_React$Component) {
         'Loading...'
       );
     } else if (allPosts && this.state.isFiltered === false) {
-      console.log('FALSE isfiltered');
       postGroup = _react2.default.createElement(_card_group2.default, {
         posts: this.state.posts,
         postDataType: this.state.postDataType,
@@ -13897,7 +13893,6 @@ var CardList = function (_React$Component) {
         );
       }
     } else if (allPosts && this.state.isFiltered === true) {
-      console.log('TRUE isFiltered');
       postGroup = _react2.default.createElement(_card_group2.default, {
         posts: this.state.posts,
         postDataType: this.state.postDataType,
