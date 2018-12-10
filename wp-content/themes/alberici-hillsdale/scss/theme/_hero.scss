@@ -7,7 +7,6 @@
   background-color: $dark-blue;
   overflow: hidden;
   position: relative;
-  z-index: -999;
 
   @include grid-media($medium-min) {
     display: grid;
@@ -43,7 +42,7 @@
     grid-row-end: 2;
     color: white;
     padding: 35px 0px 40px;
-    z-index: 1;
+    z-index: 3;
     @include grid-media($medium-min) {
       padding: 30px 20px;
     }
