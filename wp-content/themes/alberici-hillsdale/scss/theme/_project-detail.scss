@@ -59,7 +59,9 @@
     }
     .project-info {
         background-color: rgba(#383838, 0.8);
-        grid-column: span 12;
+        grid-column: 1 / span 12;
+        grid-row-start: 2;
+        grid-row-end: 2;
         color: white;
         z-index: 1;
 
@@ -151,7 +153,7 @@
     grid-row-gap: 40px;
     grid-column-gap: 40px;
     grid-template-columns: repeat(12, 1fr);
-    grid-column: span 12;
+    grid-column: 1 / span 12;
     padding: 0px;
   }
 
@@ -160,7 +162,7 @@
 
 
     @include grid-media($medium-min) {
-      grid-column: span 6;
+      grid-column: 1 / span 6;
       display: flex;
       flex-direction: column;
       align-items: flex-end;
@@ -178,7 +180,7 @@
 
     @include grid-media($medium-min) {
       max-width: 465px;
-      grid-column: span 6;
+      grid-column: 7 / span 6;
       padding: 0 20px 0 0;
     }
 

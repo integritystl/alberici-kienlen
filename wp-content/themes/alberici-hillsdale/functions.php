@@ -207,6 +207,8 @@ function alberici_hillsdale_scripts() {
 
 	wp_enqueue_script( 'jquery-sidr', get_template_directory_uri() . '/js/jquery.sidr.min.js', array('jquery'), time(), true );
 
+	wp_enqueue_script( 'modernizr-grid', get_template_directory_uri() . '/js/modernizr-grid.min.js', array(), time(), true );
+
 	wp_enqueue_script('alberici-hillsdale-scripts', get_template_directory_uri() . '/js/app.js', array('jquery'), time(), true);
 
 
