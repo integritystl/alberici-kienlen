@@ -799,7 +799,7 @@ class ACFTemplateFields
 					),
 				array(
 					'key' => 'field_5b6b23e30a94d',
-					'label' => 'Background Image',
+					'label' => 'Image',
 					'name' => 'footer_callout_background_image',
 					'type' => 'image',
 					'instructions' => '',
