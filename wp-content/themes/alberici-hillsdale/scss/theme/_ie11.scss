@@ -2,6 +2,12 @@
 
 .no-cssgrid {
 
+  .hero-image {
+    @include grid-media($medium-min) {
+      display: block;
+    }
+  }
+
 
   .card-group,
   .blog-content_posts {
