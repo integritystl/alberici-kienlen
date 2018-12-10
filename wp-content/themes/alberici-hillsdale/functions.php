@@ -48,7 +48,7 @@ function add_market_taxonomy() {
 		),
 
 	);
-	register_taxonomy('market_category', array('post', 'project'), $args);
+	register_taxonomy('market_category', array('project'), $args);
 
 }
 add_action('init', 'add_market_taxonomy', 10);
