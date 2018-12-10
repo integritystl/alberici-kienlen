@@ -1,0 +1,35 @@
+//Modernizer is giving us some classes so we can resolve some IE11 CSS Grid issues
+
+.no-cssgrid {
+
+
+  .card-group,
+  .blog-content_posts {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+  }
+  .card-group .card-post {
+    flex: 0 1 30%;
+    margin-bottom: 10px;
+  }
+
+  .news-posts-container .filterbar .filter-info,
+  .projects-posts-container .filterbar .filter-info {
+    margin-top: 10px;
+  }
+
+  .single-project-details {
+
+    .single-project-content {
+
+      @include grid-media($medium-min) {
+        max-width: 500px;
+        padding: 0 20px 0 20px; //makeup for this grid not taking the gaps
+      }
+    }
+
+  }
+
+
+}
