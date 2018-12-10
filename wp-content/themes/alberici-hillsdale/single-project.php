@@ -29,14 +29,15 @@ $projectIntro = get_field('project_intro');
 								<p class="project-location"><?php echo $location_taxonomy; ?></p>
 							<?php endif; ?>
 
-							<div class="market-link">
 								<?php
 								$market_term = get_the_terms( get_the_ID(), 'market_category' );
-								if ( $market_term && ! is_wp_error( $market_term ) ) :
+								if ( $market_term && ! is_wp_error( $market_term ) ) {
 									$market_taxonomy = $market_term[0]->name; ?>
-									<a href=""><?php echo $market_taxonomy; ?></a> <!-- check if need a link later -->
-								<?php endif; ?>
-							</div>
+									<div class="market-link">
+										<?php echo $market_taxonomy; ?>
+									</div>
+								<?php } ?>
+
 						</div>
 						<div class="project-info">
 							<div class="container">
