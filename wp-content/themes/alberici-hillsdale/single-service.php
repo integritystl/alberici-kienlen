@@ -35,7 +35,7 @@ $HeroImage = get_field('general_hero_featured_image');
 				get_template_part( 'template-parts/content', 'none' );
 			endif;
 
-			
+
 			if ( is_single() && 'service' === get_post_type()) {
 				$term = get_field('project_service_category');
 				$latest_args = array(
@@ -56,7 +56,7 @@ $HeroImage = get_field('general_hero_featured_image');
 			}
 
 			$sum = $latest_query->found_posts;
-			
+
 			if ( $latest_query->have_posts() ) : ?>
 				<div class="services services-latest-3 container">
 					<h2>Related Projects</h2>
@@ -79,10 +79,10 @@ $HeroImage = get_field('general_hero_featured_image');
 						</article>
 						<?php endwhile; ?>
 					</div>
-					<a href="<?php echo get_home_url(); ?>/projects" class="btn"> view more projects </a>
+					<a href="<?php echo get_field('projects_page_link', 'option'); ?>" class="btn"> view more projects </a>
 				</div>
 			<?php endif; wp_reset_postdata(); ?>
-			
+
 			<?php get_template_part( 'template-parts/footer-callout' ); ?>
 		</main><!-- #main -->
 	</div><!-- #primary -->
