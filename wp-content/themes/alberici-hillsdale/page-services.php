@@ -37,7 +37,7 @@ get_header();
                 <?php if (get_the_post_thumbnail()): ?>
                     <article class="card-post card-news post">
                         <div class="card-overlay"></div>
-                        <?php echo wp_get_attachment_image( get_post_thumbnail_id($post->ID), 'large', false );?>
+                        <?php echo wp_get_attachment_image( get_post_thumbnail_id($post->ID), 'blog_image', false );?>
                         <a href="<?php the_permalink(); ?>">
                             <div class="news-meta">
                                 <h3><?php the_title(); ?></h3>
