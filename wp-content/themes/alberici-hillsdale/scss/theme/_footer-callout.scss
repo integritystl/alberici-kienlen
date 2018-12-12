@@ -5,6 +5,13 @@
  @include grid-media($medium-min) {
    padding: 100px 0;
  }
+ &.footer-callout--no-img {
+   //if there's no image, adjust the padding so it's not so tall
+   @include grid-media($medium-min) {
+     padding: 50px 0;
+   }
+ }
+
  .container {
    display: block;
    @include grid-media($medium-min) {

@@ -329,3 +329,59 @@ function alberici_hillsdale_theme_widgets_init() {
 	'after_title'   => '</h2>',
     ) );
 }
+
+
+// Yoast Breadcrumb customization. This is so we can have Home > Projects > Project Detail
+// and the like for News, Services and Projects.
+// Ref: https://wordpress.stackexchange.com/questions/100012/how-to-add-a-page-to-the-yoast-breadcrumbs
+add_filter( 'wpseo_breadcrumb_links', 'update_yoast_news_breadcrumb_trail' );
+
+function update_yoast_news_breadcrumb_trail( $links ) {
+    global $post;
+
+    if ( is_home() || is_singular( 'post' ) || is_archive() ) {
+        $breadcrumb[] = array(
+            'url' => get_field('news_page_link', 'option'),
+            'text' => 'News',
+        );
+
+        array_splice( $links, 1, -2, $breadcrumb );
+    }
+
+    return $links;
+}
+
+add_filter( 'wpseo_breadcrumb_links', 'update_yoast_services_breadcrumb_trail' );
+
+function update_yoast_services_breadcrumb_trail( $links ) {
+    global $post;
+
+    if ( is_singular( 'service' ) ) {
+        $breadcrumb[] = array(
+            'url' => get_field('services_page_link', 'option'),
+            'text' => 'Services',
+        );
+
+        array_splice( $links, 1, -2, $breadcrumb );
+    }
+
+    return $links;
+}
+
+add_filter( 'wpseo_breadcrumb_links', 'update_yoast_projects_breadcrumb_trail' );
+
+function update_yoast_projects_breadcrumb_trail( $links ) {
+    global $post;
+
+    if ( is_singular( 'project' ) ) {
+        $breadcrumb[] = array(
+            'url' => get_field('projects_page_link', 'option'),
+            'text' => 'Projects',
+        );
+
+        array_splice( $links, 1, -2, $breadcrumb );
+    }
+
+    return $links;
+}
+

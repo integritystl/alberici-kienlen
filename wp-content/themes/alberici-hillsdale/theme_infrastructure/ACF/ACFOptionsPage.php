@@ -114,12 +114,54 @@ class ACFOptionsPage {
 
 			acf_add_local_field_group(array(
 				'key' => 'group_5beb17061feef',
-				'title' => 'News Page Link',
+				'title' => 'Global Links',
 				'fields' => array(
 					array(
 						'key' => 'field_5beb1710c3dde',
-						'label' => 'Link',
+						'label' => 'News Page Link',
 						'name' => 'news_page_link',
+						'type' => 'page_link',
+						'instructions' => '',
+						'required' => 0,
+						'conditional_logic' => 0,
+						'wrapper' => array(
+							'width' => '',
+							'class' => '',
+							'id' => '',
+						),
+						'post_type' => array(
+							0 => 'page',
+						),
+						'taxonomy' => '',
+						'allow_null' => 0,
+						'allow_archives' => 1,
+						'multiple' => 0,
+					),
+					array(
+						'key' => 'field_service_page_link',
+						'label' => 'Services Page Link',
+						'name' => 'services_page_link',
+						'type' => 'page_link',
+						'instructions' => '',
+						'required' => 0,
+						'conditional_logic' => 0,
+						'wrapper' => array(
+							'width' => '',
+							'class' => '',
+							'id' => '',
+						),
+						'post_type' => array(
+							0 => 'page',
+						),
+						'taxonomy' => '',
+						'allow_null' => 0,
+						'allow_archives' => 1,
+						'multiple' => 0,
+					),
+					array(
+						'key' => 'field_project_page_link',
+						'label' => 'Projects Page Link',
+						'name' => 'projects_page_link',
 						'type' => 'page_link',
 						'instructions' => '',
 						'required' => 0,
@@ -156,7 +198,7 @@ class ACFOptionsPage {
 				'active' => 1,
 				'description' => '',
 			));
-			
+
 		endif;
 
 		if( function_exists('acf_add_local_field_group') ):
