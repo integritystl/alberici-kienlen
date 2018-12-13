@@ -13,3 +13,7 @@
   - service: app_build
     tag: master
     command: ./scripts/deploy-production.sh
+
+  - service: app_build
+    tag: master
+    command: ./scripts/deploy-production-kienlen.sh
