@@ -225,6 +225,20 @@ li.file-upload {
   }
 }
 
+.gform_confirmation_message {
+    font-family: $heading-font-family;
+    line-height: $heading-line-height;
+    margin: 0 0 $small-spacing;
+    font-size: 24px;
+    text-align: center;
+    font-weight: 300;
+    margin-bottom: 15px;
+    @include grid-media($medium-min) {
+      font-size: 30px;
+      max-width: 500px;
+    }
+}
+
 //remove IE10's select arrow
 select::-ms-expand {
     display: none;
