@@ -9,7 +9,7 @@
               padding: 70px 0;
         }
         .callout-content {
-        
+
             a {
                 text-transform: uppercase;
                 margin-top: 20px;
@@ -38,17 +38,6 @@
                 label {
                     font-weight: 500;
                 }
-            }
-        }
-        .gform_confirmation_message {
-            font-family: $heading-font-family;
-            line-height: $heading-line-height;
-            margin: 0 0 $small-spacing;
-            font-size: 24px;
-            font-weight: 300;
-            margin-bottom: 15px;
-            @include grid-media($medium-min) {
-              font-size: 28px;
             }
         }
     }
