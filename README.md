@@ -56,6 +56,7 @@ We've set up a configuration to change the site's CSS styles in an ACF Option un
 ### WorkFlow from DEVELOP to MASTER
 1. When the `develop` branch is in a solid state, make a Pull Request to `master`.
 1. Once the Pull Request is merged to `master`, Codeship tasks will run to push the changes.
+1. When the Pull Request is approved and merged into `master`, the staging site will be updated by CodeShip automagically
 
 ## ACF
 We're source controlling the fields from ACF. Fields are split into separate PHP files that go into `theme_infrastructure` in the theme directory.
