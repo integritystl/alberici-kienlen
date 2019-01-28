@@ -2,6 +2,9 @@
     .our-clients {
         margin-top: 50px;
         .clients-img {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
             img {
                 margin: 4% 4%;
                 width: 24%;

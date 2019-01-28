@@ -46,6 +46,7 @@ class FilterBar extends React.Component {
   }
 
   render() {
+    let currentSearchFilter = '';
     let currentServiceFilter = '';
     let currentMarketFilter = '';
     let currentLocationFilter = '';
@@ -119,6 +120,13 @@ class FilterBar extends React.Component {
       }
     }
 
+    if (this.props.searchTerm) {
+      currentSearchFilter = <span id="filter-info-search"
+      onClick={(event) => this.removeFilterTerm(event) }
+      className="filter-info--term" key={this.props.searchTerm}
+      dangerouslySetInnerHTML={{__html:this.props.searchTerm}} />;
+    }
+
     if (this.props.categoryFilterName) {
       currentCategoryFilter = <span id="filter-info-category"
       onClick={(event) => this.removeFilterTerm(event) }
@@ -140,6 +148,7 @@ class FilterBar extends React.Component {
         key={this.props.serviceFilter}
         dangerouslySetInnerHTML={{__html:this.props.serviceFilterName}} />;
     }
+
     if (this.props.locationFilterName) {
       currentLocationFilter = <span id="filter-info-location"
       onClick={(event) => this.removeFilterTerm(event) }
@@ -148,9 +157,10 @@ class FilterBar extends React.Component {
     }
 
 
+
     if (this.props.isFiltered) {
       filterTerms =  <span><span className="filter-label">Filter By:</span>
-        {currentCategoryFilter} {currentMarketFilter} {currentServiceFilter} {currentLocationFilter}
+         {currentSearchFilter} {currentCategoryFilter} {currentMarketFilter} {currentServiceFilter} {currentLocationFilter}
       </span>;
       resetBtn = <button onClick={() => this.resetFilter() } className="btn-reset-filter">Clear Filters</button>;
     }
