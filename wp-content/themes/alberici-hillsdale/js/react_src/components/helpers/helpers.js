@@ -144,19 +144,33 @@ export function removeFilterTerm(currentTermId){
           filteredService: '',
         }, () => this.checkFilterStatus())
         document.getElementById('filterbar-select-service').value = 'Service';
-      } else if (currentTermId === 'filter-info-market') {
+      }
+
+      else if (currentTermId === 'filter-info-market') {
         // it's markets
         this.setState({
           filteredMarket: '',
         }, () => this.checkFilterStatus())
         document.getElementById('filterbar-select-market').value = 'Market';
-      } else if (currentTermId === 'filter-info-location') {
+      }
+
+      else if (currentTermId === 'filter-info-location') {
         //it's location
         this.setState({
           filteredLocation: '',
         }, () => this.checkFilterStatus())
         document.getElementById('filterbar-select-location').value = 'Location';
-      } else {
+      }
+
+      else if (currentTermId === 'filter-info-search') {
+        //it's location
+        this.setState({
+          searchTerm: '',
+        }, () => this.checkFilterStatus())
+        document.getElementById('filterbar-search').value = '';
+      }
+
+      else {
         //it's News so it's categories
         this.setState({
           filteredCategory: '',

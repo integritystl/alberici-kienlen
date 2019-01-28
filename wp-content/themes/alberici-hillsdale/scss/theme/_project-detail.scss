@@ -2,22 +2,29 @@
     min-height: 300px;
     background-size: cover;
     background-repeat: no-repeat;
-    @extend .grid-container;
-    grid-template-rows: auto auto;
+    //@extend .grid-container;
+    //grid-template-rows: auto auto;
     margin-top: -75px;
     background-color: $dark-gray;
     position: relative;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
     > .container {
-      grid-column: span 12;
+    //  grid-column: span 12;
       z-index: 1;
     }
+
+    .hero-overlay {
+      z-index: 0;
+    }
     .headline {
-        grid-column: 1 / span 12;
-        grid-column-start: 1;
-        grid-row-start: 1;
-        grid-row-end: 1;
+        //grid-column: 1 / span 12;
+        //grid-column-start: 1;
+        //grid-row-start: 1;
+        //grid-row-end: 1;
         margin-bottom: 40px;
         z-index: 1;
         @include grid-media($medium-min) {
@@ -59,11 +66,12 @@
     }
     .project-info {
         background-color: rgba(#383838, 0.8);
-        grid-column: 1 / span 12;
-        grid-row-start: 2;
-        grid-row-end: 2;
+        //grid-column: 1 / span 12;
+        //grid-row-start: 2;
+        //grid-row-end: 2;
         color: white;
         z-index: 1;
+        width: 100%;
 
         .container {
           display: block;

@@ -80,15 +80,22 @@
   background-size: cover;
   background-color: $dark-gray;
   min-height:300px;
+  height: 300px;
   margin-top: -68px;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+          align-items: center;
   background-position: 50% 70%;
   position: relative;
   z-index: -1;
   overflow: hidden;
+
   @include grid-media($medium-min) {
     min-height:450px;
+    height: 450px;
   }
 
 
@@ -114,7 +121,7 @@
   bottom: 0;
   right: 0;
   left: 0;
-  z-index: -1; //Need this to help with IE11 
+  z-index: -1; //Need this to help with IE11
   width: 100%;
   height: 100%;
   background-color: rgba(#000, 0.3);
