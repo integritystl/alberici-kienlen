@@ -9109,7 +9109,7 @@ function deleteLocalStorage() {
 }
 
 function setLocalStorageItem(key, value) {
-  //allow for multiple pages with local storage entries
+  // allow for multiple pages with local storage entries
   var pageKey = generatePageKey(key);
   localStorage.setItem(pageKey, value);
 }
@@ -9120,7 +9120,7 @@ function getLocalStorageItem(key) {
 }
 
 function generatePageKey(key) {
-  return key + "_" + wpObj.post_id;
+  return key + '_' + wpObj.post_id;
 }
 
 /***/ }),
@@ -13515,7 +13515,6 @@ var Card = function (_React$Component) {
   }
 
   Card.prototype.render = function render() {
-
     return _react2.default.createElement(
       "article",
       { className: "card-post card-news post" },
@@ -13573,7 +13572,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } //I hold API calls and junk
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } // I hold API calls and junk
 
 
 var CardList = function (_React$Component) {
@@ -13582,7 +13581,7 @@ var CardList = function (_React$Component) {
   function CardList(props) {
     _classCallCheck(this, CardList);
 
-    //bind our helpers
+    // bind our helpers
     var _this = _possibleConstructorReturn(this, _React$Component.call(this, props));
 
     _this.getCats = _helpers.getCats.bind(_this);
@@ -13612,7 +13611,7 @@ var CardList = function (_React$Component) {
     this.setState({
       loading: true,
       currentPage: defaultOffset ? Math.ceil(defaultOffset / 6) : 1,
-      defaultOffset: defaultOffset ? defaultOffset : null,
+      defaultOffset: defaultOffset || null,
       posts: [],
       postsPerPage: 6,
       postDataType: document.getElementById('cardList_app').getAttribute('data-post'),
@@ -13621,12 +13620,12 @@ var CardList = function (_React$Component) {
       service_categories: [],
       location_categories: [],
       isFiltered: isFiltered,
-      filteredCategory: defaultCategory ? defaultCategory : '',
-      filteredMarket: defaultMarket ? defaultMarket : '',
-      filteredService: defaultService ? defaultService : '',
-      filteredLocation: defaultLocation ? defaultLocation : '',
+      filteredCategory: defaultCategory || '',
+      filteredMarket: defaultMarket || '',
+      filteredService: defaultService || '',
+      filteredLocation: defaultLocation || '',
       hasSearchTerm: !!defaultSearch,
-      searchTerm: defaultSearch ? defaultSearch : '',
+      searchTerm: defaultSearch || '',
       siteConfig: '',
       totalPosts: parseInt(document.getElementById('cardList_app').getAttribute('data-total'))
     });
@@ -13647,7 +13646,7 @@ var CardList = function (_React$Component) {
     (0, _localstorageHandler.setLocalStorageItem)(_localstorageHandler.localStorageKeys.cards_search, term);
   };
 
-  //Fetch posts
+  // Fetch posts
 
 
   CardList.prototype.buildAPILink = function buildAPILink() {
@@ -13662,13 +13661,13 @@ var CardList = function (_React$Component) {
       if (this.state.hasSearchTerm) {
         baseLink += '&search=' + this.state.searchTerm;
       }
-      //This layout can be used by either News or Projects.
-      //If we're on News, we're only using default WP Categories for filtering
+      // This layout can be used by either News or Projects.
+      // If we're on News, we're only using default WP Categories for filtering
       if (this.state.postDataType === 'news' && this.state.filteredCategory) {
         baseLink += '&categories=' + this.state.filteredCategory;
       }
 
-      //Build the API call with the taxonomies that the Site Configured uses
+      // Build the API call with the taxonomies that the Site Configured uses
       if (this.state.siteConfig === 'kienlen') {
         if (this.state.filteredMarket && this.state.filteredService) {
           baseLink += '&market_category=' + this.state.filteredMarket + '&service_category=' + this.state.filteredService;
@@ -13696,16 +13695,17 @@ var CardList = function (_React$Component) {
     }
     return baseLink;
   };
-  //Get All Posts
+
+  // Get All Posts
 
 
   CardList.prototype.getPosts = function getPosts(apiLink) {
     var _this3 = this;
 
-    //Gotta pass Basic Auth for the prompt from WP Engine
-    //Ref: https://stackoverflow.com/questions/30203044/using-an-authorization-header-with-fetch-in-react-native
+    // Gotta pass Basic Auth for the prompt from WP Engine
+    // Ref: https://stackoverflow.com/questions/30203044/using-an-authorization-header-with-fetch-in-react-native
     fetch(apiLink, {
-      headers: new Headers({ 'Authorization': 'Basic ' + btoa("demo:alberici") })
+      headers: new Headers({ Authorization: 'Basic ' + btoa('demo:alberici') })
     }).then(function (response) {
       _this3.setState({
         // WP API gives the Total Page Count in the Headers, of all places :\
@@ -13732,12 +13732,12 @@ var CardList = function (_React$Component) {
     }).then(function (json) {
       _this4.setState({
         posts: json,
-        loading: false //helps Projects load
+        loading: false // helps Projects load
       });
     });
   };
 
-  //Check to see what's set for our data-filter attribute and call the appropriate custom taxonomy endpoint
+  // Check to see what's set for our data-filter attribute and call the appropriate custom taxonomy endpoint
 
 
   CardList.prototype.setFilterCats = function setFilterCats() {
@@ -13751,7 +13751,7 @@ var CardList = function (_React$Component) {
     }
   };
 
-  //Fetch our Location Categories
+  // Fetch our Location Categories
 
 
   CardList.prototype.getLocationCats = function getLocationCats() {
@@ -13767,7 +13767,7 @@ var CardList = function (_React$Component) {
     });
   };
 
-  //Handle Location Filter
+  // Handle Location Filter
 
 
   CardList.prototype.handleLocationChange = function handleLocationChange(id) {
@@ -13787,7 +13787,7 @@ var CardList = function (_React$Component) {
     (0, _localstorageHandler.setLocalStorageItem)(_localstorageHandler.localStorageKeys.cards_location, id);
   };
 
-  //Handles Service Filter
+  // Handles Service Filter
 
 
   CardList.prototype.handleServiceChange = function handleServiceChange(id) {
@@ -13807,13 +13807,13 @@ var CardList = function (_React$Component) {
     (0, _localstorageHandler.setLocalStorageItem)(_localstorageHandler.localStorageKeys.cards_service, id);
   };
 
-  //Load More functionality
+  // Load More functionality
 
 
   CardList.prototype.loadMorePosts = function loadMorePosts() {
     var _this8 = this;
 
-    //need to fetch the next amount of posts and add them
+    // need to fetch the next amount of posts and add them
     var apiLink = this.buildAPILink();
     var offset = 0;
     if (this.state.isFiltered) {
@@ -13828,7 +13828,7 @@ var CardList = function (_React$Component) {
     }).then(function (json) {
       var currentPosts = '';
       Array.prototype.push.apply(_this8.state.posts, json);
-      //increment our Current Page
+      // increment our Current Page
       var newPage = _this8.state.currentPage + 1;
       _this8.setState({
         currentPage: newPage,
@@ -13846,14 +13846,14 @@ var CardList = function (_React$Component) {
 
     if (this.state.postDataType === 'news') {
       loadMoreLabel = 'View More Posts';
-      //News doesn't have a secondary select
+      // News doesn't have a secondary select
     } else {
       loadMoreLabel = 'View More Projects';
 
       if (this.state.siteConfig === 'hillsdale') {
         secondarySelect = 'location';
       } else {
-        //Falls back to kienlen and its secondary select
+        // Falls back to kienlen and its secondary select
         secondarySelect = 'services';
       }
     }
@@ -13905,23 +13905,23 @@ var CardList = function (_React$Component) {
         filteredMarket: this.state.filteredMarket
       });
 
-      //Get the names of filtered WP categories for display purposes
+      // Get the names of filtered WP categories for display purposes
       if (this.state.categories && this.state.filteredCategory) {
         filteredCategoryName = this.getCatName(this.state.filteredCategory, this.state.categories);
       }
-      //Get the names of filtered service categories for display purposes
+      // Get the names of filtered service categories for display purposes
       if (this.state.service_categories && this.state.filteredService) {
         filteredServiceName = this.getCatName(this.state.filteredService, this.state.service_categories);
       }
-      //Get the names of filtered markets for display purposes
+      // Get the names of filtered markets for display purposes
       if (this.state.market_categories && this.state.filteredMarket) {
         filteredMarketName = this.getCatName(this.state.filteredMarket, this.state.market_categories);
       }
-      //Get the names of filtered markets for display purposes
+      // Get the names of filtered markets for display purposes
       if (this.state.location_categories && this.state.filteredLocation) {
         filteredLocationName = this.getCatName(this.state.filteredLocation, this.state.location_categories);
       }
-      //Load More for Filtered Posts
+      // Load More for Filtered Posts
       if (allPostsOffset < this.state.totalPosts && this.state.totalPosts % this.state.postsPerPage != 0) {
         loadMoreBtn = _react2.default.createElement(
           'button',
@@ -13993,7 +13993,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-//components
+// components
 
 
 var CardGroup = function (_React$Component) {
@@ -14018,7 +14018,6 @@ var CardGroup = function (_React$Component) {
 
     var postComponents = '';
     if (this.props.posts && this.props.posts.length) {
-
       postComponents = this.props.posts.map(function (item, index) {
         var imageSrc = '';
         var imageSrcSet = '';
@@ -14027,22 +14026,22 @@ var CardGroup = function (_React$Component) {
         var marketName = [];
         var locationName = [];
 
-        //One of the featured images is giving this error: "code": "rest_forbidden"
-        //avoiding object that only has this "code" error message
+        // One of the featured images is giving this error: "code": "rest_forbidden"
+        // avoiding object that only has this "code" error message
         if (item._embedded['wp:featuredmedia'] && !item._embedded['wp:featuredmedia'][0].code) {
-          //Media Paths to help with srcSets
+          // Media Paths to help with srcSets
           var imageSrcSetMed = item._embedded['wp:featuredmedia'][0].media_details.sizes.medium;
           var imageSrcSetBlog = item._embedded['wp:featuredmedia'][0].media_details.sizes.blog_image;
           imageAlt = item._embedded['wp:featuredmedia'][0].alt_text;
 
-          //use the custom Blog size as our img src fallback
+          // use the custom Blog size as our img src fallback
           imageSrc = imageSrcSetBlog.source_url;
-          //chain together the other sizes to make the srcset attribute, add the 'width' from image data to create srcset attributes
+          // chain together the other sizes to make the srcset attribute, add the 'width' from image data to create srcset attributes
           imageSrcSet = imageSrcSetMed.source_url + ' ' + imageSrcSetMed.width + 'w, ' + imageSrcSetBlog.source_url + ' ' + imageSrcSetBlog.width + 'w';
         }
 
-        //roll through array of service categories per post and get the name
-        //We only do this if this is being used to display News
+        // roll through array of service categories per post and get the name
+        // We only do this if this is being used to display News
         if (_this2.props.postDataType === 'news') {
           if (item.service_category) {
             var postServices = item.service_category.filter(function (cat) {
@@ -14061,7 +14060,7 @@ var CardGroup = function (_React$Component) {
           }
         }
 
-        //same but with markets
+        // same but with markets
         if (item.market_category) {
           var postMarkets = item.market_category.filter(function (cat) {
             var name = _this2.displayCatName(cat, _this2.props.markets);
@@ -14226,7 +14225,7 @@ var FilterBar = function (_React$Component) {
   FilterBar.prototype.filterSearch = function filterSearch(event) {
     var term = event.target.value;
     this.props.filterSearch(term);
-    //setTimeout(() => {this.props.filterSearch(term)}, 500);
+    // setTimeout(() => {this.props.filterSearch(term)}, 500);
   };
 
   FilterBar.prototype.filterCategories = function filterCategories(id) {
@@ -14266,7 +14265,7 @@ var FilterBar = function (_React$Component) {
     var primarySelect = '';
     var secondarySelect = '';
 
-    //Check if we're outputting News or Project post types, get appropriate select filters
+    // Check if we're outputting News or Project post types, get appropriate select filters
     if (this.props.postDataType === 'news') {
       primarySelect = _react2.default.createElement(
         'div',
@@ -14283,29 +14282,27 @@ var FilterBar = function (_React$Component) {
           onFilterChange: this.filterCategories
         })
       );
-    } else {
-      if (this.props.markets && this.props.markets.length) {
-        primarySelect = _react2.default.createElement(
-          'div',
-          { className: 'select' },
-          _react2.default.createElement(
-            'label',
-            { className: 'screen-reader-text', htmlFor: 'filterbar-select-market' },
-            'Market'
-          ),
-          _react2.default.createElement(_filterSelect2.default, { label: 'Market',
-            selected: this.props.marketFilter,
-            selectID: 'filterbar-select-market',
-            options: this.props.markets,
-            onFilterChange: this.filterMarkets
-          })
-        );
-      }
+    } else if (this.props.markets && this.props.markets.length) {
+      primarySelect = _react2.default.createElement(
+        'div',
+        { className: 'select' },
+        _react2.default.createElement(
+          'label',
+          { className: 'screen-reader-text', htmlFor: 'filterbar-select-market' },
+          'Market'
+        ),
+        _react2.default.createElement(_filterSelect2.default, { label: 'Market',
+          selected: this.props.marketFilter,
+          selectID: 'filterbar-select-market',
+          options: this.props.markets,
+          onFilterChange: this.filterMarkets
+        })
+      );
     }
 
-    //News doesn't have a secondary select
+    // News doesn't have a secondary select
     if (this.props.postDataType === 'projects') {
-      //Check if Service or Location exists, then output the one we want.
+      // Check if Service or Location exists, then output the one we want.
       if (this.props.secondarySelect === 'services') {
         if (this.props.services) {
           secondarySelect = _react2.default.createElement(
@@ -14325,7 +14322,7 @@ var FilterBar = function (_React$Component) {
           );
         }
       } else {
-        //It must be locations
+        // It must be locations
         secondarySelect = _react2.default.createElement(
           'div',
           { className: 'select' },
@@ -14463,9 +14460,9 @@ exports.getCatName = getCatName;
 
 var _localstorageHandler = __webpack_require__(133);
 
-//This houses shared functionality used between CardList and Table List
+// This houses shared functionality used between CardList and Table List
 
-//Site Config Option that determines if the site is Hillsdale or Kienlen
+// Site Config Option that determines if the site is Hillsdale or Kienlen
 function siteConfig(callback) {
   var currentSiteConfig = wpObj.site_config;
   this.setState({
@@ -14473,7 +14470,7 @@ function siteConfig(callback) {
   }, callback);
 }
 
-//Search Input Filter
+// Search Input Filter
 function handleSearch(term) {
   var _this = this;
 
@@ -14487,7 +14484,7 @@ function handleSearch(term) {
   });
 }
 
-//Fetch default WP Categories
+// Fetch default WP Categories
 function getCats() {
   var _this2 = this;
 
@@ -14501,7 +14498,7 @@ function getCats() {
   });
 }
 
-//Handles Category Filter
+// Handles Category Filter
 function handleCategoryChange(id) {
   var _this3 = this;
 
@@ -14520,7 +14517,7 @@ function handleCategoryChange(id) {
   (0, _localstorageHandler.setLocalStorageItem)(_localstorageHandler.localStorageKeys.cards_category, id);
 }
 
-//Fetch our Market Categories
+// Fetch our Market Categories
 function getMarketCats() {
   var _this4 = this;
 
@@ -14534,7 +14531,7 @@ function getMarketCats() {
   });
 }
 
-//Handles Market Filter
+// Handles Market Filter
 function handleMarketChange(id) {
   var _this5 = this;
 
@@ -14553,7 +14550,7 @@ function handleMarketChange(id) {
   (0, _localstorageHandler.setLocalStorageItem)(_localstorageHandler.localStorageKeys.cards_market, id);
 }
 
-//Fetch our Services Categories
+// Fetch our Services Categories
 function getServiceCats() {
   var _this6 = this;
 
@@ -14570,7 +14567,7 @@ function getServiceCats() {
 function resetFilter() {
   var _this7 = this;
 
-  //TODO set the selects back to default value and the search box to empty
+  // TODO set the selects back to default value and the search box to empty
   var searchInput = document.getElementById('filterbar-search');
   var categorySelect = document.getElementById('filterbar-select-category');
   var marketSelect = document.getElementById('filterbar-select-market');
@@ -14578,7 +14575,7 @@ function resetFilter() {
 
   (0, _localstorageHandler.deleteLocalStorage)();
 
-  //Check if Market is being used before setting default value
+  // Check if Market is being used before setting default value
   if (marketSelect) {
     marketSelect.value = 'Market';
   }
@@ -14587,7 +14584,7 @@ function resetFilter() {
   }
   searchInput.value = '';
 
-  //If we're on Kienlen Projects, use Service
+  // If we're on Kienlen Projects, use Service
   if (this.props.postDataType === 'projects') {
     if (this.state.siteConfig === 'kienlen') {
       secondarySelect = document.getElementById('filterbar-select-service');
@@ -14633,7 +14630,7 @@ function removeFilterTerm(currentTermId) {
     });
     document.getElementById('filterbar-select-market').value = 'Market';
   } else if (currentTermId === 'filter-info-location') {
-    //it's location
+    // it's location
     this.setState({
       filteredLocation: ''
     }, function () {
@@ -14641,7 +14638,7 @@ function removeFilterTerm(currentTermId) {
     });
     document.getElementById('filterbar-select-location').value = 'Location';
   } else {
-    //it's News so it's categories
+    // it's News so it's categories
     this.setState({
       filteredCategory: ''
     }, function () {
@@ -14673,14 +14670,13 @@ function checkFilterStatus() {
   }
 }
 
-//Get name of filtered category from object
+// Get name of filtered category from object
 function getCatName(filteredCatId, categories) {
-
   var catObj = categories.filter(function (item) {
     return item.id == filteredCatId;
   });
 
-  var filteredCatName = "";
+  var filteredCatName = '';
   if (catObj[0]) {
     filteredCatName = catObj[0].name;
   }
