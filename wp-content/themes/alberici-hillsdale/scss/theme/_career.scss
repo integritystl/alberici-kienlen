@@ -6,7 +6,7 @@
 
         @include grid-media($medium-min) {
             display: flex;
-              padding: 70px 0;
+              padding: 70px 10px;
         }
         .callout-content {
 
@@ -17,15 +17,15 @@
                 min-width: 100%;
             }
             @include grid-media($medium-min) {
-                width: calc(70.33333% - 43.33333px);
-                margin-right: 110px;
+                width: 50%;
+                margin-right: 100px;
             }
         }
         .gform_wrapper {
             width: 100%;
-            margin-right: 20px;
+            //margin-right: 20px;
             @include grid-media($medium-min) {
-                width: 90%;
+                width: 50%;
             }
             .gform_body ul li:not(.file) {
                 margin-bottom: 25px;
