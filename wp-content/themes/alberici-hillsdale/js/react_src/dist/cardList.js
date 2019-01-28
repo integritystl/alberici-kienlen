@@ -15091,7 +15091,8 @@ function removeFilterTerm(currentTermId) {
   } else if (currentTermId === 'filter-info-search') {
     //it's location
     this.setState({
-      searchTerm: ''
+      searchTerm: '',
+      hasSearchTerm: false
     }, function () {
       return _this8.checkFilterStatus();
     });
@@ -15117,7 +15118,7 @@ function checkFilterStatus() {
     secondaryFilter = !this.state.filteredLocation;
   }
 
-  if (!this.state.filteredCategory && !this.state.filteredMarket && secondaryFilter && !this.state.hasSearchTerm) {
+  if (!this.state.filteredCategory && !this.state.filteredMarket && secondaryFilter && !this.state.searchTerm) {
     (0, _localstorageHandler.deleteLocalStorage)();
 
     this.setState({

@@ -166,6 +166,7 @@ export function removeFilterTerm(currentTermId){
         //it's location
         this.setState({
           searchTerm: '',
+          hasSearchTerm: false,
         }, () => this.checkFilterStatus())
         document.getElementById('filterbar-search').value = '';
       }
@@ -187,7 +188,7 @@ export function checkFilterStatus(){
     secondaryFilter = !this.state.filteredLocation;
   }
 
-  if (!this.state.filteredCategory && !this.state.filteredMarket && secondaryFilter && !this.state.hasSearchTerm) {
+  if (!this.state.filteredCategory && !this.state.filteredMarket && secondaryFilter && !this.state.searchTerm) {
     deleteLocalStorage();
 
     this.setState({
