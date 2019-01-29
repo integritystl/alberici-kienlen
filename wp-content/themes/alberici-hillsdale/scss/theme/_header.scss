@@ -51,7 +51,8 @@
             &.current_page_ancestor > a,
             &.current-menu-ancestor > a {
               opacity: 1;
-              color: white;            }
+              color: white;
+            }
           }
         }
       }
@@ -128,7 +129,8 @@
               margin-left: 5%;
               padding: 10px 0 10px;
               a {
-                color: #cccccc;
+                color: white;
+                opacity: .75;
                 font-size: 14px;
                 text-decoration: none;
                 font-weight: 500;
@@ -136,7 +138,7 @@
                 transition: all $base-duration $base-timing;
                 @include grid-media($headerMenu-min) {
                   &:hover {
-                    color: white;
+                    //color: white;
                     opacity: 1;
                   }
                 }
@@ -146,7 +148,8 @@
               &.current_post_parent > a,
               &.current_page_ancestor > a,
               &.current-menu-ancestor > a {
-                color: white;
+                color: $red;
+                opacity: 1;
               }
             }
           }
@@ -163,6 +166,10 @@
 
     .main-navigation .menu li a {
       color: $dark-gray;
+      opacity: 1;
+      &:hover {
+        color: $red;
+      }
     }
     .site-branding {
       .custom-logo-link {

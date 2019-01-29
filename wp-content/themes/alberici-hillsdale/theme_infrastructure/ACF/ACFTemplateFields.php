@@ -829,11 +829,11 @@ class ACFTemplateFields
 				),
 				'location' => array(
 					array(
-						array(
-							'param' => 'page_type',
-							'operator' => '!=',
-							'value' => 'front_page',
-						),
+            array(
+      				'param' => 'post_type',
+      				'operator' => '==',
+      				'value' => 'page',
+      			),
             array(
               'param' => 'post_type',
               'operator' => '!=',

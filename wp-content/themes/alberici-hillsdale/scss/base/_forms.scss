@@ -164,7 +164,9 @@ select {
 
 .contact-people .gform_wrapper,
 .job-callout .gform_wrapper {
-  max-width: 435px;
+  @include grid-media($medium-min) {
+    max-width: 435px;
+  }
 }
 
 li.file-upload {

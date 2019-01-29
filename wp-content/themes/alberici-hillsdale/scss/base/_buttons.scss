@@ -25,7 +25,7 @@ $_button-background-color-hover: shade($primary-action-color, 20%);
   vertical-align: middle;
   // white-space: nowrap;
   @include grid-media($medium-min) {
-    min-width: 400px;
+    //min-width: 400px;
   }
 
   &:after {
@@ -78,7 +78,7 @@ $_button-background-color-hover: shade($primary-action-color, 20%);
   vertical-align: middle;
   white-space: nowrap;
   @include grid-media($medium-min) {
-    min-width: 400px;
+    //min-width: 400px;
   }
 
   &:before {
