@@ -45,7 +45,10 @@ Select.propTypes = {
   label: PropTypes.string,
   options: PropTypes.array,
   selectID: PropTypes.string,
-  selected: PropTypes.string,
+  selected: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number
+  ]),
 };
 
 

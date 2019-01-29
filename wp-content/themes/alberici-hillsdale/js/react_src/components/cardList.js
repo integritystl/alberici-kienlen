@@ -24,9 +24,7 @@ class CardList extends React.Component {
     this.handleCategoryChange = handleCategoryChange.bind(this);
     this.getCatName = getCatName.bind(this);
     this.siteConfig = siteConfig.bind(this);
-  }
 
-  UNSAFE_componentWillMount() {
     const defaultSearch = getLocalStorageItem(localStorageKeys.cards_search);
     const defaultCategory = getLocalStorageItem(localStorageKeys.cards_category);
     const defaultMarket = getLocalStorageItem(localStorageKeys.cards_market);
@@ -37,7 +35,7 @@ class CardList extends React.Component {
     const isFiltered = !!defaultSearch || !!defaultCategory || !!defaultMarket
       || !!defaultLocation || !!defaultService;
 
-    this.setState({
+    this.state = {
       loading: true,
       currentPage: defaultOffset ? Math.ceil(defaultOffset / 6) : 1,
       defaultOffset: defaultOffset || null,
@@ -57,9 +55,8 @@ class CardList extends React.Component {
       searchTerm: defaultSearch || '',
       siteConfig: '',
       totalPosts: parseInt(document.getElementById('cardList_app').getAttribute('data-total'), 10),
-    });
+    }
   }
-
 
   componentDidMount() {
     this.siteConfig(() => {
