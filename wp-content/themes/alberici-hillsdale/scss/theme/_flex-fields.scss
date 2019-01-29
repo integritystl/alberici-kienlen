@@ -1,8 +1,10 @@
 // The 50/50 callout with image alignment option.
 .flex_fifty_fifty {
+    margin-top: 30px;
   margin-bottom: 30px;
   @include grid-media($medium-min) {
     margin-bottom: 80px;
+    margin-top: 80px;
   }
   &.img-left {
     display: block;
@@ -11,7 +13,7 @@
         width: 100%;
     }
     .fifty-fifty_content {
-      margin: 10px 0 0;
+      //margin: 10px 0 0;
       h2 {
         color: $medium-gray;
       }
@@ -21,13 +23,14 @@
       display: flex;
       justify-content: space-between;
       flex-direction: row;
-      align-items: center;
+      //align-items: center;
       .fifty-fifty_img {
         flex-basis: 50%;
       }
       .fifty-fifty_content {
         width: calc(50% - 50px);
         margin: 0 0 0 50px;
+        align-self: center;
       }
     }
   }
@@ -48,7 +51,7 @@
       display: flex;
       justify-content: space-between;
       flex-direction: row;
-      align-items: center;
+      //align-items: center;
       .fifty-fifty_img {
         order:1;
         flex-basis: 50%;
@@ -59,6 +62,7 @@
         margin-right: 50px;
         margin-top: 10px;
         margin-bottom: 10px;
+        align-self: center;
       }
     }
   }
