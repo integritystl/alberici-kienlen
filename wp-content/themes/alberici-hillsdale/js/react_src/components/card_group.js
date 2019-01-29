@@ -1,7 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-//components
-import Card from './card.js';
+// components
+import Card from './card';
 
 class CardGroup extends React.Component {
   constructor(props) {
@@ -9,63 +10,64 @@ class CardGroup extends React.Component {
     this.displayCatName = this.displayCatName.bind(this);
   }
 
-  displayCatName(id, categories){
-   let catName = this.props.getCatName(id, categories);
+  displayCatName(id, categories) {
+    const catName = this.props.getCatName(id, categories);
     return catName;
   }
 
   render() {
     let postComponents = '';
     if (this.props.posts && this.props.posts.length) {
-
       postComponents = this.props.posts.map((item, index) => {
         let imageSrc = '';
         let imageSrcSet = '';
         let imageAlt = '';
-        let serviceName = [];
-        let marketName = [];
-        let locationName = [];
+        const serviceName = [];
+        const marketName = [];
+        const locationName = [];
 
-        //One of the featured images is giving this error: "code": "rest_forbidden"
-        //avoiding object that only has this "code" error message
+        // One of the featured images is giving this error: "code": "rest_forbidden"
+        // avoiding object that only has this "code" error message
         if (item._embedded['wp:featuredmedia'] && !item._embedded['wp:featuredmedia'][0].code) {
-          //Media Paths to help with srcSets
-          let imageSrcSetMed = item._embedded['wp:featuredmedia'][0].media_details.sizes.medium;
-          let imageSrcSetBlog = item._embedded['wp:featuredmedia'][0].media_details.sizes.blog_image;
+          // Media Paths to help with srcSets
+          const imageSrcSetMed = item._embedded['wp:featuredmedia'][0].media_details.sizes.medium;
+          const imageSrcSetBlog = item._embedded['wp:featuredmedia'][0].media_details.sizes.blog_image;
           imageAlt = item._embedded['wp:featuredmedia'][0].alt_text;
 
-           //use the custom Blog size as our img src fallback
+          // use the custom Blog size as our img src fallback
           imageSrc = imageSrcSetBlog.source_url;
-          //chain together the other sizes to make the srcset attribute, add the 'width' from image data to create srcset attributes
-          imageSrcSet = imageSrcSetMed.source_url + ' ' + imageSrcSetMed.width + 'w, ' + imageSrcSetBlog.source_url + ' ' + imageSrcSetBlog.width + 'w';
+          // chain together the other sizes to make the srcset attribute,
+          // add the 'width' from image data to create srcset attributes
+          imageSrcSet = `${imageSrcSetMed.source_url} ${imageSrcSetMed.width}w,
+            ${imageSrcSetBlog.source_url} ${imageSrcSetBlog.width}w`;
         }
 
-        //roll through array of service categories per post and get the name
-        //We only do this if this is being used to display News
+        // roll through array of service categories per post and get the name
+        // We only do this if this is being used to display News
         if (this.props.postDataType === 'news') {
           if (item.service_category) {
-            let postServices = item.service_category.filter( (cat) => {
-                let name = this.displayCatName(cat, this.props.services);
-                return serviceName.push(name);
-            })
+            const postServices = item.service_category.filter((cat) => {
+              const name = this.displayCatName(cat, this.props.services);
+              return serviceName.push(name);
+            });
           }
         }
 
         if (this.props.postDataType === 'projects') {
           if (item.location_category) {
-            let postLocations = item.location_category.filter( (cat) => {
-                let name = this.displayCatName(cat, this.props.locations);
-                return locationName.push(name);
-            })
+            const postLocations = item.location_category.filter((cat) => {
+              const name = this.displayCatName(cat, this.props.locations);
+              return locationName.push(name);
+            });
           }
         }
 
-        //same but with markets
+        // same but with markets
         if (item.market_category) {
-          let postMarkets = item.market_category.filter( (cat) => {
-              let name = this.displayCatName(cat, this.props.markets);
-              return marketName.push(name);
-          })
+          const postMarkets = item.market_category.filter((cat) => {
+            const name = this.displayCatName(cat, this.props.markets);
+            return marketName.push(name);
+          });
         }
 
         return <Card
@@ -82,8 +84,7 @@ class CardGroup extends React.Component {
                   marketName = {marketName}
                   locationName = {locationName}
                   link={item.link}
-                />
-
+                />;
       });
     } else {
       postComponents = (
@@ -94,12 +95,20 @@ class CardGroup extends React.Component {
     }
 
 
-    return(
+    return (
       <div className="card-group blog-content_posts">
         {postComponents}
       </div>
     );
   }
 }
+
+CardGroup.propTypes = {
+  locations: PropTypes.array,
+  markets: PropTypes.array,
+  posts: PropTypes.array,
+  postDataType: PropTypes.string,
+  services: PropTypes.array,
+};
 
 module.exports = CardGroup;

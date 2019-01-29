@@ -1,7 +1,7 @@
 import React from 'react';
-import {DebounceInput} from 'react-debounce-input';
+import { DebounceInput } from 'react-debounce-input';
 
-import Select from './filter-select.js'
+import Select from './filter-select';
 
 class FilterBar extends React.Component {
   constructor(props) {
@@ -16,19 +16,20 @@ class FilterBar extends React.Component {
   }
 
   filterSearch(event) {
-    let term = event.target.value;
+    const term = event.target.value;
     this.props.filterSearch(term);
-    //setTimeout(() => {this.props.filterSearch(term)}, 500);
+    // setTimeout(() => {this.props.filterSearch(term)}, 500);
   }
 
-  filterCategories(id){
+  filterCategories(id) {
     this.props.categoryChange(id);
   }
-  filterMarkets(id){
+
+  filterMarkets(id) {
     this.props.marketChange(id);
   }
 
-  filterServices(id){
+  filterServices(id) {
     this.props.serviceChange(id);
   }
 
@@ -40,8 +41,8 @@ class FilterBar extends React.Component {
     this.props.resetFilter();
   }
 
-  removeFilterTerm(event){
-    let currentTermId = event.target.id
+  removeFilterTerm(event) {
+    const currentTermId = event.target.id;
     this.props.removeFilterTerm(currentTermId);
   }
 
@@ -56,9 +57,9 @@ class FilterBar extends React.Component {
     let primarySelect = '';
     let secondarySelect = '';
 
-    //Check if we're outputting News or Project post types, get appropriate select filters
+    // Check if we're outputting News or Project post types, get appropriate select filters
     if (this.props.postDataType === 'news') {
-      primarySelect =  <div className="select">
+      primarySelect = <div className="select">
                   <label className="screen-reader-text" htmlFor="filterbar-select-category">
                     Category
                   </label>
@@ -68,10 +69,9 @@ class FilterBar extends React.Component {
                     options={this.props.categories}
                     onFilterChange={this.filterCategories}
                   />
-              </div>
-    } else {
-      if (this.props.markets && this.props.markets.length) {
-        primarySelect =  <div className="select">
+              </div>;
+    } else if (this.props.markets && this.props.markets.length) {
+      primarySelect = <div className="select">
                     <label className="screen-reader-text" htmlFor="filterbar-select-market">
                       Market
                     </label>
@@ -81,17 +81,15 @@ class FilterBar extends React.Component {
                       options={this.props.markets}
                       onFilterChange={this.filterMarkets}
                     />
-                </div>
-      }
+                </div>;
     }
 
-    //News doesn't have a secondary select
+    // News doesn't have a secondary select
     if (this.props.postDataType === 'projects') {
-      //Check if Service or Location exists, then output the one we want.
-      if (this.props.secondarySelect=== 'services') {
+      // Check if Service or Location exists, then output the one we want.
+      if (this.props.secondarySelect === 'services') {
         if (this.props.services) {
-          secondarySelect =
-            <div className="select">
+          secondarySelect = <div className="select">
               <label className="screen-reader-text" htmlFor="filterbar-select-service">
                 Service
               </label>
@@ -101,12 +99,11 @@ class FilterBar extends React.Component {
                 options={this.props.services}
                 onFilterChange={this.filterServices}
               />
-            </div>
+            </div>;
         }
       } else {
-        //It must be locations
-        secondarySelect =
-          <div className="select">
+        // It must be locations
+        secondarySelect = <div className="select">
             <label className="screen-reader-text" htmlFor="filterbar-select-location">
               Location
             </label>
@@ -116,7 +113,7 @@ class FilterBar extends React.Component {
               options={this.props.locations}
               onFilterChange={this.filterLocations}
             />
-          </div>
+          </div>;
       }
     }
 
@@ -129,31 +126,31 @@ class FilterBar extends React.Component {
 
     if (this.props.categoryFilterName) {
       currentCategoryFilter = <span id="filter-info-category"
-      onClick={(event) => this.removeFilterTerm(event) }
+      onClick={event => this.removeFilterTerm(event) }
       className="filter-info--term" key={this.props.categoryFilter}
-      dangerouslySetInnerHTML={{__html:this.props.categoryFilterName}} />;
+      dangerouslySetInnerHTML={{ __html: this.props.categoryFilterName }} />;
     }
 
     if (this.props.marketFilterName) {
       currentMarketFilter = <span id="filter-info-market"
-      onClick={(event) => this.removeFilterTerm(event) }
+      onClick={event => this.removeFilterTerm(event) }
       className="filter-info--term" key={this.props.marketFilter}
-      dangerouslySetInnerHTML={{__html:this.props.marketFilterName}} />;
+      dangerouslySetInnerHTML={{ __html: this.props.marketFilterName }} />;
     }
 
     if (this.props.serviceFilterName) {
       currentServiceFilter = <span id="filter-info-service"
-        onClick={(event) => this.removeFilterTerm(event) }
+        onClick={event => this.removeFilterTerm(event) }
         className="filter-info--term"
         key={this.props.serviceFilter}
-        dangerouslySetInnerHTML={{__html:this.props.serviceFilterName}} />;
+        dangerouslySetInnerHTML={{ __html: this.props.serviceFilterName }} />;
     }
 
     if (this.props.locationFilterName) {
       currentLocationFilter = <span id="filter-info-location"
-      onClick={(event) => this.removeFilterTerm(event) }
+      onClick={event => this.removeFilterTerm(event) }
       className="filter-info--term" key={this.props.locationFilter}
-      dangerouslySetInnerHTML={{__html:this.props.locationFilterName}} />;
+      dangerouslySetInnerHTML={{ __html: this.props.locationFilterName }} />;
     }
 
 
@@ -165,7 +162,7 @@ class FilterBar extends React.Component {
       resetBtn = <button onClick={() => this.resetFilter() } className="btn-reset-filter">Clear Filters</button>;
     }
 
-    return(
+    return (
       <div className="filterbar">
         <label className="screen-reader-text" htmlFor="filterbar-search">
           Search
@@ -175,7 +172,7 @@ class FilterBar extends React.Component {
           debounceTimeout={500}
           placeholder="Search by keywords"
           value={this.props.searchTerm}
-          onChange={(event) => this.filterSearch(event)}
+          onChange={event => this.filterSearch(event)}
         />
 
         {primarySelect}
@@ -188,7 +185,6 @@ class FilterBar extends React.Component {
         </div>
       </div>
     );
-
   }
 }
 
