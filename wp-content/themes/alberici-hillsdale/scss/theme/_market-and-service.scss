@@ -13,11 +13,13 @@
   border-bottom: 1px solid $light-gray;
   margin-bottom: 20px;
   padding-bottom: 10px;
+  padding-top: 10px;
 
     @include grid-media($medium-min) {
      flex-wrap: nowrap;
      margin-bottom: 60px;
-     padding-bottom: 30px;
+     padding-bottom: 20px;
+     padding-top: 30px;
     }
     .market-item {
         margin-bottom: 10px;

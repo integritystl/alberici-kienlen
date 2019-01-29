@@ -1,14 +1,18 @@
+.home .footer-callout {
+  background: white;
+}
+
 .footer-callout {
  position: relative;
  padding: 30px 0 0;
  background:#F2F2F2;
  @include grid-media($medium-min) {
-   padding: 100px 0;
+   padding: 80px 0;
  }
  &.footer-callout--no-img {
    //if there's no image, adjust the padding so it's not so tall
    @include grid-media($medium-min) {
-     padding: 50px 0;
+     padding: 80px 0;
    }
  }
 
@@ -33,19 +37,19 @@
 
    @include grid-media($medium-min) {
      padding-bottom: 0;
-     flex-basis: 35%;
-     max-width: 460px;
+     flex-basis: 50%;
+     //max-width: 460px;
      a {
        margin-top: 30px;
        min-width: auto;
      }
    }
    @include grid-media($large-min) {
-     flex-basis: 40%;
+     flex-basis: 60%;
    }
    @include grid-media($large-extra) {
      flex-basis: 75%;
-     max-width: 460px;
+     //max-width: 460px;
    }
  }
 

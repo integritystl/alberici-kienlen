@@ -18,9 +18,3 @@
         }
     }
 }
-.footer-callout {
-    margin-top: 30px;
-    @include grid-media($medium-min) {
-        margin-top: 70px;
-    }
-}
