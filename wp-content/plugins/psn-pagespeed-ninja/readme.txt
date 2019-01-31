@@ -4,7 +4,7 @@ Contributors: pagespeed
 Tags: page speed, optimizer, minification, gzip, render blocking css
 Requires at least: 4.0.1
 Tested up to: 5.0
-Stable tag: 0.9.32
+Stable tag: 0.9.34
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 
@@ -81,6 +81,12 @@ None
 
 == Changelog ==
 
+= 0.9.34 Beta Release [21 December 2018]
+- Fixed version number in WordPress repository
+
+= 0.9.33 Beta Release [21 December 2018]
+- Fixed issue in URL parser
+- Fixed processing of inlined scripts in libxml-based HTML parser
 
 = 0.9.32 Beta Release [29 November 2018] =
 - Fixed processing of xml (e.g. in sitemap)

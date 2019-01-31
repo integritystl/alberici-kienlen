@@ -555,14 +555,15 @@ class Ressio_HtmlOptimizer_Dom extends Ressio_HtmlOptimizer_Base
                 }
 
                 if (!$node->hasAttribute('src')) { // inline
-                    if ($node->childNodes->item(0) !== null) {
+                    $scriptBlob = $node->textContent;
+
+                    if (empty($scriptBlob)) {
                         if ($this->config->js->merge) {
                             $this->nodeDetach($node);
                         }
                         return false;
                     }
 
-                    $scriptBlob = $node->textContent;
                     // @todo: refactor clear comments
                     $scriptBlob = preg_replace(array('#^\s*<!--.*?[\r\n]+#', '#//\s*<!--.*$#m', '#//\s*-->.*$#m', '#\s*-->\s*$#'), '', $scriptBlob);
                     $scriptBlob = preg_replace('#^\s*(?://\s*)?<!\[CDATA\[\s*(.*?)\s*(?://\s*)?\]\]>\s*$#', '\1', $scriptBlob);
