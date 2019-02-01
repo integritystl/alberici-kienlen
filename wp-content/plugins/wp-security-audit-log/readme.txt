@@ -5,8 +5,8 @@ License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl.html
 Tags: wordpress security plugin, wordpress security audit log, audit log, activity logs, event log wordpress, wordpress user tracking, wordpress activity log, wordpress audit, security event log, audit trail, wordpress security monitor, wordpress admin, wordpress admin monitoring, user activity, admin, multisite, dashboard, notification, wordpress monitoring, email notification, wordpress email alerts, tracking, user tracking, user activity report, wordpress audit trail
 Requires at least: 3.6
-Tested up to: 5.0.1
-Stable tag: 3.3
+Tested up to: 5.0.3
+Stable tag: 3.3.1
 Requires PHP: 5.4.43
 
 An easy to use & comprehensive WordPress activity log plugin to log all changes on WordPress sites & multisite networks.
@@ -195,32 +195,80 @@ Please refer to our [Support & Documentation pages](https://www.wpsecurityauditl
 
 == Changelog ==
 
-= 3.3 (2018-12-13) =
+= 3.3.1 (2019-01-29) =
 
-Release Notes: [Slack Support & New External Connections UI](https://www.wpsecurityauditlog.com/releases/external-connections-update-slack-support-3-3/)
+Release notes: [Major Activity Log Improvement in WooCommerce Coverage](https://www.wpsecurityauditlog.com/releases/major-update-woocommerce-activity-log-coverage/)
 
+* **New Events for WooCommerce Orders**
+	* ID 9035: New order placed in WooCommerce.
+	* ID 9036: Changed the status of a WooCommerce order.
+	* ID 9037: Moved a WooCommerce order to trash.
+	* ID 9038: Restored a WooCommerce order from the trash.
+	* ID 9039: Permanently deleted an order.
+	* ID 9040: Changed the orders details.
+	* ID 9041: Refunded a WooCommerce order
+	
+* **New Events for WooCommerce Product Admin & Attributes Changes**
+	* ID 9042: Changed the catalog visibility of a product.
+	* ID 9043: Changed the Featured product setting of a product.
+	* ID 9044: Changed the allow backorders setting of a product.
+	* ID 9045: Changed the the Upsells of a product.
+	* ID 9046: Changed the Cross-sells of a product.
+	* ID 9047: Added a new attribute of a product.
+	* ID 9048: Modified the value of a product attribute.
+	* ID 9049: Renamed a product attribute.
+	* ID 9050: Deleted a product attribute.
+	* ID 9051: Changed the visibility of a product attribute.
+
+* **New Events for WooCommerce Categories**
+	* ID 9052: Deleted a product category.
+	* ID 9053: Changed the slug of a product category.
+	* ID 9054: Changed the parent of a product category.
+	* ID 9055: Changed display type of a product category.
+	* ID 9056: Changed the name of a product category.
+	
+* **New Events for WooCommerce Payment Gateways**
+	* ID 9074: Enabled a payment gateway.
+	* ID 9075: Disabled a payment gateway.
+	* ID 9076: Modified a payment gateway.
+	
+* **New Events for WooCommerce Coupons:**
+	* ID 9063: Published a new coupon.
+	* ID 9064: Changed the discount type of a coupon.
+	* ID 9065: Changed the coupon amount.
+	* ID 9066: Changed the coupon expire date.
+	* ID 9067: Changed the Usage Restriction settings of a coupon.
+	* ID 9068: Changed the Usage Limits settings of a coupon.
+	* ID 9069: Changed the description of a coupon.
+	* ID 9070: Changed the status of a coupon.
+	* ID 9071: Renamed the WooCommerce coupon.
+	
+* **New Events for WooCommerce Attributes:**
+	* ID 9057: User created a new attribute.
+	* ID 9058: User deleted an attribute.
+	* ID 9059: User changed the slug of an attribute.
+	* ID 9060: User changed the name of an attribute.
+	* ID 9061: User changed the default sort order of an attribute.
+	* ID 9062: User enabled/disabled the option Enable Archives of an attribute.
+	
 * **New Features**
-	* Slack support - [mirror WordPress activity log for Slack](https://www.wpsecurityauditlog.com/support-documentation/mirror-wordpress-activity-logs-slack-channel/).
-	* New UI and totally revamped the [external databases & services connections module](https://www.wpsecurityauditlog.com/support-documentation/getting-started-external-databases-third-party-services/).
-	* Ability to mirror the WordPress activity logs to multiple destinations.
+	* Email notification to site admin when the plugin is deactivated.
+	* New setting to control refreshing of the live notifications in the admin bar.
+	* Three new [hooks in the activity log plugin](https://www.wpsecurityauditlog.com/support-documentation/list-hooks/) that allow for event data manipulation.
 
-* **Improvements**
-	* Maximum file size for [WordPress file integrity scans](https://www.wpsecurityauditlog.com/support-documentation/wordpress-files-changes-warning-activity-logs/) is now configurable.
-	* Updated the Freemius SDK to 2.2.2 (addresses a MainWP conflict fix).
-	* Plugin access can now be restricted to super administrators only on a multisite network.
-	* Multiple scan started / stopped events per directory merged into one.
-	* Added 1 and 4 hours option to terminate idle users sessions setting.
-	* Plugin now always keeps a log a post updates, even if update is not done via the editor.
-	* Better handling of terminated users sessions (in hung state, blocking legit logins).
-	* Access to plugin now can be restricted to super admin role on multisite networks.
-	* User info in daily activity log summary email is now variable - the same as configured in the plugin settings.
-	* Limited Freemius user messages to users who can view & manage the plugin.
-	* Addded support for a dot in the time format (e.g: d.-m-Y G:i)
-
-	* **Bug Fixes**
-	* Better handling of data from the REST API [Support ticket](https://wordpress.org/support/topic/error-implode-invalid-arguments-when-using-register_rest_route/).
-	* Fixed: two daily activity log emails were being sent instead of one.
-	* Restricted the starter license (had access to some pro features).
-	* Fixed a number of minor warnings when running the plugin on PHP7.
-	* Logins when using the [Two-Factor plugin](https://wordpress.org/plugins/two-factor/) are now logged properly.
-	* Fixed - first time setup wizard prompt not always showing.
+* **Plugin Improvements**
+	* Major performance enhancement to the Event Viewer
+	* Updated the text of some settings.
+	* Event severities are now saved as meta data (we can now build filters for them).
+	* Added the product status in all WooCommerce events.
+	* Event 9011 (modified draft WooCommerce product) made obsolete with event 9010.
+	* Event 9020 changed to report the different product types (simple, grouped, external, variable, downloadable, virtual)
+	* Updated Freemius SDK
+	* Better handling of incorrect database privileges when installing plugin.
+	* Excluded the default WordPress cache directory from the default [WordPress File Integrity Scans](https://www.wpsecurityauditlog.com/support-documentation/wordpress-files-changes-warning-activity-logs/)
+	
+* **Bug Fixes**
+	* Events 2027 and 2011 incorrectly logged hen saving a draft post in Gutenberg.
+	* Plugin logged event 5019 by mistake when the front end editor of WP Bakery was used.
+	* When files bigger than the file size limit were scanned for the first time the plugin wrongly reported them as modified.
+	* In some cases where WordPress was not upgraded to 5.0 the plugin was not recognizing content changes.
