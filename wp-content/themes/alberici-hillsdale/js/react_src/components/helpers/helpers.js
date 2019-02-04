@@ -1,4 +1,4 @@
-import { localStorageKeys, deleteLocalStorage, setLocalStorageItem } from './localstorage-handler.js';
+import { sessionStorageKeys, deleteSessionStorage, setSessionStorageItem } from './sessionstorage-handler.js';
 
 // This houses shared functionality used between CardList and Table List
 
@@ -46,7 +46,7 @@ export function handleCategoryChange(id) {
     loading: true,
     currentPage: 1,
   }, () => this.getFilteredPosts(this.buildAPILink()));
-  setLocalStorageItem(localStorageKeys.cards_category, id);
+  setSessionStorageItem(sessionStorageKeys.cards_category, id);
 }
 
 
@@ -74,7 +74,7 @@ export function handleMarketChange(id) {
     loading: true,
     currentPage: 1,
   }, () => this.getFilteredPosts(this.buildAPILink()));
-  setLocalStorageItem(localStorageKeys.cards_market, id);
+  setSessionStorageItem(sessionStorageKeys.cards_market, id);
 }
 
 // Fetch our Services Categories
@@ -96,7 +96,7 @@ export function resetFilter() {
   const marketSelect = document.getElementById('filterbar-select-market');
   let secondarySelect = '';
 
-  deleteLocalStorage();
+  deleteSessionStorage();
 
   // Check if Market is being used before setting default value
   if (marketSelect) {
@@ -183,7 +183,7 @@ export function checkFilterStatus(){
   }
 
   if (!this.state.filteredCategory && !this.state.filteredMarket && secondaryFilter && !this.state.searchTerm) {
-    deleteLocalStorage();
+    deleteSessionStorage();
 
     this.setState({
       isFiltered: false,

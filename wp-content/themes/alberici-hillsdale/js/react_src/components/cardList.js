@@ -7,7 +7,7 @@ import {
   siteConfig, handleSearch, getCats, getMarketCats, getServiceCats, resetFilter,
   removeFilterTerm, checkFilterStatus, handleMarketChange, handleCategoryChange, getCatName,
 } from './helpers/helpers';
-import { localStorageKeys, setLocalStorageItem, getLocalStorageItem } from './helpers/localstorage-handler';
+import { sessionStorageKeys, setSessionStorageItem, getSessionStorageItem } from './helpers/sessionstorage-handler';
 
 class CardList extends React.Component {
   constructor(props) {
@@ -25,12 +25,12 @@ class CardList extends React.Component {
     this.getCatName = getCatName.bind(this);
     this.siteConfig = siteConfig.bind(this);
 
-    const defaultSearch = getLocalStorageItem(localStorageKeys.cards_search);
-    const defaultCategory = getLocalStorageItem(localStorageKeys.cards_category);
-    const defaultMarket = getLocalStorageItem(localStorageKeys.cards_market);
-    const defaultLocation = getLocalStorageItem(localStorageKeys.cards_location);
-    const defaultService = getLocalStorageItem(localStorageKeys.cards_service);
-    const defaultOffset = getLocalStorageItem(localStorageKeys.cards_page);
+    const defaultSearch = getSessionStorageItem(sessionStorageKeys.cards_search);
+    const defaultCategory = getSessionStorageItem(sessionStorageKeys.cards_category);
+    const defaultMarket = getSessionStorageItem(sessionStorageKeys.cards_market);
+    const defaultLocation = getSessionStorageItem(sessionStorageKeys.cards_location);
+    const defaultService = getSessionStorageItem(sessionStorageKeys.cards_service);
+    const defaultOffset = getSessionStorageItem(sessionStorageKeys.cards_page);
 
     const isFiltered = !!defaultSearch || !!defaultCategory || !!defaultMarket
       || !!defaultLocation || !!defaultService;
@@ -68,7 +68,7 @@ class CardList extends React.Component {
 
   filterSearch(term) {
     this.handleSearch(term);
-    setLocalStorageItem(localStorageKeys.cards_search, term);
+    setSessionStorageItem(sessionStorageKeys.cards_search, term);
   }
 
   // Fetch posts
@@ -193,7 +193,7 @@ class CardList extends React.Component {
       currentPage: 1,
       loading: true,
     }, () => this.getFilteredPosts(this.buildAPILink()));
-    setLocalStorageItem(localStorageKeys.cards_location, id);
+    setSessionStorageItem(sessionStorageKeys.cards_location, id);
   }
 
   // Handles Service Filter
@@ -207,7 +207,7 @@ class CardList extends React.Component {
       loading: true,
       currentPage: 1,
     }, () => this.getFilteredPosts(this.buildAPILink()));
-    setLocalStorageItem(localStorageKeys.cards_service, id);
+    setSessionStorageItem(sessionStorageKeys.cards_service, id);
   }
 
   // Load More functionality
@@ -232,7 +232,7 @@ class CardList extends React.Component {
           currentPage: newPage,
           loading: false,
         });
-        setLocalStorageItem(localStorageKeys.cards_page, this.state.posts.length);
+        setSessionStorageItem(sessionStorageKeys.cards_page, this.state.posts.length);
       });
   }
 
