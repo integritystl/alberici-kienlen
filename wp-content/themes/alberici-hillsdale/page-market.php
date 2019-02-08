@@ -43,7 +43,7 @@ get_header();
                                     // Basic auth for locked WPEngine staging
                                     $auth = base64_encode("demo:alberici");
                                     $context = stream_context_create([
-                                        "https" => [
+                                        "http" => [
                                             "header" => "Authorization: Basic $auth"
                                         ]
                                     ]);
