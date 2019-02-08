@@ -47,8 +47,8 @@ get_header();
                                             "header" => "Authorization: Basic $auth"
                                         ]
                                     ]);
-                                    //echo file_get_contents($market_callout_image, false, $context); ?>
-																		<?php echo file_get_contents($market_callout_image); ?>
+                                    echo file_get_contents($market_callout_image, false, $context); ?>
+																		<?php //echo file_get_contents($market_callout_image); ?>
                                 </div>
                             <?php } ?>
                                 <h3><?php the_title(); ?></h3>
