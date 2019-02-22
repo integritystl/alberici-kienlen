@@ -30,10 +30,16 @@
 
     .select {
       @include grid-media($small-min) {
-        grid-column: 5 / span 4;
+        grid-column: 9 / span 4;
       }
       select {
         margin-bottom: 0px;
+      }
+
+      &:first-of-type {
+        @include grid-media($small-min) {
+          grid-column: 5 / span 4;
+        }
       }
     }
 
