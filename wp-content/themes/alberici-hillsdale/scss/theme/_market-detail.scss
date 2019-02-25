@@ -49,19 +49,45 @@
             }
             .projects-text {
                 position: absolute;
-                margin-bottom: 20px;
                 top: 20px;
-                width: 90%;
-                p, h3 {
-                    margin-left: 25px;
-                    margin-right: 25px;
-                    font-weight: 400;
+                width: 100%;
+                padding: 0px 25px;
+                span {
+                  font-size: 13px;
+                  font-weight: 400;
                 }
+
+                .markets, .services {
+                  display: block;
+                  line-height: 1.35;
+                }
+
+                span.market-name:first-child:after {
+                  content: ',';
+                  padding-right: 5px;
+                }
+
+                span.market-name:only-child:after {
+                  content: '';
+                  padding-right: 0px;
+                }
+
+                span.service-name:first-child:after {
+                  content: ',';
+                  padding-right: 5px;
+                }
+
+                span.service-name:only-child:after {
+                  content: '';
+                  padding-right: 0px;
+                }
+
+
                 h3 {
-                    margin-top: 15px;
-                }
-                p:not(:last-child) {
-                    margin-bottom: 0;
+                  font-size: 24px;
+                  margin: 10px 0 0;
+                  line-height: 1.25;
+                  font-weight: 300;
                 }
             }
             &:hover {
