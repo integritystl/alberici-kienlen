@@ -148,7 +148,7 @@
               &.current_post_parent > a,
               &.current_page_ancestor > a,
               &.current-menu-ancestor > a {
-                color: #ff474f;
+                color: #ffffff;
                 opacity: 1;
               }
             }
@@ -163,6 +163,17 @@
     left: 0;
     right: 0;
     background: white;
+
+    .main-navigation .menu li {
+      &.current_page_item > a,
+      &.current-menu-item > a,
+      &.current_post_parent > a,
+      &.current_page_ancestor > a,
+      &.current-menu-ancestor > a {
+        color: $red;
+        opacity: 1;
+      }
+    }
 
     .main-navigation .menu li a {
       color: $dark-gray;
