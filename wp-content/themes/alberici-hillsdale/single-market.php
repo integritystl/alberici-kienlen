@@ -18,9 +18,9 @@ $HeroImage = get_field('general_hero_featured_image');
 			while ( have_posts() ) :
 				the_post();?>
 				<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
-					
+
 					<?php get_template_part( 'template-parts/hero' );?>
-					
+
 					<div class="market-detail">
 						<?php alberici_hillsdale_post_thumbnail(); ?>
 
@@ -28,7 +28,7 @@ $HeroImage = get_field('general_hero_featured_image');
 							<?php the_content(); ?>
 						</div><!-- .market-content -->
 					</div>
-				</article><!-- #post-<?php the_ID(); ?> -->
+				</article><!-- #post--->
 
 
 			<?php endwhile;
