@@ -36,7 +36,7 @@ $HeroImage = get_field('general_hero_featured_image');
 			get_template_part( 'template-parts/content', 'none' );
 		endif;
 
-			if ( is_single() && 'market' === get_post_type()) {
+			if ( is_single() && 'market' === get_post_type()) :
 				$terms = get_the_terms( get_the_ID(), 'category' );
 				$term_list = wp_list_pluck( $terms, 'slug' );
 				$latest_args = array(
@@ -55,10 +55,10 @@ $HeroImage = get_field('general_hero_featured_image');
 				);
 				$latest_query = new WP_Query( $latest_args );
 
-			}
+			endif;
 
 			//Default: Show Latest 3 Posts
-			if(!$latest_query->have_posts()) {
+			if(!$latest_query->have_posts()) :
 				$latest_args = array(
 				'post_type' =>  'project',
 				'posts_per_page' => 3,
@@ -66,11 +66,11 @@ $HeroImage = get_field('general_hero_featured_image');
 				);
 				$latest_query = new WP_Query( $latest_args );
 
-			}
+			endif;
 
 			if ( $latest_query->have_posts() ) : ?>
-			<div class="container">
-				<div class="markets markets-latest-3">
+				<div class="container">
+					<div class="markets markets-latest-3">
 					<h2>Related Projects</h2>
 					<ul>
 						<?php while( $latest_query->have_posts() ) : $latest_query->the_post();
@@ -105,10 +105,10 @@ $HeroImage = get_field('general_hero_featured_image');
 					</ul>
 					<a href="<?php echo get_home_url(); ?>/projects" class="btn"> VIEW PROJECTS </a>
 				</div>
-				<?php endif; wp_reset_postdata(); ?>
-			</div>
+				</div>
+			<?php endif; wp_reset_postdata(); ?>
+			
 			<?php get_template_part( 'template-parts/footer-callout' ); ?>
-		<div><!-- container -->
 	</main><!-- #main -->
 </div><!-- #primary -->
 
