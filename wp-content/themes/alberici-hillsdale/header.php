@@ -8,9 +8,7 @@
  *
  * @package alberici-hillsdale
  */
-$theme_config = get_field('set_site', 'options');
-?>
-<!doctype html>
+?><!doctype html>
 <html <?php language_attributes(); ?>>
 <head>
 	<meta charset="<?php bloginfo( 'charset' ); ?>">
@@ -18,6 +16,8 @@ $theme_config = get_field('set_site', 'options');
 	<link rel="profile" href="https://gmpg.org/xfn/11">
 	<?php wp_head(); ?>
 </head>
+
+<?php $theme_config = get_field('set_site', 'options');?>
 
 <?php if ( $theme_config === 'kienlen') { ?>
 	<body <?php body_class('alberici-kienlen');?>>
