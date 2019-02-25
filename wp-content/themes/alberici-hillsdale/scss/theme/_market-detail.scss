@@ -59,28 +59,30 @@
 
                 .markets, .services {
                   display: block;
-                  line-height: 1.35;
+                  line-height: 1;
                 }
 
-                span.market-name:first-child:after {
+                .services {
+                  margin-top: 5px;
+                }
+
+                // span.market-name:first-child:after {
+                //   content: ',';
+                //   padding-right: 5px;
+                // }
+
+                span.market-name:not(:only-child):after,
+                span.service-name:not(:only-child):after {
                   content: ',';
                   padding-right: 5px;
                 }
 
-                span.market-name:only-child:after {
+                span.market-name:last-child:after,
+                span.service-name:last-child:after {
                   content: '';
                   padding-right: 0px;
                 }
 
-                span.service-name:first-child:after {
-                  content: ',';
-                  padding-right: 5px;
-                }
-
-                span.service-name:only-child:after {
-                  content: '';
-                  padding-right: 0px;
-                }
 
 
                 h3 {
