@@ -12,6 +12,7 @@
                     li {
                         a {
                             color: $dark-gray;
+                            opacity: 1;
                             @include grid-media($headerMenu-min) {
                                 &:hover {
                                   color: $red;
