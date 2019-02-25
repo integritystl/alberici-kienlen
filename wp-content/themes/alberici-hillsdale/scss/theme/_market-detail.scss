@@ -17,12 +17,13 @@
 }
 .markets-latest-3 {
     border-top: $base-border;
-  
     padding-top: 30px;
+    padding-bottom: 30px;
 
     @include grid-media($medium-min) {
         margin: auto;
         padding-top: 60px;
+        padding-bottom: 60px;
     }
 
     h2 {
