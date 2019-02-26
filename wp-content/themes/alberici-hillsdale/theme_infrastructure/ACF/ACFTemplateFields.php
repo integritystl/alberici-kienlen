@@ -983,20 +983,22 @@ class ACFTemplateFields
 					'mime_types' => '',
 					),
 				),
-				'location' => array(
-					array(
-            array(
+        'location' => array(
+      		array(
+      			array(
       				'param' => 'post_type',
       				'operator' => '==',
       				'value' => 'page',
       			),
-            array(
-              'param' => 'post_type',
-              'operator' => '!=',
-              'value' => 'post',
-            ),
-					),
-				),
+      		),
+      		array(
+      			array(
+      				'param' => 'post_type',
+      				'operator' => '==',
+      				'value' => 'market',
+      			),
+      		),
+      	),
 				'menu_order' => 0,
 				'position' => 'normal',
 				'style' => 'default',
