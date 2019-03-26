@@ -49,10 +49,11 @@ h2 {
 h3 {
   font-size: 21px;
   font-weight: 300;
+  line-height: 1.5;
 }
 
 h4 {
-  font-size: 18px;
+  font-size: 1.5rem;
   font-weight: 300;
   color: $blue;
 }
@@ -73,12 +74,12 @@ p {
 }
 
 a {
-  color: $secondary-action-color;
+  color: $primary-action-color;
   text-decoration-skip: ink;
   transition: color $base-duration $base-timing;
 
   &:hover {
-    color: shade($secondary-action-color, 25%);
+    color: $_button-background-color-hover;
   }
 
   &:focus {

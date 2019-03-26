@@ -40,13 +40,6 @@ get_header();
                             if( $market_callout_image ) { ?>
                                 <div class="market-icon">
                                 <?php
-                                    // Basic auth for locked WPEngine staging
-                                    $auth = base64_encode("demo:alberici");
-                                    $context = stream_context_create([
-                                        "http" => [
-                                            "header" => "Authorization: Basic $auth"
-                                        ]
-                                    ]);
                                     echo file_get_contents($market_callout_image, false, $context); ?>
 																		<?php //echo file_get_contents($market_callout_image); ?>
                                 </div>
