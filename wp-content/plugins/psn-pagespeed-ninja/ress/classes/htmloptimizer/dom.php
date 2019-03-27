@@ -4,7 +4,7 @@
  * RESSIO Responsive Server Side Optimizer
  * https://github.com/ressio/
  *
- * @copyright   Copyright (C) 2013-2018 Kuneri, Ltd. All rights reserved.
+ * @copyright   Copyright (C) 2013-2019 Kuneri, Ltd. All rights reserved.
  * @license     GNU General Public License version 2
  */
 
@@ -1021,7 +1021,7 @@ class Ressio_HtmlOptimizer_Dom extends Ressio_HtmlOptimizer_Base
             $this->lastCssNode = $node;
         }
 
-        $index = $this->lastCssNode->getAttribute('index');
+        $index = (int)$this->lastCssNode->getAttribute('index');
         $this->jscssLists[$index][] = $inline
             ? array(
                 'type' => 'inline',
@@ -1119,8 +1119,8 @@ class Ressio_HtmlOptimizer_Dom extends Ressio_HtmlOptimizer_Base
                 $newNode->setAttribute($name, $value);
             }
         }
-        // if ($content === null) { $newNode->nodeValue = ''; }
-        if ($content !== null) {
+        if ($content !== false) {
+            // if ($content === null) { $newNode->nodeValue = ''; }
             $newNode->appendChild($this->dom->createTextNode($content));
         }
         return $newNode;

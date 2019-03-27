@@ -1,4 +1,4 @@
-#wpcontent {
+#wpcontent, .auto-fold #wpcontent {
     background-color: #fff;
     padding-left: 0;
 }

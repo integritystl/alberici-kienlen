@@ -48,6 +48,18 @@ class PagespeedNinja_Activator
             trigger_error('PageSpeed Ninja: cannot create directory ' . var_export($staticDir, true));
         }
 
+        // fix: set correct permissions for /s files
+        $perms = @fileperms($staticDir) & 0666;
+        $files = scandir($staticDir, 0);
+        foreach ($files as $file) {
+            if ($file[0] !== '.') {
+                $fullname = $staticDir . '/' . $file;
+                if (is_file($fullname)) {
+                    @chmod($fullname, $perms);
+                }
+            }
+        }
+
         if (!isset($config['distribmode'])) {
             $config['distribmode'] = 'php';
             if (self::isApache()) {
@@ -67,9 +79,9 @@ class PagespeedNinja_Activator
             $config['caching'] = !(defined('WP_CACHE') && WP_CACHE);
             if ($config['caching']) {
                 $active_plugins = apply_filters('active_plugins', get_option('active_plugins'));
-                if (in_array('woocommerce/woocommerce.php', $active_plugins, true)) {
-                    $config['caching'] = '0';
-                }
+//                if (in_array('woocommerce/woocommerce.php', $active_plugins, true)) {
+//                    $config['caching'] = '0';
+//                }
             }
         }
 

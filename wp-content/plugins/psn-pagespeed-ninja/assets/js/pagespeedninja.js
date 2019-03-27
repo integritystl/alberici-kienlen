@@ -1,6 +1,8 @@
 'use strict';
 (function () {
 
+    var pagespeed_api = 'https://www.googleapis.com/pagespeedonline/v2/runPagespeed';
+
     var tab_name,
         newUrl = null,
         newAjax = false,
@@ -155,7 +157,6 @@
     }
 
     function loadPageSpeed() {
-        var pagespeed_api = 'https://www.googleapis.com/pagespeedonline/v2/runPagespeed';
         var url = location.href.split('/').slice(0, -2).join('/') + '/';
         var url_orig = url + '?pagespeedninja=no';
         var url_random = url + '?pagespeedninja=' + Math.random();
@@ -457,8 +458,7 @@
         }
 
         // loading of new scores
-        var pagespeed_api = 'https://www.googleapis.com/pagespeedonline/v2/runPagespeed',
-            url = newUrl;
+        var url = newUrl;
 
         newAjax = true;
         newUrl = null;

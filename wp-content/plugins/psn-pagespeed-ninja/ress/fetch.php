@@ -3,7 +3,7 @@
  * RESSIO Responsive Server Side Optimizer
  * https://github.com/ressio/
  *
- * @copyright   Copyright (C) 2013-2018 Kuneri, Ltd. All rights reserved.
+ * @copyright   Copyright (C) 2013-2019 Kuneri, Ltd. All rights reserved.
  * @license     GNU General Public License version 2
  */
 
@@ -27,7 +27,7 @@ function sendResponseCode($code, $message)
 }
 
 // @todo add support of fetch.php/hash in csslist/jslist classes
-$filename = isset($_SERVER['PATH_INFO']) ? substr($_SERVER['PATH_INFO'], 1) : $_SERVER['QUERY_STRING'];
+$filename = !empty($_SERVER['PATH_INFO']) ? substr($_SERVER['PATH_INFO'], 1) : $_SERVER['QUERY_STRING'];
 if (($pos = strpos($filename, '&')) !== false) {
     $filename = substr($filename, 0, $pos);
 }

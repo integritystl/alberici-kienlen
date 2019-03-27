@@ -4,7 +4,7 @@
  * RESSIO Responsive Server Side Optimizer
  * https://github.com/ressio/
  *
- * @copyright   Copyright (C) 2013-2018 Kuneri, Ltd. All rights reserved.
+ * @copyright   Copyright (C) 2013-2019 Kuneri, Ltd. All rights reserved.
  * @license     GNU General Public License version 2
  */
 
@@ -53,7 +53,7 @@ class Ressio_Plugin_DNSPrefetch extends Ressio_Plugin
 
         $tags = array();
         foreach (array_keys($this->domains_list) as $domain) {
-            $tags[] = array('link', array('rel' => 'dns-prefetch', 'href' => '//' . $domain), null);
+            $tags[] = array('link', array('rel' => 'dns-prefetch', 'href' => '//' . $domain), false);
         }
 
         call_user_func_array(array($optimizer, 'prependHead'), $tags);
