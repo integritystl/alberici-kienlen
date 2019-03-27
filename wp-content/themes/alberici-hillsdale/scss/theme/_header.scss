@@ -68,7 +68,7 @@
       }
     }
 
-    .main-header {
+    .main-header, .sub-menu {
         background: rgba(#383838, 0.8);
         padding-top: 12px;
         padding-bottom: 12px;
@@ -137,11 +137,11 @@
             justify-content: flex-end;
             li {
               margin-left: 5%;
-              padding: 10px 0 10px;
               a {
                 color: white;
                 opacity: .75;
                 font-size: 14px;
+                padding:26px 0;
                 text-decoration: none;
                 font-weight: 500;
                 -webkit-font-smoothing: antialiased;
@@ -163,6 +163,8 @@
               }
             }
           }
+
+          
         }
     }
 }
@@ -185,7 +187,7 @@
       }
     }
 
-    .main-navigation .menu li a {
+    .main-navigation .menu li a{
       color: $dark-gray;
       opacity: 1;
       &:hover {
@@ -389,44 +391,6 @@
       }
     }
   }
-
-
-
-  .menu-item-has-children {
-    // border-bottom: transparent;
-    position: relative;
-    &:before {
-      color: #425464;
-      position: absolute;
-      top: 25px;
-      right: 28px;
-      font-size: 12px;
-      font-family: "Font Awesome 5 Pro";
-      font-weight: 600;
-      // color: $base-font-color;
-      content: '\f078';
-      cursor: pointer;
-    }
-    ul {
-      margin: -10px 0 20px!important;
-      transition: none;
-      li {
-        border-bottom: transparent;
-      }
-      display: none;
-      background: white;
-      a {
-        padding: 8px 25px;
-        font-size: 14px;
-        font-weight: 600;
-        text-transform: none;
-        &:hover {
-          background: white;
-          // color: $red;
-        }
-      }
-    }
-  }
 }
 
 .mobile-menu-overlay {
@@ -442,3 +406,59 @@
   top: 60px;
   overflow: hidden;
 }
+
+@include grid-media($medium-min) {
+  /*this is for dropdown menu*/
+  .menu-item-has-children{
+    position: relative;
+    &:before {
+      color: $red;
+      position: absolute;
+      top: 6px;
+      right: -14px;
+      font-size: 12px;
+      font-family: "Font Awesome 5 Pro";
+      font-weight: 600;
+      // color: $base-font-color;
+      content: '\f078';
+      cursor: pointer;
+    }
+    .sub-menu {
+      display: none; // don't show until hovered on desktop or clicked on mobile
+      position: absolute;
+      background: rgba(#383838, 0.9);
+      top: 45px;
+      left: 30px;
+      width: 100%;
+      min-width: 300px;
+      border-top: 4px solid $red;
+
+      -webkit-box-shadow: 10px 10px 9px -8px rgba(46,46,46,1);
+      -moz-box-shadow: 10px 10px 9px -8px rgba(46,46,46,1);
+      box-shadow: 10px 10px 9px -8px rgba(46,46,46,1);
+
+      .menu-item a{
+        display: inline-block;
+        width:100%;
+        padding:1em 0!important;
+      }
+
+      /*This is making the fixed styles happen on the subnav as well*/
+      &.fixed{
+        background:white;
+        a{
+          font-weight: bold;
+        }
+      }
+    }
+    &:hover{
+      .sub-menu{
+        display: block;
+      } 
+    }
+
+  }   
+}
+
+
+

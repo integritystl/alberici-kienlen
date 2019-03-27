@@ -4,17 +4,17 @@ jQuery(($) => {
     $(window).bind('scroll', () => {
       if ($(window).width() <= 850) {
         if ($(window).scrollTop() > 0) {
-          $('#stickyHeader').addClass('fixed');
+          $('#stickyHeader, .sub-menu').addClass('fixed');
           $('.site-content').addClass('fixed-margin');
         } else {
-          $('#stickyHeader').removeClass('fixed');
+          $('#stickyHeader, .sub-menu').removeClass('fixed');
           $('.site-content').removeClass('fixed-margin');
         }
       } else if ($(window).scrollTop() > 50) {
-        $('#stickyHeader').addClass('fixed');
+        $('#stickyHeader, .sub-menu').addClass('fixed');
         $('.site-content').addClass('fixed-margin');
       } else {
-        $('#stickyHeader').removeClass('fixed');
+        $('#stickyHeader, .sub-menu').removeClass('fixed');
         $('.site-content').removeClass('fixed-margin');
       }
     });
