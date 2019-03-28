@@ -15,24 +15,21 @@ $FooterCalloutImage = get_field('footer_callout_background_image');
 ?>
 
 <?php if ($FooterCalloutContent || $FooterCalloutHeadline) : ?>
-<div class="footer-callout clear <?php if(!$FooterCalloutImage) { echo 'footer-callout--no-img'; } ?> ">
+<div class="footer-callout clear <?php if(!$FooterCalloutImage) { echo 'footer-callout--no-img'; } ?> " style="background: url('<?php echo $FooterCalloutImage;?>')no-repeat center center; background-size:cover;">
   <div class="container">
       <div class="footer-callout-content">
+        <div class="footer-callout-white-wrapper">
           <?php if ($FooterCalloutHeadline) : ?>
             <h2><?php echo $FooterCalloutHeadline; ?></h2>
           <?php endif; ?>
           <?php if ($FooterCalloutContent) : ?>
             <p><?php echo $FooterCalloutContent; ?></p>
           <?php endif; ?>
+        </div>
           <?php if ($FooterCalloutText) : ?>
               <a href="<?php echo $FooterCalloutLink; ?>" class="btn"><?php echo $FooterCalloutText; ?></a>
           <?php endif; ?>
       </div>
-      <?php if ($FooterCalloutImage) : ?>
-        <div class="footer-callout-image">
-          <?php echo wp_get_attachment_image($FooterCalloutImage, 'full'); ?>
-        </div>
-      <?php endif; ?>
   </div>
 </div>
 <?php endif; ?>
