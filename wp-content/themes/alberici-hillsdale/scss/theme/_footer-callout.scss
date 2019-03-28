@@ -37,33 +37,4 @@
       width: 50%;
    }
  }
-
- .footer-callout-image {
-   position: relative;
-   right: -10px;
-   margin-top: 20px;
-
-   img {
-     display: block;
-     height: auto;
-     width: 100%;
-
-     @include grid-media($medium-min) {
-       max-height: 430px;
-       width: auto;
-     }
-   }
-
-   @include grid-media($medium-min) {
-     position: absolute;
-     right: 0px;
-     bottom: 0px;
-     //left: 40%;
-     margin: 0;
-     max-width: 60%;
-   }
-   @include grid-media($large-min) {
-     max-width: 53%;
-   }
- }
 }

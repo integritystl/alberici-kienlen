@@ -314,6 +314,7 @@
       }
     }
   }
+
 }
 
 .admin-bar {
@@ -349,10 +350,6 @@
     display: none;
   }
   .sidr-inner {
-    ul {
-      margin: 0 0 0 0;
-      padding: 0;
-    }
     a {
       // color: $base-font-color;
       text-decoration: none;
@@ -380,7 +377,7 @@
     }
     a {
       display: block;
-      padding: 22px 25px;
+      padding: 1em;
       font-size: 14px;
       font-weight: 700;
       &:hover {
@@ -390,6 +387,41 @@
         outline: none;
       }
     }
+  }
+  /*Sub Nav Styles*/
+  .menu-item-has-children{
+    &:before{
+      color: #E2373F;
+      position: absolute;
+      top: 6px;
+      right: 24px;
+      font-size: 15px;
+      font-family: "Font Awesome 5 Pro";
+      font-weight: bolder;
+      content: '\f078';
+      cursor: pointer;
+    }
+  }
+  .menu-item-has-children .sub-menu {
+    display: none;
+    position:unset;
+    margin: .5em 1em;
+    padding-left:2em;
+    width:auto;
+    background:transparent;
+    border-top: 1px solid $red;
+    border-bottom: 1px solid $red;
+    box-shadow: none;
+    li a{
+      font-weight: normal;
+      color:$dark-gray;
+      pointer:cursor;
+      &:hover{
+        color:$red;
+      }
+
+    }
+    
   }
 }
 
@@ -407,58 +439,54 @@
   overflow: hidden;
 }
 
-@include grid-media($medium-min) {
-  /*this is for dropdown menu*/
-  .menu-item-has-children{
-    position: relative;
-    &:before {
-      color: $red;
-      position: absolute;
-      top: 6px;
-      right: -14px;
-      font-size: 12px;
-      font-family: "Font Awesome 5 Pro";
-      font-weight: 600;
-      // color: $base-font-color;
-      content: '\f078';
-      cursor: pointer;
+/*this is for dropdown menu Desktop*/
+.menu-item-has-children{
+  position: relative;
+  &:before {
+    color: $red;
+    position: absolute;
+    top: 6px;
+    right: -14px;
+    font-size: 12px;
+    font-family: "Font Awesome 5 Pro";
+    font-weight: 600;
+    // color: $base-font-color;
+    content: '\f078';
+    cursor: pointer;
+  }
+  .sub-menu {
+    display: none; // don't show until hovered on desktop or clicked on mobile
+    position: absolute;
+    background: rgba(#383838, 0.9);
+    top: 45px;
+    left: 30px;
+    width: 100%;
+    min-width: 300px;
+    border-top: 4px solid $red;
+
+    -webkit-box-shadow: 10px 10px 9px -8px rgba(46,46,46,1);
+    -moz-box-shadow: 10px 10px 9px -8px rgba(46,46,46,1);
+    box-shadow: 10px 10px 9px -8px rgba(46,46,46,1);
+
+    .menu-item a{
+      display: inline-block;
+      width:100%;
+      padding:1em 0!important;
     }
-    .sub-menu {
-      display: none; // don't show until hovered on desktop or clicked on mobile
-      position: absolute;
-      background: rgba(#383838, 0.9);
-      top: 45px;
-      left: 30px;
-      width: 100%;
-      min-width: 300px;
-      border-top: 4px solid $red;
 
-      -webkit-box-shadow: 10px 10px 9px -8px rgba(46,46,46,1);
-      -moz-box-shadow: 10px 10px 9px -8px rgba(46,46,46,1);
-      box-shadow: 10px 10px 9px -8px rgba(46,46,46,1);
-
-      .menu-item a{
-        display: inline-block;
-        width:100%;
-        padding:1em 0!important;
-      }
-
-      /*This is making the fixed styles happen on the subnav as well*/
-      &.fixed{
-        background:white;
-        a{
-          font-weight: bold;
-        }
+    /*This is making the fixed styles happen on the subnav as well*/
+    &.fixed{
+      background:white;
+      a{
+        font-weight: bold;
       }
     }
-    &:hover{
-      .sub-menu{
-        display: block;
-      } 
-    }
+  }
+  &:hover{
+    .sub-menu{
+      display: block;
+    } 
+  }
 
-  }   
-}
-
-
+}   
 

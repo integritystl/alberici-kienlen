@@ -12,7 +12,9 @@ $jobsCalloutHeader = get_field('jobs_callout_header');
 $jobsCalloutContent = get_field('jobs_callout_content');
 $jobsCalloutLink = get_field('jobs_callout_post_link');
 $jobsCalloutgform = get_field('jobs_callout_careers_form');
+$theme_config = get_field('set_site', 'options');
 ?>
+
 <div id="primary" class="content-area">
 	<main id="main" class="site-main">
         <div class="career-template">
@@ -44,8 +46,13 @@ $jobsCalloutgform = get_field('jobs_callout_careers_form');
                     endwhile;
                 endif;
             ?>
+            <?php if ( $theme_config === 'kienlen') { 
+                get_template_part( 'template-parts/kienlen-footer-callout' );
+            } else {
+                get_template_part( 'template-parts/footer-callout' ); 
+            }?>
 
-            <?php get_template_part( 'template-parts/footer-callout' );?>
+
         </div>
 
 
