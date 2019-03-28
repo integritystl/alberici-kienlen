@@ -4,7 +4,7 @@
  * RESSIO Responsive Server Side Optimizer
  * https://github.com/ressio/
  *
- * @copyright   Copyright (C) 2013-2018 Kuneri, Ltd. All rights reserved.
+ * @copyright   Copyright (C) 2013-2019 Kuneri, Ltd. All rights reserved.
  * @license     GNU General Public License version 2
  */
 
@@ -57,14 +57,21 @@ class Ressio_Filesystem_Native implements IRessio_Filesystem
      */
     public function putContents($filename, $content)
     {
-        $result = false;
-        $fp = fopen($filename, 'wb+');
-        if (flock($fp, LOCK_EX)) {
-            $result = (fwrite($fp, $content) === strlen($content));
-            flock($fp, LOCK_UN);
+        $size = strlen($content);
+        $dir = dirname($filename);
+        $return = true;
+        // save to a temporary file and do atomic update via rename
+        $tmp = tempnam($dir, basename($filename));
+        if (
+            (file_put_contents($tmp, $content, LOCK_EX) !== $size) ||
+            !rename($tmp, $filename)
+        ) {
+            // otherwise try to overwrite directly
+            @unlink($tmp);
+            $return = (file_put_contents($filename, $content, LOCK_EX) === $size);
         }
-        fclose($fp);
-        return $result;
+        // inherit permissions
+        return @chmod($filename, @fileperms($dir) & 0666) && $return;
     }
 
     /**
@@ -86,11 +93,13 @@ class Ressio_Filesystem_Native implements IRessio_Filesystem
     public function getModificationTime($path)
     {
         $time = @filemtime($path);
-        if (strncasecmp(PHP_OS, 'win', 3) !== 0) {
-            return $time;
+        // @todo remove this bugfix [required for PHP 5.2 on Windows only]
+        // @todo Note: seems it is fixed for NTFS and not FAT (see https://bugs.php.net/bug.php?id=40568)
+        if ((float)PHP_VERSION < 5.3 && $time !== false && strncasecmp(PHP_OS, 'win', 3) === 0) {
+            // fix filemtime on Windows
+            $time += 3600 * (date('I') - date('I', $time));
         }
-        // fix mtime on Windows
-        return $time + 3600 * (date('I') - date('I', $time));
+        return $time;
     }
 
     /**
@@ -102,6 +111,7 @@ class Ressio_Filesystem_Native implements IRessio_Filesystem
     public function touch($filename, $time = null)
     {
         if ($time === null) {
+            // Note: null is processed as 0 by touch()
             $time = time();
         }
         return touch($filename, $time);

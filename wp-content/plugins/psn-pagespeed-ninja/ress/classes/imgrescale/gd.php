@@ -3,7 +3,7 @@
  * RESSIO Responsive Server Side Optimizer
  * https://github.com/ressio/
  *
- * @copyright   Copyright (C) 2013-2018 Kuneri, Ltd. All rights reserved.
+ * @copyright   Copyright (C) 2013-2019 Kuneri, Ltd. All rights reserved.
  * @license     GNU General Public License version 2
  */
 
@@ -18,6 +18,9 @@ class Ressio_ImgRescale_Gd implements IRessio_ImgRescale
     /** @var Ressio_DI */
     private $di;
 
+    /** @var bool */
+    protected $open_basedir_enabled;
+
     public function __construct()
     {
         // support broken JPEGs
@@ -26,6 +29,9 @@ class Ressio_ImgRescale_Gd implements IRessio_ImgRescale
         if (function_exists('imagecreatefromwebp') && function_exists('imagewebp')) {
             $this->supported_exts[] = 'webp';
         }
+
+        $open_basedir = ini_get('open_basedir');
+        $this->open_basedir_enabled = !empty($open_basedir);
     }
 
     /**
@@ -186,7 +192,7 @@ class Ressio_ImgRescale_Gd implements IRessio_ImgRescale
         imagedestroy($src_image);
 
         $tmp_dir = sys_get_temp_dir();
-        if (!is_writable($tmp_dir)) {
+        if ($this->open_basedir_enabled || !is_writable($tmp_dir)) {
             $tmp_dir = dirname($src_imagepath);
         }
         if (!is_writable($tmp_dir)) {
@@ -245,7 +251,7 @@ class Ressio_ImgRescale_Gd implements IRessio_ImgRescale
                 }
                 break;
             case 'webp':
-                imagewebp($dest_image, $tmp_filename);
+                imagewebp($dest_image, $tmp_filename, $jpegquality);
                 break;
         }
         imagedestroy($dest_image);

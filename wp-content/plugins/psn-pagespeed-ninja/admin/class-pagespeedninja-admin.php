@@ -93,10 +93,6 @@ class PagespeedNinja_Admin
             if (!($config['psi_MainResourceServerResponseTime'] && $config['caching'])) {
                 $this->enqueueMessage(__('Note that some PageSpeed Ninja features ("Scale large images" and "Remove IE conditionals") may not be compatible with caching plugin'));
             }
-
-            if ($config['caching'] && in_array('woocommerce/woocommerce.php', $active_plugins, true)) {
-                $this->enqueueMessage(__('PageSpeed Ninja\'s advanced caching is not compatible with WooCommerce plugin'));
-            }
         }
 
         $logFilename = dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'error_log.php';
@@ -876,7 +872,7 @@ class PagespeedNinja_Admin
         );
         $content = preg_replace(
             '/^\$plugin_root\s*=.*?$/m',
-            '$plugin_root = $root . \'/wp-content/plugins/' . $plugin_dir . '\';',
+            '$plugin_root = $root . \'wp-content/plugins/' . $plugin_dir . '\';',
             $content
         );
         file_put_contents($destDir . '/f.php', $content, LOCK_EX);

@@ -1,9 +1,9 @@
 <?php
 /*
- * RESS.IO Responsive Server Side Optimizer
- * http://ress.io/
+ * RESSIO Responsive Server Side Optimizer
+ * https://github.com/ressio/
  *
- * @copyright   Copyright (C) 2013-2018 Kuneri, Ltd. All rights reserved.
+ * @copyright   Copyright (C) 2013-2019 Kuneri, Ltd. All rights reserved.
  * @license     GNU General Public License version 2
  */
 
@@ -60,7 +60,7 @@ function dump_value($value)
 <html>
 <head>
     <meta charset="utf-8">
-    <title>RESS.IO Pre-check</title>
+    <title>RESSIO Pre-check</title>
 </head>
 <body>
 <p>Cache directory <code><?php echo $cache_dir; ?></code> is

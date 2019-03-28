@@ -248,6 +248,9 @@ class PagespeedNinja_Cache
             (defined('LOGGED_IN_COOKIE') && isset($_COOKIE[LOGGED_IN_COOKIE])) ||
             strpos("\n" . implode("\n", array_keys($_COOKIE)), "\nwordpress_") !== false ||
 
+            // WooCommerce
+            isset($_COOKIE['woocommerce_items_in_cart']) ||
+
             // a commenter
             isset($_COOKIE['comment_author_' . COOKIEHASH])
             ;

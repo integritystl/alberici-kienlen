@@ -20,7 +20,7 @@ $HeroImage = get_field('general_hero_featured_image');
 				<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 
 					<?php get_template_part( 'template-parts/hero' );?>
-
+					
 					<div class="market-detail">
 						<?php alberici_hillsdale_post_thumbnail(); ?>
 
