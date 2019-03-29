@@ -39,9 +39,7 @@ get_header();
                             <?php
                             if( $market_callout_image ) { ?>
                                 <div class="market-icon">
-                                <?php
-                                    echo file_get_contents($market_callout_image, false, $context); ?>
-																		<?php //echo file_get_contents($market_callout_image); ?>
+                                <?php echo file_get_contents(str_replace(home_url(), ".", $market_callout_image)); ?>
                                 </div>
                             <?php } ?>
                                 <h3><?php the_title(); ?></h3>
