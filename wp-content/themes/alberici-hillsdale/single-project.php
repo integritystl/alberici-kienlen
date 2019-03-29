@@ -57,13 +57,13 @@ $projectIntro = get_field('project_intro');
 						</div>
 						<div class="hero-overlay"></div>
 					</div><!-- .single-project-hero -->
-					<nav class="project-breadcrumbs breadcrumbs container" aria-label="Breadcrumb navigation">
-						<?php
-						if ( function_exists('yoast_breadcrumb') ) {
-							yoast_breadcrumb( '
-							<p id="breadcrumbs">','</p>
-							' );
-						} ?>
+					<nav class="breadcrumbs container" aria-label="Breadcrumb navigation">
+					    <div class="breadcrumbs" typeof="BreadcrumbList" vocab="https://schema.org/">
+					        <?php if(function_exists('bcn_display'))
+					        {
+					            bcn_display();
+					        }?>
+					    </div>
 					</nav>
 
 					<?php if ($projectIntro) : ?>
