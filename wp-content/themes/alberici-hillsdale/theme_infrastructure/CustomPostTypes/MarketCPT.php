@@ -21,7 +21,7 @@ class MarketCPT
           'show_ui' => true,
           'show_in_nav_menus' => false,
           'show_in_menu' => true,
-          'has_archive' => true,
+          'has_archive' => false,
           'menu_icon' => 'dashicons-lightbulb',
           'taxonomies' => array( 'market-type' ),
           'supports' => array( 'title', 'editor', 'custom-fields','thumbnail', 'page-attributes' ),
