@@ -55,7 +55,7 @@ class CardList extends React.Component {
       searchTerm: defaultSearch || '',
       siteConfig: '',
       totalPosts: parseInt(document.getElementById('cardList_app').getAttribute('data-total'), 10),
-    }
+    };
   }
 
   componentDidMount() {

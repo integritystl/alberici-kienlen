@@ -119,9 +119,9 @@ class FilterBar extends React.Component {
 
     if (this.props.searchTerm) {
       currentSearchFilter = <span id="filter-info-search"
-      onClick={(event) => this.removeFilterTerm(event) }
+      onClick={event => this.removeFilterTerm(event) }
       className="filter-info--term" key={this.props.searchTerm}
-      dangerouslySetInnerHTML={{__html:this.props.searchTerm}} />;
+      dangerouslySetInnerHTML={{ __html: this.props.searchTerm }} />;
     }
 
     if (this.props.categoryFilterName) {
@@ -154,9 +154,8 @@ class FilterBar extends React.Component {
     }
 
 
-
     if (this.props.isFiltered) {
-      filterTerms =  <span><span className="filter-label">Filter By:</span>
+      filterTerms = <span><span className="filter-label">Filter By:</span>
          {currentSearchFilter} {currentCategoryFilter} {currentMarketFilter} {currentServiceFilter} {currentLocationFilter}
       </span>;
       resetBtn = <button onClick={() => this.resetFilter() } className="btn-reset-filter">Clear Filters</button>;

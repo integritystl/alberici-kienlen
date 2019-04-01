@@ -128,53 +128,45 @@ export function resetFilter() {
     hasSearchTerm: false,
     searchTerm: '',
     currentPage: 1,
-    totalPosts: parseInt( document.getElementById('cardList_app').getAttribute('data-total') )
-  }, () => this.getPosts(this.buildAPILink()))
+    totalPosts: parseInt(document.getElementById('cardList_app').getAttribute('data-total')),
+  }, () => this.getPosts(this.buildAPILink()));
 }
 
-export function removeFilterTerm(currentTermId){
-      if (currentTermId === 'filter-info-service') {
-        this.setState({
-          filteredService: '',
-        }, () => this.checkFilterStatus())
-        document.getElementById('filterbar-select-service').value = 'Service';
-      }
+export function removeFilterTerm(currentTermId) {
+  if (currentTermId === 'filter-info-service') {
+    this.setState({
+      filteredService: '',
+    }, () => this.checkFilterStatus());
+    document.getElementById('filterbar-select-service').value = 'Service';
+  } else if (currentTermId === 'filter-info-market') {
+    // it's markets
+    this.setState({
+      filteredMarket: '',
+    }, () => this.checkFilterStatus());
+    document.getElementById('filterbar-select-market').value = 'Market';
+  } else if (currentTermId === 'filter-info-location') {
+    // it's location
+    this.setState({
+      filteredLocation: '',
+    }, () => this.checkFilterStatus());
+    document.getElementById('filterbar-select-location').value = 'Location';
+  } else if (currentTermId === 'filter-info-search') {
+    // Keyword search
+    this.setState({
+      searchTerm: '',
+      hasSearchTerm: false,
+    }, () => this.checkFilterStatus());
+    document.getElementById('filterbar-search').value = '';
+  } else {
+    // it's News so it's categories
+    this.setState({
+      filteredCategory: '',
+    }, () => this.checkFilterStatus());
+    document.getElementById('filterbar-select-category').value = 'Category';
+  }
+}
 
-      else if (currentTermId === 'filter-info-market') {
-        // it's markets
-        this.setState({
-          filteredMarket: '',
-        }, () => this.checkFilterStatus())
-        document.getElementById('filterbar-select-market').value = 'Market';
-      }
-
-      else if (currentTermId === 'filter-info-location') {
-        //it's location
-        this.setState({
-          filteredLocation: '',
-        }, () => this.checkFilterStatus())
-        document.getElementById('filterbar-select-location').value = 'Location';
-      }
-
-      else if (currentTermId === 'filter-info-search') {
-        //Keyword search
-        this.setState({
-          searchTerm: '',
-          hasSearchTerm: false,
-        }, () => this.checkFilterStatus())
-        document.getElementById('filterbar-search').value = '';
-      }
-
-      else {
-        //it's News so it's categories
-        this.setState({
-          filteredCategory: '',
-        }, () => this.checkFilterStatus())
-          document.getElementById('filterbar-select-category').value = 'Category';
-      }
-    }
-
-export function checkFilterStatus(){
+export function checkFilterStatus() {
   let secondaryFilter = '';
   if (this.state.siteConfig === 'kienlen') {
     secondaryFilter = !this.state.filteredService;
