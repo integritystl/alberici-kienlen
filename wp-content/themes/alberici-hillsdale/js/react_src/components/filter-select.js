@@ -47,7 +47,7 @@ Select.propTypes = {
   selectID: PropTypes.string,
   selected: PropTypes.oneOfType([
     PropTypes.string,
-    PropTypes.number
+    PropTypes.number,
   ]),
 };
 
