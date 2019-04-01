@@ -14,6 +14,7 @@
 
 get_header();
 $client_title = get_field('our_client_title');
+$theme_config = get_field('set_site', 'options');
 ?>
 
 	<div id="primary" class="content-area">
@@ -50,8 +51,12 @@ $client_title = get_field('our_client_title');
 				</div>
 			</div>
 			 <?php endif; ?>
-			
-			<?php get_template_part( 'template-parts/footer-callout' ); ?>
+
+            <?php if ( $theme_config === 'kienlen') {
+                get_template_part( 'template-parts/kienlen-footer-callout' );
+            } else {
+                get_template_part( 'template-parts/footer-callout' );
+            }?>
 
 		</main><!-- #main -->
 	</div><!-- #primary -->
