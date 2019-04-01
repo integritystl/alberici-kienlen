@@ -102,7 +102,11 @@ $projectIntro = get_field('project_intro');
 			get_template_part( 'template-parts/content', 'none' );
 		endif; ?>
 
-		<?php get_template_part( 'template-parts/footer-callout' ); ?>
+            <?php if ( $theme_config === 'kienlen') {
+                get_template_part( 'template-parts/kienlen-footer-callout' );
+            } else {
+                get_template_part( 'template-parts/footer-callout' );
+            }?>
 	</main><!-- #main -->
 </div><!-- #primary -->
 

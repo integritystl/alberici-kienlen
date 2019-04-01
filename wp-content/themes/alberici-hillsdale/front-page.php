@@ -77,7 +77,7 @@ $theme_config = get_field('set_site', 'options');
 			</div>
 			<?php endif; ?>
 		<?php } ?>
-			<?php get_template_part( 'template-parts/footer-callout' ); ?>
+			<?php get_template_part( 'template-parts/kienlen-footer-callout' ); ?>
 		</main><!-- #main -->
 	</div><!-- #primary -->
 

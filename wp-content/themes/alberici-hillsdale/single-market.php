@@ -9,6 +9,7 @@
 
 get_header();
 $HeroImage = get_field('general_hero_featured_image');
+$theme_config = get_field('set_site', 'options');
 ?>
 
 <div id="primary" class="content-area">
@@ -104,10 +105,11 @@ $HeroImage = get_field('general_hero_featured_image');
 			</div>
 		<?php endif; wp_reset_postdata(); ?>
 
-
-
-
-		<?php get_template_part( 'template-parts/footer-callout' ); ?>
+        <?php if ( $theme_config === 'kienlen') {
+            get_template_part( 'template-parts/kienlen-footer-callout' );
+        } else {
+            get_template_part( 'template-parts/footer-callout' );
+        }?>
 	</main><!-- #main -->
 </div><!-- #primary -->
 

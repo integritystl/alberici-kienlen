@@ -8,6 +8,7 @@
  */
 
 get_header();
+$theme_config = get_field('set_site', 'options');
 ?>
 
 <div id="primary" class="content-area">
@@ -62,7 +63,11 @@ get_header();
 			endif;
         ?>
 
-        <?php get_template_part( 'template-parts/footer-callout' );?>
+        <?php if ( $theme_config === 'kienlen') {
+            get_template_part( 'template-parts/kienlen-footer-callout' );
+        } else {
+            get_template_part( 'template-parts/footer-callout' );
+        }?>
 
     </main><!-- #main -->
 </div><!-- #primary -->
