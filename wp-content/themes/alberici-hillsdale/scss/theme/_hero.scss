@@ -130,32 +130,17 @@
 .breadcrumbs {
   margin-top: 20px;
   margin-bottom: 15px;
-  &:after {
-    content: "";
-    display: table;
-    clear: both;
-  }
-
-  p {
-    margin: 0;
-    font-size: 14px;
-    color: $medium-gray;
-    &:after {
-      content: "";
-      display: table;
-      clear: both;
-    }
-  }
 
   a {
     color: $dark-blue;
     text-decoration: none;
-    margin-right: 3px;
+    margin:0 .5em;
+    font-size:14px;
   }
 
-  .breadcrumb_last {
-    color: $dark-blue;
+  .current-item {
     font-weight: 600;
-    margin-left: 3px;
+    font-size: 14px;
+    margin:0 .5em;
   }
 }
