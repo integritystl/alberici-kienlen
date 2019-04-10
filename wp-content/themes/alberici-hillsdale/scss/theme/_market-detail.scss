@@ -29,87 +29,8 @@
     h2 {
         color: $blue;
     }
-
-    ul {
-        margin-bottom: 10px;
-        display: block;
-        li a {
-            display: block;
-            position: relative;
-            text-decoration: none;
-            color: white;
-            font-weight: 500;
-            .card-overlay {
-                z-index: 0;
-                height: 300px;
-            }
-            img {
-                width:100%;
-                height: 300px;
-            }
-            .projects-text {
-                position: absolute;
-                top: 20px;
-                width: 100%;
-                padding: 0px 25px;
-                span {
-                  font-size: 13px;
-                  font-weight: 400;
-                }
-
-                .markets, .services {
-                  display: block;
-                  line-height: 1;
-                }
-
-                .services {
-                  margin-top: 5px;
-                }
-
-                // span.market-name:first-child:after {
-                //   content: ',';
-                //   padding-right: 5px;
-                // }
-
-                span.market-name:not(:only-child):after,
-                span.service-name:not(:only-child):after {
-                  content: ',';
-                  padding-right: 5px;
-                }
-
-                span.market-name:last-child:after,
-                span.service-name:last-child:after {
-                  content: '';
-                  padding-right: 0px;
-                }
-
-
-
-                h3 {
-                  font-size: 24px;
-                  margin: 10px 0 0;
-                  line-height: 1.25;
-                  font-weight: 300;
-                }
-            }
-            &:hover {
-                .card-overlay {
-                    background: rgba($blue, .6);
-                }
-            }
-        }
-        li:nth-child(1), li:nth-child(2) {
-            margin-right: 0;
-            @include grid-media($small-min) {
-                margin-right: 20px;
-            }
-        }
-
-        @include grid-media($small-min) {
-            display: flex;
-            flex-wrap: initial;
-            margin-bottom: 40px;
-        }
+    .blog-content_posts article img {
+        height: 300px;
     }
     .btn {
         color: white;
