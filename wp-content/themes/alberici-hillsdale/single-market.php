@@ -80,7 +80,7 @@ $theme_config = get_field('set_site', 'options');
                     </article>
                 <?php endwhile; ?>
                 </div>
-                <a href="<?php echo get_field('projects_page_link', 'option'); ?>" class="btn"> view more projects </a>
+                <a href="<?php echo get_field('projects_page_link', 'option'); ?>?market_category=<?php echo $term; ?>" class="btn"> view more projects </a>
             </div>
         <?php endif; wp_reset_postdata(); ?>
 

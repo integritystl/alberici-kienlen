@@ -32,8 +32,11 @@ class CardList extends React.Component {
     const defaultService = getSessionStorageItem(sessionStorageKeys.cards_service);
     const defaultOffset = getSessionStorageItem(sessionStorageKeys.cards_page);
 
+    const loadFilterID = parseInt(window.location.href.split('=')[1]);
+    const loadFilterCPT = window.location.href.split('=')[0].split('?')[1];
+
     const isFiltered = !!defaultSearch || !!defaultCategory || !!defaultMarket
-      || !!defaultLocation || !!defaultService;
+      || !!defaultLocation || !!defaultService || !!loadFilterID;
 
     this.state = {
       loading: true,
@@ -48,8 +51,8 @@ class CardList extends React.Component {
       location_categories: [],
       isFiltered,
       filteredCategory: defaultCategory || '',
-      filteredMarket: defaultMarket || '',
-      filteredService: defaultService || '',
+      filteredMarket: (loadFilterID && loadFilterCPT === 'market_category') ? loadFilterID : defaultMarket || '',
+      filteredService: (loadFilterID && loadFilterCPT === 'service_category') ? loadFilterID : defaultService || '',
       filteredLocation: defaultLocation || '',
       hasSearchTerm: !!defaultSearch,
       searchTerm: defaultSearch || '',
@@ -277,6 +280,8 @@ class CardList extends React.Component {
                       services = {this.state.service_categories}
                       locations = {this.state.location_categories}
                       getCatName = {this.getCatName}
+                      filteredService = {this.state.filteredService}
+                      filteredMarket = {this.state.filteredMarket}
                       />;
       if (allPostsOffset < this.state.totalPosts) {
         loadMoreBtn = <button
