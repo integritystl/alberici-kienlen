@@ -32,11 +32,11 @@ class CardList extends React.Component {
     const defaultService = getSessionStorageItem(sessionStorageKeys.cards_service);
     const defaultOffset = getSessionStorageItem(sessionStorageKeys.cards_page);
 
-    const loadFilterID = window.location.href.split('=')[1];
+    const loadFilterID = parseInt(window.location.href.split('=')[1]);
     const loadFilterCPT = window.location.href.split('=')[0].split('?')[1];
 
     const isFiltered = !!defaultSearch || !!defaultCategory || !!defaultMarket
-      || !!defaultLocation || !!defaultService;
+      || !!defaultLocation || !!defaultService || !!loadFilterID;
 
     this.state = {
       loading: true,

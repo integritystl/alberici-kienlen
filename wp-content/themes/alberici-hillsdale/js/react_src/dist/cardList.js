@@ -14943,10 +14943,10 @@ var CardList = function (_React$Component) {
     var defaultService = (0, _sessionstorageHandler.getSessionStorageItem)(_sessionstorageHandler.sessionStorageKeys.cards_service);
     var defaultOffset = (0, _sessionstorageHandler.getSessionStorageItem)(_sessionstorageHandler.sessionStorageKeys.cards_page);
 
-    var loadFilterID = window.location.href.split('=')[1];
+    var loadFilterID = parseInt(window.location.href.split('=')[1]);
     var loadFilterCPT = window.location.href.split('=')[0].split('?')[1];
 
-    var isFiltered = !!defaultSearch || !!defaultCategory || !!defaultMarket || !!defaultLocation || !!defaultService;
+    var isFiltered = !!defaultSearch || !!defaultCategory || !!defaultMarket || !!defaultLocation || !!defaultService || !!loadFilterID;
 
     _this.state = {
       loading: true,
