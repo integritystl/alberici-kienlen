@@ -8,6 +8,10 @@
  * @var string $upgrade_url  Upgrade URL.
  */
 
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
+
 ?>
 
 <div class="sui-block-content-center">
@@ -18,9 +22,9 @@
 	<p>
 		<?php
 		esc_html_e(
-			'Automatically compress and resize your images, then on WPMU DEV’s blazing-fast CDN with multi-pass
-	lossy compression. This is the ultimate tool for boosting your pagespeed by taking the load off your server. Try it
-	today with a WPMU DEV Membership!',
+			"Automatically compress and resize your images with bulk Smush, or upload them to the WPMU DEV's
+			blazing-fast CDN with multi-pass lossy compression and auto resize features.. This is the ultimate tool for
+			boosting your pagespeed by taking the load off your server. Try it today with a WPMU DEV Membership!",
 			'wp-smushit'
 		);
 		?>

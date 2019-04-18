@@ -4,7 +4,7 @@
  * RESSIO Responsive Server Side Optimizer
  * https://github.com/ressio/
  *
- * @copyright   Copyright (C) 2013-2018 Kuneri, Ltd. All rights reserved.
+ * @copyright   Copyright (C) 2013-2019 Kuneri, Ltd. All rights reserved.
  * @license     GNU General Public License version 2
  */
 
@@ -555,14 +555,15 @@ class Ressio_HtmlOptimizer_Dom extends Ressio_HtmlOptimizer_Base
                 }
 
                 if (!$node->hasAttribute('src')) { // inline
-                    if ($node->childNodes->item(0) !== null) {
+                    $scriptBlob = $node->textContent;
+
+                    if (empty($scriptBlob)) {
                         if ($this->config->js->merge) {
                             $this->nodeDetach($node);
                         }
                         return false;
                     }
 
-                    $scriptBlob = $node->textContent;
                     // @todo: refactor clear comments
                     $scriptBlob = preg_replace(array('#^\s*<!--.*?[\r\n]+#', '#//\s*<!--.*$#m', '#//\s*-->.*$#m', '#\s*-->\s*$#'), '', $scriptBlob);
                     $scriptBlob = preg_replace('#^\s*(?://\s*)?<!\[CDATA\[\s*(.*?)\s*(?://\s*)?\]\]>\s*$#', '\1', $scriptBlob);
@@ -1020,7 +1021,7 @@ class Ressio_HtmlOptimizer_Dom extends Ressio_HtmlOptimizer_Base
             $this->lastCssNode = $node;
         }
 
-        $index = $this->lastCssNode->getAttribute('index');
+        $index = (int)$this->lastCssNode->getAttribute('index');
         $this->jscssLists[$index][] = $inline
             ? array(
                 'type' => 'inline',
@@ -1118,8 +1119,8 @@ class Ressio_HtmlOptimizer_Dom extends Ressio_HtmlOptimizer_Base
                 $newNode->setAttribute($name, $value);
             }
         }
-        // if ($content === null) { $newNode->nodeValue = ''; }
-        if ($content !== null) {
+        if ($content !== false) {
+            // if ($content === null) { $newNode->nodeValue = ''; }
             $newNode->appendChild($this->dom->createTextNode($content));
         }
         return $newNode;

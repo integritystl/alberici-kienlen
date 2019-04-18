@@ -1,14 +1,15 @@
 {
   "extends": [
-    "airbnb-base"
+    "airbnb-base", "plugin:react/recommended"
   ],
   "env": {
     "browser": true,
     "es6": true
   },
   "parser": "babel-eslint",
+  "plugins": [
+    "react"
+  ],
   "rules": {
-    "object-curly-spacing": 0,
-    "prefer-destructuring": 0
   }
 }

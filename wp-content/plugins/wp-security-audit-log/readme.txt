@@ -3,10 +3,10 @@ Contributors: WPWhiteSecurity, robert681
 Plugin URI: http://www.wpsecurityauditlog.com
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl.html
-Tags: wordpress security plugin, wordpress security audit log, audit log, activity logs, event log wordpress, wordpress user tracking, wordpress activity log, wordpress audit, security event log, audit trail, wordpress security monitor, wordpress admin, wordpress admin monitoring, user activity, admin, multisite, dashboard, notification, wordpress monitoring, email notification, wordpress email alerts, tracking, user tracking, user activity report, wordpress audit trail
+Tags: wordpress security plugin, wordpress security audit log, audit log, activity logs, event log wordpress, wordpress user tracking, wordpress activity log, wordpress audit, security event log, audit trail, wordpress security monitor, wordpress admin, wordpress admin monitoring, user activity, admin, multisite, dashboard, notification, wordpress monitoring, email notification, wordpress email alerts, SMS messages, tracking, user tracking, user activity report, wordpress audit trail
 Requires at least: 3.6
-Tested up to: 5.0.1
-Stable tag: 3.3
+Tested up to: 5.1.1
+Stable tag: 3.4
 Requires PHP: 5.4.43
 
 An easy to use & comprehensive WordPress activity log plugin to log all changes on WordPress sites & multisite networks.
@@ -75,11 +75,12 @@ Refer to [WordPress Activity Log Events](https://www.wpsecurityauditlog.com/supp
 * Log off any user with just a click,
 * Generate HTML and CSV reports,
 * Export the activity log in CSV (ideal for integrations),
-* Get instantly notified via email of important changes,
+* Get notified via email of important changes,
+* Get instant SMS message notifications of critical site changes,
 * Search the activity log using text-based searches,
 * Use built-in filters to fine tune the searches,
 * Store activity log in an external database to improve security,
-* Integrate & centralize the WordPress activity log in syslog, Papertrail and other third party log management solutions,
+* Mirror the WordPress activity logs to Slack, Papertrail, Syslog and other central log management and collaboration solutions,
 * Configure archiving and mirroring of logs.
 
 See our [premium features page](https://www.wpsecurityauditlog.com/premium-features/) for more detailed information.
@@ -195,32 +196,42 @@ Please refer to our [Support & Documentation pages](https://www.wpsecurityauditl
 
 == Changelog ==
 
-= 3.3 (2018-12-13) =
+Release notes: [Announcing SMS Notifications for the WordPress audit logs](https://www.wpsecurityauditlog.com/releases/update-3-4-sms-notifications-integration/)
 
-Release Notes: [Slack Support & New External Connections UI](https://www.wpsecurityauditlog.com/releases/external-connections-update-slack-support-3-3/)
+= 3.4 (2019-04-03) =
 
 * **New Features**
-	* Slack support - [mirror WordPress activity log for Slack](https://www.wpsecurityauditlog.com/support-documentation/mirror-wordpress-activity-logs-slack-channel/).
-	* New UI and totally revamped the [external databases & services connections module](https://www.wpsecurityauditlog.com/support-documentation/getting-started-external-databases-third-party-services/).
-	* Ability to mirror the WordPress activity logs to multiple destinations.
+	* [SMS notifications (integration with Twilio)](https://www.wpsecurityauditlog.com/support-documentation/configure-plugin-send-sms/) for the WordPress audit logs.
+	* Integration with Bit.ly to shorten URL in SMSs.
+	* Added buttons to test email and SMS notifications.
+	* Support for User Switching plugin.
 
-* **Improvements**
-	* Maximum file size for [WordPress file integrity scans](https://www.wpsecurityauditlog.com/support-documentation/wordpress-files-changes-warning-activity-logs/) is now configurable.
-	* Updated the Freemius SDK to 2.2.2 (addresses a MainWP conflict fix).
-	* Plugin access can now be restricted to super administrators only on a multisite network.
-	* Multiple scan started / stopped events per directory merged into one.
-	* Added 1 and 4 hours option to terminate idle users sessions setting.
-	* Plugin now always keeps a log a post updates, even if update is not done via the editor.
-	* Better handling of terminated users sessions (in hung state, blocking legit logins).
-	* Access to plugin now can be restricted to super admin role on multisite networks.
-	* User info in daily activity log summary email is now variable - the same as configured in the plugin settings.
-	* Limited Freemius user messages to users who can view & manage the plugin.
-	* Addded support for a dot in the time format (e.g: d.-m-Y G:i)
+* **New Activity Log Event IDs**
+	* Event ID 1008: user logged in as another user.
+	* Event ID 9083: user changed the billing address (WooCommerce).
+	* Event ID 9084: user changed the shipping address (WooCommerce).
 
-	* **Bug Fixes**
-	* Better handling of data from the REST API [Support ticket](https://wordpress.org/support/topic/error-implode-invalid-arguments-when-using-register_rest_route/).
-	* Fixed: two daily activity log emails were being sent instead of one.
-	* Restricted the starter license (had access to some pro features).
-	* Fixed a number of minor warnings when running the plugin on PHP7.
-	* Logins when using the [Two-Factor plugin](https://wordpress.org/plugins/two-factor/) are now logged properly.
-	* Fixed - first time setup wizard prompt not always showing.
+* **Plugin Improvements**
+	* Added more pre-configured SMS & email notifications.
+	* Improved all sensors to also detect changes that are not done via the dashboard.
+	* Optimized some metadata database queries (reduced qeuries by 75%).
+	* Improved the content sensor (better detection of content changes).
+	* Optimized the database query that fetches list of logged in users.
+	* Removed email notifications wizard.
+	* Standardized all tabs and titles in the [Emails & SMS Notifications](https://www.wpsecurityauditlog.com/premium-features/email-notifications-wordpress-activity-log/) feature.
+	* Improved the help text in the Emails & SMS Notifications feature.
+	* Removed the limit of 5 criteria in the notifications trigger builder.
+	* Removed declaration of emails' Mime-type - this is automatically set so there is no need for it.
+
+* **Bug Fixes**
+	* WooCommerce order name was not reported in event ID 9040 (changed order detail) in some edge cases.
+	* Maximum execution time configured in the [WordPress activity log reports](https://www.wpsecurityauditlog.com/premium-features/reports-wordpress-activity-log/) engine now is only used when generating a report.
+	* CSV reports were not being generated.
+	* Audit trail auto refresh was not working when using infinite scroll viewer option.
+	* Plugin reporting event 9032 (disabled use of WooCommerce coupons) by mistake.
+	* Event IDs 2046 and 2051 were not being reported when files were modified via the editors.
+	* Plugin reporting event 2002 when there were changes in a post's Yoast SEO metabox.
+	* Removed all reference to obsolete plugin setting: wsal-archiving-date-e.
+	* Admins on multisite child sites could see the activity logs of other sites.
+	* Event ID 2073 (post submitted for review) was not being reported in Gutenberg.
+	* Event 2074 (scheduled post) was not being reported in Gutenberg.

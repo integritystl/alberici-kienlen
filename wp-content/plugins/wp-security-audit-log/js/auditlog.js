@@ -100,12 +100,9 @@ function WsalAuditLogInit(_WsalData) {
 	};
 
 	// If audit log auto refresh is enabled.
-	if (WsalData.autorefresh.enabled) {
+	if ( WsalData.autorefresh.enabled ) {
 		// Check for new alerts every 30 secs.
-		setInterval(WsalChk, 30000);
-
-		// Make the first call on page load.
-		WsalChk();
+		setInterval( WsalChk, 30000 );
 	}
 
 	WsalSsasInit();
@@ -417,6 +414,52 @@ function wsal_dismiss_advert(element) {
 	} );
 }
 
+/**
+ * Load Events for Infinite Scroll.
+ *
+ * @since 3.3.1.1
+ *
+ * @param {integer} pageNumber - Log viewer page number.
+ */
+function wsalLoadEvents( pageNumber ) {
+	jQuery( '#wsal-event-loader' ).show( 'fast' );
+	jQuery.ajax( {
+		type:'POST',
+		url: ajaxurl,
+		data: {
+			action: 'wsal_infinite_scroll_events',
+			wsal_viewer_security: wsalAuditLogArgs.viewerNonce,
+			page_number: pageNumber,
+			page : wsalAuditLogArgs.page,
+			'wsal-cbid' : wsalAuditLogArgs.siteId,
+			orderby : wsalAuditLogArgs.orderBy,
+			order : wsalAuditLogArgs.order,
+			s : wsalAuditLogArgs.searchTerm,
+			filters : wsalAuditLogArgs.searchFilters,
+		},
+		success: function( html ) {
+			jQuery( '#wsal-event-loader' ).hide( '1000' );
+			if ( html ) {
+				wsalLoadEventsResponse = true;
+				jQuery( '#audit-log-viewer #the-list' ).append( html ); // This will be the div where our content will be loaded.
+			} else {
+				wsalLoadEventsResponse = false;
+				jQuery( '#wsal-auditlog-end' ).show( 'fast' );
+			}
+		},
+		error: function( xhr, textStatus, error ) {
+			console.log( xhr.statusText );
+			console.log( textStatus );
+			console.log( error );
+		}
+	});
+	if ( wsalLoadEventsResponse ) {
+		return pageNumber + 1;
+	}
+	return 0;
+}
+var wsalLoadEventsResponse = true; // Global variable to check events loading response.
+
 jQuery( document ).ready( function() {
 
 	/**
@@ -441,4 +484,20 @@ jQuery( document ).ready( function() {
 			}
 		});
 	});
+
+	/**
+	 * Load events for Infinite Scroll.
+	 *
+	 * @since 3.3.1.1
+	 */
+	if ( wsalAuditLogArgs.infiniteScroll ) {
+		var count = 2;
+		jQuery( window ).scroll( function() {
+			if ( jQuery( window ).scrollTop() === jQuery( document ).height() - jQuery( window ).height() ) {
+				if ( 0 !== count ) {
+					count = wsalLoadEvents( count );
+				}
+			}
+		});
+	}
 });

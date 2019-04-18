@@ -9,6 +9,7 @@
 
 get_header();
 $HeroImage = get_field('general_hero_featured_image');
+$theme_config = get_field('set_site', 'options');
 ?>
 
 	<div id="primary" class="content-area">
@@ -79,11 +80,15 @@ $HeroImage = get_field('general_hero_featured_image');
 						</article>
 						<?php endwhile; ?>
 					</div>
-					<a href="<?php echo get_field('projects_page_link', 'option'); ?>" class="btn"> view more projects </a>
+					<a href="<?php echo get_field('projects_page_link', 'option'); ?>?service_category=<?php echo $term; ?>" class="btn"> view more projects </a>
 				</div>
 			<?php endif; wp_reset_postdata(); ?>
 
-			<?php get_template_part( 'template-parts/footer-callout' ); ?>
+                            <?php if ( $theme_config === 'kienlen') {
+                get_template_part( 'template-parts/kienlen-footer-callout' );
+            } else {
+                get_template_part( 'template-parts/footer-callout' );
+            }?>
 		</main><!-- #main -->
 	</div><!-- #primary -->
 

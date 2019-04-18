@@ -17,70 +17,20 @@
 }
 .markets-latest-3 {
     border-top: $base-border;
-  
     padding-top: 30px;
+    padding-bottom: 30px;
 
     @include grid-media($medium-min) {
         margin: auto;
         padding-top: 60px;
+        padding-bottom: 60px;
     }
 
     h2 {
         color: $blue;
     }
-
-    ul {
-        margin-bottom: 10px;
-        display: block;
-        li a {
-            display: block;
-            position: relative;
-            text-decoration: none;
-            color: white;
-            font-weight: 500;
-            .card-overlay {
-                z-index: 0;
-                height: 300px;
-            }
-            img {
-                width:100%;
-                height: 300px;
-            }
-            .projects-text {
-                position: absolute;
-                margin-bottom: 20px;
-                top: 20px;
-                width: 90%;
-                p, h3 {
-                    margin-left: 25px;
-                    margin-right: 25px;
-                    font-weight: 400;
-                }
-                h3 {
-                    margin-top: 15px;
-                }
-                p:not(:last-child) {
-                    margin-bottom: 0;
-                }
-            }
-            &:hover {
-                .card-overlay {
-                    background: rgba($blue, .6);
-                }
-            }
-        }
-        li:nth-child(1), li:nth-child(2) {
-            margin-right: 0;
-            @include grid-media($small-min) {
-                margin-right: 20px;
-            }
-        }
-
-        @include grid-media($small-min) {
-            display: flex;
-            flex-wrap: initial;
-            margin-bottom: 40px;
-        }
+    .blog-content_posts article img {
+        height: 300px;
     }
     .btn {
         color: white;

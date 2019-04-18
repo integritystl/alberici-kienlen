@@ -11,8 +11,6 @@
 
 class Ressio_UrlRewriter
 {
-    /** @var Ressio_DI */
-    protected $di;
     /** @var Ressio_Config */
     protected $config;
 
@@ -83,7 +81,6 @@ class Ressio_UrlRewriter
      */
     public function setDI($di)
     {
-        $this->di = $di;
         $this->config = $di->config;
     }
 
@@ -311,13 +308,16 @@ class Ressio_UrlRewriter
      */
     public function urlToFilepath($url)
     {
-        $url = $this->expand($url);
+        if (preg_match('#^(\w+):#', $url, $scheme)) {
+            $scheme = strtolower($scheme[1]);
+            if (!in_array($scheme, array('http', 'https'), true)) {
+                return null;
+            }
+        } else {
+            $url = $this->expand($url);
+        }
 
         $parsed = $this->parse($url);
-
-        if (!in_array($parsed['scheme'], array('http', 'https'), true)) {
-            return null;
-        }
 
         $path = $parsed['path'];
 
@@ -335,10 +335,6 @@ class Ressio_UrlRewriter
         } else {
             $path = $this->config->webrootpath . str_replace('/', DIRECTORY_SEPARATOR, $path);
         }
-
-//        if (!$this->di->filesystem->isFile($path)) {
-//            return $url;
-//        }
 
         return $path;
     }

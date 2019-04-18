@@ -1,0 +1,86 @@
+  
+.alberici-kienlen {
+  .home .footer-callout {
+    background: white;
+  }
+
+  .footer-callout {
+   position: relative;
+   padding: 30px 0 0;
+   @include grid-media($medium-min) {
+     padding: 80px 0;
+   }
+   &.footer-callout--no-img {
+     //if there's no image, adjust the padding so it's not so tall
+     @include grid-media($medium-min) {
+       padding: 80px 0;
+     }
+   }
+
+   .container {
+     display: block;
+     @include grid-media($medium-min) {
+       display: flex;
+       flex-flow: row nowrap;
+       justify-content: flex-start;
+     }
+   }
+
+   .footer-callout-content {
+     z-index: 1;
+     padding-bottom: 30px;
+     a {
+       margin-top: 15px;
+       max-width: 460px;
+       width: 100%;
+
+     }
+
+     @include grid-media($medium-min) {
+       padding-bottom: 0;
+       flex-basis: 50%;
+       //max-width: 460px;
+       a {
+         margin-top: 30px;
+         min-width: auto;
+       }
+     }
+     @include grid-media($large-min) {
+       flex-basis: 60%;
+     }
+     @include grid-media($large-extra) {
+       flex-basis: 75%;
+       //max-width: 460px;
+     }
+   }
+
+   .footer-callout-image {
+     position: relative;
+     right: -10px;
+     margin-top: 20px;
+
+     img {
+       display: block;
+       height: auto;
+       width: 100%;
+
+       @include grid-media($medium-min) {
+         max-height: 430px;
+         width: auto;
+       }
+     }
+
+     @include grid-media($medium-min) {
+       position: absolute;
+       right: 0px;
+       bottom: 0px;
+       //left: 40%;
+       margin: 0;
+       max-width: 60%;
+     }
+     @include grid-media($large-min) {
+       max-width: 53%;
+     }
+   }
+  }
+}

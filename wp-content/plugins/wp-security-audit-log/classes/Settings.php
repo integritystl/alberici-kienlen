@@ -30,8 +30,14 @@ class WSAL_Settings {
 	const OPT_DEV_PHP_ERRORS     = 'p';
 	const OPT_DEV_REQUEST_LOG    = 'r';
 	const OPT_DEV_BACKTRACE_LOG  = 'b';
+	const ERROR_CODE_INVALID_IP  = 901;
 
-	const ERROR_CODE_INVALID_IP = 901;
+	/**
+	 * List of Site Admins.
+	 *
+	 * @var array
+	 */
+	private $site_admins = array();
 
 	/**
 	 * Dev Options.
@@ -148,8 +154,8 @@ class WSAL_Settings {
 	 * Enable Geek Mode.
 	 */
 	public function set_geek_mode() {
-		// Disable alerts of geek mode.
-		$this->SetDisabledAlerts( array() );
+		$this->_plugin->SetGlobalOption( 'disable-visitor-events', 'no' ); // Set disable visitor events to no.
+		$this->SetDisabledAlerts( array() ); // Disable alerts of geek mode.
 	}
 
 	/**
@@ -197,7 +203,7 @@ class WSAL_Settings {
 		// Make sure options have been loaded.
 		$this->IsDevOptionEnabled( '' );
 		// Remove option if it exists.
-		while ( ($p = array_search( $option, $this->_devoption )) !== false ) {
+		while ( ( $p = array_search( $option, $this->_devoption ) ) !== false ) {
 			unset( $this->_devoption[ $p ] );
 		}
 		// Add option if callee wants it enabled.
@@ -293,6 +299,28 @@ class WSAL_Settings {
 	 */
 	public function set_admin_bar_notif( $newvalue ) {
 		$this->_plugin->SetGlobalOption( 'disable-admin-bar-notif', ! $newvalue );
+	}
+
+	/**
+	 * Check admin bar notification updates refresh option.
+	 *
+	 * @since 3.3.1
+	 *
+	 * @return string
+	 */
+	public function get_admin_bar_notif_updates() {
+		return $this->_plugin->GetGlobalOption( 'admin-bar-notif-updates', 'page-refresh' );
+	}
+
+	/**
+	 * Set admin bar notifications.
+	 *
+	 * @since 3.3.1
+	 *
+	 * @param string $newvalue - New option value.
+	 */
+	public function set_admin_bar_notif_updates( $newvalue ) {
+		$this->_plugin->SetGlobalOption( 'admin-bar-notif-updates', $newvalue );
 	}
 
 	/**
@@ -511,7 +539,7 @@ class WSAL_Settings {
 	}
 
 	public function SetIncognito( $enabled ) {
-		return $this->_plugin->SetGlobalOption( 'hide-plugin', $enabled );
+		$this->_plugin->SetGlobalOption( 'hide-plugin', $enabled );
 	}
 
 	/**
@@ -522,7 +550,7 @@ class WSAL_Settings {
 	}
 
 	public function SetDeleteData( $enabled ) {
-		return $this->_plugin->SetGlobalOption( 'delete-data', $enabled );
+		$this->_plugin->SetGlobalOption( 'delete-data', $enabled );
 	}
 
 	/**
@@ -626,27 +654,32 @@ class WSAL_Settings {
 	 */
 	protected function GetAdmins() {
 		if ( $this->_plugin->IsMultisite() ) {
-			/**
-			 * Get list of admins.
-			 *
-			 * @see https://gist.github.com/1508426/65785a15b8638d43a9905effb59e4d97319ef8f8
-			 */
-			global $wpdb;
-			$cap = $wpdb->prefix . 'capabilities';
-			$sql = "SELECT DISTINCT $wpdb->users.user_login"
-				. " FROM $wpdb->users"
-				. " INNER JOIN $wpdb->usermeta ON ($wpdb->users.ID = $wpdb->usermeta.user_id )"
-				. " WHERE $wpdb->usermeta.meta_key = '$cap'"
-				. " AND CAST($wpdb->usermeta.meta_value AS CHAR) LIKE  '%\"administrator\"%'";
-			return $wpdb->get_col( $sql );
-		} else {
-			$result = array();
-			$query = 'role=administrator&fields[]=user_login';
-			foreach ( get_users( $query ) as $user ) {
-				$result[] = $user->user_login;
+			if ( empty( $this->site_admins ) ) {
+				/**
+				 * Get list of admins.
+				 *
+				 * @see https://gist.github.com/1508426/65785a15b8638d43a9905effb59e4d97319ef8f8
+				 */
+				global $wpdb;
+				$cap = $wpdb->prefix . 'capabilities';
+				$sql = "SELECT DISTINCT $wpdb->users.user_login"
+					. " FROM $wpdb->users"
+					. " INNER JOIN $wpdb->usermeta ON ($wpdb->users.ID = $wpdb->usermeta.user_id )"
+					. " WHERE $wpdb->usermeta.meta_key = '$cap'"
+					. " AND CAST($wpdb->usermeta.meta_value AS CHAR) LIKE  '%\"administrator\"%'";
+
+				// Get admins.
+				$this->site_admins = $wpdb->get_col( $sql );
 			}
-			return $result;
+		} else {
+			if ( empty( $this->site_admins ) ) {
+				$query = 'role=administrator&fields[]=user_login';
+				foreach ( get_users( $query ) as $user ) {
+					$this->site_admins[] = $user->user_login;
+				}
+			}
 		}
+		return $this->site_admins;
 	}
 
 	/**
@@ -705,7 +738,7 @@ class WSAL_Settings {
 			$user = get_userdata( $user );
 		}
 		$allowed = $this->GetAccessTokens( $action );
-		$check = array_merge( $user->roles, array( $user->user_login ) );
+		$check   = array_merge( $user->roles, array( $user->user_login ) );
 		foreach ( $check as $item ) {
 			if ( in_array( $item, $allowed ) ) {
 				return true;
@@ -726,11 +759,7 @@ class WSAL_Settings {
 
 	public function IsLoginSuperAdmin( $username ) {
 		$user_id = username_exists( $username );
-		if ( function_exists( 'is_super_admin' ) && is_super_admin( $user_id ) ) {
-			return true;
-		} else {
-			return false;
-		}
+		return function_exists( 'is_super_admin' ) && is_super_admin( $user_id );
 	}
 
 	public function GetLicenses() {
@@ -798,7 +827,7 @@ class WSAL_Settings {
 	}
 
 	public function SetMainIPFromProxy( $enabled ) {
-		return $this->_plugin->SetGlobalOption( 'use-proxy-ip', $enabled );
+		$this->_plugin->SetGlobalOption( 'use-proxy-ip', $enabled );
 	}
 
 	public function IsInternalIPsFiltered() {
@@ -806,7 +835,7 @@ class WSAL_Settings {
 	}
 
 	public function SetInternalIPsFiltering( $enabled ) {
-		return $this->_plugin->SetGlobalOption( 'filter-internal-ip', $enabled );
+		$this->_plugin->SetGlobalOption( 'filter-internal-ip', $enabled );
 	}
 
 	public function GetMainClientIP() {
@@ -919,8 +948,8 @@ class WSAL_Settings {
 	 * @since 3.2.2
 	 */
 	public function set_excluded_urls( $urls ) {
-		$urls = array_map( 'untrailingslashit', $urls );
-		$urls = array_unique( $urls );
+		$urls                = array_map( 'untrailingslashit', $urls );
+		$urls                = array_unique( $urls );
 		$this->excluded_urls = $urls;
 		$this->_plugin->SetGlobalOption( 'excluded-urls', esc_html( implode( ',', $this->excluded_urls ) ) );
 	}
@@ -990,6 +1019,8 @@ class WSAL_Settings {
 
 	/**
 	 * Datetime used in the Alerts.
+	 *
+	 * @param boolean $line_break - True if line break otherwise false.
 	 */
 	public function GetDatetimeFormat( $line_break = true ) {
 		if ( $line_break ) {
@@ -998,11 +1029,26 @@ class WSAL_Settings {
 			$date_time_format = $this->GetDateFormat() . ' ' . $this->GetTimeFormat();
 		}
 
-		$wp_time_format = get_option( 'time_format' );
-		if ( stripos( $wp_time_format, 'A' ) !== false ) {
-			$date_time_format .= '.$$$&\n\b\s\p;A';
+		$wp_time_format = get_option( 'time_format' ); // WP time format.
+
+		// Check if the time format does not have seconds.
+		if ( stripos( $wp_time_format, 's' ) === false ) {
+			if ( stripos( $wp_time_format, '.v' ) !== false ) {
+				$date_time_format = str_replace( '.v', '', $date_time_format );
+			}
+			$date_time_format .= ':s'; // Add seconds to time format.
+			$date_time_format .= '.$$$'; // Add milliseconds to time format.
 		} else {
-			$date_time_format .= '.$$$';
+			// Check if the time format does have milliseconds.
+			if ( stripos( $wp_time_format, '.v' ) !== false ) {
+				$date_time_format = str_replace( '.v', '.$$$', $date_time_format );
+			} else {
+				$date_time_format .= '.$$$';
+			}
+		}
+
+		if ( stripos( $wp_time_format, 'A' ) !== false ) {
+			$date_time_format .= '&\n\b\s\p;A';
 		}
 		return $date_time_format;
 	}
@@ -1023,9 +1069,9 @@ class WSAL_Settings {
 	 */
 	public function GetTimeFormat() {
 		$wp_time_format = get_option( 'time_format' );
-		$search = array( 'a', 'A', 'T', ' ' );
-		$replace = array( '', '', '', '' );
-		$time_format = str_replace( $search, $replace, $wp_time_format );
+		$search         = array( 'a', 'A', 'T', ' ' );
+		$replace        = array( '', '', '', '' );
+		$time_format    = str_replace( $search, $replace, $wp_time_format );
 		return $time_format;
 	}
 
@@ -1039,7 +1085,7 @@ class WSAL_Settings {
 	}
 
 	public function SetTimezone( $newvalue ) {
-		return $this->_plugin->SetGlobalOption( 'timezone', $newvalue );
+		$this->_plugin->SetGlobalOption( 'timezone', $newvalue );
 	}
 
 	/**
@@ -1056,7 +1102,7 @@ class WSAL_Settings {
 	 * @since 2.6.5
 	 */
 	public function set_type_username( $newvalue ) {
-		return $this->_plugin->SetGlobalOption( 'type_username', $newvalue );
+		$this->_plugin->SetGlobalOption( 'type_username', $newvalue );
 	}
 
 	public function GetAdapterConfig( $name_field, $default_value = false ) {
@@ -1064,7 +1110,7 @@ class WSAL_Settings {
 	}
 
 	public function SetAdapterConfig( $name_field, $newvalue ) {
-		return $this->_plugin->SetGlobalOption( $name_field, trim( $newvalue ) );
+		$this->_plugin->SetGlobalOption( $name_field, trim( $newvalue ) );
 	}
 
 	public function GetColumns() {
@@ -1097,7 +1143,7 @@ class WSAL_Settings {
 				) + array_slice( $columns, 5, null, true );
 			}
 			$selected = (array) json_decode( $selected );
-			$columns = array_merge( $columns, $selected );
+			$columns  = array_merge( $columns, $selected );
 			return $columns;
 		} else {
 			return $columns;
@@ -1105,11 +1151,11 @@ class WSAL_Settings {
 	}
 
 	public function GetColumnsSelected() {
-		return $this->_plugin->GetGlobalOption( 'columns' );
+		return $this->_plugin->GetGlobalOption( 'columns', array() );
 	}
 
 	public function SetColumns( $columns ) {
-		return $this->_plugin->SetGlobalOption( 'columns', json_encode( $columns ) );
+		$this->_plugin->SetGlobalOption( 'columns', json_encode( $columns ) );
 	}
 
 	public function IsWPBackend() {
@@ -1117,7 +1163,7 @@ class WSAL_Settings {
 	}
 
 	public function SetWPBackend( $enabled ) {
-		return $this->_plugin->SetGlobalOption( 'wp-backend', $enabled );
+		$this->_plugin->SetGlobalOption( 'wp-backend', $enabled );
 	}
 
 	/**
@@ -1126,7 +1172,7 @@ class WSAL_Settings {
 	 * @param string $use – Setting value.
 	 */
 	public function set_use_email( $use ) {
-		return $this->_plugin->SetGlobalOption( 'use-email', $use );
+		$this->_plugin->SetGlobalOption( 'use-email', $use );
 	}
 
 	/**
@@ -1139,7 +1185,7 @@ class WSAL_Settings {
 	}
 
 	public function SetFromEmail( $email_address ) {
-		return $this->_plugin->SetGlobalOption( 'from-email', trim( $email_address ) );
+		$this->_plugin->SetGlobalOption( 'from-email', trim( $email_address ) );
 	}
 
 	public function GetFromEmail() {
@@ -1147,7 +1193,7 @@ class WSAL_Settings {
 	}
 
 	public function SetDisplayName( $display_name ) {
-		return $this->_plugin->SetGlobalOption( 'display-name', trim( $display_name ) );
+		$this->_plugin->SetGlobalOption( 'display-name', trim( $display_name ) );
 	}
 
 	public function GetDisplayName() {
@@ -1155,7 +1201,7 @@ class WSAL_Settings {
 	}
 
 	public function Set404LogLimit( $value ) {
-		return $this->_plugin->SetGlobalOption( 'log-404-limit', abs( $value ) );
+		$this->_plugin->SetGlobalOption( 'log-404-limit', abs( $value ) );
 	}
 
 	public function Get404LogLimit() {
@@ -1169,7 +1215,7 @@ class WSAL_Settings {
 	 * @since  2.6.3
 	 */
 	public function SetVisitor404LogLimit( $value ) {
-		return $this->_plugin->SetGlobalOption( 'log-visitor-404-limit', abs( $value ) );
+		$this->_plugin->SetGlobalOption( 'log-visitor-404-limit', abs( $value ) );
 	}
 
 	/**
@@ -1189,9 +1235,9 @@ class WSAL_Settings {
 	 */
 	public function set_failed_login_limit( $value ) {
 		if ( ! empty( $value ) ) {
-			return $this->_plugin->SetGlobalOption( 'log-failed-login-limit', abs( $value ) );
+			$this->_plugin->SetGlobalOption( 'log-failed-login-limit', abs( $value ) );
 		} else {
-			return $this->_plugin->SetGlobalOption( 'log-failed-login-limit', -1 );
+			$this->_plugin->SetGlobalOption( 'log-failed-login-limit', -1 );
 		}
 	}
 
@@ -1212,9 +1258,9 @@ class WSAL_Settings {
 	 */
 	public function set_visitor_failed_login_limit( $value ) {
 		if ( ! empty( $value ) ) {
-			return $this->_plugin->SetGlobalOption( 'log-visitor-failed-login-limit', abs( $value ) );
+			$this->_plugin->SetGlobalOption( 'log-visitor-failed-login-limit', abs( $value ) );
 		} else {
-			return $this->_plugin->SetGlobalOption( 'log-visitor-failed-login-limit', -1 );
+			$this->_plugin->SetGlobalOption( 'log-visitor-failed-login-limit', -1 );
 		}
 	}
 
@@ -1312,11 +1358,11 @@ class WSAL_Settings {
 	final public function create_index_file( $dir_path ) {
 		// Check if index.php file exists.
 		$dir_path = trailingslashit( $dir_path );
-		$result = 0;
+		$result   = 0;
 		if ( ! is_file( $dir_path . 'index.php' ) ) {
 			$result = @file_put_contents( $dir_path . 'index.php', '<?php // Silence is golden' );
 		}
-		return ($result > 0);
+		return ( $result > 0 );
 	}
 
 	/**
@@ -1330,11 +1376,11 @@ class WSAL_Settings {
 	final public function create_htaccess_file( $dir_path ) {
 		// Check if .htaccess file exists.
 		$dir_path = trailingslashit( $dir_path );
-		$result = 0;
+		$result   = 0;
 		if ( ! is_file( $dir_path . '.htaccess' ) ) {
 			$result = @file_put_contents( $dir_path . '.htaccess', 'Deny from all' );
 		}
-		return ($result > 0);
+		return ( $result > 0 );
 	}
 
 	/**
@@ -1470,17 +1516,14 @@ class WSAL_Settings {
 	 */
 	public function is_stealth_mode() {
 		$stealth_mode = $this->_plugin->GetGlobalOption( 'mwp-child-stealth-mode', 'no' );
-		if ( 'yes' === $stealth_mode ) {
-			return true;
-		}
-		return false;
+		return 'yes' === $stealth_mode;
 	}
 
 	/**
 	 * Method: Meta data formater.
 	 *
 	 * @param string  $name      - Name of the data.
-	 * @param mix     $value     - Value of the data.
+	 * @param mixed   $value     - Value of the data.
 	 * @param integer $occ_id    - Event occurrence ID.
 	 * @param mixed   $highlight - Highlight format.
 	 * @return string
@@ -1497,10 +1540,8 @@ class WSAL_Settings {
 		switch ( true ) {
 			case '%Message%' == $name:
 				return esc_html( $value );
-
 			case '%PromoMessage%' == $name:
 				return '<p class="promo-alert">' . $value . '</p>';
-
 			case '%PromoLink%' == $name:
 			case '%CommentLink%' == $name:
 			case '%CommentMsg%' == $name:
@@ -1523,6 +1564,9 @@ class WSAL_Settings {
 
 			case '%EditorLinkPost%' == $name:
 				return ' View the <a target="_blank" href="' . esc_url( $value ) . '">post</a>';
+
+			case '%EditorLinkOrder%' == $name:
+				return '<a target="_blank" href="' . esc_url( $value ) . '">' . __( 'View Order', 'wp-security-audit-log' ) . '</a>';
 
 			case '%EditorLinkPage%' == $name:
 				return ' View the <a target="_blank" href="' . esc_url( $value ) . '">page</a>';
@@ -1577,10 +1621,10 @@ class WSAL_Settings {
 				return '<a href="javascript:;" onclick="download_failed_login_log( this )" data-download-nonce="' . esc_attr( wp_create_nonce( 'wsal-download-failed-logins' ) ) . '" title="' . esc_html__( 'Download the log file.', 'wp-security-audit-log' ) . '">' . esc_html__( 'Download the log file.', 'wp-security-audit-log' ) . '</a>';
 
 			case strncmp( $value, 'http://', 7 ) === 0:
-			case strncmp( $value, 'https://', 7 ) === 0:
+			case strncmp( $value, 'https://', 8 ) === 0:
 				return '<a href="' . esc_html( $value ) . '" title="' . esc_html( $value ) . '" target="_blank">' . esc_html( $value ) . '</a>';
 
-			case '%PostStatus%' === $name:
+			case in_array( $name, array( '%PostStatus%', '%ProductStatus%' ), true ):
 				if ( ! empty( $value ) && 'publish' === $value ) {
 					return $highlight_start_tag . esc_html__( 'published', 'wp-security-audit-log' ) . $highlight_end_tag;
 				} else {
@@ -1686,10 +1730,7 @@ class WSAL_Settings {
 	 * @return bool
 	 */
 	protected function is_specific_view() {
-		// Filter $_GET array for security.
-		$get_array = filter_input_array( INPUT_GET );
-
-		return isset( $get_array['wsal-cbid'] ) && '0' != $get_array['wsal-cbid'];
+		return isset( $_REQUEST['wsal-cbid'] ) && 0 !== (int) $_REQUEST['wsal-cbid']; // @codingStandardsIgnoreLine
 	}
 
 	/**
@@ -1700,10 +1741,42 @@ class WSAL_Settings {
 	 * @return int
 	 */
 	protected function get_specific_view() {
-		// Filter $_GET array for security.
-		$get_array = filter_input_array( INPUT_GET );
+		return isset( $_REQUEST['wsal-cbid'] ) ? (int) sanitize_text_field( wp_unslash( $_REQUEST['wsal-cbid'] ) ) : 0; // @codingStandardsIgnoreLine
+	}
 
-		return isset( $get_array['wsal-cbid'] ) ? (int) $get_array['wsal-cbid'] : 0;
+	/**
+	 * Query sites from WPDB.
+	 *
+	 * @since 3.3.0.1
+	 *
+	 * @param int|null $limit — Maximum number of sites to return (null = no limit).
+	 * @return object — Object with keys: blog_id, blogname, domain
+	 */
+	public function get_sites( $limit = null ) {
+		global $wpdb;
+
+		$sql = 'SELECT blog_id, domain FROM ' . $wpdb->blogs;
+		if ( ! is_null( $limit ) ) {
+			$sql .= ' LIMIT ' . $limit;
+		}
+		$res = $wpdb->get_results( $sql );
+		foreach ( $res as $row ) {
+			$row->blogname = get_blog_option( $row->blog_id, 'blogname' );
+		}
+		return $res;
+	}
+
+	/**
+	 * The number of sites on the network.
+	 *
+	 * @since 3.3.0.1
+	 *
+	 * @return int
+	 */
+	public function get_site_count() {
+		global $wpdb;
+		$sql = 'SELECT COUNT(*) FROM ' . $wpdb->blogs;
+		return (int) $wpdb->get_var( $sql );
 	}
 
 	/**
@@ -1712,7 +1785,7 @@ class WSAL_Settings {
 	 * @since 3.3
 	 *
 	 * @param string  $name      - Name of the data.
-	 * @param mix     $value     - Value of the data.
+	 * @param mixed   $value     - Value of the data.
 	 * @param integer $occ_id    - Event occurrence ID.
 	 * @param mixed   $highlight - Highlight format.
 	 * @return string
@@ -1740,6 +1813,9 @@ class WSAL_Settings {
 
 			case '%EditorLinkPost%' === $name:
 				return ' View the <' . esc_url( $value ) . '|post>';
+
+			case '%EditorLinkOrder%' === $name:
+				return ' <' . esc_url( $value ) . '|View Order>';
 
 			case '%EditorLinkPage%' === $name:
 				return ' View the <' . esc_url( $value ) . '|page>';
@@ -1791,10 +1867,10 @@ class WSAL_Settings {
 				return '';
 
 			case strncmp( $value, 'http://', 7 ) === 0:
-			case strncmp( $value, 'https://', 7 ) === 0:
+			case strncmp( $value, 'https://', 8 ) === 0:
 				return '<' . esc_html( $value ) . '|' . esc_html( $value ) . '>';
 
-			case '%PostStatus%' === $name:
+			case in_array( $name, array( '%PostStatus%', '%ProductStatus%' ), true ):
 				if ( ! empty( $value ) && 'publish' === $value ) {
 					return '*' . esc_html__( 'published', 'wp-security-audit-log' ) . '*';
 				} else {
@@ -1842,5 +1918,45 @@ class WSAL_Settings {
 			default:
 				return '*' . esc_html( $value ) . '*';
 		}
+	}
+
+	/**
+	 * Checks Infinite Scroll.
+	 *
+	 * Returns true if infinite scroll is enabled.
+	 *
+	 * @since 3.3.1.1
+	 *
+	 * @return boolean
+	 */
+	public function is_infinite_scroll() {
+		return 'infinite-scroll' === $this->get_events_type_nav() ? true : false;
+	}
+
+	/**
+	 * Checks Events Navigation Type.
+	 *
+	 * Returns type of navigation for events log viewer.
+	 *
+	 * @since 3.3.1.1
+	 *
+	 * @return string
+	 */
+	public function get_events_type_nav() {
+		return $this->_plugin->GetGlobalOption( 'events-nav-type', 'infinite-scroll' );
+	}
+
+	/**
+	 * Sets Events Navigation Type.
+	 *
+	 * Sets type of navigation for events log viewer.
+	 *
+	 * @since 3.3.1.1
+	 *
+	 * @param string $nav_type - Navigation type.
+	 * @return string
+	 */
+	public function set_events_type_nav( $nav_type ) {
+		$this->_plugin->SetGlobalOption( 'events-nav-type', $nav_type );
 	}
 }

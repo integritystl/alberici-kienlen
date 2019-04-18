@@ -9,6 +9,7 @@
 
 get_header();
 $HeroImage = get_field('general_hero_featured_image');
+$theme_config = get_field('set_site', 'options');
 ?>
 
 <div id="primary" class="content-area">
@@ -18,9 +19,9 @@ $HeroImage = get_field('general_hero_featured_image');
 			while ( have_posts() ) :
 				the_post();?>
 				<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
-					
+
 					<?php get_template_part( 'template-parts/hero' );?>
-					
+
 					<div class="market-detail">
 						<?php alberici_hillsdale_post_thumbnail(); ?>
 
@@ -28,87 +29,66 @@ $HeroImage = get_field('general_hero_featured_image');
 							<?php the_content(); ?>
 						</div><!-- .market-content -->
 					</div>
-				</article><!-- #post-<?php the_ID(); ?> -->
+				</article><!-- #post--->
 
 
 			<?php endwhile;
 		else :
 			get_template_part( 'template-parts/content', 'none' );
-		endif;
+		endif; ?>
 
-			if ( is_single() && 'market' === get_post_type()) {
-				$terms = get_the_terms( get_the_ID(), 'category' );
-				$term_list = wp_list_pluck( $terms, 'slug' );
-				$latest_args = array(
-					'post_type' => 'market',
-					'posts_per_page' => 3,
-					'post_status' => 'publish',
-					'post__not_in' => array( get_the_ID() ),
-					'orderby' => 'rand',
-					'tax_query' => array(
-						array(
-							'taxonomy' => 'category',
-							'field' => 'slug',
-							'terms' => $term_list
-						)
-					)
-				);
-				$latest_query = new WP_Query( $latest_args );
+        <?php if ( is_single() && 'market' === get_post_type()) {
+            $term = get_field('project_market_category');
+            $latest_args = array(
+                'post_type' => 'project',
+                'posts_per_page' => 3,
+                'post_status' => 'publish',
+                'post__not_in' => array( get_the_ID() ),
+                'orderby' => 'rand',
+                'tax_query' => array(
+                    array(
+                    'taxonomy' => 'market_category',
+                    'field' => 'id',
+                    'terms' => $term
+                    )
+                )
+            );
+            $latest_query = new WP_Query( $latest_args );
+        }
 
-			}
+        $sum = $latest_query->found_posts;
 
-			//Default: Show Latest 3 Posts
-			if(!$latest_query->have_posts()) {
-				$latest_args = array(
-				'post_type' =>  'project',
-				'posts_per_page' => 3,
-				'post_status' => 'publish'
-				);
-				$latest_query = new WP_Query( $latest_args );
+        if ( $latest_query->have_posts() ) : ?>
+            <div class="markets markets-latest-3 container">
+                <h2>Related Projects</h2>
+                <?php if ($sum === '2'){?>
+                    <div class="card-group blog-content_posts posts_2">
+                <?php }elseif ($sum === '1'){ ?>
+                    <div class="card-group blog-content_posts posts_1">
+                <?php }else{ ?>
+                    <div class="card-group blog-content_posts">
+                <?php } ?>
+                <?php while( $latest_query->have_posts() ) : $latest_query->the_post(); ?>
+                    <article class="card-post card-news post">
+                        <div class="card-overlay"></div>
+                        <?php echo wp_get_attachment_image( get_post_thumbnail_id(get_the_ID()), 'blog_image', false );?>
+                        <a href="<?php the_permalink(); ?>">
+                            <div class="news-meta">
+                                <h3><?php  the_title();?></h3>
+                            </div>
+                        </a>
+                    </article>
+                <?php endwhile; ?>
+                </div>
+                <a href="<?php echo get_field('projects_page_link', 'option'); ?>?market_category=<?php echo $term; ?>" class="btn"> view more projects </a>
+            </div>
+        <?php endif; wp_reset_postdata(); ?>
 
-			}
-
-			if ( $latest_query->have_posts() ) : ?>
-			<div class="container">
-				<div class="markets markets-latest-3">
-					<h2>Related Projects</h2>
-					<ul>
-						<?php while( $latest_query->have_posts() ) : $latest_query->the_post();
-							$categories = get_the_category();
-							$category_names = '';
-
-							if ( ! empty( $categories ) ) {
-								foreach($categories as $category) {
-									$category_names .= $category->name . ' ';
-								}
-							} ?>
-							<li>
-								<p><?php $category = get_the_category(); echo $category[0]->cat_name; ?></p>
-								<a href="<?php the_permalink(); ?>">
-									<span class="card-overlay"></span>
-									<?php echo wp_get_attachment_image( get_post_thumbnail_id(get_the_ID()), 'blog_image', false );?>
-									<span class="projects-text">
-										<?php
-										$market_taxonomy = get_the_terms( get_the_ID(), 'market_category' );
-										$service_taxonomy = get_the_terms( get_the_ID(), 'service_category' );
-										if ($market_taxonomy) { ?>
-											<p><?php echo $market_taxonomy[0]->name;?></p>
-										<?php }
-										if ($service_taxonomy) { ?>
-											<p><?php echo $service_taxonomy[0]->name;?></p>
-										<?php } ?>
-										<h3><?php  the_title();?></h3>
-									</span>
-								</a>
-							</li>
-						<?php endwhile; ?>
-					</ul>
-					<a href="<?php echo get_home_url(); ?>/projects" class="btn"> VIEW PROJECTS </a>
-				</div>
-				<?php endif; wp_reset_postdata(); ?>
-			</div>
-			<?php get_template_part( 'template-parts/footer-callout' ); ?>
-		<div><!-- container -->
+        <?php if ( $theme_config === 'kienlen') {
+            get_template_part( 'template-parts/kienlen-footer-callout' );
+        } else {
+            get_template_part( 'template-parts/footer-callout' );
+        }?>
 	</main><!-- #main -->
 </div><!-- #primary -->
 

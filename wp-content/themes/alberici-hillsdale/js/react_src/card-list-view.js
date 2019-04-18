@@ -1,9 +1,7 @@
 import React from 'react';
-import {render} from 'react-dom';
-import {fetch} from 'whatwg-fetch';
-
-import CardList from './components/cardList.js'
-
+import { render } from 'react-dom';
+// import { fetch } from 'whatwg-fetch';
+import CardList from './components/cardList';
 
 class AppInitializer {
   run() {
@@ -11,9 +9,9 @@ class AppInitializer {
       <div>
         <CardList />
       </div>,
-      document.getElementById('cardList_app')
-    )
+      document.getElementById('cardList_app'),
+    );
   }
 }
 
-new AppInitializer().run()
+new AppInitializer().run();

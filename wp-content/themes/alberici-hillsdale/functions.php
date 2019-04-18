@@ -40,6 +40,7 @@ function add_market_taxonomy() {
 			'add_new_item' => 'Add New Market Category',
 		),
 		'show_ui' => true,
+		'show_in_nav_menus' => false,
 		'hierarchical' => true,
 		'show_in_rest' => true,
 		'show_admin_column' => true,
@@ -385,3 +386,9 @@ function update_yoast_projects_breadcrumb_trail( $links ) {
     return $links;
 }
 
+//This tells the client to pay attention to the size of their feature images when adding them
+function filter_featured_image_admin_text( $content, $post_id, $thumbnail_id ){
+    $help_text = '<p>' . __( 'Please use an image that is 600 x 600 pixels tall.', 'my_domain' ) . '</p>';
+    return $help_text . $content;
+}
+add_filter( 'admin_post_thumbnail_html', 'filter_featured_image_admin_text', 10, 3 );

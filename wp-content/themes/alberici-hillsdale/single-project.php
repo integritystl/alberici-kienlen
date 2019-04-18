@@ -20,24 +20,26 @@ $projectIntro = get_field('project_intro');
 				the_post();?>
 				<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 					<div class="single-project-hero" style="background-image: url(<?php if ($HeroImage): echo $HeroImage; endif; ?>);">
-						<div class="headline">
-							<h1 class="entry-title"><?php the_title(); ?></h1>
-							<?php
-							$location_term = get_the_terms( get_the_ID(), 'location_category' );
-							if ( $location_term && ! is_wp_error( $location_term ) ) :
-								$location_taxonomy = $location_term[0]->name; ?>
-								<p class="project-location"><?php echo $location_taxonomy; ?></p>
-							<?php endif; ?>
-
+						<div class="container">
+							<div class="headline">
+								<h1 class="entry-title"><?php the_title(); ?></h1>
 								<?php
-								$market_term = get_the_terms( get_the_ID(), 'market_category' );
-								if ( $market_term && ! is_wp_error( $market_term ) ) {
-									$market_taxonomy = $market_term[0]->name; ?>
-									<div class="market-link">
-										<?php echo $market_taxonomy; ?>
-									</div>
-								<?php } ?>
+								$location_term = get_the_terms( get_the_ID(), 'location_category' );
+								if ( $location_term && ! is_wp_error( $location_term ) ) :
+									$location_taxonomy = $location_term[0]->name; ?>
+									<p class="project-location"><?php echo $location_taxonomy; ?></p>
+								<?php endif; ?>
 
+									<?php
+									$market_term = get_the_terms( get_the_ID(), 'market_category' );
+									if ( $market_term && ! is_wp_error( $market_term ) ) {
+										$market_taxonomy = $market_term[0]->name; ?>
+										<div class="market-link">
+											<?php echo $market_taxonomy; ?>
+										</div>
+									<?php } ?>
+
+							</div>
 						</div>
 						<div class="project-info">
 							<div class="container">
@@ -55,13 +57,13 @@ $projectIntro = get_field('project_intro');
 						</div>
 						<div class="hero-overlay"></div>
 					</div><!-- .single-project-hero -->
-					<nav class="project-breadcrumbs breadcrumbs container" aria-label="Breadcrumb navigation">
-						<?php
-						if ( function_exists('yoast_breadcrumb') ) {
-							yoast_breadcrumb( '
-							<p id="breadcrumbs">','</p>
-							' );
-						} ?>
+					<nav class="breadcrumbs container" aria-label="Breadcrumb navigation">
+					    <div class="breadcrumbs" typeof="BreadcrumbList" vocab="https://schema.org/">
+					        <?php if(function_exists('bcn_display'))
+					        {
+					            bcn_display();
+					        }?>
+					    </div>
 					</nav>
 
 					<?php if ($projectIntro) : ?>
@@ -100,7 +102,11 @@ $projectIntro = get_field('project_intro');
 			get_template_part( 'template-parts/content', 'none' );
 		endif; ?>
 
-		<?php get_template_part( 'template-parts/footer-callout' ); ?>
+            <?php if ( $theme_config === 'kienlen') {
+                get_template_part( 'template-parts/kienlen-footer-callout' );
+            } else {
+                get_template_part( 'template-parts/footer-callout' );
+            }?>
 	</main><!-- #main -->
 </div><!-- #primary -->
 

@@ -36,29 +36,35 @@ class WSAL_Sensors_Public extends WSAL_AbstractSensor {
 	protected $visitor_events;
 
 	/**
+	 * Old Product Stock Quantity.
+	 *
+	 * @var int
+	 */
+	protected $_old_stock = null;
+
+	/**
+	 * Old Product Stock Status.
+	 *
+	 * @var string
+	 */
+	protected $_old_stock_status = null;
+
+	/**
 	 * Listening to events using WP hooks.
 	 */
 	public function HookEvents() {
-		// Set if visitor events is enabled/disabled.
-		$disabled_visitor_events = $this->plugin->GetGlobalOption( 'disable-visitor-events', 'no' );
-
-		// Viewing post event.
-		add_action( 'wp_head', array( $this, 'viewing_post' ), 10 );
-
-		// If user is visitor & visitor events are not disabled then hook the following events.
-		if ( ! is_user_logged_in() && 'no' === $disabled_visitor_events ) {
+		if ( $this->plugin->load_wsal_on_frontend() ) {
 			add_action( 'user_register', array( $this, 'event_user_register' ) );
-			add_action( 'comment_post', array( $this, 'event_comment' ), 10, 2 );
+			add_action( 'comment_post', array( $this, 'event_comment' ), 10, 3 );
 			add_filter( 'template_redirect', array( $this, 'event_404' ) );
-		} elseif ( is_user_logged_in() ) {
-			add_action( 'user_register', array( $this, 'event_user_register' ) );
-			add_action( 'comment_post', array( $this, 'event_comment' ), 10, 2 );
-			add_filter( 'template_redirect', array( $this, 'event_404' ) );
-		}
 
-		// Check if WooCommerce plugin exists.
-		if ( ! is_plugin_active( 'woocommerce/woocommerce.php' ) ) {
-			add_action( 'wp_head', array( $this, 'viewing_product' ), 10 );
+			// Check if WooCommerce plugin exists.
+			if ( is_plugin_active( 'woocommerce/woocommerce.php' ) ) {
+				add_action( 'woocommerce_new_order', array( $this, 'event_new_order' ), 10, 1 );
+				add_filter( 'woocommerce_order_item_quantity', array( $this, 'set_old_stock' ), 10, 3 );
+				add_action( 'woocommerce_product_set_stock', array( $this, 'product_stock_changed' ), 10, 1 );
+				add_action( 'woocommerce_variation_set_stock', array( $this, 'product_stock_changed' ), 10, 1 );
+			}
 		}
 	}
 
@@ -88,99 +94,80 @@ class WSAL_Sensors_Public extends WSAL_AbstractSensor {
 	}
 
 	/**
-	 * Post View Event.
-	 *
-	 * Alerts for Viewing of Posts and Custom Post Types.
-	 */
-	public function viewing_post() {
-		// Retrieve the current post object.
-		$post = get_queried_object();
-		if ( is_user_logged_in() && ! is_admin() ) {
-			if ( $this->check_other_sensors( $post ) ) {
-				return $post->post_title;
-			}
-
-			// Filter $_SERVER array for security.
-			$server_array = filter_input_array( INPUT_SERVER );
-
-			$current_path = isset( $server_array['REQUEST_URI'] ) ? $server_array['REQUEST_URI'] : false;
-			if ( ! empty( $server_array['HTTP_REFERER'] )
-				&& ! empty( $current_path )
-				&& strpos( $server_array['HTTP_REFERER'], $current_path ) !== false ) {
-				// Ignore this if we were on the same page so we avoid double audit entries.
-				return;
-			}
-
-			if ( ! empty( $post->post_title ) ) {
-				$this->plugin->alerts->Trigger(
-					2101, array(
-						'PostID'         => $post->ID,
-						'PostType'       => $post->post_type,
-						'PostTitle'      => $post->post_title,
-						'PostStatus'     => $post->post_status,
-						'PostDate'       => $post->post_date,
-						'PostUrl'        => get_permalink( $post->ID ),
-						'EditorLinkPost' => get_edit_post_link( $post->ID ),
-					)
-				);
-			}
-		}
-	}
-
-	/**
-	 * Ignore post from BBPress, WooCommerce Plugin
-	 * Triggered on the Sensors
-	 *
-	 * @param WP_Post $post - The post.
-	 */
-	private function check_other_sensors( $post ) {
-		if ( empty( $post ) || ! isset( $post->post_type ) ) {
-			return false;
-		}
-		switch ( $post->post_type ) {
-			case 'forum':
-			case 'topic':
-			case 'reply':
-			case 'product':
-				return true;
-			default:
-				return false;
-		}
-	}
-
-	/**
 	 * Fires immediately after a comment is inserted into the database.
 	 *
-	 * @param int   $comment_id       – The comment ID.
-	 * @param mixed $comment_approved – 1 if the comment is approved, 0 if not, 'spam' if spam.
+	 * @param int   $comment_id       - The comment ID.
+	 * @param mixed $comment_approved - 1 if the comment is approved, 0 if not, 'spam' if spam.
+	 * @param array $comment_data     - Comment data.
 	 */
-	public function event_comment( $comment_id, $comment_approved = null ) {
-		// @codingStandardsIgnoreStart
-		$post_comment = isset( $_POST['comment'] ) ? sanitize_text_field( wp_unslash( $_POST['comment'] ) ) : false;
-		// @codingStandardsIgnoreEnd
+	public function event_comment( $comment_id, $comment_approved, $comment_data ) {
+		if ( ! $comment_id ) {
+			return;
+		}
+		// Check if the comment is response to another comment.
+		if ( isset( $comment_data['comment_parent'] ) && $comment_data['comment_parent'] ) {
+			$this->event_generic( $comment_id, 2092 );
+			return;
+		}
 
-		if ( $post_comment ) {
-			$comment = get_comment( $comment_id );
-			if ( ! empty( $comment ) ) {
-				if ( 'spam' !== $comment->comment_approved ) {
-					$post         = get_post( $comment->comment_post_ID );
-					$comment_link = get_permalink( $post->ID ) . '#comment-' . $comment_id;
-					$fields       = array(
-						'Date'        => $comment->comment_date,
-						'CommentLink' => '<a target="_blank" href="' . $comment_link . '">' . $comment->comment_date . '</a>',
-					);
+		$comment = get_comment( $comment_id );
+		if ( $comment ) {
+			if ( 'spam' !== $comment->comment_approved ) {
+				$post         = get_post( $comment->comment_post_ID );
+				$comment_link = get_permalink( $post->ID ) . '#comment-' . $comment_id;
+				$fields       = array(
+					'Date'        => $comment->comment_date,
+					'CommentLink' => '<a target="_blank" href="' . $comment_link . '">' . $comment->comment_date . '</a>',
+				);
 
-					// Get user data.
-					$user_data = get_user_by( 'email', $comment->comment_author_email );
+				// Get user data.
+				$user_data = get_user_by( 'email', $comment->comment_author_email );
 
-					if ( ! $user_data ) {
-						// Set the fields.
-						/* Translators: 1: Post Title, 2: Comment Author */
-						$fields['CommentMsg'] = sprintf( esc_html__( 'A comment was posted in response to the post %1$s. The comment was posted by %2$s', 'wp-security-audit-log' ), '<strong>' . $post->post_title . '</strong>', '<strong>' . $this->check_author( $comment ) . '</strong>' );
-						$fields['Username']   = 'Website Visitor';
-						$this->plugin->alerts->Trigger( 2126, $fields );
+				if ( ! $user_data ) {
+					// Set the fields.
+					/* Translators: 1: Post Title, 2: Comment Author */
+					$fields['CommentMsg'] = sprintf( esc_html__( 'A comment was posted in response to the post %1$s. The comment was posted by %2$s', 'wp-security-audit-log' ), '<strong>' . $post->post_title . '</strong>', '<strong>' . $this->check_author( $comment ) . '</strong>' );
+					$fields['Username']   = 'Website Visitor';
+					$this->plugin->alerts->Trigger( 2126, $fields );
+				} else {
+					// Get user roles.
+					$user_roles = $user_data->roles;
+					if ( function_exists( 'is_super_admin' ) && is_super_admin() ) { // Check if superadmin.
+						$user_roles[] = 'superadmin';
 					}
+
+					// Set the fields.
+					$fields['Username']         = $user_data->user_login;
+					$fields['CurrentUserRoles'] = $user_roles;
+					$fields['CommentMsg']       = sprintf( 'Posted a comment in response to the post <strong>%s</strong>', $post->post_title );
+					$this->plugin->alerts->Trigger( 2099, $fields );
 				}
+			}
+		}
+	}
+
+	/**
+	 * Trigger generic event.
+	 *
+	 * @since 3.4
+	 *
+	 * @param integer $comment_id - Comment ID.
+	 * @param integer $alert_code - Event code.
+	 */
+	private function event_generic( $comment_id, $alert_code ) {
+		$comment = get_comment( $comment_id );
+		if ( $comment ) {
+			$post         = get_post( $comment->comment_post_ID );
+			$comment_link = get_permalink( $post->ID ) . '#comment-' . $comment_id;
+			$fields       = array(
+				'PostTitle'   => $post->post_title,
+				'Author'      => $comment->comment_author,
+				'Date'        => $comment->comment_date,
+				'CommentLink' => '<a target="_blank" href="' . $comment_link . '">' . $comment->comment_date . '</a>',
+			);
+
+			if ( 'shop_order' !== $post->post_type ) {
+				$this->plugin->alerts->Trigger( $alert_code, $fields );
 			}
 		}
 	}
@@ -372,7 +359,7 @@ class WSAL_Sensors_Public extends WSAL_AbstractSensor {
 	 * @param string $username - Username.
 	 * @param string $url      - 404 URL.
 	 */
-	private function write_log( $attempts, $ip, $username = '', $url ) {
+	private function write_log( $attempts, $ip, $username = '', $url = null ) {
 		$name_file = null;
 
 		if ( 'on' === $this->plugin->GetGlobalOption( 'log-visitor-404', 'off' ) ) {
@@ -449,55 +436,20 @@ class WSAL_Sensors_Public extends WSAL_AbstractSensor {
 	}
 
 	/**
-	 * Viewing Product Event.
-	 *
-	 * Alerts for viewing of product post type for WooCommerce.
-	 */
-	public function viewing_product() {
-		// Retrieve the current post object.
-		$product = get_queried_object();
-
-		// Check product post type.
-		if ( ! empty( $product ) && $product instanceof WP_Post && 'product' !== $product->post_type ) {
-			return $product;
-		}
-
-		if ( is_user_logged_in() && ! is_admin() ) {
-			// Filter $_SERVER array for security.
-			$server_array = filter_input_array( INPUT_SERVER );
-
-			$current_path = isset( $server_array['REQUEST_URI'] ) ? $server_array['REQUEST_URI'] : false;
-			if ( ! empty( $server_array['HTTP_REFERER'] )
-				&& ! empty( $current_path )
-				&& strpos( $server_array['HTTP_REFERER'], $current_path ) !== false ) {
-				// Ignore this if we were on the same page so we avoid double audit entries.
-				return;
-			}
-			if ( ! empty( $product->post_title ) ) {
-				$editor_link = $this->get_product_editor_link( $product );
-				$this->plugin->alerts->Trigger(
-					9073, array(
-						'PostID'             => $product->ID,
-						'PostType'           => $product->post_type,
-						'ProductStatus'      => $product->post_status,
-						'ProductTitle'       => $product->post_title,
-						'ProductUrl'         => get_permalink( $product->ID ),
-						$editor_link['name'] => $editor_link['value'],
-					)
-				);
-			}
-		}
-	}
-
-	/**
 	 * Get editor link.
+	 *
+	 * @since 3.3.1
 	 *
 	 * @param WP_Post $post        - Product post object.
 	 * @return array  $editor_link - Name and value link.
 	 */
-	private function get_product_editor_link( $post ) {
+	private function get_editor_link( $post ) {
 		// Meta value key.
-		$name = 'EditorLinkProduct';
+		if ( 'shop_order' === $post->post_type ) {
+			$name = 'EditorLinkOrder';
+		} else {
+			$name = 'EditorLinkProduct';
+		}
 
 		// Get editor post link URL.
 		$value = get_edit_post_link( $post->ID );
@@ -539,5 +491,212 @@ class WSAL_Sensors_Public extends WSAL_AbstractSensor {
 		}
 
 		return $editor_link;
+	}
+
+	/**
+	 * Formulate Order Title as done by WooCommerce.
+	 *
+	 * @since 3.3.1
+	 *
+	 * @param int|WC_Order $order - Order id or WC Order object.
+	 * @return string
+	 */
+	private function get_order_title( $order ) {
+		if ( ! $order ) {
+			return false;
+		}
+		if ( is_int( $order ) ) {
+			$order = new WC_Order( $order );
+		}
+		if ( ! $order instanceof WC_Order ) {
+			return false;
+		}
+
+		if ( $order->get_billing_first_name() || $order->get_billing_last_name() ) {
+			$buyer = trim( sprintf( '%1$s %2$s', $order->get_billing_first_name(), $order->get_billing_last_name() ) );
+		} elseif ( $order->get_billing_company() ) {
+			$buyer = trim( $order->get_billing_company() );
+		} elseif ( $order->get_customer_id() ) {
+			$user  = get_user_by( 'id', $order->get_customer_id() );
+			$buyer = ucwords( $user->display_name );
+		}
+		return '#' . $order->get_order_number() . ' ' . $buyer;
+	}
+
+	/**
+	 * New WooCommerce Order Event.
+	 *
+	 * @since 3.3.1
+	 *
+	 * @param integer $order_id – Order id.
+	 */
+	public function event_new_order( $order_id ) {
+		if ( empty( $order_id ) ) {
+			return;
+		}
+
+		// Get order object.
+		$new_order = new WC_Order( $order_id );
+
+		if ( $new_order && $new_order instanceof WC_Order ) {
+			$order_post  = get_post( $order_id ); // Get order post object.
+			$order_title = ( null !== $order_post && $order_post instanceof WP_Post ) ? $order_post->post_title : false;
+			$editor_link = $this->get_editor_link( $order_post );
+
+			$this->plugin->alerts->Trigger(
+				9035, array(
+					'OrderID'            => $order_id,
+					'OrderTitle'         => $this->get_order_title( $new_order ),
+					'OrderStatus'        => $new_order->get_status(),
+					$editor_link['name'] => $editor_link['value'],
+				)
+			);
+		}
+	}
+
+	/**
+	 * Triggered before updating stock quantity on customer order.
+	 *
+	 * @since 3.3.1
+	 *
+	 * @param int           $order_quantity - Order quantity.
+	 * @param WC_Order      $order          - Order object.
+	 * @param WC_Order_Item $item           - Order item object.
+	 * @return int - Order quantity.
+	 */
+	public function set_old_stock( $order_quantity, $order, $item ) {
+		// Get product from order item.
+		$product = $item->get_product();
+
+		// Get product id.
+		$product_id_with_stock = $product->get_stock_managed_by_id();
+
+		// Get product with stock.
+		$product_with_stock = wc_get_product( $product_id_with_stock );
+
+		// Set stock attributes of the product.
+		$this->_old_stock        = $product_with_stock->get_stock_quantity();
+		$this->_old_stock_status = $product_with_stock->get_stock_status();
+
+		// Return original stock quantity.
+		return $order_quantity;
+	}
+
+	/**
+	 * Triggered when stock of a product is changed.
+	 *
+	 * @since 3.3.1
+	 *
+	 * @param WC_Product $product - WooCommerce product object.
+	 */
+	public function product_stock_changed( $product ) {
+		// Get product data.
+		$product_status = false;
+		if ( $product->is_type( 'variation' ) ) {
+			$product_id     = $product->get_parent_id();
+			$product_title  = $product->get_name(); // Get product title.
+			$product_status = $product->get_status();
+		} else {
+			$product_id    = $product->get_id();
+			$product_title = $product->get_title(); // Get product title.
+		}
+
+		// Return if current screen is edit post page.
+		global $pagenow;
+		if ( is_admin() && ( 'post.php' === $pagenow || defined( 'DOING_AJAX' ) ) ) {
+			return;
+		}
+
+		// Get global $_POST array.
+		$post_array = filter_input_array( INPUT_POST );
+
+		// Special conditions for WooCommerce Bulk Stock Management.
+		if ( 'edit.php' === $pagenow && isset( $post_array['page'] ) && 'woocommerce-bulk-stock-management' === $post_array['page'] ) {
+			$old_acc_stock = isset( $post_array['current_stock_quantity'] ) ? $post_array['current_stock_quantity'] : false;
+			$new_acc_stock = isset( $post_array['stock_quantity'] ) ? $post_array['stock_quantity'] : false;
+
+			// Get old stock quantity.
+			$old_stock = ! empty( $this->_old_stock ) ? $this->_old_stock : $old_acc_stock[ $product_id ];
+
+			// Following cases handle the stock status.
+			if ( '0' === $old_acc_stock[ $product_id ] && '0' !== $new_acc_stock[ $product_id ] ) {
+				$old_stock_status = 'outofstock';
+			} elseif ( '0' !== $old_acc_stock[ $product_id ] && '0' === $new_acc_stock[ $product_id ] ) {
+				$old_stock_status = 'instock';
+			} elseif ( '0' === $old_acc_stock[ $product_id ] && '0' === $new_acc_stock[ $product_id ] ) {
+				$old_stock_status = 'outofstock';
+			} elseif ( '0' !== $old_acc_stock[ $product_id ] && '0' !== $new_acc_stock[ $product_id ] ) {
+				$old_stock_status = 'instock';
+			} else {
+				$old_stock_status = '';
+			}
+		} else {
+			$old_stock        = $this->_old_stock; // Get old stock quantity.
+			$old_stock_status = $this->_old_stock_status; // Get old stock status.
+		}
+
+		$new_stock        = $product->get_stock_quantity(); // Get new stock quantity.
+		$new_stock_status = $product->get_stock_status(); // Get new stock status.
+
+		// Set post object.
+		$post = get_post( $product_id );
+
+		// Set username.
+		$username = '';
+		if ( ! is_user_logged_in() ) {
+			$username = 'Website Visitor';
+		} else {
+			$username = wp_get_current_user()->user_login;
+		}
+
+		// If stock status has changed then trigger the alert.
+		if ( ( $old_stock_status && $new_stock_status ) && ( $old_stock_status !== $new_stock_status ) ) {
+			$editor_link = $this->get_editor_link( $post );
+			$this->plugin->alerts->Trigger(
+				9018, array(
+					'ProductTitle'       => $product_title,
+					'ProductStatus'      => ( ! $product_status ) ? $post->post_status : $product_status,
+					'OldStatus'          => $this->get_stock_status( $old_stock_status ),
+					'NewStatus'          => $this->get_stock_status( $new_stock_status ),
+					'Username'           => $username,
+					$editor_link['name'] => $editor_link['value'],
+				)
+			);
+		}
+
+		$wc_all_stock_changes = $this->plugin->GetGlobalOption( 'wc-all-stock-changes', 'on' );
+
+		// If stock has changed then trigger the alert.
+		if ( ( $old_stock !== $new_stock ) && ( 'on' === $wc_all_stock_changes ) ) {
+			$editor_link = $this->get_editor_link( $post );
+			$this->plugin->alerts->Trigger(
+				9019, array(
+					'ProductTitle'       => $product_title,
+					'ProductStatus'      => ( ! $product_status ) ? $post->post_status : $product_status,
+					'OldValue'           => ( ! empty( $old_stock ) ? $old_stock : 0 ),
+					'NewValue'           => $new_stock,
+					'Username'           => $username,
+					$editor_link['name'] => $editor_link['value'],
+				)
+			);
+		}
+	}
+
+	/**
+	 * Get Stock Status Name.
+	 *
+	 * @since 3.3.1
+	 *
+	 * @param string $slug - Stock slug.
+	 * @return string
+	 */
+	private function get_stock_status( $slug ) {
+		if ( 'instock' === $slug ) {
+			return __( 'In stock', 'wp-security-audit-log' );
+		} elseif ( 'outofstock' === $slug ) {
+			return __( 'Out of stock', 'wp-security-audit-log' );
+		} elseif ( 'onbackorder' === $slug ) {
+			return __( 'On backorder', 'wp-security-audit-log' );
+		}
 	}
 }

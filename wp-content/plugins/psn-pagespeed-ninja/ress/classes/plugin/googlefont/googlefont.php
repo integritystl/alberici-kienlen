@@ -4,7 +4,7 @@
  * RESSIO Responsive Server Side Optimizer
  * https://github.com/ressio/
  *
- * @copyright   Copyright (C) 2013-2018 Kuneri, Ltd. All rights reserved.
+ * @copyright   Copyright (C) 2013-2019 Kuneri, Ltd. All rights reserved.
  * @license     GNU General Public License version 2
  */
 
@@ -86,10 +86,10 @@ class Ressio_Plugin_Googlefont extends Ressio_Plugin
                 $script .= "ress_loadGooglefont('$url');";
 
                 $optimizer->prependHead(
-                    array('link', array('rel' => 'dns-prefetch', 'href' => '//fonts.googleapis.com'), null),
-                    array('link', array('rel' => 'dns-prefetch', 'href' => '//fonts.gstatic.com'), null),
-                    array('link', array('rel' => 'preconnect', 'href' => '//fonts.googleapis.com', 'crossorigin' => 'anonymous'), null),
-                    array('link', array('rel' => 'preconnect', 'href' => '//fonts.gstatic.com', 'crossorigin' => 'anonymous'), null),
+                    array('link', array('rel' => 'dns-prefetch', 'href' => '//fonts.googleapis.com'), false),
+                    array('link', array('rel' => 'dns-prefetch', 'href' => '//fonts.gstatic.com'), false),
+                    array('link', array('rel' => 'preconnect', 'href' => '//fonts.googleapis.com', 'crossorigin' => 'anonymous'), false),
+                    array('link', array('rel' => 'preconnect', 'href' => '//fonts.gstatic.com', 'crossorigin' => 'anonymous'), false),
                     array('script', null, $script),
                     array('noscript', null, $orig)
                 );
@@ -107,11 +107,11 @@ class Ressio_Plugin_Googlefont extends Ressio_Plugin
                 }
 
                 $optimizer->prependHead(
-                    array('link', array('rel' => 'dns-prefetch', 'href' => '//fonts.googleapis.com'), null),
-                    array('link', array('rel' => 'dns-prefetch', 'href' => '//fonts.gstatic.com'), null),
-                    array('link', array('rel' => 'preconnect', 'href' => '//fonts.googleapis.com', 'crossorigin' => 'anonymous'), null),
-                    array('link', array('rel' => 'preconnect', 'href' => '//fonts.gstatic.com', 'crossorigin' => 'anonymous'), null),
-                    array('link', $attrs, null)
+                    array('link', array('rel' => 'dns-prefetch', 'href' => '//fonts.googleapis.com'), false),
+                    array('link', array('rel' => 'dns-prefetch', 'href' => '//fonts.gstatic.com'), false),
+                    array('link', array('rel' => 'preconnect', 'href' => '//fonts.googleapis.com', 'crossorigin' => 'anonymous'), false),
+                    array('link', array('rel' => 'preconnect', 'href' => '//fonts.gstatic.com', 'crossorigin' => 'anonymous'), false),
+                    array('link', $attrs, false)
                 );
         }
 

@@ -4,8 +4,13 @@
 
 .news-posts-container, .projects-posts-container, .services-list, .latest-news {
   @extend .container;
-  padding-bottom: 80px;
+  //padding-bottom: 80px;
   min-height: 50vh;
+
+  .btn-load-more {
+    min-width: 400px;
+      margin-bottom: 30px;
+  }
   .filterbar {
     @extend .grid-container;
     padding: 0;
@@ -30,10 +35,16 @@
 
     .select {
       @include grid-media($small-min) {
-        grid-column: 5 / span 4;
+        grid-column: 9 / span 4;
       }
       select {
         margin-bottom: 0px;
+      }
+
+      &:first-of-type {
+        @include grid-media($small-min) {
+          grid-column: 5 / span 4;
+        }
       }
     }
 

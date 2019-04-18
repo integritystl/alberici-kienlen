@@ -1,45 +1,43 @@
-import {localStorageKeys, deleteLocalStorage, setLocalStorageItem} from './localstorage-handler.js'
+import { sessionStorageKeys, deleteSessionStorage, setSessionStorageItem } from './sessionstorage-handler.js';
 
-//This houses shared functionality used between CardList and Table List
+// This houses shared functionality used between CardList and Table List
 
-//Site Config Option that determines if the site is Hillsdale or Kienlen
-export function siteConfig(callback){
-  let currentSiteConfig = wpObj.site_config;
+// Site Config Option that determines if the site is Hillsdale or Kienlen
+export function siteConfig(callback) {
+  const currentSiteConfig = wpObj.site_config;
   this.setState({
     siteConfig: currentSiteConfig,
-  }, callback)
+  }, callback);
 }
 
-//Search Input Filter
+// Search Input Filter
 export function handleSearch(term) {
   this.setState({
     searchTerm: term,
     hasSearchTerm: true,
     isFiltered: true,
-    loading: true
-  },() => this.getFilteredPosts(this.buildAPILink() ));
+    loading: true,
+  }, () => this.getFilteredPosts(this.buildAPILink()));
 }
 
 
-//Fetch default WP Categories
+// Fetch default WP Categories
 export function getCats() {
-  let catApi = wpObj.categories_endpoint;
+  const catApi = wpObj.categories_endpoint;
   fetch(catApi)
-    .then( response => {
-      return(response.json());
-    })
-    .then(json => {
+    .then(response => (response.json()))
+    .then((json) => {
       this.setState({
         categories: json,
-      })
+      });
     });
 }
 
 
-//Handles Category Filter
+// Handles Category Filter
 export function handleCategoryChange(id) {
   if (id === 'Category') {
-    id = ''
+    id = '';
   }
 
   this.setState({
@@ -47,29 +45,27 @@ export function handleCategoryChange(id) {
     isFiltered: true,
     loading: true,
     currentPage: 1,
-  }, () => this.getFilteredPosts(this.buildAPILink() ));
-  setLocalStorageItem(localStorageKeys.cards_category, id)
+  }, () => this.getFilteredPosts(this.buildAPILink()));
+  setSessionStorageItem(sessionStorageKeys.cards_category, id);
 }
 
 
-//Fetch our Market Categories
+// Fetch our Market Categories
 export function getMarketCats() {
-  let marketCatApi = wpObj.marketCat_endpoint;
+  const marketCatApi = wpObj.marketCat_endpoint;
   fetch(marketCatApi)
-    .then( response => {
-      return(response.json());
-    })
-    .then(json => {
+    .then(response => (response.json()))
+    .then((json) => {
       this.setState({
         market_categories: json,
-      })
+      });
     });
 }
 
-//Handles Market Filter
+// Handles Market Filter
 export function handleMarketChange(id) {
   if (id === 'Market') {
-    id = ''
+    id = '';
   }
 
   this.setState({
@@ -77,34 +73,32 @@ export function handleMarketChange(id) {
     isFiltered: true,
     loading: true,
     currentPage: 1,
-  }, () => this.getFilteredPosts(this.buildAPILink() ));
-  setLocalStorageItem(localStorageKeys.cards_market, id)
+  }, () => this.getFilteredPosts(this.buildAPILink()));
+  setSessionStorageItem(sessionStorageKeys.cards_market, id);
 }
 
-//Fetch our Services Categories
+// Fetch our Services Categories
 export function getServiceCats() {
-  let serviceCatApi = wpObj.serviceCat_endpoint;
+  const serviceCatApi = wpObj.serviceCat_endpoint;
   fetch(serviceCatApi)
-    .then( response => {
-      return(response.json());
-    })
-    .then(json => {
+    .then(response => (response.json()))
+    .then((json) => {
       this.setState({
         service_categories: json,
-      })
+      });
     });
 }
 
-export function resetFilter(){
-  //TODO set the selects back to default value and the search box to empty
-  let searchInput = document.getElementById('filterbar-search');
-  let categorySelect = document.getElementById('filterbar-select-category');
-  let marketSelect = document.getElementById('filterbar-select-market');
+export function resetFilter() {
+  // TODO set the selects back to default value and the search box to empty
+  const searchInput = document.getElementById('filterbar-search');
+  const categorySelect = document.getElementById('filterbar-select-category');
+  const marketSelect = document.getElementById('filterbar-select-market');
   let secondarySelect = '';
 
-  deleteLocalStorage();
+  deleteSessionStorage();
 
-  //Check if Market is being used before setting default value
+  // Check if Market is being used before setting default value
   if (marketSelect) {
     marketSelect.value = 'Market';
   }
@@ -113,7 +107,7 @@ export function resetFilter(){
   }
   searchInput.value = '';
 
-  //If we're on Kienlen Projects, use Service
+  // If we're on Kienlen Projects, use Service
   if (this.props.postDataType === 'projects') {
     if (this.state.siteConfig === 'kienlen') {
       secondarySelect = document.getElementById('filterbar-select-service');
@@ -134,38 +128,45 @@ export function resetFilter(){
     hasSearchTerm: false,
     searchTerm: '',
     currentPage: 1,
-    totalPosts: parseInt( document.getElementById('cardList_app').getAttribute('data-total') )
-  }, () => this.getPosts(this.buildAPILink()))
+    totalPosts: parseInt(document.getElementById('cardList_app').getAttribute('data-total')),
+  }, () => this.getPosts(this.buildAPILink()));
 }
 
-export function removeFilterTerm(currentTermId){
-      if (currentTermId === 'filter-info-service') {
-        this.setState({
-          filteredService: '',
-        }, () => this.checkFilterStatus())
-        document.getElementById('filterbar-select-service').value = 'Service';
-      } else if (currentTermId === 'filter-info-market') {
-        // it's markets
-        this.setState({
-          filteredMarket: '',
-        }, () => this.checkFilterStatus())
-        document.getElementById('filterbar-select-market').value = 'Market';
-      } else if (currentTermId === 'filter-info-location') {
-        //it's location
-        this.setState({
-          filteredLocation: '',
-        }, () => this.checkFilterStatus())
-        document.getElementById('filterbar-select-location').value = 'Location';
-      } else {
-        //it's News so it's categories
-        this.setState({
-          filteredCategory: '',
-        }, () => this.checkFilterStatus())
-          document.getElementById('filterbar-select-category').value = 'Category';
-      }
-    }
+export function removeFilterTerm(currentTermId) {
+  if (currentTermId === 'filter-info-service') {
+    this.setState({
+      filteredService: '',
+    }, () => this.checkFilterStatus());
+    document.getElementById('filterbar-select-service').value = 'Service';
+  } else if (currentTermId === 'filter-info-market') {
+    // it's markets
+    this.setState({
+      filteredMarket: '',
+    }, () => this.checkFilterStatus());
+    document.getElementById('filterbar-select-market').value = 'Market';
+  } else if (currentTermId === 'filter-info-location') {
+    // it's location
+    this.setState({
+      filteredLocation: '',
+    }, () => this.checkFilterStatus());
+    document.getElementById('filterbar-select-location').value = 'Location';
+  } else if (currentTermId === 'filter-info-search') {
+    // Keyword search
+    this.setState({
+      searchTerm: '',
+      hasSearchTerm: false,
+    }, () => this.checkFilterStatus());
+    document.getElementById('filterbar-search').value = '';
+  } else {
+    // it's News so it's categories
+    this.setState({
+      filteredCategory: '',
+    }, () => this.checkFilterStatus());
+    document.getElementById('filterbar-select-category').value = 'Category';
+  }
+}
 
-export function checkFilterStatus(){
+export function checkFilterStatus() {
   let secondaryFilter = '';
   if (this.state.siteConfig === 'kienlen') {
     secondaryFilter = !this.state.filteredService;
@@ -173,25 +174,22 @@ export function checkFilterStatus(){
     secondaryFilter = !this.state.filteredLocation;
   }
 
-  if (!this.state.filteredCategory && !this.state.filteredMarket && secondaryFilter && !this.state.hasSearchTerm) {
-    deleteLocalStorage();
+  if (!this.state.filteredCategory && !this.state.filteredMarket && secondaryFilter && !this.state.searchTerm) {
+    deleteSessionStorage();
 
     this.setState({
       isFiltered: false,
       loading: true,
-    }, () => this.getPosts(this.buildAPILink()))
+    }, () => this.getPosts(this.buildAPILink()));
   }
 }
 
-//Get name of filtered category from object
-export function getCatName(filteredCatId, categories){
+// Get name of filtered category from object
+export function getCatName(filteredCatId, categories) {
+  const catObj = categories.filter(item => item.id == filteredCatId);
 
-  let catObj = categories.filter( (item) => {
-    return item.id == filteredCatId;
-  });
-
-  let filteredCatName = "";
-  if(catObj[0]){
+  let filteredCatName = '';
+  if (catObj[0]) {
     filteredCatName = catObj[0].name;
   }
   return filteredCatName;

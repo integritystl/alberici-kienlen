@@ -3,8 +3,8 @@
 Contributors: pagespeed
 Tags: page speed, optimizer, minification, gzip, render blocking css
 Requires at least: 4.0.1
-Tested up to: 5.0
-Stable tag: 0.9.32
+Tested up to: 5.1
+Stable tag: 0.9.37
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 
@@ -81,6 +81,25 @@ None
 
 == Changelog ==
 
+= 0.9.37 Beta Release [12 February 2019]
+- Fixed issue with Distribute Method: PHP
+
+= 0.9.36 Beta Release [12 February 2019]
+- Fixed file permissions
+
+= 0.9.35 Beta Release [12 February 2019]
+- Fixed issue with possible incorrect markup generation in DNS Prefetch and Google Fonts optimizations
+- Fixed issue with WooCommerce caching
+- Fixed issue with open_basedir enabled
+- Updated AMDD device database for "Scale large images" feature
+- Improved atomic file operations
+
+= 0.9.34 Beta Release [21 December 2018]
+- Fixed version number in WordPress repository
+
+= 0.9.33 Beta Release [21 December 2018]
+- Fixed issue in URL parser
+- Fixed processing of inlined scripts in libxml-based HTML parser
 
 = 0.9.32 Beta Release [29 November 2018] =
 - Fixed processing of xml (e.g. in sitemap)

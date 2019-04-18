@@ -27,10 +27,12 @@
     }
     .services-latest-3 {
         border-top: $base-border;
-        padding-top: 6%;
+        padding-top: 30px;
+        padding-bottom: 30px;
         @include grid-media($medium-min) {
             padding-top: 60px;
             margin: auto;
+            padding-bottom: 60px;
         }
         h2 {
             color: $blue;

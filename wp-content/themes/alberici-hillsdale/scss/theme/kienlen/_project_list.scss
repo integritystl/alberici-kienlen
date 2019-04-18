@@ -2,6 +2,8 @@
 
 // }
 
+
+
 .projects-posts-container .filterbar {
     border-bottom: none;
     padding: 0;
@@ -10,6 +12,7 @@
 .table-projects{
     table-layout: auto;
     margin: 10px 0 20px;
+
     th {
         padding: 10px 0 10px 30px;
         @extend h5;

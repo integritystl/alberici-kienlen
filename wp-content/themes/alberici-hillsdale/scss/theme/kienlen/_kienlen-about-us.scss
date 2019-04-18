@@ -2,19 +2,38 @@
     .our-clients {
         margin-top: 50px;
         .clients-img {
+          display: flex;
+          flex-flow: column wrap;
+          justify-content: space-between;
+          align-items: center;
+
+          @include grid-media($small-min) {
+            display: flex;
+            flex-flow: row wrap;
+            margin-bottom: 60px;
+          }
+
+
+
+
             img {
-                margin: 4% 4%;
-                width: 24%;
+                margin: 0 auto 30px;
+                width:auto;
+                max-width: 350px;
                 height: auto;
-            }
-            @include grid-media($large-min) {
-                margin: 0;
-                img {
-                    margin: 3% 1%;
-                    width: 150px;
-                    height: auto;
+                @include grid-media($small-min) {
+                  margin: 0;
+                  width: 20%;
                 }
             }
+            // @include grid-media($large-min) {
+            //     margin: 0;
+            //     img {
+            //         margin: 3% 1%;
+            //         width: 150px;
+            //         height: auto;
+            //     }
+            // }
         }
     }
 }

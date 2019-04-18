@@ -70,12 +70,24 @@ class AmddUA
                 $ua = str_replace('+', ' ', $ua);
             }
         }
-        $ua = str_replace(')AppleWebKit', ') AppleWebKit', $ua);
+        $ua = str_replace(
+            array('AppleWebkit', ')AppleWebKit',  ')Version/',  ' http://internet.tigo.com.gt; '),
+            array('AppleWebKit', ') AppleWebKit', ') Version/', ' '),
+            $ua);
         $ua = trim($ua, " '\"\\");
 
+        if (($pos = strpos($ua, ',gzip(gfe)')) !== false) {
+            $ua = substr($ua, 0, $pos);
+        }
+
+        // Beautify
+        $ua = preg_replace('#(?<= ) +#', '', $ua);
+        $ua = str_replace(' ;', ';', $ua);
+        $ua = preg_replace('#(?<=;);+#', '', $ua);
+        $ua = preg_replace('#[; ]+(?=\))#', '', $ua);
+
         // Remove serial numbers
-        $ua = preg_replace('#(?:(?:[/;]SN| IMEI/)(?:\d{14,15}|X{14,15})|\[(?:NT|ST|TF)?(?:\d+|X+)\])#', '', $ua);
-        $ua = preg_replace('# BMID/[0-9A-F]{10,}#', '', $ua);
+        $ua = preg_replace('# BMID/[0-9A-F]{10,}|(?:(?:[/;]SN| IMEI/)(?:\d{14,15}|X{14,15})|\[(?:NT|ST|TF)?(?:\d+|X+)\])#', '', $ua);
 
         // Replace locale id by xx
         $ua = preg_replace('#(?<=[/;\[ ])(?:[A-Za-z][a-z]|haw)(?:[_-][A-Za-z]{2})?(?=[);\] ])#', 'xx', $ua);
@@ -87,38 +99,49 @@ class AmddUA
         // Remove security level
         $ua = preg_replace('#; ?[UIN](?=[;)])#i', '', $ua);
 
-        // Remove browser prefix
+        // Remove browser prefix (Android)
         $ua = preg_replace('#^(?:i|MQQ|One|Zing)Browser/\d\.?\d[/ ](?=Mozilla/5\.0 \(Linux; Android )#', '', $ua);
 
-        // Remove AppleWebKit and Safari version
-        $ua = preg_replace('#( (?:AppleWebKit|Safari|Version|webOSBrowser|NintendoBrowser)/)[\w./+]+#', '\1*', $ua);
+        // Remove AppleWebKit, Safari, etc. versions
+        $ua = preg_replace('#( (?:1Password|AppleNews|AppleWebKit|NintendoBrowser|Safari|webOSBrowser|YaApp_iOS|YaApp_iOS_Browser)/)[\w./+-]+#', '\1*', $ua);
+        $ua = preg_replace('#( (?:Chrome|OPR|SamsungBrowser|Silk))/[\w./+-]+#', '\1', $ua);
+        $ua = preg_replace('#(?<= Chrome)-\d{10}(?= )#', '', $ua); // temporary
+        $ua = preg_replace('# (?:AlohaBrowser|BaiduHD|BdMobile|Coast|CriOS|EdgiOS|FlyFlow|Focus|FocusiOS|FxiOS|GSA|Klar|LinkedIn|Mobile Crosswalk|MobileIron|MQQBrowser|MZBrowser|OPiOS|SVN|TBS|UWS|Version|YaBrowser)/[\w./+-]+#', '', $ua);
+        $ua = str_replace(' SamsungBrowser Chrome ', ' Chrome ', $ua);
 
+
+        if (strpos($ua, 'Vodafone') !== false) {
+            // Remove Vodafone/1.0/ prefix
+            $ua = preg_replace('#^Vodafone/(\d+\.\d+/)?#', '', $ua);
+            // Remove Vodafone suffix
+            $ua = str_replace(array('-Vodafone ', '-Vodafone/'), array(' ', '/'), $ua);
+        }
 
         // Normalize Blackberry
-        $ua = str_ireplace('blackberry', 'BlackBerry', $ua);
-        if (strpos($ua, ' VendorID/') !== false) {
+        if (stripos($ua, 'BlackBerry') !== false) {
+            $ua = str_ireplace('blackberry', 'BlackBerry', $ua);
             $ua = preg_replace('#(?<= VendorID/)(?:\d+|-1)#', '100', $ua);
         }
 
         // Normalize Nokia
-        $ua = str_ireplace('nokia', 'Nokia', $ua);
-        // Remove Nokia build version
-        if (strpos($ua, 'Nokia') !== false) {
+        if (stripos($ua, 'Nokia') !== false) {
+            $ua = str_ireplace('nokia', 'Nokia', $ua);
+            // Remove Nokia build version
             $ua = preg_replace('#(?<=^Nokia)([\w./-]+ )\([\d.a-z_]+\) #', '\1', $ua);
 
             // remove Browser versions
             $ua = preg_replace('#( BrowserNG| NokiaBrowser| Series\s?\d\d|OviBrowser|SymbianOS)/[\d.]+(?:gpp-gba)?#', '\1/*', $ua);
 
-            $ua = preg_replace('#((?:^|\s)Nokia[\w./-]+)(?>/[\d.a-z_]+)+(?= )#', '\1', $ua);
+            $ua = preg_replace('#((?:^|\s)Nokia[\w./-]+)(?>/[\d.a-z_]+)+(?=[ ;)])#', '\1', $ua);
             $ua = preg_replace('#(?<=\bNokia)([\w.-]+/\d+)\.\d{4,}(?= )#', '\1', $ua);
             $ua = preg_replace('#(?<=^Mozilla/[45]\.0 \()(.*?Nokia ?[\w.-]+)/[\d.a-z_]+(?=;)#', '\1', $ua);
         }
 
         // Remove Motorola version
         if (strpos($ua, 'Blur_Version') !== false) {
-            $ua = preg_replace('#(?<=/)Blur_Version\.[^ ]+(?= )#', '', $ua);
+            $ua = preg_replace('#(?<=/)Blur_Version\.[^ )]+(?= )#', '', $ua);
         }
-        if (strpos($ua, 'MOT-') === 0) {
+        if (strncmp($ua, 'MOT-', 4) === 0) {
             $ua = preg_replace('#(?<=^MOT-)([\w-]+)/[\w.]+(?= )#', '\1', $ua);
         }
 
@@ -133,7 +156,7 @@ class AmddUA
         }
 
         // Remove Pantech build numbers
-        if (strpos($ua, 'Pantech') === 0) {
+        if (strncmp($ua, 'Pantech', 7) === 0) {
             $ua = preg_replace('#(?<=^Pantech)([\w-]+)/[\w./-]+#', '\1', $ua);
         }
 
@@ -144,22 +167,44 @@ class AmddUA
         }
 
         // Convert Dalvik to Mozilla header
-        if (strpos($ua, 'Dalvik') === 0 && preg_match('#^Dalvik/[\d.]+ (\(.*?\))$#', $ua, $match)) {
-            $ua = "Mozilla/5.0 {$match[1]} AppleWebKit/* (KHTML, like Gecko) Version/4.0 Mobile Safari/*";
+        // Note: Dalvik may be prefixed [e.g. by "Callpod Keeper for Android 1.0 (10.5.0/264) "]
+        if (strpos($ua, 'Dalvik/') !== false && preg_match('#Dalvik/[\d.]+ (\(.*?\))#', $ua, $match)) {
+            $ua = "Mozilla/5.0 {$match[1]} AppleWebKit/* (KHTML, like Gecko) Mobile Safari/*";
         }
 
         if (strpos($ua, 'Android') !== false) {
             // Remove Android subversion
             $ua = preg_replace('#(?<=Android)( ?(?>\d+\.))[\w.-]+#', '\1*', $ua);
-            // Remove Cyanogen identificator
-            $ua = str_replace(' (thor & digetx)', '', $ua);
-            $ua = preg_replace('#; (?:CyanogenMod|CyanMobile)[\w .-]+#', '', $ua);
             // Remove Android build version
+            $ua = preg_replace('#(Android .*?) Build/(?:[^()]|\([^()]*\))+(?=\))#', '\1', $ua);
             $ua = preg_replace('#(Android .*?) Build/[^;)]+#', '\1', $ua);
+            // remove suffixes after Safari/*
+            if (($pos = strpos($ua, ' Safari/*')) !== false) {
+                $ua = substr($ua, 0, $pos + 9);
+            }
+            // merge BacaBerita App
+            $ua = preg_replace('#(?<=^BacaBerita App)/[\d\.]+ \(Linux; Android \d+\)(?= Mobile Safari$)#', ' (Linux; Android)', $ua);
+        }
+
+        if (strpos($ua, ' like Mac OS X') !== false) {
+            // Remove iPhone revision version
+            $ua = preg_replace('#(?<= OS )(\d+)_\d+(?:_\d+)?(?= like Mac OS X)#', '\1', $ua);
+        }
+        // Remove iPhone build version
+        if (strpos($ua, ' Mobile/') !== false) {
+            $ua = preg_replace('#( \(KHTML, like Gecko\).*? Mobile/)\w+#', '\1*', $ua);
+            $ua = str_replace(' 1Password/* (like', '', $ua);
+            // remove suffixes after Safari/* or Mobile/*
+            $pos1 = strpos($ua, ' Safari/*');
+            $pos2 = strpos($ua, ' Mobile/*');
+            $pos = max($pos1, $pos2);
+            if ($pos !== false) {
+                $ua = substr($ua, 0, $pos + 9);
+            }
         }
 
         if (strpos($ua, 'Windows Phone') !== false) {
-            // Remove WP's mimic
+            // Remove WP's mimic (Note: kept for historical reason)
             $ua = str_replace(array(
                 '(Mobile; Windows Phone 8.1; Android 4.0; ',
                 '(Mobile; Windows Phone 8.1; Android 4.*; '
@@ -169,73 +214,38 @@ class AmddUA
             }
         }
 
-        // Remove iPhone revision version
-        if (strpos($ua, ' like Mac OS X') !== false) {
-            $ua = preg_replace('#(?<= OS )(\d+_\d+)_\d+(?= like Mac OS X)#', '\1', $ua);
-        }
-        // Remove iPhone build version
-        if (strpos($ua, ' Mobile/') !== false) {
-            $ua = preg_replace('#( \(KHTML, like Gecko\).*? Mobile/\d{1,2})[A-Z]\d*\w\b#', '\1', $ua);
-        }
-
+        // Remove long numbers series
+        $ua = preg_replace('#(\D\d+\.\d+)[_.][\w.-]+#', '\1', $ua);
+        $ua = preg_replace('#(?<=/)\d{8}[\w.-]*#', '*', $ua);
 
         // Remove Opera Mini/Mobile/Tablet version
         if (strpos($ua, 'Opera ') !== false) {
             $ua = preg_replace('#(?<=Opera )(Mini|Mobi|Mobile|Tablet)/[^;)]+#', '\1', $ua);
         }
-        if (strpos($ua, 'OperaMini/') === 0) {
+        if (strncmp($ua, 'OperaMini/', 10) === 0) {
             $ua = preg_replace('#(?<=OperaMini)/[\d.]+#', '', $ua);
         }
 
-        // Remove Opera 15+ suffix
-        if (strpos($ua, ' OPR/') !== false) {
-            $ua = preg_replace('#\s+OPR/\d+\.\d+(?=\s|$)#', '', $ua);
-        }
-
-        // Remove GSA suffix
-        if (strpos($ua, ' GSA/') !== false) {
-            $ua = preg_replace('#\s+GSA/[\d.]+#', '', $ua);
-        }
-
-        // Remove Chrome for iPhone revision version
-        if (strpos($ua, ' CriOS') !== false) {
-            $ua = preg_replace('#(?<= CriOS)/[\d.]+#', '', $ua);
-        }
-        // Remove Chrome for Android revision version
-        if (strpos($ua, ' Chrome') !== false) {
-            $ua = preg_replace('#(?<= Chrome)/[\d.]+#', '', $ua);
-        }
-
-        // Remove Yandex Browser suffix
-        if (strpos($ua, ' YaBrowser') !== false) {
-            $ua = preg_replace('# YaBrowser/[\d.]+#', '', $ua);
-        }
-
-        // Remove Silk version
+        // Remove Silk suffix
         if (strpos($ua, ' Silk') !== false) {
-            $ua = preg_replace('#(?<= Silk)/[\d.]+#', '', $ua);
             $ua = preg_replace('# Silk-Accelerated=(?:true|false)#', '', $ua);
         }
 
         // Fennec browser
         if (strpos($ua, ' Firefox') !== false) {
-            $ua = preg_replace('#(?<=^Mozilla/5\.0 \()([^;)]+); ([^;)]+); [^)]+\) Gecko/[\d.]+ Firefox/[\d.]+ Fennec/([\d.]+).*?#', '\1; \2) Fennec/*', $ua);
-            $ua = preg_replace('#(?<=^Mozilla/5\.0 \()([^;)]+); (Mobile|Tablet); [^)]+\) Gecko/[\d.]+ Firefox/([\d.]+).*?#', '\1; \2) Firefox/*', $ua);
-            // temporary code to convert old entries
-            $ua = preg_replace('#( (?:Fennec|Firefox)/)[\d.]+$#', '\1*', $ua);
+            // remove revision
+            $ua = preg_replace('#; rv:(?:[^()]|\([^()]+\))+(?=\))#', '', $ua);
+            // normalize Firefox/*** and Fennec/***
+            // @todo Is it necessary to consider Fennec as a separate browser?
+            $ua = preg_replace('#(?<=^Mozilla/5\.0 \()([^)]+\)) Gecko/[\d.]+ Firefox/[\d.]+ Fennec/\d.*$#', '\1 Fennec/*', $ua);
+            $ua = preg_replace('#(?<=^Mozilla/5\.0 \()([^)]+\)) Gecko/[\d.]+ Firefox/\d.*$#', '\1 Firefox/*', $ua);
+            $ua = preg_replace('# Firefox/\d.*$#', ' Firefox/*', $ua);
         }
 
         // Remove Maxthon fingerprint
         if (strpos($ua, 'Maxthon') !== false) {
             $ua = str_replace(')Maxthon ', ') ', $ua);
             $ua = preg_replace('# Maxthon(?>/[\d.]+)?$#', '', $ua);
-        }
-
-        if (strpos($ua, 'Vodafone') !== false) {
-            // Remove Vodafone/1.0/ prefix
-            $ua = preg_replace('#^Vodafone/(\d+\.\d+/)?#', '', $ua);
-            // Remove Vodafone suffix
-            $ua = str_replace('-Vodafone ', ' ', $ua);
         }
 
         // Remove UCWEB/UCBrowser suffix
@@ -248,19 +258,10 @@ class AmddUA
             $ua = rtrim(substr($ua, 0, $pos));
         }
 
-        // Shrink Facebook App suffix
-        if (($pos = strpos($ua, ' [FBAN')) !== false) {
-            $ua = substr($ua, 0, $pos);
-        } elseif (($pos = strpos($ua, ' [FB_IAB/')) !== false) {
-            $ua = substr($ua, 0, $pos);
-        }
-
-        // Remove SVN suffix
-        if (strpos($ua, ' SVN/') !== false) {
-            $ua = preg_replace('# SVN/\w+(?=\s|$)#', '', $ua);
-        }
-
         // Remove common suffixes
+        if (strpos($ua, ' [') !== false) {
+            $ua = preg_replace('# \[(?:FBAN|FB_IAB|Pinterest)/.*$#', '', $ua);
+        }
         $ua = str_replace(array(
             ' 3gpp-gba',
             ' MMS/LG-Android-MMS-V1.0',
@@ -271,28 +272,17 @@ class AmddUA
             ' Mobitest',
             ' Twitter for iPhone',
             ' Twitter for iPad',
-            ' [Pinterest/iOS]',
-            ' [Pinterest/Android]',
+            ' UNTRUSTED/1.0',
+            ' Untrusted/1.0',
         ), '', $ua);
-        if (($pos = strpos($ua, ',gzip(gfe)')) !== false) {
-            $ua = substr($ua, 0, $pos);
+        if (strpos($ua, ' baidu') !== false) {
+            $ua = preg_replace('# baidu(?:browser|voice|boxapp)/.*$#', '', $ua);
         }
-        $ua = preg_replace('# (?:YJApp-ANDROID|Flipboard/|Mobicip/|baidubrowser/|baiduvoice/|baiduboxapp/|zhangbai/).*$#', '', $ua);
 
-        $ua = str_ireplace(' UNTRUSTED/1.0', '', $ua);
         $ua = preg_replace('#(?:'
             . '(?: FirePHP| BingWeb|flameblur)/[\d\.]+'
             . '|; [\w\.-]+-user-\d+' // Garmin
             . ')$#', '', $ua);
-        if (strpos($ua, 'NAVER(') !== false) {
-            $ua = preg_replace('# NAVER\(inapp; [^)]+\)#', '', $ua);
-        }
-        if (strpos($ua, 'CyanogenMod') !== false) {
-            $ua = preg_replace('# CyanogenMod/[\w./]+$#', '', $ua);
-        }
-
-        // Remove long numbers series
-        $ua = preg_replace('#(\D\d+\.\d+)[_.][\w.-]+#', '\1', $ua);
 
         // Feed readers
         $ua = preg_replace('#\d+(?= (?:reader|subscriber)s?)#i', '1', $ua);
@@ -303,11 +293,13 @@ class AmddUA
             $ua = preg_replace('#(?<= feed-id=)[a-z\d]+#', '0', $ua);
         }
 
-        // Beautify
+        // Beautify again
         $ua = preg_replace('#(?<= ) +#', '', $ua);
         $ua = str_replace(' ;', ';', $ua);
         $ua = preg_replace('#(?<=;);+#', '', $ua);
         $ua = preg_replace('#[; ]+(?=\))#', '', $ua);
+        // Remove locale id (it may appear again after removing of all suffixes, etc.)
+        $ua = preg_replace('#; *xx *(?=[);])#', '', $ua);
 
         if (preg_match('#^\W#', $ua)) {
             $ua = '';
@@ -340,8 +332,9 @@ class AmddUA
         }
 
         $windows_platforms = '(?:Windows (?:NT|Vista|XP|2000|ME|98|95|3\.)|Win ?[39])';
-        $linux_platforms = '(?:(?:Ubuntu|compatible); ?)?X11;(?: ?Ubuntu;)? ?(?:Linux|SunOS|FreeBSD|OpenBSD|NetBSD|Arch Linux|CrOS|Fedora|BeOS|Mageia|IRIX64)[ ;)]';
-        $desktop_platforms = "(?:Macintosh; |(?:Windows; ?)?$windows_platforms|$linux_platforms)";
+        $x11_platforms = '(?:(?:Ubuntu|compatible); ?)?X11;(?: ?Ubuntu;)? ?(?:Linux|SunOS|FreeBSD|OpenBSD|NetBSD|Arch Linux|CrOS|Fedora|BeOS|Mageia|IRIX64)[ ;)]';
+        $other_platforms = '(?:Fedora Core \d|Konqueror/\d)';
+        $desktop_platforms = "(?:Macintosh; |(?:Windows; ?)?$windows_platforms|$x11_platforms|$other_platforms)";
 
 //        // test Windows Phone in desktop mode
 //        if(preg_match('#^Mozilla/5\.0 \(compatible; MSIE (9|10)\.0; Windows NT[^)]* Trident/[56]\.0.* ZuneWP7#', $ua))
@@ -363,12 +356,12 @@ class AmddUA
         }
 
         // test IE 10
-        if (preg_match('#^Mozilla/\d\.\d+ \((?:MS)?IE \d+\.\d+.*; ?' . $windows_platforms . '#', $ua)) {
+        if (preg_match('#^Mozilla/\d\.\d+ \((?:compatible; )?(?:MS)?IE \d+\.\d+.*; ?' . $windows_platforms . '#', $ua)) {
             return true;
         }
 
         // test Firefox/Chrome/Safari/IE 11+
-        if (preg_match('#^Mozilla/\d\.\d (?:(?:ArchLinux|Slackware)(?:/[\d\.]+)? )?\(' . $desktop_platforms . '#i', $ua)) {
+        if (preg_match('#^Mozilla/\d\.\d (?:(?:ArchLinux|Slackware|Fedora)(?:/[\d\.]+)? )?\(' . $desktop_platforms . '#i', $ua)) {
             if (preg_match('#(?:Maemo Browser|Novarra-Vision|Tablet browser)#', $ua)) {
                 return false;
             }
@@ -383,10 +376,10 @@ class AmddUA
             return true;
         }
 
-        $regexp = '#^(?:Mozilla/5\.0 \(compatible; Konqueror/\d.*\)$' // test Konqueror
-            . '|AppEngine-Google|Apple-PubSub/|check_http/|curl/|ELinks/|Feedfetcher-Google;|GoogleEarth/'
-            . '|HTMLParser|ia_archiver|iTunes/|Java/|Liferea/|Links |Lynx/|Microsoft Office/|NSPlayer|Outlook-Express/'
-            . '|PHP|php|PycURL/|python-requests/|Python[ -]|Reeder/|SpamBayes/|VLC/|WhatsApp/|Wget|WordPress|WWW\-' // wget, php, java, etc
+        $regexp = '#^(?:Mozilla/5\.0 \(compatible; Konqueror/\d.*\)' // test Konqueror
+            . '|AppEngine-Google|Apple-PubSub/|check_http/|curl/|ELinks/|facebookexternalhit\b|Feedfetcher-Google;|GoogleEarth/'
+            . '|HTMLParser|ia_archiver|iTunes/|Java[/_]|Liferea/|Links |Lynx/|Microsoft Office/|NSPlayer|Outlook-Express/|Outlook-iOS/'
+            . '|PHP|php|PycURL/|python-|Python[ -]|Reeder/|SpamBayes/|VLC/|WhatsApp/|Wget|WordPress|WWW\-' // wget, php, java, etc
             . ')#';
         if (preg_match($regexp, $ua)) {
             return true;
@@ -429,9 +422,16 @@ class AmddUA
         return false;
     }
 
-    public function isCompactHTML($ua)
+    /**
+     * @static
+     * @param string $ua
+     * @return bool
+     * @deprecated
+     */
+    public static function isCompactHTML($ua)
     {
         //TODO: use imode_spec.pdf
+        return false;
     }
 
     /**
@@ -463,266 +463,289 @@ class AmddUA
 
         switch ($ua_lc[0]) {
             case '0':
-                if (strpos($ua, '0Vodafone') === 0) {
+                if (strncmp($ua, '0Vodafone', 9) === 0) {
                     return 'vodafone';
                 }
 
                 break;
             case 'a':
-                if (strpos($ua, 'ACS-') === 0) {
+                if (strncmp($ua, 'ACS-', 4) === 0) {
                     return 'nec_acs';
                 }
 
-                if (strpos($ua_lc, 'alcatel') === 0) {
+                if (strncmp($ua_lc, 'alcatel', 7) === 0) {
                     return 'alcatel';
                 }
 
-                if (strpos($ua_lc, 'amoi') === 0) {
+                if (strncmp($ua_lc, 'amoi', 4) === 0) {
                     return 'amoi';
                 }
 
-                if (strpos($ua, 'Apple') === 0) {
+                if (strncmp($ua, 'Apple', 5) === 0) {
                     return 'apple';
                 }
 
-                if (strpos($ua, 'ASTRO') === 0) {
+                if (strncmp($ua, 'ASTRO', 5) === 0) {
                     return 'astro';
                 }
 
-                if (strpos($ua, 'ASUS-') === 0) {
+                if (strncmp($ua, 'ASUS-', 5) === 0) {
                     return 'asus';
                 }
 
-                if (strpos($ua_lc, 'audiovox') === 0) {
+                if (strncmp($ua_lc, 'audiovox', 8) === 0) {
                     return 'audiovox';
                 }
 
                 break;
             case 'b':
-                if (strpos($ua_lc, 'benq') === 0) {
+                if (strncmp($ua_lc, 'benq', 4) === 0) {
                     return 'benq';
                 }
 
-                if (strpos($ua_lc, 'bird') === 0) {
+                if (strncmp($ua_lc, 'bird', 4) === 0) {
                     return 'bird';
                 }
 
-                if (strpos($ua_lc, 'blackberry') === 0) {
+                if (strncmp($ua_lc, 'blackberry', 10) === 0) {
                     return 'blackberry';
                 }
 
                 break;
             case 'c':
-                if (strpos($ua, 'Casio') === 0) {
+                if (strncmp($ua, 'Casio', 5) === 0) {
                     return 'casio';
                 }
 
-                if (strpos($ua_lc, 'cdm') === 0) {
+                if (strncmp($ua_lc, 'cdm', 3) === 0) {
                     return 'audiovox_cdm';
                 }
 
-                if (strpos($ua, 'Compal') === 0) {
+                if (strncmp($ua, 'Compal', 6) === 0) {
                     return 'compal';
                 }
 
                 break;
             case 'd':
-                if (strpos($ua, 'DoCoMo/') === 0) {
+                if (strncmp($ua, 'DoCoMo/', 7) === 0) {
                     return 'imode_docomo';
                 }
 
                 break;
             case 'e':
-                if (strpos($ua, 'Ericsson') === 0) {
+                if (strncmp($ua, 'Ericsson', 8) === 0) {
                     return 'ericsson';
                 }
 
                 break;
             case 'f':
-                if (strpos($ua_lc, 'fly') === 0) {
+                if (strncmp($ua_lc, 'fly', 3) === 0) {
                     return 'fly';
                 }
 
                 break;
             case 'g':
-                if (strpos($ua, 'GF-') === 0) {
+                if (strncmp($ua, 'GF-', 3) === 0) {
                     return 'pantech_gf';
                 }
 
-                if (strpos($ua, 'GT-') === 0) {
+                if (strncmp($ua, 'GT-', 3) === 0) {
                     return 'samsung_gt';
                 }
 
-                if (strpos($ua, 'Gradiente') === 0) {
+                if (strncmp($ua, 'Gradiente', 9) === 0) {
                     return 'gradiente';
                 }
 
-                if (strpos($ua_lc, 'grundig') === 0) {
+                if (strncmp($ua_lc, 'grundig', 7) === 0) {
                     return 'grundig';
                 }
 
                 break;
             case 'h':
-                if (strpos($ua, 'Haier') === 0) {
+                if (strncmp($ua, 'Haier', 5) === 0) {
                     return 'haier';
                 }
 
-                if (strpos($ua, 'HTC') === 0) {
+                if (strncmp($ua, 'HTC', 3) === 0) {
                     return 'htc';
                 }
 
-                if (strpos($ua_lc, 'huawei') === 0) {
+                if (strncmp($ua_lc, 'huawei', 6) === 0) {
                     return 'huawei';
                 }
 
                 break;
             case 'i':
-                if (strpos($ua, 'i-mobile') === 0) {
+                if (strncmp($ua, 'i-mobile', 8) === 0) {
                     return 'i-mobile';
                 }
 
                 break;
             case 'j':
-                if (strpos($ua, 'J-PHONE') === 0) {
+                if (strncmp($ua, 'J-PHONE', 7) === 0) {
                     return 'softbank_jphone';
                 }
 
-                if (strpos($ua, 'jBrowser') === 0) {
+                if (strncmp($ua, 'jBrowser', 8) === 0) {
                     return 'jbrowser';
                 }
 
-                if (strpos($ua, 'JUC') === 0) {
+                if (strncmp($ua, 'JUC', 3) === 0) {
                     return 'juc';
                 }
 
                 break;
             case 'k':
-                if (strpos($ua, 'Karbonn') === 0) {
+                if (strncmp($ua, 'Karbonn', 7) === 0) {
                     return 'karbonn';
                 }
 
-                if (strpos($ua, 'KGT/') === 0) {
+                if (strncmp($ua, 'KGT/', 4) === 0) {
                     return 'imode_nec_kgt';
                 }
 
-                if (strpos($ua, 'KDDI') === 0) {
+                if (strncmp($ua, 'KDDI', 4) === 0) {
                     return 'kddi';
                 }
 
-                if (strpos($ua, 'KWC-') === 0) {
+                if (strncmp($ua, 'KWC-', 4) === 0) {
                     return 'kyocera_kwc';
                 }
-                if (strpos($ua_lc, 'kyocera') === 0) {
+                if (strncmp($ua_lc, 'kyocera', 7) === 0) {
                     return 'kyocera';
                 }
 
                 break;
             case 'l':
-                if (strpos($ua_lc, 'lava') === 0) {
+                if (strncmp($ua_lc, 'lava', 4) === 0) {
                     return 'lava';
                 }
 
-                if (strpos($ua_lc, 'lenovo') === 0) {
+                if (strncmp($ua_lc, 'lenovo', 6) === 0) {
                     return 'lenovo';
                 }
 
-                if (strpos($ua, 'LGE-') === 0) {
+                if (strncmp($ua, 'LGE-', 4) === 0) {
                     return 'lg_lge';
                 }
-                if (strpos($ua, 'LG') === 0) {
+                if (strncmp($ua, 'LG', 2) === 0) {
                     return 'lg';
                 }
-                if (strpos($ua_lc, 'lg-') === 0) {
+                if (strncmp($ua_lc, 'lg-', 3) === 0) {
                     return 'lg';
                 }
 
                 break;
             case 'm':
-                if (strpos($ua, 'MERIDIAN') === 0) {
+                // Note: "Mozilla/5.0 (Linux; Android" will be tested later, after this switch-case block
+                if (strncmp($ua, 'MERIDIAN', 8) === 0) {
                     return 'fly_meridian';
                 }
 
-                if (strpos($ua_lc, 'micromax') === 0) {
+                if (strncmp($ua_lc, 'micromax', 8) === 0) {
                     return 'micromax';
                 }
 
-                if (strpos($ua, 'Mitsu') === 0) {
+                if (strncmp($ua, 'Mitsu', 5) === 0) {
                     return 'mitsubishi';
                 }
 
-                if (strpos($ua_lc, 'moto') === 0) {
+                if (strncmp($ua_lc, 'moto', 4) === 0) {
                     return 'motorola';
                 }
-                if (strpos($ua_lc, 'mot-') === 0) {
+                if (strncmp($ua_lc, 'mot-', 4) === 0) {
                     return 'motorola_mot';
                 }
 
-                if (strpos($ua, 'Mozilla/5.0 (BlackBerry; ') === 0 || strpos($ua, 'Mozilla/5.0 (BB10; ') === 0) {
+                if (strncmp($ua, 'Mozilla/5.0 (BlackBerry; ', 25) === 0
+                    || strncmp($ua, 'Mozilla/5.0 (BB10; ', 19) === 0
+                ) {
                     return 'blackberry_mozilla';
                 }
 
-                if (strpos($ua, 'Mozilla/5.0 (LG-') === 0) {
+                if (strncmp($ua, 'Mozilla/5.0 (LG-', 16) === 0) {
                     return 'lg_mozilla';
                 }
 
-                if (strpos($ua, 'Mozilla/4.0 (compatible; MSIE 6.0; KDDI-') === 0) {
+                if (strncmp($ua, 'Mozilla/4.0 (compatible; MSIE 6.0; KDDI-', 40) === 0) {
                     return 'kddi_mozilla';
                 }
 
-                if (strpos($ua, 'Mozilla/5.0 (PlayBook; ') === 0) {
+                if (strncmp($ua, 'Mozilla/5.0 (PlayBook; ', 23) === 0) {
                     return 'playbook';
                 }
 
-                if (strpos($ua, 'Mozilla/5.0 (Windows Phone 8.1; ARM; Trident/7.0; Touch; rv:11.0; IEMobile/11.0; ') === 0
-                    || strpos($ua, 'Mozilla/5.0 (Mobile; Windows Phone 8.1; Android 4.') === 0
-                    || strpos($ua, 'Mozilla/5.0 (compatible; MSIE 10.0; Windows Phone 8.0; Trident/6.0; IEMobile/10.0; ') === 0
-                    || strpos($ua, 'Mozilla/5.0 (compatible; MSIE 9.0; Windows Phone OS 7.5; Trident/5.0; IEMobile/9.0; ') === 0
-                    || strpos($ua, 'Mozilla/4.0 (compatible; MSIE 7.0; Windows Phone OS 7.0; Trident/3.1; IEMobile/7.0; ') === 0
-                    || (strpos($ua, 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; ') === 0 && strpos($ua, ' Windows Phone 6.5') !== false)
-                ) {
-                    return 'windowsphone';
+                if (strpos($ua, 'Windows Phone ') !== false) {
+                    if (preg_match('#^Mozilla/5\.0 \(Windows Phone 10\.0; Android \d\.\*; #', $ua)
+                        || strncmp($ua, 'Mozilla/5.0 (Windows Phone 8.1; ARM; Trident/7.0; Touch; rv:11.0; IEMobile/11.0; ', 81) === 0
+                        || strncmp($ua, 'Mozilla/5.0 (Mobile; Windows Phone 8.1; Android 4.', 50) === 0
+                        || strncmp($ua, 'Mozilla/5.0 (compatible; MSIE 10.0; Windows Phone 8.0; Trident/6.0; IEMobile/10.0; ', 83) === 0
+                        || strncmp($ua, 'Mozilla/5.0 (compatible; MSIE 9.0; Windows Phone OS 7.5; Trident/5.0; IEMobile/9.0; ', 84) === 0
+                        || strncmp($ua, 'Mozilla/4.0 (compatible; MSIE 7.0; Windows Phone OS 7.0; Trident/3.1; IEMobile/7.0; ', 84) === 0
+                        || strncmp($ua, 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; ', 51) === 0 // Windows Phone 6.5
+                    ) {
+                        return 'windowsphone';
+                    }
                 }
 
-                if (strpos($ua, 'Mozilla/4.0 (MobilePhone ') === 0) {
+                if (strncmp($ua, 'Mozilla/4.0 (MobilePhone ', 25) === 0) {
                     return 'sanyo_mobilephone';
                 }
 
-                if (strpos($ua_lc, 'mozilla/5.0 (playstation ') === 0
-                    || strpos($ua_lc, 'mozilla/4.0 (ps2; ') === 0
-                    || strpos($ua_lc, 'mozilla/4.0 (psp ') === 0
+                if (strncmp($ua_lc, 'mozilla/5.0 (playstation ', 25) === 0
+                    || strncmp($ua_lc, 'mozilla/4.0 (ps2; ', 18) === 0
+                    || strncmp($ua_lc, 'mozilla/4.0 (psp ', 17) === 0
                 ) {
                     return 'playstation';
                 }
 
-                if (strpos($ua, 'Mozilla/5.0 (webOS/') === 0) {
+                if (strncmp($ua, 'Mozilla/5.0 (webOS/', 19) === 0) {
                     return 'webos';
                 }
 
-                if (strpos($ua, 'Mozilla/5.0 (SAMSUNG; ') === 0) {
+                if (strncmp($ua, 'Mozilla/5.0 (SAMSUNG; ', 22) === 0) {
                     return 'samsung_mozilla';
+                }
+
+                if (strncmp($ua, 'Mozilla/5.0 (SMART-TV; ', 23) === 0
+                    || strpos($ua, ' SmartTV/') !== false
+                    || strpos($ua, ' TV Safari/') !== false
+                ) {
+                    return 'smarttv';
+                }
+
+                if (strncmp($ua, 'Mozilla/5.0 (Linux; Tizen ', 26) === 0
+                    && strpos($ua, ' Mobile Safari/') !== false
+                ) {
+                    return 'tizen_mobile';
+                }
+
+                if (strncmp($ua, 'Mozilla/5.0 (Mobile; LYF/', 25) === 0) {
+                    return 'jiophone';
                 }
 
                 break;
             case 'n':
-                if (strpos($ua, 'NativeOperaMini') === 0) {
+                if (strncmp($ua, 'NativeOperaMini', 15) === 0) {
                     return 'opera_native';
                 }
 
-                if (strpos($ua, 'NEC-') === 0) {
+                if (strncmp($ua, 'NEC-', 4) === 0) {
                     return 'nec';
                 }
 
-                if (strpos($ua, 'Nexian') === 0) {
+                if (strncmp($ua, 'Nexian', 6) === 0) {
                     return 'nexian';
                 }
 
                 break;
             case 'o':
-                if (strpos($ua, 'o2imode/') === 0) {
+                if (strncmp($ua, 'o2imode/', 8) === 0) {
                     return 'imode_o2';
                 }
 
-                if (strpos($ua, 'Opera/') === 0) {
+                if (strncmp($ua, 'Opera/', 6) === 0) {
                     if (strpos($ua, 'Opera Mobile/') !== false) {
                         return 'opera_mobile';
                     }
@@ -732,144 +755,144 @@ class AmddUA
                     return 'opera';
                 }
 
-                if (strpos($ua, 'OperaMini') === 0) {
+                if (strncmp($ua, 'OperaMini', 9) === 0) {
                     return 'opera_mini';
                 }
 
                 break;
             case 'p':
-                if (strpos($ua, 'Panasonic') === 0) {
+                if (strncmp($ua, 'Panasonic', 9) === 0) {
                     return 'panasonic';
                 }
 
-                if (strpos($ua_lc, 'pantech') === 0) {
+                if (strncmp($ua_lc, 'pantech', 7) === 0) {
                     return 'pantech';
                 }
-                if (strpos($ua, 'PT-') === 0) {
+                if (strncmp($ua, 'PT-', 3) === 0) {
                     return 'pantech_pt';
                 }
-                if (strpos($ua, 'PG-') === 0) {
+                if (strncmp($ua, 'PG-', 3) === 0) {
                     return 'pantech_pg';
                 }
 
-                if (strpos($ua_lc, 'philips') === 0) {
+                if (strncmp($ua_lc, 'philips', 7) === 0) {
                     return 'philips';
                 }
 
-                if (strpos($ua, 'POLARIS') === 0) {
+                if (strncmp($ua, 'POLARIS', 7) === 0) {
                     return 'lg_polaris';
                 }
 
-                if (strpos($ua, 'portalmmm/') === 0) {
+                if (strncmp($ua, 'portalmmm/', 10) === 0) {
                     return 'imode_portalmmm';
                 }
 
                 break;
             case 'q':
-                if (strpos($ua, 'QC-') === 0) {
+                if (strncmp($ua, 'QC-', 3) === 0) {
                     return 'kyocera_qc';
                 }
 
-                if (strpos($ua, 'Qtek') === 0) {
+                if (strncmp($ua, 'Qtek', 4) === 0) {
                     return 'qtek';
                 }
 
                 break;
             case 'r':
-                if (strpos($ua, 'Reksio') === 0) {
+                if (strncmp($ua, 'Reksio', 6) === 0) {
                     return 'reksio';
                 }
 
-                if (strpos($ua_lc, 'rim') === 0) {
+                if (strncmp($ua_lc, 'rim', 3) === 0) {
                     return 'blackberry_rim';
                 }
 
-                if (strpos($ua, 'Rover') === 0) {
+                if (strncmp($ua, 'Rover', 5) === 0) {
                     return 'rover';
                 }
 
                 break;
             case 's':
-                if (strpos($ua_lc, 'sagem') === 0) {
+                if (strncmp($ua_lc, 'sagem', 5) === 0) {
                     return 'sagem';
                 }
 
-                if (strpos($ua_lc, 'sanyo') === 0) {
+                if (strncmp($ua_lc, 'sanyo', 5) === 0) {
                     return 'sanyo';
                 }
 
-                if (strpos($ua_lc, 'samsung-gt') === 0 || strpos($ua_lc, 'samsung gt') === 0) {
+                if (strncmp($ua_lc, 'samsung-gt', 10) === 0 || strncmp($ua_lc, 'samsung gt', 10) === 0) {
                     return 'samsung_s_gt';
                 }
-                if (strpos($ua_lc, 'samsung-sch') === 0) {
+                if (strncmp($ua_lc, 'samsung-sch', 11) === 0) {
                     return 'samsung_s_sch';
                 }
-                if (strpos($ua_lc, 'samsung-sec') === 0) {
+                if (strncmp($ua_lc, 'samsung-sec', 11) === 0) {
                     return 'samsung_s_sec';
                 }
-                if (strpos($ua_lc, 'samsung-sgh') === 0) {
+                if (strncmp($ua_lc, 'samsung-sgh', 11) === 0) {
                     return 'samsung_s_sgh';
                 }
-                if (strpos($ua_lc, 'samsung-sph') === 0) {
+                if (strncmp($ua_lc, 'samsung-sph', 11) === 0) {
                     return 'samsung_s_sph';
                 }
-                if (strpos($ua_lc, 'samsungsgh') === 0) {
+                if (strncmp($ua_lc, 'samsungsgh', 10) === 0) {
                     return 'samsung_ssgh';
                 }
-                if (strpos($ua_lc, 'samsung') === 0) {
+                if (strncmp($ua_lc, 'samsung', 7) === 0) {
                     return 'samsung';
                 }
-                if (strpos($ua_lc, 'sam') === 0) {
+                if (strncmp($ua_lc, 'sam', 3) === 0) {
                     return 'samsung_sam';
                 }
-                if (strpos($ua_lc, 'sch-') === 0) {
+                if (strncmp($ua_lc, 'sch-', 4) === 0) {
                     return 'samsung_sch';
                 }
-                if (strpos($ua, 'SGH-') === 0) {
+                if (strncmp($ua, 'SGH-', 4) === 0) {
                     return 'samsung_sgh';
                 }
-                if (strpos($ua, 'SPH-') === 0) {
+                if (strncmp($ua, 'SPH-', 4) === 0) {
                     return 'samsung_sph';
                 }
-                if (strpos($ua, 'SEC-') === 0) {
+                if (strncmp($ua, 'SEC-', 4) === 0) {
                     return 'samsung_sec';
                 }
 
-                if (strpos($ua, 'Sendo') === 0) {
+                if (strncmp($ua, 'Sendo', 5) === 0) {
                     return 'sendo';
                 }
 
-                if (strpos($ua_lc, 'sharp') === 0) {
+                if (strncmp($ua_lc, 'sharp', 5) === 0) {
                     return 'sharp';
                 }
 
-                if (strpos($ua, 'SIE-') === 0) {
+                if (strncmp($ua, 'SIE-', 4) === 0) {
                     return 'siemens';
                 }
 
-                if (strpos($ua, 'SkyBee') === 0) {
+                if (strncmp($ua, 'SkyBee', 6) === 0) {
                     return 'skybee';
                 }
 
-                if (strpos($ua_lc, 'sonyericsson') === 0) {
+                if (strncmp($ua_lc, 'sonyericsson', 12) === 0) {
                     return 'sonyericsson';
                 }
 
-                if (strpos($ua, 'Spice') === 0) {
+                if (strncmp($ua, 'Spice', 5) === 0) {
                     return 'spice';
                 }
 
                 break;
             case 't':
-                if (strpos($ua, 'Telit') === 0) {
+                if (strncmp($ua, 'Telit', 5) === 0) {
                     return 'telit';
                 }
 
-                if (strpos($ua, 'TSM') === 0) {
+                if (strncmp($ua, 'TSM', 3) === 0) {
                     return 'vitelcom_tsm';
                 }
 
-                if (strpos($ua, 'Toshiba') === 0) {
+                if (strncmp($ua, 'Toshiba', 7) === 0) {
                     return 'toshiba';
                 }
 
@@ -877,25 +900,25 @@ class AmddUA
             case 'u':
                 break;
             case 'v':
-                if (strpos($ua, 'Vertu') === 0) {
+                if (strncmp($ua, 'Vertu', 5) === 0) {
                     return 'vertu';
                 }
 
-                if (strpos($ua, 'Videocon') === 0) {
+                if (strncmp($ua, 'Videocon', 8) === 0) {
                     return 'videocon';
                 }
 
-                if (strpos($ua, 'Vodafone') === 0) {
+                if (strncmp($ua, 'Vodafone', 8) === 0) {
                     return 'vodafone';
                 }
 
-                if (strpos($ua, 'VX') === 0) {
+                if (strncmp($ua, 'VX', 2) === 0) {
                     return 'lg_vx';
                 }
 
                 break;
             case 'w':
-                if (strpos($ua, 'WinWAP') === 0) {
+                if (strncmp($ua, 'WinWAP', 6) === 0) {
                     return 'winwap';
                 }
 
@@ -905,162 +928,267 @@ class AmddUA
             case 'y':
                 break;
             case 'z':
-                if (strpos($ua_lc, 'zmax') === 0) {
+                if (strncmp($ua_lc, 'zmax', 4) === 0) {
                     return 'zonda';
                 }
 
-                if (strpos($ua, 'ZTE') === 0) {
+                if (strncmp($ua, 'ZTE', 3) === 0) {
                     return 'zte';
                 }
-                if (strpos($ua_lc, 'zte-') === 0) {
+                if (strncmp($ua_lc, 'zte-', 4) === 0) {
                     return 'zte';
                 }
 
                 break;
         }
 
-        if (strpos($ua, 'Mozilla/5.0 (Linux; Android ') === 0
+        if (strncmp($ua, 'Mozilla/5.0 (Linux; Android ', 28) === 0
             && preg_match('#Mozilla/5\.0 \(Linux; Android [^;]+; ?([^)]+)#', $ua, $match)
         ) {
             $model = trim($match[1]);
             $model_lc = strtolower($model);
 
-            if (strpos($model, 'ADR') === 0 || strpos($model_lc, 'pcdadr') === 0) {
+            if (strncmp($model, 'ADR', 3) === 0
+                || strncmp($model_lc, 'pcdadr', 6) === 0
+            ) {
                 return 'android_htc_adr';
             }
-            if (strpos($model_lc, 'alcatel') === 0) {
+            if (strncmp($model_lc, 'alcatel', 7) === 0) {
                 return 'android_alcatel';
             }
-            if (strpos($model, 'Andromax') === 0 || strpos($model, 'New Andromax') === 0 || strpos($model, 'Smartfren') === 0) {
+            if (strncmp($model, 'Andromax', 8) === 0
+                || strncmp($model, 'New Andromax', 12) === 0
+                || strncmp($model, 'Smartfren', 9) === 0
+            ) {
                 return 'android_smartfren';
             }
-            if (strpos($model, 'ASUS') === 0 || strpos($model, 'Transformer') === 0) {
+            if (strncmp($model, 'Aquaris', 7) === 0) {
+                return 'android_aquaris';
+            }
+            if (strncmp($model, 'Archos', 6) === 0) {
+                return 'android_archos';
+            }
+            if (strncmp($model, 'ASUS', 4) === 0
+                || strncmp($model, 'Transformer', 11) === 0
+            ) {
                 return 'android_asus';
             }
+            if (strncmp($model, 'Avvio', 5) === 0) {
+                return 'android_avvio';
+            }
 
-            if (strpos($model_lc, 'fly') === 0 && (!isset($model[3]) || $model[3] === ' ' || $model[3] === '_')) {
+            if (strncmp($model, 'BLU ', 4) === 0) {
+                return 'android_blu';
+            }
+
+            if (strncmp($model, 'Coolpad', 7) === 0) {
+                return 'android_coolpad';
+            }
+            if (strncmp($model, 'CPH', 3) === 0) {
+                return 'android_oppo_cph';
+            }
+
+            if (strncmp($model_lc, 'fly', 3) === 0
+                && (!isset($model[3]) || $model[3] === ' ' || $model[3] === '_')
+            ) {
                 return 'android_fly';
             }
 
-            if (strpos($model, 'GFIVE') === 0) {
+            if (strncmp($model, 'GFIVE', 5) === 0) {
                 return 'android_gfive';
             }
 
-            if (strpos($model, 'HTC') === 0 || strpos($model, 'Desire') === 0 || strpos($model, 'Sensation') === 0) {
+            if (strncmp($model, 'Hisense', 7) === 0) {
+                return 'android_hisense';
+            }
+            if (strncmp($model, 'HTC', 3) === 0
+                || strncmp($model, 'Desire', 6) === 0
+                || strncmp($model, 'Sensation', 9) === 0
+            ) {
                 return 'android_htc';
             }
-            if (strpos($model_lc, 'huawei') === 0 || strpos($model, 'HW-HUAWEI') === 0) {
+            if (strncmp($model_lc, 'huawei', 6) === 0
+                || strncmp($model, 'HW-HUAWEI', 9) === 0
+            ) {
                 return 'android_huawei';
             }
 
-            if (strpos($model, 'iBall') === 0) {
-                return 'android_iball';
-            }
-            if (strpos($model, 'IdeaTab') === 0) {
-                return 'android_lenovo_ideatab';
-            }
-            if (strpos($model, 'i-mobile') === 0) {
-                return 'android_imobile';
+            if ($model_lc[0] === 'i') {
+                if (strncmp($model, 'iBall', 5) === 0) {
+                    return 'android_iball';
+                }
+                if (strncmp($model, 'IdeaTab', 7) === 0) {
+                    return 'android_lenovo_ideatab';
+                }
+                if (strncmp($model, 'i-mobile', 8) === 0) {
+                    return 'android_imobile';
+                }
+                if (strncmp($model, 'Infinix', 7) === 0) {
+                    return 'android_infinix';
+                }
+                if (strncmp($model, 'iris', 4) === 0) {
+                    return 'android_iris';
+                }
+                if (strncmp($model, 'itel', 4) === 0) {
+                    return 'android_itel';
+                }
+                if (strncmp($model, 'Ixion', 5) === 0) {
+                    return 'android_ixion';
+                }
             }
 
-            if (strpos($model, 'Karbonn') === 0) {
+            if (strncmp($model, 'Karbonn', 7) === 0) {
                 return 'android_karbonn';
             }
+            if (strncmp($model, 'KENEKSI', 7) === 0) {
+                return 'android_keneksi';
+            }
 
-            if (strpos($model, 'Lenovo') === 0) {
+            if (strncmp($model, 'Lenovo', 6) === 0) {
                 return 'android_lenovo';
             }
-            if (strpos($model, 'LG') === 0) {
+            if (strncmp($model, 'LG', 2) === 0) {
                 return 'android_lg';
             }
-            if (strpos($model, 'LIFETAB') === 0) {
+            if (strncmp($model, 'LIFETAB', 7) === 0) {
                 return 'android_medion_lifetab';
             }
 
             if ($model[0] === 'M') {
-                if (strpos($model, 'Micromax') === 0) {
+                if (strncmp($model, 'MI ', 3) === 0) {
+                    return 'android_xiaomi_mi';
+                }
+                if (strncmp($model, 'Micromax', 8) === 0) {
                     return 'android_micromax';
                 }
-                if (strpos($model, 'MITO') === 0) {
+                if (strncmp($model, 'MID', 3) === 0) {
+                    return 'android_mid';
+                }
+                if (strncmp($model, 'MITO', 4) === 0) {
                     return 'android_mito';
                 }
-                if (strpos($model, 'Mobiistar') === 0) {
+                if (strncmp($model, 'Mobiistar', 9) === 0) {
                     return 'android_mobiistar';
                 }
-                if (strpos($model, 'MB') === 0
-                    || strpos($model, 'MOT-ME') === 0
-                    || strpos($model, 'Moto') === 0
-                    || strpos($model, 'Milestone') === 0
-                    || (strpos($model, 'ME') === 0 && !preg_match('#^ME\d{3}[A-Z]+$#', $model))
+                if (strncmp($model, 'MB', 2) === 0
+                    || strncmp($model, 'MOT-ME', 6) === 0
+                    || strncmp($model, 'Moto', 4) === 0
+                    || strncmp($model, 'Milestone', 9) === 0
+                    || (strncmp($model, 'ME', 2) === 0 && !preg_match('#^ME\d{3}[A-Z]+$#', $model))
                 ) {
                     return 'android_motorola';
                 }
-                if (strpos($model, 'MTC') === 0) {
+                if (strncmp($model, 'MTC', 3) === 0) {
                     return 'android_mtc';
                 }
             }
-            if (strpos($model_lc, 'xoom') === 0 || (strpos($model, 'XT') === 0 && substr($model, 2, 1) !== 'A') || strpos($model, 'MOT-XT') === 0) {
+            if (strncmp($model_lc, 'xoom', 4) === 0
+                || strncmp($model, 'MOT-XT', 6) === 0
+                || (strncmp($model, 'XT', 2) === 0 && substr($model, 2, 1) !== 'A')
+            ) {
                 return 'android_motorolax';
             }
 
-            if (strpos($model, 'Nexus') === 0) {
+            if (strncmp($model, 'Nexus', 5) === 0) {
                 return 'android_nexus';
             }
-            if (strpos($model, 'NOOK') === 0 || strpos($model, 'BNTV') === 0) {
+            if (strncmp($model, 'NOOK', 4) === 0
+                || strncmp($model, 'BNTV', 4) === 0
+            ) {
                 return 'android_nook';
             }
 
-            if (strpos($model, 'PTAB') === 0) {
-                return 'android_polaroid';
+            if (strncmp($model, 'OPPO', 4) === 0) {
+                return 'android_oppo';
+            }
+
+            if ($model[0] === 'P') {
+                if (strncmp($model, 'Philips', 7) === 0) {
+                    return 'android_philips';
+                }
+                if (strncmp($model, 'PMP', 3) === 0 || strncmp($model, 'PMT', 3) === 0) {
+                    return 'android_prestigio_pm';
+                }
+                if (strncmp($model, 'PSP', 3) === 0) {
+                    return 'android_prestigio_psp';
+                }
+                if (strncmp($model, 'PTAB', 4) === 0) {
+                    return 'android_polaroid';
+                }
+            }
+
+            if (strncmp($model, 'QMobile', 7) === 0) {
+                return 'android_qmobile';
+            }
+
+            if (strncmp($model, 'Redmi', 5) === 0) {
+                return 'android_xiaomi_redmi';
             }
 
             if ($model[0] === 'S' || $model[0] === 'G') {
                 if (preg_match('#^(?:SAMSUNG[ -])?(?:SCH|SHW|SPH|SHV)-#', $model)) {
                     return 'android_samsung';
                 }
-                if (preg_match('#^(?:SAMSUNG[ -])?(GT|SGH|SM)-#', $model, $s_match)) {
-                    return 'android_samsung_' . strtolower($s_match[1]);
+                if (preg_match('#^(?:SAMSUNG[ -])?(GT|SGH|SM)-(.)#', $model, $s_match)) {
+                    $submodel = strtolower($s_match[1]);
+                    $kind = strtolower($s_match[2]);
+                    if ($submodel === 'sm' && strpos('acegjnpst', $kind) !== false) {
+                        return 'android_samsung_' . $submodel . '_' . $kind;
+                    }
+                    return 'android_samsung_' . $submodel;
                 }
-                if (strpos($model_lc, 'sony') === 0) {
+                if (strncmp($model_lc, 'sony', 4) === 0) {
                     return 'android_sony';
                 }
-                if (strpos($model, 'Sprint') === 0) {
+                if (strncmp($model, 'Sprint', 6) === 0) {
                     return 'android_sprint';
                 }
             }
-            if (strpos($model, 'Galaxy') === 0 || preg_match('#^[iI]9\d{3}\b#', $model)) {
+            if (strncmp($model, 'Galaxy', 6) === 0
+                || preg_match('#^[iI]9\d{3}\b#', $model)
+            ) {
                 return 'android_samsung_gt';
             }
             if (preg_match('#^(?:[LMSW][KT]|E|U|X|R8)\d\d[aiphw]#', $model)) {
                 return 'android_sony';
             }
 
-            if (strpos($model, 'T-Mobile') === 0) {
+            if (strncmp($model_lc, 'tab', 3) === 0) {
+                return 'android_tablets';
+            }
+            if (strncmp($model, 'T-Mobile', 8) === 0) {
                 return 'android_tmobile';
             }
+            if (strncmp($model, 'TECNO', 5) === 0) {
+                return 'android_tecno';
+            }
 
-            if (strpos($model_lc, 'droid') === 0) {
+            if (strncmp($model_lc, 'droid', 5) === 0) {
                 return 'android_verizon';
             }
-            if (strpos($model, 'Vodafone') === 0) {
+            if (strncmp($model, 'vivo ', 5) === 0) {
+                return 'android_vivo';
+            }
+            if (strncmp($model, 'Vodafone', 8) === 0) {
                 return 'android_vodafone';
             }
 
-            if (strpos($model, 'ZTE') === 0) {
+            if (strncmp($model, 'ZTE', 3) === 0) {
                 return 'android_zte';
             }
         }
+
         if (strpos($ua, 'Android 3.') !== false || strpos($ua, 'Android/3.') !== false) {
             return 'android3';
         }
         if (strpos($ua, 'Android') !== false) {
-            if (strpos($ua, 'Mozilla/5.0 (Linux; Android') === 0) {
+            if (strncmp($ua, 'Mozilla/5.0 (Linux; Android', 27) === 0) {
                 return 'android_mozilla';
             }
             return 'android';
         }
 
-        if (strpos($ua, 'Mozilla/5') === 0) {
+        if (strncmp($ua, 'Mozilla/5', 9) === 0) {
             if (strpos($ua, '(iPhone') !== false || strpos($ua, '(Aspen Simulator') !== false) {
                 return 'apple_iphone';
             }
@@ -1086,22 +1214,22 @@ class AmddUA
             return 'maemo';
         }
         if (strpos($ua, 'Nokia') !== false) {
-            if (strpos($ua, 'Symbian/3')) {
+            if (strpos($ua, 'Symbian/3') !== false) {
                 return 'nokias3';
             }
-            if (strpos($ua, 'Series90')) {
+            if (strpos($ua, 'Series90') !== false) {
                 return 'nokia90';
             }
-            if (strpos($ua, 'Series80')) {
+            if (strpos($ua, 'Series80') !== false) {
                 return 'nokia80';
             }
-            if (strpos($ua, 'Series60')) {
+            if (strpos($ua, 'Series60') !== false) {
                 return 'nokia60';
             }
-            if (strpos($ua, 'Series40')) {
+            if (strpos($ua, 'Series40') !== false) {
                 return 'nokia40';
             }
-            if (strpos($ua, 'Mozilla/') === 0) {
+            if (strncmp($ua, 'Mozilla/', 8) === 0) {
                 return 'nokia_mozilla';
             }
             return 'nokia';
@@ -1131,7 +1259,7 @@ class AmddUA
             return 'upbrowser';
         }
 
-        if (preg_match('#(?:\baddon\b|agent\b|\bajax|analyzer\b|archive|\bapi\b|^blitz\.io;|\bblog|bot\b|bot@|\bcatalog\b|capture|check|crawl|dddd|download|extractor|\bfeed|feed\b|fetch|index\b|indexer\b|livecategory|mail|manager|^mozilla/3\.|multi_get|news\b|\bnews|\bnode\.js\b|parser\b|phantomjs|\bping|ping\b|plugin\b|proxy|\brss|rss\b|ruby\b|scanner\b|search|\bseo|server|service|sitemap|slurp|spider|subscriber|test|tracker|upload|\burl|url\b|validat|\bw3c|webclient|website|xml-?rpc|www\.|yahoo|yandex)#', $ua_lc)
+        if (preg_match('#(?:\baddon\b|agent\b|\bajax|analyzer\b|archive|\bapi\b|^blitz\.io;|\bblog|bot\b|bot[@_]|\bcatalog\b|capture|check|crawl|dddd|download|extractor|\bfeed|feed\b|fetch|index\b|indexer\b|livecategory|mail|manager|^mozilla/3\.|multi_get|news\b|\bnews|\bnode\.js\b|parser\b|phantomjs|\bping|ping\b|plugin\b|proxy|resolver\b|\brss|rss\b|ruby\b|scanner\b|search|\bseo|server|service|sitemap|slurp|spider|subscriber|test|tracker|upload|\burl|url\b|validat|\bw3c|webclient|website|xml-?rpc|www\.|yahoo|yandex|\bgoo\.gl/|\bbit\.ly/)#', $ua_lc)
             || preg_match('#^(?>[a-z0-9][a-z0-9-]{0,61}[a-z0-9]\.)+[a-z]{2,9}(?>/[\d.]+)?$#', $ua_lc)
             || preg_match('#\b[\w.]+@(?>[a-z0-9][a-z0-9-]{0,61}[a-z0-9]\.)+[a-z]{2,9}\b#', $ua_lc)
             || (strpos($ua_lc, 'http') !== false && strpos($ua_lc, 'mre') === false)

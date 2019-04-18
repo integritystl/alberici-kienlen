@@ -21,11 +21,11 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 abstract class WSAL_Models_ActiveRecord {
 
-	const STATE_UNKNOWN  = 'unknown';
-	const STATE_CREATED  = 'created';
-	const STATE_UPDATED  = 'updated';
-	const STATE_DELETED  = 'deleted';
-	const STATE_LOADED   = 'loaded';
+	const STATE_UNKNOWN = 'unknown';
+	const STATE_CREATED = 'created';
+	const STATE_UPDATED = 'updated';
+	const STATE_DELETED = 'deleted';
+	const STATE_LOADED  = 'loaded';
 
 	/**
 	 * Data connector
@@ -142,6 +142,8 @@ abstract class WSAL_Models_ActiveRecord {
 	 * based on the adapter name.
 	 *
 	 * @see WSAL_Connector_ConnectorInterface::getAdapter()
+	 *
+	 * @return WSAL_Adapters_ActiveRecordInterface
 	 */
 	public function getAdapter() {
 		return $this->getConnector()->getAdapter( $this->adapterName );
@@ -182,7 +184,7 @@ abstract class WSAL_Models_ActiveRecord {
 					case is_array( $copy->$key ):
 					case is_object( $copy->$key ):
 						$json_decoded_val = WSAL_Helpers_DataHelper::JsonDecode( $val );
-						$this->$key = ( null == $json_decoded_val ) ? $val : $json_decoded_val;
+						$this->$key       = ( null == $json_decoded_val ) ? $val : $json_decoded_val;
 						break;
 					case is_int( $copy->$key ):
 						$this->$key = (int) $val;
@@ -218,10 +220,10 @@ abstract class WSAL_Models_ActiveRecord {
 			$this->created_on = $this->GetMicrotime();
 		}
 		$update_id = $this->getId();
-		$result = $this->getAdapter()->Save( $this );
+		$result    = $this->getAdapter()->Save( $this );
 
 		if ( false !== $result ) {
-			$this->_state = ( ! empty( $update_id )) ? self::STATE_UPDATED : self::STATE_CREATED;
+			$this->_state = ( ! empty( $update_id ) ) ? self::STATE_UPDATED : self::STATE_CREATED;
 		}
 		return $result;
 	}
@@ -234,7 +236,7 @@ abstract class WSAL_Models_ActiveRecord {
 	 */
 	public function Delete() {
 		$this->_state = self::STATE_UNKNOWN;
-		$result = $this->getAdapter()->Delete( $this );
+		$result       = $this->getAdapter()->Delete( $this );
 		if ( false !== $result ) {
 			$this->_state = self::STATE_DELETED;
 		}
@@ -250,8 +252,7 @@ abstract class WSAL_Models_ActiveRecord {
 	 * @return int count
 	 */
 	public function Count( $cond = '%d', $args = array( 1 ) ) {
-		$result = $this->getAdapter()->Count( $cond, $args );
-		return $result;
+		return (int) $this->getAdapter()->Count( $cond, $args );
 	}
 
 	/**
@@ -260,7 +261,7 @@ abstract class WSAL_Models_ActiveRecord {
 	 * @return bool
 	 */
 	public function IsLoaded() {
-		return self::STATE_LOADED == $this->_state;
+		return self::STATE_LOADED === $this->_state;
 	}
 
 	/**
@@ -269,8 +270,8 @@ abstract class WSAL_Models_ActiveRecord {
 	 * @return bool
 	 */
 	public function IsSaved() {
-		return self::STATE_CREATED == $this->_state
-			|| self::STATE_UPDATED == $this->_state;
+		return self::STATE_CREATED === $this->_state
+			|| self::STATE_UPDATED === $this->_state;
 	}
 
 	/**
@@ -279,7 +280,7 @@ abstract class WSAL_Models_ActiveRecord {
 	 * @return bool
 	 */
 	public function IsCreated() {
-		return self::STATE_CREATED == $this->_state;
+		return self::STATE_CREATED === $this->_state;
 	}
 
 	/**
@@ -288,7 +289,16 @@ abstract class WSAL_Models_ActiveRecord {
 	 * @return bool
 	 */
 	public function IsUpdated() {
-		return self::STATE_UPDATED == $this->_state;
+		return self::STATE_UPDATED === $this->_state;
+	}
+
+	/**
+	 * Check state deleted.
+	 *
+	 * @return bool
+	 */
+	public function IsDeleted() {
+		return self::STATE_DELETED === $this->_state;
 	}
 
 	/**
@@ -308,15 +318,6 @@ abstract class WSAL_Models_ActiveRecord {
 	 */
 	public function Install() {
 		return $this->getAdapter()->Install();
-	}
-
-	/**
-	 * Check state deleted.
-	 *
-	 * @return bool
-	 */
-	public function IsDeleted() {
-		return self::STATE_DELETED == $this->_state;
 	}
 
 	/**
@@ -361,13 +362,13 @@ abstract class WSAL_Models_ActiveRecord {
 	 * Function used in WSAL reporting extension.
 	 *
 	 * @see WSAL_Adapters_MySQL_ActiveRecord::GetReporting()
-	 * @param int       $_site_id - Site ID.
-	 * @param int       $_user_id - User ID.
-	 * @param string    $_role_name - User role.
-	 * @param int       $_alert_code - Alert code.
-	 * @param timestamp $_start_timestamp - From created_on.
-	 * @param timestamp $_end_timestamp - To created_on.
-	 * @return array - Report results.
+	 * @param int    $_site_id - Site ID.
+	 * @param int    $_user_id - User ID.
+	 * @param string $_role_name - User role.
+	 * @param int    $_alert_code - Alert code.
+	 * @param int    $_start_timestamp - From created_on.
+	 * @param int    $_end_timestamp - To created_on.
+	 * @return array Report results.
 	 */
 	public function GetReporting( $_site_id, $_user_id, $_role_name, $_alert_code, $_start_timestamp, $_end_timestamp ) {
 		return $this->getAdapter()->GetReporting( $_site_id, $_user_id, $_role_name, $_alert_code, $_start_timestamp, $_end_timestamp );
@@ -381,9 +382,6 @@ abstract class WSAL_Models_ActiveRecord {
 	 * @return bool result validation
 	 */
 	private function is_ip_address( $ip_address ) {
-		if ( filter_var( $ip_address, FILTER_VALIDATE_IP ) !== false ) {
-			return true;
-		}
-		return false;
+		return filter_var( $ip_address, FILTER_VALIDATE_IP ) !== false;
 	}
 }

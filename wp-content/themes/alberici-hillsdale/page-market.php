@@ -8,6 +8,7 @@
  */
 
 get_header();
+$theme_config = get_field('set_site', 'options');
 ?>
 
 <div id="primary" class="content-area">
@@ -28,7 +29,7 @@ get_header();
                 $market_callout_post = get_sub_field('market_callouts_market');
                 $market_callout_image = get_sub_field('market_callouts_image');
 
-                if ( $market_callout_post ) : 
+                if ( $market_callout_post ) :
                     // override $post
                     $post = $market_callout_post;
                     setup_postdata( $post );?>
@@ -39,20 +40,12 @@ get_header();
                             <?php
                             if( $market_callout_image ) { ?>
                                 <div class="market-icon">
-                                <?php
-                                    // Basic auth for locked WPEngine staging
-                                    $auth = base64_encode("demo:alberici");
-                                    $context = stream_context_create([
-                                        "http" => [
-                                            "header" => "Authorization: Basic $auth"
-                                        ]
-                                    ]);
-                                    echo file_get_contents($market_callout_image, false, $context); ?>
+                                <?php echo file_get_contents(str_replace(home_url(), ".", $market_callout_image)); ?>
                                 </div>
                             <?php } ?>
                                 <h3><?php the_title(); ?></h3>
                                 <?php wp_reset_postdata(); ?>
-                            
+
 					    </a>
                     </div>
 
@@ -70,7 +63,11 @@ get_header();
 			endif;
         ?>
 
-        <?php get_template_part( 'template-parts/footer-callout' );?>
+        <?php if ( $theme_config === 'kienlen') {
+            get_template_part( 'template-parts/kienlen-footer-callout' );
+        } else {
+            get_template_part( 'template-parts/footer-callout' );
+        }?>
 
     </main><!-- #main -->
 </div><!-- #primary -->

@@ -7,6 +7,7 @@
  * @package alberici-hillsdale
  */
 get_header();
+$theme_config = get_field('set_site', 'options');
 ?>
 
 <div id="primary" class="content-area">
@@ -51,8 +52,13 @@ get_header();
             <?php wp_reset_postdata(); ?>
             </div>
         </div>
-        <?php }
-        get_template_part( 'template-parts/footer-callout' );?>
+        <?php } ?>
+
+        <?php if ( $theme_config === 'kienlen') {
+            get_template_part( 'template-parts/kienlen-footer-callout' );
+        } else {
+            get_template_part( 'template-parts/footer-callout' );
+        }?>
 
     </main><!-- #main -->
 </div><!-- #primary -->
