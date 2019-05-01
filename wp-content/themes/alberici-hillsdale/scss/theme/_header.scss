@@ -86,7 +86,7 @@
           flex: 0 1 75%;
         //   transition: $base-transition;
           @include grid-media($headerMenu-min) {
-            max-height: 65px;
+            max-height: 45px;
             flex: 0 1 30%;
           }
           .custom-logo-link {
@@ -96,7 +96,7 @@
             img {
               display: block;
               max-width: 230px;
-              max-height: 65px;
+              max-height: 45px;
             }
             @include grid-media($headerMenu-min) {
               &:hover {
@@ -164,7 +164,7 @@
             }
           }
 
-          
+
         }
     }
 }
@@ -421,7 +421,7 @@
       }
 
     }
-    
+
   }
 }
 
@@ -485,8 +485,7 @@
   &:hover{
     .sub-menu{
       display: block;
-    } 
+    }
   }
 
-}   
-
+}
