@@ -32,5 +32,6 @@ $feat_image_url = wp_get_attachment_url( $FooterCalloutImage );
           <?php endif; ?>
       </div>
   </div>
+  <div class="footer-callout_overlay"></div>
 </div>
 <?php endif; ?>
