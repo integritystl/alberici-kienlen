@@ -34,4 +34,3 @@ $feat_image_url = wp_get_attachment_url( $FooterCalloutImage );
   </div>
 </div>
 <?php endif; ?>
-
