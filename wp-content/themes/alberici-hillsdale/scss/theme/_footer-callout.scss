@@ -23,6 +23,8 @@
 
  .container {
    display: block;
+   position: relative;
+    z-index: 10;
    @include grid-media($medium-min) {
      display: flex;
      flex-flow: row nowrap;
@@ -32,7 +34,7 @@
 
  .footer-callout-content {
     z-index: 1;
-    width: 80%;
+    width: 100%;
      a {
       width: 100%;
    }
