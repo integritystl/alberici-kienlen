@@ -50,16 +50,22 @@ class Ressio_Plugin_FilecacheCleaner extends Ressio_Plugin
         if ($ttl <= 0) {
             $ttl = ini_get('max_execution_time');
         }
-        $aging_time = time() - $ttl;
+
+        $cachecleaner_ttl = min($ttl, 24*60*60); // run daily even for larger TTL
+
+        $now = time();
+        $aging_time = $now - $cachecleaner_ttl;
 
         $lock = $cachedir . '/filecachecleaner.stamp';
         if (!$fs->isFile($lock)) {
+            // create file with $aging_time timestamp to bypass getModificationTime check below
             $fs->touch($lock, $aging_time);
         }
         if (!$filelock->lock($lock)) {
             return;
         }
         if ($fs->getModificationTime($lock) > $aging_time) {
+            // skip if it has just been processed (or is processing) by other script
             $filelock->unlock($lock);
             return;
         }
@@ -67,7 +73,7 @@ class Ressio_Plugin_FilecacheCleaner extends Ressio_Plugin
         $filelock->unlock($lock);
 
         // wait for double ttl to clear cache
-        $aging_time -= $ttl;
+        $aging_time = $now - 2*$ttl;
         $file_list = array();
 
         // @todo remove widow *.lock files ????
@@ -91,7 +97,7 @@ class Ressio_Plugin_FilecacheCleaner extends Ressio_Plugin
                     continue;
                 }
                 $remove_dir = false;
-                list($hash, $group) = explode('_', $file, 2);
+                $group = explode('_', $file, 2)[1];
                 switch ($group) {
                     case 'htmljs':
                         if (preg_match_all('#src="[^">]+[/?]([0-9a-f]+\.js)#', file_get_contents($file_path), $matches)) {

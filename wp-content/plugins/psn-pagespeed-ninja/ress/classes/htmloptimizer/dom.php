@@ -131,28 +131,10 @@ class Ressio_HtmlOptimizer_Dom extends Ressio_HtmlOptimizer_Base
      */
     public function appendScript($file, $attribs = null, $head = true)
     {
+        /** @var Ressio_HtmlOptimizer_Dom_Element $jsNode */
         if ($this->lastAsyncJsNode !== null) {
-            $node = $this->dom->addChild('script');
-            if ($this->doctype !== self::DOCTYPE_HTML5) {
-                $node->setAttribute('type', 'text/javascript');
-            }
-            $node->setAttribute('src', $file);
-            if (is_array($attribs)) {
-                /** @var $attribs array */
-                foreach ($attribs as $name => $value) {
-                    $node->setAttribute($name, $value);
-                }
-            }
-            $this->addJs($node, true);
+            $jsNode = $this->dom->addChild('script');
         } else {
-            /** @var Ressio_HtmlOptimizer_Dom_Element $jsNode */
-            $jsNode = $this->dom->createElement('ressscript');
-            $jsNode->scriptList[] = array(
-                'type' => 'ref',
-                'src' => $file,
-                'async' => isset($attribs['async']),
-                'defer' => isset($attribs['defer'])
-            );
             if (!($head instanceof Ressio_HtmlOptimizer_Dom_Element)) {
                 $injects = $this->dom->getElementsByTagName($head ? 'head' : 'body');
                 $head = $injects->item(0);
@@ -160,9 +142,21 @@ class Ressio_HtmlOptimizer_Dom extends Ressio_HtmlOptimizer_Base
                     $head = $this->dom;
                 }
             }
+            $jsNode = $this->dom->createElement('script');
             $head->addChild($jsNode);
-            $this->lastJsNode = $this->lastAsyncJsNode = $jsNode;
         }
+
+        if ($this->doctype !== self::DOCTYPE_HTML5) {
+            $jsNode->setAttribute('type', 'text/javascript');
+        }
+        $jsNode->setAttribute('src', $file);
+        if (is_array($attribs)) {
+            /** @var $attribs array */
+            foreach ($attribs as $name => $value) {
+                $jsNode->setAttribute($name, $value);
+            }
+        }
+        $this->addJS($jsNode, true);
     }
 
     /**
@@ -172,29 +166,10 @@ class Ressio_HtmlOptimizer_Dom extends Ressio_HtmlOptimizer_Base
      */
     public function appendScriptDeclaration($content, $attribs = null, $head = true)
     {
+        /** @var Ressio_HtmlOptimizer_Dom_Element $jsNode */
         if ($this->lastAsyncJsNode !== null) {
-            /** @var Ressio_HtmlOptimizer_Dom_Element $node */
-            $node = $this->dom->addChild('script');
-            if ($this->doctype !== self::DOCTYPE_HTML5) {
-                $node->setAttribute('type', 'text/javascript');
-            }
-            if (is_array($attribs)) {
-                /** @var $attribs array */
-                foreach ($attribs as $name => $value) {
-                    $node->setAttribute($name, $value);
-                }
-            }
-            $node->textContent = $content;
-            $this->addJs($node, true, true);
+            $jsNode = $this->dom->addChild('script');
         } else {
-            /** @var Ressio_HtmlOptimizer_Dom_Element $jsNode */
-            $jsNode = $this->dom->createElement('ressscript');
-            $jsNode->scriptList[] = array(
-                'type' => 'inline',
-                'script' => $content,
-                'async' => isset($attribs['async']),
-                'defer' => isset($attribs['defer'])
-            );
             if (!($head instanceof Ressio_HtmlOptimizer_Dom_Element)) {
                 $injects = $this->dom->getElementsByTagName($head ? 'head' : 'body');
                 /** @var Ressio_HtmlOptimizer_Dom_Element $head */
@@ -202,11 +177,22 @@ class Ressio_HtmlOptimizer_Dom extends Ressio_HtmlOptimizer_Base
                 if ($head === null) {
                     $head = $this->dom;
                 }
-                $head = $head->lastChild;
             }
-            $head->parentNode->insertBefore($jsNode, $head);
-            $this->lastJsNode = $this->lastAsyncJsNode = $jsNode;
+            $jsNode = $this->dom->createElement('script');
+            $head->addChild($jsNode);
         }
+
+        if ($this->doctype !== self::DOCTYPE_HTML5) {
+            $jsNode->setAttribute('type', 'text/javascript');
+        }
+        if (is_array($attribs)) {
+            /** @var $attribs array */
+            foreach ($attribs as $name => $value) {
+                $jsNode->setAttribute($name, $value);
+            }
+        }
+        $jsNode->textContent = $content;
+        $this->addJs($jsNode, true, true);
     }
 
     /**
@@ -216,37 +202,31 @@ class Ressio_HtmlOptimizer_Dom extends Ressio_HtmlOptimizer_Base
      */
     public function appendStylesheet($file, $attribs = null, $head = true)
     {
+        /** @var Ressio_HtmlOptimizer_Dom_Element $cssNode */
         if ($this->lastCssNode !== null) {
-            /** @var Ressio_HtmlOptimizer_Dom_Element $node */
-            $node = $this->dom->addChild('link');
-
-            if ($this->doctype !== self::DOCTYPE_HTML5) {
-                $node->setAttribute('type', 'text/css');
-            }
-            $node->setAttribute('rel', 'stylesheet');
-            $node->setAttribute('href', $file);
-            if (is_array($attribs)) {
-                /** @var $attribs array */
-                foreach ($attribs as $name => $value) {
-                    $node->setAttribute($name, $value);
-                }
-            }
-            $this->addCss($node);
+            $cssNode = $this->dom->addChild('link');
         } else {
-            /** @var Ressio_HtmlOptimizer_Dom_Element $cssNode */
-            $cssNode = $this->dom->createElement('resscss');
-            $cssNode->styleList[] = array(
-                'type' => 'ref',
-                'src' => $file,
-                'media' => 'all'
-            );
             $injects = $this->dom->getElementsByTagName($head ? 'head' : 'body');
             $head = $injects->item(0);
             if ($head === null) {
                 $head = $this->dom;
             }
+            $cssNode = $this->dom->createElement('link');
             $head->addChild($cssNode);
         }
+
+        if ($this->doctype !== self::DOCTYPE_HTML5) {
+            $cssNode->setAttribute('type', 'text/css');
+        }
+        $cssNode->setAttribute('rel', 'stylesheet');
+        $cssNode->setAttribute('href', $file);
+        if (is_array($attribs)) {
+            /** @var $attribs array */
+            foreach ($attribs as $name => $value) {
+                $cssNode->setAttribute($name, $value);
+            }
+        }
+        $this->addCss($cssNode);
     }
 
     /**
@@ -256,31 +236,10 @@ class Ressio_HtmlOptimizer_Dom extends Ressio_HtmlOptimizer_Base
      */
     public function appendStyleDeclaration($content, $attribs = null, $head = true)
     {
-        if ($this->lastCssNode !== null) {
-            /** @var Ressio_HtmlOptimizer_Dom_Element $node */
-            $node = $this->dom->addChild('style');
-
-            if ($this->doctype !== self::DOCTYPE_HTML5) {
-                $node->setAttribute('type', 'text/css');
-            }
-            if (is_array($attribs)) {
-                /** @var $attribs array */
-                foreach ($attribs as $name => $value) {
-                    $node->setAttribute($name, $value);
-                }
-            }
-
-            $node->textContent = $content;
-            $this->addCss($node, true);
-        } else {
             /** @var Ressio_HtmlOptimizer_Dom_Element $cssNode */
-            $cssNode = $this->dom->createElement('resscss');
-            $cssNode->styleList[] = array(
-                'type' => 'inline',
-                'style' => $content,
-                'media' => 'all'
-            );
-
+        if ($this->lastCssNode !== null) {
+            $cssNode = $this->dom->addChild('style');
+        } else {
             if (!($head instanceof Ressio_HtmlOptimizer_Dom_Element)) {
                 $injects = $this->dom->getElementsByTagName($head ? 'head' : 'body');
                 /** @var Ressio_HtmlOptimizer_Dom_Element $head */
@@ -288,12 +247,22 @@ class Ressio_HtmlOptimizer_Dom extends Ressio_HtmlOptimizer_Base
                 if ($head === null) {
                     $head = $this->dom;
                 }
-                $head = $head->lastChild;
             }
-
-            $head->parentNode->insertBefore($cssNode, $head);
-            //$this->lastCssNode = $cssNode;
+            $cssNode = $this->dom->createElement('style');
+            $head->addChild($cssNode);
         }
+
+        if ($this->doctype !== self::DOCTYPE_HTML5) {
+            $cssNode->setAttribute('type', 'text/css');
+        }
+        if (is_array($attribs)) {
+            /** @var $attribs array */
+            foreach ($attribs as $name => $value) {
+                $cssNode->setAttribute($name, $value);
+            }
+        }
+        $cssNode->textContent = $content;
+        $this->addCss($cssNode, true);
     }
 
     /**
@@ -915,6 +884,9 @@ class Ressio_HtmlOptimizer_Dom extends Ressio_HtmlOptimizer_Base
                         $jsNode = $this->lastAsyncJsNode;
                     } else {
                         $jsNode = $this->dom->createElement('ressscript');
+                        $index = ++$this->jscssIndex;
+                        $jsNode->setAttribute('index', $index);
+                        $this->jscssLists[$index] = array();
                     }
                     $child->appendChild($jsNode);
                     $this->lastJsNode = $this->lastAsyncJsNode = $jsNode;
