@@ -33,6 +33,16 @@ class Ressio_Plugin_NonBlockJS extends Ressio_Plugin
             return;
         }
 
+        // @todo Is this check necessary???
+        if ($node->hasAttribute('src')) {
+            // check against exclusion regex
+            $src = trim($node->getAttribute('src'));
+            $regex = $this->config->js->excludemergeregex;
+            if ($regex !== null && preg_match($regex, $src)) {
+                return;
+            }
+        }
+
         $node->setAttribute('type', 'text/ress');
         if ($node->hasAttribute('src')) {
             $node->setAttribute('ress-src', $node->getAttribute('src'));
@@ -66,7 +76,7 @@ class Ressio_Plugin_NonBlockJS extends Ressio_Plugin
      */
     public function regex_callback($matches)
     {
-        list($content, $attributes) = $matches;
+        $attributes = $matches[1];
 
         if (strpos($attributes, ' type="text/javascript"') !== false) {
             $attributes = str_replace(' type="text/javascript"', ' type="text/ress"', $attributes);

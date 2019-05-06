@@ -88,7 +88,7 @@ class PagespeedNinja_Admin
 
         if (defined('WP_CACHE') && WP_CACHE) {
             // Check caching-related conflicts
-            $active_plugins = apply_filters('active_plugins', get_option('active_plugins'));
+            //$active_plugins = apply_filters('active_plugins', get_option('active_plugins'));
 
             if (!($config['psi_MainResourceServerResponseTime'] && $config['caching'])) {
                 $this->enqueueMessage(__('Note that some PageSpeed Ninja features ("Scale large images" and "Remove IE conditionals") may not be compatible with caching plugin'));

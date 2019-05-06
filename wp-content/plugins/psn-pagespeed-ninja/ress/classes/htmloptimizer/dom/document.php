@@ -60,10 +60,15 @@ class Ressio_HtmlOptimizer_Dom_Document extends DOMDocument
     {
         // fix non-utf-8 characters
         $source = preg_replace('#(?<=[\x00-\x7F]|[\xC0-\xDF][\x80-\xBF]|[\xE0-\xEF][\x80-\xBF]{2}|[\xF0-\xF7][\x80-\xBF]{3})[\x80-\xBF]#S', "\xC0\\0", $source);
-        // fix new html5 self closing tags
-        $source = preg_replace('#<((command|keygen|source|track|wbr)\b[^>]*)/?>(?:</\2>)?#i', '<\1></\2>', $source);
-        // keep <![if ...]> and <![endif]> by converting to comments
-        $source = preg_replace('#<(!\[(?:if\s.*?|endif)\])>#is', '<!--!RESS\1-->', $source);
+
+        // workaround for non-html4 tags
+        if (preg_match('#<(?:!|command|keygen|source|track|wbr)#', $source)) {
+            // @todo pre-extract <script> and <style> tags
+            // fix html5 self closing tags
+            $source = preg_replace('#<((command|keygen|source|track|wbr)\b[^>]*)/?>(?:</\2>)?#i', '<\1></\2>', $source);
+            // keep IE's <![if ...]> and <![endif]> by converting to comments
+            $source = preg_replace('#<(!\[(?:if\s.*?|endif)\])>#is', '<!--!RESS\1-->', $source);
+        }
 
         $xml_errors = libxml_use_internal_errors(true);
         $xml_entityloader = libxml_disable_entity_loader();

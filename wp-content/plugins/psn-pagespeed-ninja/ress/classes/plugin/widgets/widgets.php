@@ -87,6 +87,13 @@ class Ressio_Plugin_Widgets extends Ressio_Plugin
             if (($pos = strpos($src, '//')) === false) {
                 return;
             }
+
+            // check against excludemergeregex
+            $regex = $this->config->js->excludemergeregex;
+            if ($regex !== null && preg_match($regex, $src)) {
+                return;
+            }
+
             $protocol = substr($src, 0, $pos);
             if (!isset($this->protocols[strtolower($protocol)])) {
                 return;

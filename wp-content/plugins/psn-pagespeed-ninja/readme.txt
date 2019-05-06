@@ -3,8 +3,8 @@
 Contributors: pagespeed
 Tags: page speed, optimizer, minification, gzip, render blocking css
 Requires at least: 4.0.1
-Tested up to: 5.1
-Stable tag: 0.9.37
+Tested up to: 5.2
+Stable tag: 0.9.38
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 
@@ -80,6 +80,18 @@ None
 
 
 == Changelog ==
+
+= 0.9.38 Beta Release [30 April 2019]
+- Fixed issue with exclusion of JavaScript files
+- Fixed issue with priority of template_redirect action handler (resulted in conflict with Smart Slider 3)
+- Fixed issue with processing of AJAX requests
+- Fixed issue with page caching for logged users
+- Fixed issue with file cache cleaner in the case of large time-to-live value
+- Fixed work of "Configure the viewport" setting
+- Fixed work of libxml-based HTML optimizer
+- Added new setting to enable/disable optimization for logged users
+- Added file exclusion in "Non-blocking Javascript", "Optimize integrations", "Load external stylesheets", and "Load external scripts"
+- Registering of new WP images sizes is applied to the "Fit" image rescaling method only
 
 = 0.9.37 Beta Release [12 February 2019]
 - Fixed issue with Distribute Method: PHP
