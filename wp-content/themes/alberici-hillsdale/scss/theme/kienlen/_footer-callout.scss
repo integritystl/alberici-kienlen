@@ -1,4 +1,4 @@
-  
+
 .alberici-kienlen {
   .home .footer-callout {
     background: white;
@@ -19,6 +19,7 @@
 
    .container {
      display: block;
+     position: unset;
      @include grid-media($medium-min) {
        display: flex;
        flex-flow: row nowrap;
