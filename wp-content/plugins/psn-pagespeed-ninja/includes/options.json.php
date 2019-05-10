@@ -3,6 +3,17 @@
     "title": "<?php _e('General'); ?>",
     "items": [
       {
+        "name": "enablelogged",
+        "title": "<?php _e('Enable for Logged Users'); ?>",
+        "tooltip": "<?php _e('It\'s possible to enable optimization of pages for logged users too. Note that in this case page cache is disabled and other optimizations (HTML, styles, scripts, images) are enabled.'); ?>",
+        "type": "checkbox",
+        "default": 0,
+        "presets": {
+          "ultra": 1,
+          "experimental": 1
+        }
+      },
+      {
         "name": "htmloptimizer",
         "title": "<?php _e('HTML Parser'); ?>",
         "tooltip": "<?php _e('Choose between performance and optimal HTML code: Switch to a new libxml HTML parser or fast page optimizer with full JavaScript, CSS, and images optimization, but with limited subset of HTML optimizations (only supporting the removal of HTML comments and IE conditional comments).'); ?>",

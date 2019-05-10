@@ -125,7 +125,8 @@ class PagespeedNinja_Public
             || defined('DOING_AJAX') || defined('DOING_CRON')
             || defined('WP_ADMIN') || defined('WP_INSTALLING')
             || (defined('SHORTINIT') && SHORTINIT)
-            || (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] !== 'GET')
+            || (!isset($_SERVER['REQUEST_METHOD']) || $_SERVER['REQUEST_METHOD'] !== 'GET')
+            || isset($_SERVER['HTTP_X_REQUESTED_WITH'])
             || isset($_GET['preview'])
             || isset($_GET['wp_scrape_key'])
             || isset($_GET['fl_builder']) || isset($_GET['mbuilder'])
@@ -212,11 +213,16 @@ class PagespeedNinja_Public
         /** @var array $options */
         $options = get_option('pagespeedninja_config');
 
+        // skip logged users
+        if (!(bool)$options['enablelogged'] && is_user_logged_in()) {
+            return false;
+        }
+
         if ($this->testKey) {
             $filename = dirname(dirname(__FILE__)) . '/admin/sessions/' . $this->testKey;
             if (is_file($filename)) {
                 $override = file_get_contents($filename);
-                $override = json_decode($override);
+                $override = json_decode($override, true);
                 foreach ($override as $name => $value) {
                     $options[$name] = $value;
                 }
@@ -246,7 +252,7 @@ class PagespeedNinja_Public
 
         $js_excludemergeregex = null;
         if (!empty($options['js_excludelist_prepared'])) {
-            $js_excludemergeregex = explode("\n", trim($options['js_excludelist_prepared']));
+            $js_excludemergeregex = $options['js_excludelist_prepared'];
         }
 
         $ress_options = self::$disabledOptions;
@@ -268,9 +274,9 @@ class PagespeedNinja_Public
             'fileloaderphppath' => rtrim(ABSPATH, '/') . $options['staticdir'] . '/f.php',
         ));
 
-        $ttl = (int)$options['ress_caching_ttl'] * 60;
-        $ress_options['cachettl'] = max(24 * 60 * 60, $ttl);
         if (!is_user_logged_in()) {
+            $ttl = (int)$options['ress_caching_ttl'] * 60;
+            $ress_options['cachettl'] = max(24 * 60 * 60, $ttl);
             Ressio_Helper::setHeader('Expires: ' . gmdate('D, d M Y H:i:s', time() + $ttl) . ' GMT');
             Ressio_Helper::setHeader('Cache-Control: private, must-revalidate, max-age=' . $ttl);
         }
@@ -544,7 +550,7 @@ class PagespeedNinja_Public
     {
         $width = $this->viewportWidth === '0' ? 'device-width' : $this->viewportWidth;
         $optimizer->prependHead(
-            array('meta', array('name' => 'viewport', 'content' => 'width=' . $width), false)
+            array('meta', array('name' => 'viewport', 'content' => 'width=' . $width . ', initial-scale=1'), false)
         );
     }
 

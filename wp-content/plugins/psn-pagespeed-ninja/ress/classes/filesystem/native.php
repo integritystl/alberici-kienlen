@@ -59,6 +59,10 @@ class Ressio_Filesystem_Native implements IRessio_Filesystem
     {
         $size = strlen($content);
         $dir = dirname($filename);
+
+        // inherit permissions for new files
+        $mode = file_exists($filename) ? @fileperms($filename) : (@fileperms($dir) & 0666);
+
         $return = true;
         // save to a temporary file and do atomic update via rename
         $tmp = tempnam($dir, basename($filename));
@@ -70,8 +74,8 @@ class Ressio_Filesystem_Native implements IRessio_Filesystem
             @unlink($tmp);
             $return = (file_put_contents($filename, $content, LOCK_EX) === $size);
         }
-        // inherit permissions
-        return @chmod($filename, @fileperms($dir) & 0666) && $return;
+
+        return @chmod($filename, $mode) && $return;
     }
 
     /**

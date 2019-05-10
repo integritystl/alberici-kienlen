@@ -278,7 +278,7 @@ class Ressio_HtmlOptimizer_Stream extends Ressio_HtmlOptimizer_Base
             $start = $matches[0][1];
             $tag = substr($buffer, $pos, $start - $pos);
             $this->dom[] = $tag;
-            if (strpos($tag, '<')) {
+            if (strpos($tag, '<') !== false) {
                 $this->breakJs();
             }
 

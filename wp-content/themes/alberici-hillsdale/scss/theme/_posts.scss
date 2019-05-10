@@ -161,6 +161,7 @@
   .card-post {
     position: relative;
     padding: 0;
+    overflow: hidden;
 
     &:hover {
       .card-overlay {
@@ -174,8 +175,9 @@
     }
     img {
       z-index: 0;
-      min-height: auto;
       display: block;
+      min-height: 100%;
+
     }
     a {
       padding: 25px 20px;

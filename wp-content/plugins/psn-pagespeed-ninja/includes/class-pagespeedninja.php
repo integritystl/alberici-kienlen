@@ -20,7 +20,7 @@ class PagespeedNinja
     public function __construct() {
         $this->plugin_name     = 'pagespeedninja';
         $this->plugin_slug     = 'psn-pagespeed-ninja';
-        $this->version         = '0.9.37';
+        $this->version         = '0.9.38';
         $this->plugin_dir_path = plugin_dir_path(dirname(__FILE__));
     }
 
@@ -61,7 +61,6 @@ class PagespeedNinja
         add_action('plugins_loaded', array($this, 'init'));
 
         $this->set_locale();
-        $this->add_image_sizes();
         $this->define_cache_hooks();
         if (is_admin()) {
             $this->define_admin_hooks();
@@ -78,6 +77,10 @@ class PagespeedNinja
             version_compare($this->options['version'], $this->get_version(), '<')
         ) {
             $this->update_config();
+        }
+
+        if ($this->options['img_scaletype'] === 'fit') {
+            $this->add_image_sizes();
         }
     }
 
@@ -244,9 +247,9 @@ class PagespeedNinja
         require_once $this->plugin_dir_path . 'public/class-pagespeedninja-public.php';
         $plugin_public = new PagespeedNinja_Public($this->get_plugin_name(), $this->get_version());
 
-        // start buffering [note: some plugins run ob_start() at default priority (10) to do some replacements further,
-        //                        others use priority=1 to detect AMP (e.g. Better AMP)]
-        add_action('template_redirect', array($plugin_public, 'template_redirect'), 2);
+        // Smart Slider 3: priority=-100
+        // Better AMP: priority=2 (redirect to AMP)
+        add_action('template_redirect', array($plugin_public, 'template_redirect'), -150);
 
         add_filter('wp_cache_meta', array($plugin_public, 'wp_cache_meta'));
         add_action('wp_footer', array($plugin_public, 'wp_footer'), 100);

@@ -77,7 +77,14 @@ $theme_config = get_field('set_site', 'options');
 			</div>
 			<?php endif; ?>
 		<?php } ?>
+
+		<?php if ( $theme_config === 'kienlen') { ?>
 			<?php get_template_part( 'template-parts/kienlen-footer-callout' ); ?>
+		<?php } else { ?>
+
+			<?php get_template_part( 'template-parts/footer-callout' ); ?>
+
+		<?php } ?>
 		</main><!-- #main -->
 	</div><!-- #primary -->
 
