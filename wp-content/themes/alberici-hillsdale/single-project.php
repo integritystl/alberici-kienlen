@@ -10,6 +10,7 @@
 get_header();
 $HeroImage = get_field('general_hero_featured_image');
 $projectIntro = get_field('project_intro');
+$theme_config = get_field('set_site', 'options');
 ?>
 
 <div id="primary" class="content-area">
@@ -102,11 +103,13 @@ $projectIntro = get_field('project_intro');
 			get_template_part( 'template-parts/content', 'none' );
 		endif; ?>
 
-            <?php if ( $theme_config === 'kienlen') {
-                get_template_part( 'template-parts/kienlen-footer-callout' );
-            } else {
-                get_template_part( 'template-parts/footer-callout' );
-            }?>
+		<?php if ( $theme_config === 'kienlen') {
+				get_template_part( 'template-parts/kienlen-footer-callout' );
+		} else {
+				get_template_part( 'template-parts/footer-callout' );
+		}?>
+
+
 	</main><!-- #main -->
 </div><!-- #primary -->
 

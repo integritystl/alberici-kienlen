@@ -998,6 +998,14 @@ class ACFTemplateFields
       				'value' => 'market',
       			),
       		),
+
+          array(
+            array(
+              'param' => 'post_type',
+              'operator' => '==',
+              'value' => 'project',
+            ),
+          ),
       	),
 				'menu_order' => 0,
 				'position' => 'normal',
