@@ -1,17 +1,26 @@
 .market-detail {
     display: block;
-    .post-thumbnail img {
-            height: auto;
+    .post-thumbnail {
+
+      img {
+              height: auto;
+      }
     }
     .market-content {
         margin: 0 20px;
     }
     @include grid-media($medium-min) {
         display: flex;
-        margin: 4% 10%;
+        margin: 80px 10%;
+        .post-thumbnail {
+          width: 50%;
+          flex: 100%;
+          padding-right: 50px;
+        }
         .market-content {
-            margin: 1.5% 10% 0 50px;
+            margin: 0 auto;
             width: calc(97.33% - 9.33333px);
+            max-width: 940px;
         }
     }
 }
@@ -26,6 +35,31 @@
         padding-bottom: 60px;
     }
 
+    .blog-content_posts {
+        display: block;
+        .card-post {
+          margin-bottom: 20px;
+          &:last-of-type {
+            margin-bottom: 0;
+          }
+        }
+        @include grid-media($medium-min) {
+          display: flex;
+          justify-content: center;
+          .card-post {
+            flex-basis: 33%;
+            margin: 0 10px;
+            &:first-of-type {
+              margin-left: 0px;
+            }
+            &:last-of-type {
+              margin-right: 0px;
+            }
+          }
+        }
+
+    }
+
     h2 {
         color: $blue;
     }
@@ -38,8 +72,9 @@
         margin-left: 0;
         min-width: 100%;
         @include grid-media($small-min) {
-            margin-left: 29%;
+            margin: 0 auto;
             min-width: 400px;
+            display: table;
         }
     }
 }
