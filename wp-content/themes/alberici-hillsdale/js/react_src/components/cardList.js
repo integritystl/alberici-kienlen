@@ -1,5 +1,6 @@
 // I hold API calls and junk
 import React from 'react';
+import {fetch as fetchPolyfill} from 'whatwg-fetch'
 
 import FilterBar from './filterbar';
 import CardGroup from './card_group';

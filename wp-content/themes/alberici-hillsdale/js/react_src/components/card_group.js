@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {fetch as fetchPolyfill} from 'whatwg-fetch'
 
 // components
 import Card from './card';

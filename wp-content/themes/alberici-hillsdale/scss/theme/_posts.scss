@@ -54,6 +54,7 @@
       grid-row-end: 2;
       display: block;
       align-items: center;
+      -ms-grid-column:1;
       @include grid-media($small-min) {
         display: flex;
       }
@@ -114,16 +115,23 @@
 
 .blog-content_posts {
   @extend .grid-container;
+   -ms-grid-rows: auto;
 
   .post {
     padding: 10px;
     grid-column: span 12;
+    -ms-grid-column-span: 12;
+
     @include grid-media($small-min) {
       grid-column: span 6;
+        -ms-grid-column-span: 6;
+
     }
 
     @include grid-media($medium-min) {
       grid-column: span 4;
+        -ms-grid-column-span: 4;
+
     }
 
     // Have to be more specific because IE11 has no AutoPlacement with CSS Grid
@@ -140,7 +148,6 @@
         -ms-grid-column-span: 4;
       }
     }
-
     a {
       @extend .inverse-link;
     }
@@ -203,4 +210,38 @@
   .no-results {
     grid-column: 3 / span 8;
   }
+}
+
+@media all and (-ms-high-contrast:none) {
+     .blog-content_posts {
+       display: flex;
+       flex-flow: row wrap;
+       justify-content: flex-start;
+       .post {
+         width: calc(33.33% - 20px);
+         margin: 0 10px 20px;
+       }
+     }
+}
+@media all and (-ms-high-contrast:none) {
+  .filterbar {
+    display: flex!important;
+    flex-flow: row wrap;
+    justify-content: space-between;
+
+    input,
+    .select {
+      width: calc(33.33% - 20px);
+      margin: 0 10px 20px!important;
+
+    }
+    .filter-info {
+      width: 100%;
+    }
+  }
+}
+
+@supports not (display: grid) {
+
+
 }
