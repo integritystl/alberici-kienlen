@@ -40,9 +40,10 @@
    }
     .footer-callout-white-wrapper{
       display: inline-block;
-      background: white;
-      padding: 1em;
+      //background: white;
+      //padding: 1em;
       width:100%;
+      color: white;
     }
    @include grid-media($medium-min) {
       width: 50%;

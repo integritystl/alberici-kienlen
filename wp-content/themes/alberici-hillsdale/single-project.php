@@ -30,16 +30,6 @@ $theme_config = get_field('set_site', 'options');
 									$location_taxonomy = $location_term[0]->name; ?>
 									<p class="project-location"><?php echo $location_taxonomy; ?></p>
 								<?php endif; ?>
-
-									<?php
-									$market_term = get_the_terms( get_the_ID(), 'market_category' );
-									if ( $market_term && ! is_wp_error( $market_term ) ) {
-										$market_taxonomy = $market_term[0]->name; ?>
-										<div class="market-link">
-											<?php echo $market_taxonomy; ?>
-										</div>
-									<?php } ?>
-
 							</div>
 						</div>
 						<div class="project-info">
