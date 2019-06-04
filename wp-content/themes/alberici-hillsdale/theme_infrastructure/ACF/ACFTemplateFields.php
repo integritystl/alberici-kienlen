@@ -1051,7 +1051,7 @@ class ACFTemplateFields
 					'key' => 'field_5b72e8e611837',
 					'label' => 'Content',
 					'name' => 'jobs_callout_content',
-					'type' => 'textarea',
+					'type' => 'wysiwyg',
 					'instructions' => '',
 					'required' => 0,
 					'conditional_logic' => 0,
