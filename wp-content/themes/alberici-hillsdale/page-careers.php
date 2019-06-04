@@ -30,8 +30,10 @@ $theme_config = get_field('set_site', 'options');
 
             <div class="job-callout container">
                 <div class="callout-content">
-                    <h2><?php echo $jobsCalloutHeader; ?></h2>
-                    <p><?php echo $jobsCalloutContent; ?></p>
+                    <?php if ($jobsCalloutHeader) :?>
+											<h2><?php echo $jobsCalloutHeader; ?></h2>
+										<?php endif; ?>
+                    <?php echo $jobsCalloutContent; ?>
                     <?php if ($jobsCalloutLink): ?>
                         <a class="btn" href="<?php echo $jobsCalloutLink; ?>">View Job Posts</a>
                     <?php endif;?>
@@ -46,10 +48,10 @@ $theme_config = get_field('set_site', 'options');
                     endwhile;
                 endif;
             ?>
-            <?php if ( $theme_config === 'kienlen') { 
+            <?php if ( $theme_config === 'kienlen') {
                 get_template_part( 'template-parts/kienlen-footer-callout' );
             } else {
-                get_template_part( 'template-parts/footer-callout' ); 
+                get_template_part( 'template-parts/footer-callout' );
             }?>
 
 
