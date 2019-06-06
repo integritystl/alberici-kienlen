@@ -4,7 +4,7 @@ Plugin Name: Metronet Tag Manager
 Plugin URI: https://wordpress.org/plugins/metronet-profile-picture/
 Description: Add Google Tag Manager tracking and declare Data Layer variables
 Author: Ronald Huereca
-Version: 1.5.1
+Version: 1.5.2
 Requires at least: 4.2
 Author URI: https://mediaron.com
 Text Domain: metronet-tag-manager
@@ -28,8 +28,10 @@ class Metronet_Tag_Manager {
 	private function __construct() {
 		add_action( 'init', array( $this, 'init' ) );
 		$this->admin_options = $this->get_admin_options();
-		include_once Metronet_Tag_Manager::get_plugin_dir('/gutenberg/class-gutenberg.php');
-		new Metronet_Tag_Manager_Gutenberg();
+		if ( 'on' === $this->admin_options['enable_gutenberg'] ) {
+			include_once Metronet_Tag_Manager::get_plugin_dir('/gutenberg/class-gutenberg.php');
+			new Metronet_Tag_Manager_Gutenberg();
+		}
 
 	} //end construct
 
@@ -93,6 +95,9 @@ class Metronet_Tag_Manager {
 		$post_date = get_post_field( 'post_date', $post_id );
 		return $post_date;
 	} //end filter_post_date
+	public function filter_post_type( $total_match, $match, $post_id ) {
+		return get_post_type();
+	} //end filter_post_date
 
 	private function get_admin_options() {
 		if ( empty( $this->admin_options ) ) {
@@ -100,10 +105,10 @@ class Metronet_Tag_Manager {
 
 
 			$options = $this->is_multisite() ? get_site_option( 'metronet_tag_manager' ) : get_option( 'metronet_tag_manager' ) ;
-			if ( !$options ) $options = array();
-			if ( !empty( $options ) ) {
+			if ( ! $options ) $options = array();
+			if ( ! empty( $options ) ) {
 				foreach ( $options as $key => $option ) {
-					if (array_key_exists( $key, $admin_options ) ) {
+					if ( array_key_exists( $key, $admin_options ) ) {
 						$admin_options[$key] = $option;
 					}
 				} //end foreach $options
@@ -119,35 +124,42 @@ class Metronet_Tag_Manager {
 
 	private function get_default_options() {
 		$defaults = array(
-			'code' => '',
+			'code'      => '',
 			'code_head' => '',
 			'variables' => array(
 				0 => array(
-					'name' => 'title',
+					'name'  => 'title',
 					'value' => '%post_title%',
 				),
 				1 => array(
-					'name' => 'author',
+					'name'  => 'author',
 					'value' => '%author_name%',
 				),
 				2 => array(
-					'name' => 'wordcount',
+					'name'  => 'wordcount',
 					'value' => '%wordcount%',
 				),
 				3 => array(
-					'name' => 'logged_in',
+					'name'  => 'logged_in',
 					'value' => '%logged_in%',
 				),
 				4 => array(
-					'name' => 'page_id',
+					'name'  => 'page_id',
 					'value' => '%page_id%',
 				),
 				5 => array(
-					'name' => 'post_date',
+					'name'  => 'post_date',
 					'value' => '%post_date%',
+				),
+				6 => array(
+					'name'  => 'post_type',
+					'value' => '%post_type%',
 				)
 			),
-			'external_variables' => array()
+			'external_variables' => array(),
+			'is_post_enabled'    => 'on',
+			'enable_tiny_mce'    => 'on',
+			'enable_gutenberg'   => 'on'
 		);
 		return $defaults;
 	} //end get_default_options
@@ -213,6 +225,10 @@ class Metronet_Tag_Manager {
 	*
 	*/
 	public function init() {
+
+		// Get admin options
+		$this->admin_options = $this->get_admin_options();
+
 		//* Localization Code */
 		load_plugin_textdomain( 'metronet-tag-manager', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 
@@ -234,13 +250,17 @@ class Metronet_Tag_Manager {
 		add_action( 'admin_print_scripts-post.php', array( $this, 'print_scripts_settings' ) );
 		add_action( 'admin_print_scripts-post-new.php', array( $this, 'print_scripts_settings' ) );
 
-		//Plugin meta box
-		add_action( 'add_meta_boxes', array( $this, 'meta_box_init' ), 10, 1 );
 
-		//Save post hook for the metabox variables
-		add_action( 'save_post', array( $this, 'meta_box_save' ), 10, 1 );
+		if ( 'on' === $this->admin_options['is_post_enabled'] ) {
+			//Plugin meta box
+			add_action( 'add_meta_boxes', array( $this, 'meta_box_init' ), 10, 1 );
 
-		//Load GTM in the Footer (or header if they have the do_action( 'body_open' ) functionality
+			//Save post hook for the metabox variables
+			add_action( 'save_post', array( $this, 'meta_box_save' ), 10, 1 );
+		}
+
+
+		//Load GTM in the Footer (or header if they have the do_action( 'body_open' ) or use `wp_body_open` if user is using 5.2 and up functionality
 		add_action( 'wp_head', array( $this, 'output_tag_manager_head' ), 1 );
 		add_action( 'wp_body_open', array( $this, 'output_tag_manager_body' ) );
 		add_action( 'body_open', array( $this, 'output_tag_manager_body' ) );
@@ -253,16 +273,19 @@ class Metronet_Tag_Manager {
 		add_filter( 'gtm_logged_in', array( $this, 'filter_logged_in' ), 9, 3 );
 		add_filter( 'gtm_page_id', array( $this, 'filter_page_id' ), 9, 3 );
 		add_filter( 'gtm_post_date', array( $this, 'filter_post_date' ), 9, 3 );
+		add_filter( 'gtm_post_type', array( $this, 'filter_post_type' ), 9, 3 );
 
 		//TinyMCE Addition
 		if ( ( current_user_can('edit_posts') || current_user_can('edit_pages') ) && get_user_option('rich_editing') ) {
-			// Register addicional attribue for A tag
-			add_filter('tiny_mce_before_init', array( $this, 'tinymce_options'  ) );
+			if ( 'on' === $this->admin_options['enable_tiny_mce'] ) {
+				// Register addicional attribue for A tag
+				add_filter('tiny_mce_before_init', array( $this, 'tinymce_options'  ) );
 
-			add_filter('mce_external_plugins', array( $this, 'tinymce_add_metro_gtm_tinymce_plugin' ) );
-			add_filter('mce_buttons', array( $this, 'tinymce_register_metro_gtm_button' ) );
+				add_filter('mce_external_plugins', array( $this, 'tinymce_add_metro_gtm_tinymce_plugin' ) );
+				add_filter('mce_buttons', array( $this, 'tinymce_register_metro_gtm_button' ) );
 
-			add_action( 'wp_ajax_mtm_addparams', array( $this, 'ajax_tinymce_popup' ) );
+				add_action( 'wp_ajax_mtm_addparams', array( $this, 'ajax_tinymce_popup' ) );
+			}
 		}
 	} //end init
 
@@ -347,6 +370,7 @@ class Metronet_Tag_Manager {
 				$data_layer_array[ $vars[ 'name' ] ] = esc_js( $vars[ 'value' ] );
 			}
 		} else {
+
 			//Output DataLayer variables only if on a single post or page
 			global $post;
 			$post_id = $post->ID;
@@ -356,12 +380,14 @@ class Metronet_Tag_Manager {
 			foreach( $gtm_vars as $index => $vars ) {
 				$data_layer_array[ $vars[ 'name' ] ] = esc_js( $vars[ 'value' ] );
 			}
+			if ( 'on' === $this->admin_options['is_post_enabled'] ) {
 
-			//Retrieve per-post options and store to same array, overwriting the global options
-			$post_gtm_vars = get_post_meta( $post_id, '_gtm_vars', true );
-			if ( is_array( $post_gtm_vars ) ) {
-				foreach( $post_gtm_vars as $index => $vars ) {
-					$data_layer_array[ $vars[ 'name' ] ] = esc_js( $vars[ 'value' ] );
+				//Retrieve per-post options and store to same array, overwriting the global options
+				$post_gtm_vars = get_post_meta( $post_id, '_gtm_vars', true );
+				if ( is_array( $post_gtm_vars ) ) {
+					foreach( $post_gtm_vars as $index => $vars ) {
+						$data_layer_array[ $vars[ 'name' ] ] = esc_js( $vars[ 'value' ] );
+					}
 				}
 			}
 		}
@@ -601,71 +627,78 @@ class Metronet_Tag_Manager {
 				//A little early, but who cares?
 				echo sprintf( '<div class="updated"><p><strong>%s</strong></p></div>', esc_html__( 'Settings saved', 'metronet-tag-manager' ) );
 			}
-		}
-		if ( isset( $_POST[ 'reset' ] ) ) {
-			$this->admin_options = $this->get_default_options();
-			$this->save_admin_options();
-		} elseif ( isset( $_POST[ 'submit' ] ) ) {
 
-			//Format the GTM Code for saving
-			add_filter( 'safe_style_css', array( $this, 'safe_css' ) );
-			$allowed_tags = array(
-				'iframe'   => array(
-					'src'    => true,
-					'style'  => true,
-					'width'  => true,
-					'height' => true,
-				),
-				'noscript' => array(
-				),
-				'script'   => array(
-					'data-cfasync' => true
-				),
-				'style' => array(
+			if ( isset( $_POST['reset'] ) ) {
+				$this->admin_options = $this->get_default_options();
+				$this->save_admin_options();
+			} elseif ( isset( $_POST['submit'] ) ) {
 
-				)
-			);
-			$gtm_code = $_POST[ 'gtm-code' ];
-			$gtm_code_head = $_POST[ 'gtm-code-head' ];
-			$gtm_code_head = wp_kses( $gtm_code_head, $allowed_tags );
-			$gtm_code_head = str_replace( '&amp;', '&', $gtm_code_head );
-			$gtm_code = wp_kses( $gtm_code, $allowed_tags );
-			$gtm_code = str_replace( '&amp;', '&', $gtm_code );
-			remove_filter( 'safe_style_css', array( $this, 'safe_css' ) );
-			$this->admin_options[ 'code' ] = $gtm_code;
-			$this->admin_options[ 'code_head' ] = $gtm_code_head;
+				//Format the GTM Code for saving
+				add_filter( 'safe_style_css', array( $this, 'safe_css' ) );
+				$allowed_tags = array(
+					'iframe'   => array(
+						'src'    => true,
+						'style'  => true,
+						'width'  => true,
+						'height' => true,
+					),
+					'noscript' => array(
+					),
+					'script'   => array(
+						'data-cfasync' => true
+					),
+					'style' => array(
 
-			//Save the regular post/post type variables
-			$variable_array = array();
-			if ( isset( $_POST[ 'tag_manager' ] ) && !empty( $_POST[ 'tag_manager' ] ) ) {
-				foreach( $_POST[ 'tag_manager' ] as $variable ) {
-					$name = $this->sanitize_variable_name( $variable[ 'name' ] );
-					$value = $this->sanitize_value( $variable[ 'value' ] );
-					$variable_array[] = array(
-						'name' => $name,
-						'value' => $value
-					);
+					)
+				);
+				$gtm_code = $_POST[ 'gtm-code' ];
+				$gtm_code_head = $_POST[ 'gtm-code-head' ];
+				$gtm_code_head = wp_kses( $gtm_code_head, $allowed_tags );
+				$gtm_code_head = str_replace( '&amp;', '&', $gtm_code_head );
+				$gtm_code = wp_kses( $gtm_code, $allowed_tags );
+				$gtm_code = str_replace( '&amp;', '&', $gtm_code );
+				remove_filter( 'safe_style_css', array( $this, 'safe_css' ) );
+				$this->admin_options[ 'code' ] = $gtm_code;
+				$this->admin_options[ 'code_head' ] = $gtm_code_head;
+
+				//Save the regular post/post type variables
+				$variable_array = array();
+				if ( isset( $_POST[ 'tag_manager' ] ) && !empty( $_POST[ 'tag_manager' ] ) ) {
+					foreach( $_POST[ 'tag_manager' ] as $variable ) {
+						$name = $this->sanitize_variable_name( $variable[ 'name' ] );
+						$value = $this->sanitize_value( $variable[ 'value' ] );
+						$variable_array[] = array(
+							'name' => $name,
+							'value' => $value
+						);
+					}
 				}
-			}
-			$this->admin_options[ 'variables' ] = $variable_array;
+				$this->admin_options[ 'variables' ] = $variable_array;
 
-			//Save the external variables (used on home, archive templates)
-			$external_variable_array = array();
-			if ( isset( $_POST[ 'external_tag_manager' ] ) && !empty( $_POST[ 'external_tag_manager' ] ) ) {
-				foreach( $_POST[ 'external_tag_manager' ] as $variable ) {
-					$name = $this->sanitize_variable_name( $variable[ 'name' ] );
-					$value = $this->sanitize_value( $variable[ 'value' ] );
-					$external_variable_array[] = array(
-						'name' => $name,
-						'value' => $value
-					);
+				//Save the external variables (used on home, archive templates)
+				$external_variable_array = array();
+				if ( isset( $_POST[ 'external_tag_manager' ] ) && !empty( $_POST[ 'external_tag_manager' ] ) ) {
+					foreach( $_POST[ 'external_tag_manager' ] as $variable ) {
+						$name = $this->sanitize_variable_name( $variable[ 'name' ] );
+						$value = $this->sanitize_value( $variable[ 'value' ] );
+						$external_variable_array[] = array(
+							'name' => $name,
+							'value' => $value
+						);
+					}
 				}
-			}
-			$this->admin_options[ 'external_variables' ] = $external_variable_array;
+				$this->admin_options[ 'external_variables' ] = $external_variable_array;
 
-			//Save the admin options
-			$this->save_admin_options();
+				// Save the other options
+				$this->admin_options['is_post_enabled'] = sanitize_text_field( wp_unslash( $_POST['is_post_enabled'] ) );
+				$this->admin_options['enable_tiny_mce'] = sanitize_text_field( wp_unslash( $_POST['enable_tiny_mce'] ) );
+				$this->admin_options['enable_gutenberg'] = sanitize_text_field( wp_unslash( $_POST['enable_gutenberg'] ) );
+
+				//Save the admin options
+				$this->save_admin_options();
+			}
 		}
+
 
 		$gtm_code = $this->admin_options[ 'code' ];
 		$gtm_code_head = $this->admin_options[ 'code_head' ];
@@ -682,7 +715,7 @@ class Metronet_Tag_Manager {
 		$user_id = $current_user->ID;
 		if ( !get_user_meta( $user_id, 'gtm_body_notice', true ) ) {
 			echo '<div class="updated"><p>';
-			esc_html_e( "Google recommends that the Google Tag Manager script is loaded straight after the opening <body> tag. For this to work, you will need to add the following piece of code into your template file just after the <body> tag: <?php do_action( 'body_open' ); ?> . Otherwise the GMT script will be added at the bottom of your site and might not track the way you want it to.", 'metronet-tag-manager' );
+			esc_html_e( "Google recommends that the Google Tag Manager script is loaded straight after the opening <body> tag. For this to work, you will need to add the following piece of code into your template file just after the <body> tag: <?php do_action( 'body_open' ); ?> . Otherwise the GMT script will be added at the bottom of your site and might not track the way you want it to. For WordPress 5.2 and up, it is recommended to use <?php wp_body_open(); ?> straight after the body tag.", 'metronet-tag-manager' );
 			echo '&nbsp;';
 			printf( '<a href="%s">%s</a>', esc_url( 'https://developers.google.com/tag-manager/quickstart' ), esc_html__( 'View the Quickstart Guide', 'metronet-tag-manager' ) );
 			echo '</p></div>';
@@ -713,6 +746,14 @@ class Metronet_Tag_Manager {
 					<p><?php esc_html_e( 'Add global variables that will show on all pages except posts, pages, or custom post types.', 'metronet-tag-manager' ); ?></p>
 					<p><?php printf( '%s <a href="%s">%s</a>.', esc_html__( 'To see some examples, please visit the', 'metronet-tag-manager' ), esc_url( 'https://developers.google.com/tag-manager/reference' ), esc_html__( 'Google Tag Manager Reference', 'metronet-tag-manager' ) );?></p>
 					<?php $this->output_variables_to_edit( $gtm_external_vars, 'external_tag_manager' ); ?>
+				</td>
+			</tr>
+			<tr valign="top">
+				<th scope="row"><?php esc_html_e( 'Other Options', 'metronet-tag-manager' ); ?></th>
+				<td>
+					<p><input type="hidden" value="off" name="is_post_enabled" /><label><input type="checkbox" name="is_post_enabled" value="on" <?php checked( $this->admin_options['is_post_enabled'], 'on' ); ?> /> <?php esc_html_e( 'Enable data layer variables on post types?', 'metronet-tag-manager' ); ?></label></p>
+					<p><input type="hidden" value="off" name="enable_tiny_mce" /><label><input type="checkbox" name="enable_tiny_mce" value="on" <?php checked( $this->admin_options['enable_tiny_mce'], 'on' ); ?> /> <?php esc_html_e( 'Enable TinyMCE buttons for inserting data layer variables?', 'metronet-tag-manager' ); ?></label></p>
+					<p><input type="hidden" value="off" name="enable_gutenberg" /><label><input type="checkbox" name="enable_gutenberg" value="on" <?php checked( $this->admin_options['enable_gutenberg'], 'on' ); ?> /> <?php esc_html_e( 'Enable Gutenberg formatting option for inserting data layer variables?', 'metronet-tag-manager' ); ?></label></p>
 				</td>
 			</tr>
 		</table>

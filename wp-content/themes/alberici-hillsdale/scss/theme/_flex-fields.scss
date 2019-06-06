@@ -4,8 +4,9 @@
   margin-bottom: 40px;
   @include grid-media($medium-min) {
     margin-bottom: 80px;
-    margin-top: 80px;
+    margin-top: 40px;
   }
+
   &.img-left {
     display: block;
     .fifty-fifty_img {
