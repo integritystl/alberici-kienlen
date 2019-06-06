@@ -176,7 +176,7 @@ class ProjectCPT
                         ),
                         'collapsed' => '',
                         'min' => 0,
-                        'max' => 3,
+                        'max' => 10,
                         'layout' => 'table',
                         'button_label' => '',
                         'sub_fields' => array(
