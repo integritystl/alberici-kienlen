@@ -18,15 +18,6 @@
 
  	<?php wp_head(); ?>
 
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-25892144-2"></script>
-  <script>
-   window.dataLayer = window.dataLayer || [];
-   function gtag(){dataLayer.push(arguments);}
-   gtag('js', new Date());
-
-   gtag('config', 'UA-25892144-2');
-  </script>
  </head>
 
 <?php $theme_config = get_field('set_site', 'options');?>
