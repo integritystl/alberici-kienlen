@@ -80,9 +80,17 @@ $theme_config = get_field('set_site', 'options');
 									<div class="service-list">
 									<h3>Services</h3>
 									<?php while ( have_rows('project_services') ) : the_row();
+
+
+									if ( $theme_config === 'kienlen') {
 										$link = get_sub_field('service_link');?>
 										<a href="<?php echo $link['url']; ?>"> <?php the_sub_field('service_name'); ?></a>
-									<?php endwhile; ?>
+									<?php } else { ?>
+
+									 		<li><?php the_sub_field('service_name'); ?></li>
+								
+									<?php	}
+									endwhile; ?>
 									</div>
 								<?php endif; ?>
 						</div><!-- .single-project-content -->
