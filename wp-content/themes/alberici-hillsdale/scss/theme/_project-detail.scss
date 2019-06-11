@@ -180,7 +180,7 @@
       margin-bottom: 10px;
       width: 100%;
       height: auto;
-    
+
       display: block;
     }
   }
@@ -210,10 +210,12 @@
       .service-list {
           margin-top: 30px;
           padding-top: 30px;
+          margin-bottom: 30px;
           border-top: $base-border;
           @include grid-media($medium-min) {
             margin-top: 50px;
             padding-top: 50px;
+            margin-bottom: 50px;
           }
           h3 {
               margin-bottom: 25px;

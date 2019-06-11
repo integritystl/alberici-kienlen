@@ -17,8 +17,9 @@
  	<link rel="profile" href="https://gmpg.org/xfn/11">
 
  	<?php wp_head(); ?>
+
  </head>
- 
+
 <?php $theme_config = get_field('set_site', 'options');?>
 
 <?php if ( $theme_config === 'kienlen') { ?>
