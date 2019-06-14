@@ -135,11 +135,11 @@
 }
 
 .flex_stacked_tile {
-  display: grid;
+  display: flex;
   // Using non-shorthand declarations for grid gap to avoid IE11 issues
-  grid-row-gap: 10px;
-  grid-column-gap: 10px;
-  grid-template-columns: repeat(12, 1fr);
+  // grid-row-gap: 10px;
+  // grid-column-gap: 10px;
+  // grid-template-columns: repeat(12, 1fr);
   //grid-column: span 12;
   margin: 0 auto 20px;
   padding: 0 10px;
@@ -154,11 +154,11 @@
     display: flex;
     position: relative;
     flex-direction: column;
-    grid-column: 1 / span 12;
-    margin: 10px 0 0;
+    margin: 10px 5px 0;
+    width: 50%;
 
     @include grid-media($medium-min) {
-      grid-column: 1 / span 6;
+    //grid-column: 1 / span 6;
       align-items: flex-end;
     }
 
