@@ -15,7 +15,7 @@
 
 	<footer id="colophon" class="site-footer clear">
 		<div class="site-info">
-				<div class="container grid-container">
+				<div class="container">
 				<div class="site-copyright">
 					<p class="copyright">
 						<span>
