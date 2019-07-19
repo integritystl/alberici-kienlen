@@ -4,7 +4,7 @@
  * Plugin URI: http://www.wpsecurityauditlog.com/
  * Description: Identify WordPress security issues before they become a problem. Keep track of everything happening on your WordPress including WordPress users activity. Similar to Windows Event Log and Linux Syslog, WP Security Audit Log generates a security alert for everything that happens on your WordPress blogs and websites. Use the Audit Log Viewer included in the plugin to see all the security alerts.
  * Author: WP White Security
- * Version: 3.4.1.1
+ * Version: 3.4.2
  * Text Domain: wp-security-audit-log
  * Author URI: http://www.wpwhitesecurity.com/
  * License: GPL2
@@ -15,7 +15,7 @@
 
 /*
 	WP Security Audit Log
-	Copyright(c) 2019  Robert Abela  (email : robert@wpwhitesecurity.com)
+	Copyright(c) 2019  WP White Security  (email : info@wpwhitesecurity.com)
 
 	This program is free software; you can redistribute it and/or modify
 	it under the terms of the GNU General Public License, version 2, as
@@ -54,7 +54,7 @@ if ( ! function_exists( 'wsal_freemius' ) ) {
 		 *
 		 * @var string
 		 */
-		public $version = '3.4.1.1';
+		public $version = '3.4.2';
 
 		// Plugin constants.
 		const PLG_CLS_PRFX    = 'WSAL_';
@@ -846,6 +846,13 @@ if ( ! function_exists( 'wsal_freemius' ) ) {
 				$installation_errors .= '<a href="javascript:;" onclick="window.top.location.href=\'' . esc_url( network_admin_url( 'plugins.php' ) ) . '\'">' . esc_html__( 'Redirect me to the network dashboard', 'wp-security-audit-log' ) . '</a> ';
 			}
 
+			if ( is_plugin_active( 'mainwp/mainwp.php' ) ) {
+				/* Translators: %s: Activity Log for MainWP plugin hyperlink */
+				$installation_errors = sprintf( __( 'Please install the %s plugin on the MainWP dashboard.', 'wp-security-audit-log' ), '<a href="https://wordpress.org/plugins/activity-log-mainwp/" target="_blank">' . __( 'Activity Log for MainWP', 'wp-security-audit-log' ) . '</a>' ) . ' ';
+				/* Translators: %s: Getting started guide hyperlink */
+				$installation_errors .= sprintf( __( 'The WP Security Audit Log should be installed on the child sites only. Refer to the %s for more information.', 'wp-security-audit-log' ), '<a href="https://www.wpsecurityauditlog.com/support-documentation/gettting-started-activity-log-mainwp-extension/" target="_blank">' . __( 'getting started guide', 'wp-security-audit-log' ) . '</a>' );
+			}
+
 			if ( $installation_errors ) {
 				?>
 				<html>
@@ -864,6 +871,18 @@ if ( ! function_exists( 'wsal_freemius' ) ) {
 			// Ensure that the system is installed and schema is correct.
 			$pre_installed = $this->IsInstalled();
 			self::getConnector()->installAll();
+
+			if ( ! $pre_installed ) {
+				self::getConnector()->getAdapter( 'Occurrence' )->create_indexes();
+				self::getConnector()->getAdapter( 'Meta' )->create_indexes();
+				self::getConnector()->getAdapter( 'Option' )->create_indexes();
+
+				if ( $this->settings->IsArchivingEnabled() ) {
+					$this->settings->SwitchToArchiveDB();
+					self::getConnector()->getAdapter( 'Occurrence' )->create_indexes();
+					self::getConnector()->getAdapter( 'Meta' )->create_indexes();
+				}
+			}
 
 			// If system already installed, do updates now (if any).
 			$old_version = $this->GetOldVersion();
@@ -1086,6 +1105,26 @@ if ( ! function_exists( 'wsal_freemius' ) ) {
 				if ( version_compare( $old_version, '3.3', '<' ) && version_compare( $new_version, '3.2.5', '>' ) ) {
 					if ( wsal_freemius()->is__premium_only() && wsal_freemius()->is_plan_or_trial__premium_only( 'professional' ) ) {
 						$this->extensions->update_external_db_options( $this );
+					}
+				}
+
+				/**
+				 * IMPORTANT: VERSION SPECIFIC UPDATE
+				 *
+				 * It only needs to run when old version of the plugin is less than 3.4.2
+				 * & the new version is later than 3.4.1.1.
+				 *
+				 * @since 3.4.2
+				 */
+				if ( version_compare( $old_version, '3.4.2', '<' ) && version_compare( $new_version, '3.4.1.1', '>' ) ) {
+					self::getConnector()->getAdapter( 'Occurrence' )->create_indexes();
+					self::getConnector()->getAdapter( 'Meta' )->create_indexes();
+					self::getConnector()->getAdapter( 'Option' )->create_indexes();
+
+					if ( $this->settings->IsArchivingEnabled() ) {
+						$this->settings->SwitchToArchiveDB();
+						self::getConnector()->getAdapter( 'Occurrence' )->create_indexes();
+						self::getConnector()->getAdapter( 'Meta' )->create_indexes();
 					}
 				}
 			}
