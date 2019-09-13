@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: WP Security Audit Log\n"
-"POT-Creation-Date: 2019-08-29 10:22+0200\n"
-"PO-Revision-Date: 2019-08-29 10:22+0200\n"
+"POT-Creation-Date: 2019-09-12 10:47+0200\n"
+"PO-Revision-Date: 2019-09-12 10:47+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -22,59 +22,59 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-0: *.min.js\n"
 
 #. translators: Event ID
-#: classes/AlertManager.php:339
+#: classes/AlertManager.php:340
 #, php-format
 msgid "Event with code %d has not be registered."
 msgstr ""
 
-#: classes/AlertManager.php:394
+#: classes/AlertManager.php:395
 #, php-format
 msgid "Event %s already registered with WP Security Audit Log."
 msgstr ""
 
-#: classes/AlertManager.php:429
+#: classes/AlertManager.php:430
 msgid ""
 "You have custom events that are using the same ID or IDs which are already "
 "registered in the plugin, so they have been disabled."
 msgstr ""
 
-#: classes/AlertManager.php:432
+#: classes/AlertManager.php:433
 #, php-format
 msgid "%4$s to help you solve this issue."
 msgstr ""
 
-#: classes/AlertManager.php:434
+#: classes/AlertManager.php:435
 msgid "ERROR:"
 msgstr ""
 
-#: classes/AlertManager.php:436
+#: classes/AlertManager.php:437
 msgid "Contact us"
 msgstr ""
 
-#: classes/AlertManager.php:1218 classes/Views/ToggleAlerts.php:229
-#: classes/Views/ToggleAlerts.php:261 defaults.php:306
+#: classes/AlertManager.php:1216 classes/Views/ToggleAlerts.php:239
+#: classes/Views/ToggleAlerts.php:271 defaults.php:306
 msgid "Pages"
 msgstr ""
 
-#: classes/AlertManager.php:1218 classes/Views/ToggleAlerts.php:229
-#: classes/Views/ToggleAlerts.php:261 defaults.php:266
+#: classes/AlertManager.php:1216 classes/Views/ToggleAlerts.php:239
+#: classes/Views/ToggleAlerts.php:271 defaults.php:266
 msgid "Custom Post Types"
 msgstr ""
 
-#: classes/AlertManager.php:1540
+#: classes/AlertManager.php:1538
 msgid "System Activity"
 msgstr ""
 
-#: classes/AlertManager.php:1600 classes/AuditLogListView.php:437
+#: classes/AlertManager.php:1598 classes/AuditLogListView.php:437
 msgid "Unknown error code."
 msgstr ""
 
-#: classes/AlertManager.php:1607 classes/AlertManager.php:1619
+#: classes/AlertManager.php:1605 classes/AlertManager.php:1617
 msgid "Unknown Site"
 msgstr ""
 
-#: classes/AlertManager.php:1641 classes/AuditLogListView.php:512
-#: classes/Views/ToggleAlerts.php:412 classes/Views/ToggleAlerts.php:450
+#: classes/AlertManager.php:1639 classes/AuditLogListView.php:512
+#: classes/Views/ToggleAlerts.php:424 classes/Views/ToggleAlerts.php:462
 #: defaults.php:390
 msgid "System"
 msgstr ""
@@ -122,7 +122,7 @@ msgid "Event ID"
 msgstr ""
 
 #: classes/AuditLogListView.php:311 classes/AuditLogListView.php:339
-#: classes/Views/Settings.php:1143 classes/Views/ToggleAlerts.php:310
+#: classes/Views/Settings.php:1143 classes/Views/ToggleAlerts.php:320
 msgid "Severity"
 msgstr ""
 
@@ -150,16 +150,16 @@ msgstr ""
 msgid "Disable this type of events."
 msgstr ""
 
-#: classes/AuditLogListView.php:441 classes/Views/ToggleAlerts.php:486
+#: classes/AuditLogListView.php:441 classes/Views/ToggleAlerts.php:496
 msgid "Critical"
 msgstr ""
 
-#: classes/AuditLogListView.php:443 classes/Views/ToggleAlerts.php:488
+#: classes/AuditLogListView.php:443 classes/Views/ToggleAlerts.php:498
 msgid "Warning"
 msgstr ""
 
-#: classes/AuditLogListView.php:445 classes/Views/ToggleAlerts.php:490
-#: classes/Views/ToggleAlerts.php:492
+#: classes/AuditLogListView.php:445 classes/Views/ToggleAlerts.php:500
+#: classes/Views/ToggleAlerts.php:502
 msgid "Notification"
 msgstr ""
 
@@ -193,26 +193,26 @@ msgid "View all details of this change"
 msgstr ""
 
 #: classes/AuditLogListView.php:587 classes/AuditLogListView.php:737
-#: classes/Settings.php:1715
+#: classes/Settings.php:1714
 msgid "Alert Data Inspector"
 msgstr ""
 
-#: classes/AuditLogListView.php:689 classes/Settings.php:1654
+#: classes/AuditLogListView.php:689 classes/Settings.php:1653
 msgid "Download the log file"
 msgstr ""
 
-#: classes/AuditLogListView.php:709 classes/Settings.php:1679
+#: classes/AuditLogListView.php:709 classes/Settings.php:1678
 msgid "Download the log file."
 msgstr ""
 
-#: classes/AuditLogListView.php:717 classes/Settings.php:1687
-#: classes/Settings.php:1933
+#: classes/AuditLogListView.php:717 classes/Settings.php:1686
+#: classes/Settings.php:1932
 msgid "published"
 msgstr ""
 
 #. translators: Mailto link for support.
-#: classes/AuditLogListView.php:745 classes/Settings.php:1726
-#: classes/Settings.php:1959
+#: classes/AuditLogListView.php:745 classes/Settings.php:1725
+#: classes/Settings.php:1958
 #, php-format
 msgid "Contact us on %s for assistance"
 msgstr ""
@@ -336,23 +336,24 @@ msgstr ""
 msgid "Public"
 msgstr ""
 
-#: classes/Sensors/Public.php:136
-#, php-format
-msgid ""
-"A comment was posted in response to the post %1$s. The comment was posted by "
-"%2$s"
-msgstr ""
-
-#: classes/Sensors/Public.php:705 classes/Sensors/WooCommerce.php:1908
+#: classes/Sensors/FrontendWooCommerce.php:202 classes/Sensors/Public.php:466
+#: classes/Sensors/WooCommerce.php:1908
 msgid "In stock"
 msgstr ""
 
-#: classes/Sensors/Public.php:707 classes/Sensors/WooCommerce.php:1910
+#: classes/Sensors/FrontendWooCommerce.php:204 classes/Sensors/Public.php:468
+#: classes/Sensors/WooCommerce.php:1910
 msgid "Out of stock"
 msgstr ""
 
-#: classes/Sensors/Public.php:709 classes/Sensors/WooCommerce.php:1912
+#: classes/Sensors/FrontendWooCommerce.php:206 classes/Sensors/Public.php:470
+#: classes/Sensors/WooCommerce.php:1912
 msgid "On backorder"
+msgstr ""
+
+#: classes/Sensors/Public.php:134
+#, php-format
+msgid "Posted a comment in response to the post %s"
 msgstr ""
 
 #: classes/Sensors/WooCommerce.php:2817
@@ -363,52 +364,52 @@ msgstr ""
 msgid "Non-Visible"
 msgstr ""
 
-#: classes/Settings.php:470
+#: classes/Settings.php:469
 msgid "This function is deprecated"
 msgstr ""
 
-#: classes/Settings.php:1621
+#: classes/Settings.php:1620
 msgid "View Order"
 msgstr ""
 
-#: classes/Settings.php:1738 classes/Settings.php:1971
+#: classes/Settings.php:1737 classes/Settings.php:1970
 msgid "plugin settings"
 msgstr ""
 
-#: classes/Settings.php:1741 classes/Settings.php:1974
+#: classes/Settings.php:1740 classes/Settings.php:1973
 msgid "contact our support"
 msgstr ""
 
-#: classes/Settings.php:2177
+#: classes/Settings.php:2176
 msgid "Root directory of WordPress (excluding sub directories)"
 msgstr ""
 
-#: classes/Settings.php:2178
+#: classes/Settings.php:2177
 msgid "WP Admin directory (/wp-admin/)"
 msgstr ""
 
-#: classes/Settings.php:2179
+#: classes/Settings.php:2178
 msgid "WP Includes directory (/wp-includes/)"
 msgstr ""
 
-#: classes/Settings.php:2180
+#: classes/Settings.php:2179
 msgid ""
 "/wp-content/ directory (excluding plugins, themes & uploads directories)"
 msgstr ""
 
-#: classes/Settings.php:2181
+#: classes/Settings.php:2180
 msgid "Themes directory (/wp-content/themes/)"
 msgstr ""
 
-#: classes/Settings.php:2182
+#: classes/Settings.php:2181
 msgid "Plugins directory (/wp-content/plugins/)"
 msgstr ""
 
-#: classes/Settings.php:2183
+#: classes/Settings.php:2182
 msgid "Uploads directory (/wp-content/uploads/)"
 msgstr ""
 
-#: classes/Settings.php:2188
+#: classes/Settings.php:2187
 msgid ""
 "Uploads directory of all sub sites on this network (/wp-content/sites/*)"
 msgstr ""
@@ -429,30 +430,31 @@ msgid ""
 "the plugin WP Security Audit Log on the website %2$s on %3$s."
 msgstr ""
 
-#: classes/ViewManager.php:262
+#: classes/ViewManager.php:277
 msgid "Free Premium Trial"
 msgstr ""
 
-#: classes/ViewManager.php:487 classes/Views/Settings.php:255
-#: classes/Views/Settings.php:2703 classes/Views/Settings.php:2732
-#: classes/Views/SetupWizard.php:66
+#: classes/ViewManager.php:502 classes/Views/FrontendSetupWizard.php:64
+#: classes/Views/Settings.php:255 classes/Views/Settings.php:2703
+#: classes/Views/Settings.php:2732 classes/Views/SetupWizard.php:66
 msgid "Access Denied."
 msgstr ""
 
-#: classes/ViewManager.php:518
+#: classes/ViewManager.php:533
 msgid "Log count parameter expected."
 msgstr ""
 
-#: classes/ViewManager.php:526 classes/Views/AuditLog.php:651
+#: classes/ViewManager.php:541 classes/Views/AuditLog.php:651
 #: classes/Views/AuditLog.php:728 classes/Views/AuditLog.php:754
 #: classes/Views/AuditLog.php:1059 classes/Views/AuditLog.php:1129
-#: classes/Views/Licensing.php:90 classes/Views/Settings.php:270
-#: classes/Views/Settings.php:2272 classes/Views/Settings.php:2300
-#: classes/Views/Settings.php:2330 classes/Views/Settings.php:2369
-#: classes/Views/Settings.php:2371 classes/Views/Settings.php:2373
-#: classes/Views/Settings.php:2488 classes/Views/Settings.php:2490
-#: classes/Views/Settings.php:2492 classes/Views/Settings.php:2586
-#: classes/Views/Settings.php:2679 classes/Views/SetupWizard.php:81
+#: classes/Views/FrontendSetupWizard.php:78 classes/Views/Licensing.php:90
+#: classes/Views/Settings.php:270 classes/Views/Settings.php:2272
+#: classes/Views/Settings.php:2300 classes/Views/Settings.php:2330
+#: classes/Views/Settings.php:2369 classes/Views/Settings.php:2371
+#: classes/Views/Settings.php:2373 classes/Views/Settings.php:2488
+#: classes/Views/Settings.php:2490 classes/Views/Settings.php:2492
+#: classes/Views/Settings.php:2586 classes/Views/Settings.php:2679
+#: classes/Views/SetupWizard.php:81
 msgid "Nonce verification failed."
 msgstr ""
 
@@ -544,7 +546,7 @@ msgid "Audit Log Viewer"
 msgstr ""
 
 #: classes/Views/AuditLog.php:378 classes/Views/Licensing.php:82
-#: classes/Views/Settings.php:361 classes/Views/ToggleAlerts.php:127
+#: classes/Views/Settings.php:361 classes/Views/ToggleAlerts.php:140
 msgid "You do not have sufficient permissions to access this page."
 msgstr ""
 
@@ -554,23 +556,27 @@ msgid ""
 "wizard to configure the basic plugin settings?"
 msgstr ""
 
-#: classes/Views/AuditLog.php:427 classes/Views/Settings.php:564
+#: classes/Views/AuditLog.php:427 classes/Views/FrontendSetupWizard.php:329
+#: classes/Views/FrontendSetupWizard.php:426 classes/Views/Settings.php:564
 #: classes/Views/Settings.php:591 classes/Views/Settings.php:657
 #: classes/Views/Settings.php:715 classes/Views/Settings.php:1176
 #: classes/Views/Settings.php:1241 classes/Views/Settings.php:2006
 #: classes/Views/Settings.php:2067 classes/Views/Settings.php:2095
 #: classes/Views/Settings.php:2116 classes/Views/Settings.php:2126
-#: classes/Views/SetupWizard.php:527
+#: classes/Views/SetupWizard.php:465 classes/Views/SetupWizard.php:513
+#: classes/Views/SetupWizard.php:676
 msgid "Yes"
 msgstr ""
 
-#: classes/Views/AuditLog.php:428 classes/Views/Settings.php:569
+#: classes/Views/AuditLog.php:428 classes/Views/FrontendSetupWizard.php:334
+#: classes/Views/FrontendSetupWizard.php:431 classes/Views/Settings.php:569
 #: classes/Views/Settings.php:596 classes/Views/Settings.php:687
 #: classes/Views/Settings.php:725 classes/Views/Settings.php:1181
 #: classes/Views/Settings.php:1248 classes/Views/Settings.php:2011
 #: classes/Views/Settings.php:2074 classes/Views/Settings.php:2102
 #: classes/Views/Settings.php:2117 classes/Views/Settings.php:2127
-#: classes/Views/SetupWizard.php:522
+#: classes/Views/SetupWizard.php:470 classes/Views/SetupWizard.php:518
+#: classes/Views/SetupWizard.php:671
 msgid "No"
 msgstr ""
 
@@ -758,6 +764,107 @@ msgid ""
 "third party services."
 msgstr ""
 
+#: classes/Views/FrontendSetupWizard.php:108 classes/Views/SetupWizard.php:129
+msgid "Welcome"
+msgstr ""
+
+#: classes/Views/FrontendSetupWizard.php:112 classes/Views/SetupWizard.php:148
+msgid "User Registrations"
+msgstr ""
+
+#: classes/Views/FrontendSetupWizard.php:117 classes/Views/SetupWizard.php:138
+msgid "Log In"
+msgstr ""
+
+#: classes/Views/FrontendSetupWizard.php:122 classes/Views/SetupWizard.php:143
+msgid "404s"
+msgstr ""
+
+#: classes/Views/FrontendSetupWizard.php:127
+#: classes/Views/FrontendSetupWizard.php:477
+#: classes/Views/FrontendSetupWizard.php:478 classes/Views/SetupWizard.php:168
+#: classes/Views/SetupWizard.php:907 classes/Views/SetupWizard.php:908
+msgid "Finish"
+msgstr ""
+
+#: classes/Views/FrontendSetupWizard.php:188 classes/Views/SetupWizard.php:244
+msgid "WP Security Audit Log &rsaquo; Setup Wizard"
+msgstr ""
+
+#: classes/Views/FrontendSetupWizard.php:217 classes/Views/SetupWizard.php:261
+msgid "Close Wizard"
+msgstr ""
+
+#: classes/Views/FrontendSetupWizard.php:291
+msgid ""
+"In this update, we have improved the plugin's front-end sensors and "
+"performance. Use this quick 4-step wizard to fine tune the plugin for your "
+"website."
+msgstr ""
+
+#: classes/Views/FrontendSetupWizard.php:296
+msgid "Start Configuring front-end sensors"
+msgstr ""
+
+#: classes/Views/FrontendSetupWizard.php:312 classes/Views/SetupWizard.php:348
+msgid "Exit Wizard"
+msgstr ""
+
+#: classes/Views/FrontendSetupWizard.php:325 classes/Views/SetupWizard.php:509
+msgid "Can visitors register for a user on your website?"
+msgstr ""
+
+#: classes/Views/FrontendSetupWizard.php:336 classes/Views/SetupWizard.php:520
+msgid ""
+"If you are not sure about this setting, check if the Membership setting in "
+"the WordPress General settings is checked or not. If it is not checked "
+"(default) select No."
+msgstr ""
+
+#: classes/Views/FrontendSetupWizard.php:340
+#: classes/Views/FrontendSetupWizard.php:388
+#: classes/Views/FrontendSetupWizard.php:436 classes/Views/SetupWizard.php:375
+#: classes/Views/SetupWizard.php:428 classes/Views/SetupWizard.php:476
+#: classes/Views/SetupWizard.php:525 classes/Views/SetupWizard.php:585
+#: classes/Views/SetupWizard.php:586 classes/Views/SetupWizard.php:718
+#: classes/Views/SetupWizard.php:719 classes/Views/SetupWizard.php:838
+#: classes/Views/SetupWizard.php:839
+msgid "Next"
+msgstr ""
+
+#: classes/Views/FrontendSetupWizard.php:373 classes/Views/SetupWizard.php:412
+msgid ""
+"Do you or your users use other pages to log in to WordPress other than the "
+"default login page ( /wp-admin/ )?"
+msgstr ""
+
+#: classes/Views/FrontendSetupWizard.php:377 classes/Views/SetupWizard.php:416
+msgid "Yes, we use other pages to login to WordPress."
+msgstr ""
+
+#: classes/Views/FrontendSetupWizard.php:382 classes/Views/SetupWizard.php:421
+msgid "No, we only use the default WordPress login page."
+msgstr ""
+
+#: classes/Views/FrontendSetupWizard.php:384 classes/Views/SetupWizard.php:423
+msgid ""
+"If your website is a membership or ecommerce website most probably you have "
+"more than one area from where the users can login. If you are not sure, "
+"select Yes."
+msgstr ""
+
+#: classes/Views/FrontendSetupWizard.php:422 classes/Views/SetupWizard.php:461
+msgid ""
+"Do you want to keep a log of (non-logged in) visitors’ requests to non-"
+"existing URLs which generate a HTTP 404 error response?"
+msgstr ""
+
+#: classes/Views/FrontendSetupWizard.php:469
+msgid ""
+"All the new settings have been applied. You can change these settings from "
+"the Front-end Events in the Enable/Disable Events section."
+msgstr ""
+
 #: classes/Views/Help.php:62 classes/Views/Help.php:104
 #: classes/Views/Help.php:118
 msgid "Help"
@@ -887,12 +994,12 @@ msgid "Licensing"
 msgstr ""
 
 #: classes/Views/Licensing.php:96 classes/Views/Settings.php:377
-#: classes/Views/ToggleAlerts.php:144
+#: classes/Views/ToggleAlerts.php:157
 msgid "Settings have been saved."
 msgstr ""
 
 #: classes/Views/Licensing.php:101 classes/Views/Settings.php:383
-#: classes/Views/ToggleAlerts.php:150
+#: classes/Views/ToggleAlerts.php:163
 msgid "Error: "
 msgstr ""
 
@@ -1084,7 +1191,7 @@ msgstr ""
 msgid "File Integrity Scan"
 msgstr ""
 
-#: classes/Views/Settings.php:117 classes/Views/SetupWizard.php:148
+#: classes/Views/Settings.php:117 classes/Views/SetupWizard.php:163
 msgid "Exclude Objects"
 msgstr ""
 
@@ -1097,7 +1204,7 @@ msgid "Advanced Settings"
 msgstr ""
 
 #: classes/Views/Settings.php:179 classes/Views/Settings.php:193
-#: classes/Views/ToggleAlerts.php:424 classes/Views/ToggleAlerts.php:452
+#: classes/Views/ToggleAlerts.php:436 classes/Views/ToggleAlerts.php:464
 msgid "Settings"
 msgstr ""
 
@@ -1237,7 +1344,7 @@ msgstr ""
 msgid "Login Page Notification"
 msgstr ""
 
-#: classes/Views/Settings.php:663 wp-security-audit-log.php:1844
+#: classes/Views/Settings.php:663 wp-security-audit-log.php:1853
 msgid ""
 "For security and auditing purposes, a record of all of your logged-in "
 "actions and changes within the WordPress dashboard will be recorded in an "
@@ -1937,9 +2044,9 @@ msgid "REMOVE"
 msgstr ""
 
 #: classes/Views/Settings.php:1521 classes/Views/Settings.php:1557
-#: classes/Views/Settings.php:1587 classes/Views/SetupWizard.php:536
-#: classes/Views/SetupWizard.php:544 classes/Views/SetupWizard.php:629
-#: classes/Views/SetupWizard.php:648 classes/Views/SetupWizard.php:667
+#: classes/Views/Settings.php:1587 classes/Views/SetupWizard.php:685
+#: classes/Views/SetupWizard.php:693 classes/Views/SetupWizard.php:778
+#: classes/Views/SetupWizard.php:797 classes/Views/SetupWizard.php:816
 msgid "ADD"
 msgstr ""
 
@@ -2304,110 +2411,83 @@ msgstr ""
 msgid "Nonce Verification Failed."
 msgstr ""
 
-#: classes/Views/SetupWizard.php:129
-msgid "Welcome"
-msgstr ""
-
 #: classes/Views/SetupWizard.php:133
 msgid "Log Details"
 msgstr ""
 
-#: classes/Views/SetupWizard.php:138
+#: classes/Views/SetupWizard.php:153
 msgid "Log Retention"
 msgstr ""
 
-#: classes/Views/SetupWizard.php:143
+#: classes/Views/SetupWizard.php:158
 msgid "Access"
 msgstr ""
 
-#: classes/Views/SetupWizard.php:153 classes/Views/SetupWizard.php:758
-#: classes/Views/SetupWizard.php:759
-msgid "Finish"
-msgstr ""
-
-#: classes/Views/SetupWizard.php:197
+#: classes/Views/SetupWizard.php:212
 msgid "Specified value in not a user."
 msgstr ""
 
-#: classes/Views/SetupWizard.php:198
+#: classes/Views/SetupWizard.php:213
 msgid "Specified value in not a role."
 msgstr ""
 
-#: classes/Views/SetupWizard.php:199
+#: classes/Views/SetupWizard.php:214
 msgid "Specified value in not an IP address."
 msgstr ""
 
-#: classes/Views/SetupWizard.php:229
-msgid "WP Security Audit Log &rsaquo; Setup Wizard"
-msgstr ""
-
-#: classes/Views/SetupWizard.php:246
-msgid "Close Wizard"
-msgstr ""
-
-#: classes/Views/SetupWizard.php:326
+#: classes/Views/SetupWizard.php:339
 msgid ""
 "This wizard helps you configure the basic plugin settings. All these "
 "settings can be changed at a later stage from the plugin settings."
 msgstr ""
 
-#: classes/Views/SetupWizard.php:331
+#: classes/Views/SetupWizard.php:344
 msgid "Start Configuring the Plugin"
 msgstr ""
 
-#: classes/Views/SetupWizard.php:335
-msgid "Exit Wizard"
-msgstr ""
-
-#: classes/Views/SetupWizard.php:349
+#: classes/Views/SetupWizard.php:361
 msgid "Please select the level of detail for your WordPress activity logs:"
 msgstr ""
 
-#: classes/Views/SetupWizard.php:354
+#: classes/Views/SetupWizard.php:365
 msgid ""
 "Basic (I want a high level overview and I am not interested in the detail)"
 msgstr ""
 
-#: classes/Views/SetupWizard.php:359
+#: classes/Views/SetupWizard.php:370
 msgid "Geek (I want to know everything that is happening on my WordPress)"
 msgstr ""
 
-#: classes/Views/SetupWizard.php:362
+#: classes/Views/SetupWizard.php:372
 msgid ""
 "Note: You can change the WordPress logging level from the plugin’s settings "
 "anytime."
 msgstr ""
 
-#: classes/Views/SetupWizard.php:370 classes/Views/SetupWizard.php:371
-#: classes/Views/SetupWizard.php:436 classes/Views/SetupWizard.php:437
-#: classes/Views/SetupWizard.php:569 classes/Views/SetupWizard.php:570
-#: classes/Views/SetupWizard.php:689 classes/Views/SetupWizard.php:690
-msgid "Next"
-msgstr ""
-
-#: classes/Views/SetupWizard.php:410
-msgid "How long do you want to keep the data in the WordPress activity Log?"
-msgstr ""
-
-#: classes/Views/SetupWizard.php:415
-msgid "6 months (data older than 6 months will be deleted)"
-msgstr ""
-
-#: classes/Views/SetupWizard.php:420
-msgid "12 months (data older than 12 months will be deleted)"
-msgstr ""
-
-#: classes/Views/SetupWizard.php:425
-msgid "Keep all data."
-msgstr ""
-
-#: classes/Views/SetupWizard.php:428
+#: classes/Views/SetupWizard.php:426 classes/Views/SetupWizard.php:474
+#: classes/Views/SetupWizard.php:523 classes/Views/SetupWizard.php:577
 msgid ""
 "Note: You can change the WordPress activity log retention settings at any "
 "time from the plugin settings later on."
 msgstr ""
 
-#: classes/Views/SetupWizard.php:446
+#: classes/Views/SetupWizard.php:559
+msgid "How long do you want to keep the data in the WordPress activity Log?"
+msgstr ""
+
+#: classes/Views/SetupWizard.php:564
+msgid "6 months (data older than 6 months will be deleted)"
+msgstr ""
+
+#: classes/Views/SetupWizard.php:569
+msgid "12 months (data older than 12 months will be deleted)"
+msgstr ""
+
+#: classes/Views/SetupWizard.php:574
+msgid "Keep all data."
+msgstr ""
+
+#: classes/Views/SetupWizard.php:595
 msgid ""
 "The plugin stores the data in the WordPress database in a very efficient "
 "way, though the more data you keep the more hard disk space it will consume. "
@@ -2417,7 +2497,7 @@ msgid ""
 "activity log in an external database."
 msgstr ""
 
-#: classes/Views/SetupWizard.php:450
+#: classes/Views/SetupWizard.php:599
 msgid ""
 "The plugin stores the data in the WordPress database in a very efficient "
 "way, though the more data you keep the more hard disk space it will consume. "
@@ -2425,34 +2505,34 @@ msgid ""
 "WordPress activity log in an external database or enable archiving."
 msgstr ""
 
-#: classes/Views/SetupWizard.php:517
+#: classes/Views/SetupWizard.php:666
 msgid ""
 "By default only the users with administrator role can access the WordPress "
 "activity log. Would you like to allow any other user or users with a role to "
 "access the WordPress activity log?"
 msgstr ""
 
-#: classes/Views/SetupWizard.php:533 classes/Views/SetupWizard.php:626
+#: classes/Views/SetupWizard.php:682 classes/Views/SetupWizard.php:775
 msgid "Usernames: "
 msgstr ""
 
-#: classes/Views/SetupWizard.php:541 classes/Views/SetupWizard.php:645
+#: classes/Views/SetupWizard.php:690 classes/Views/SetupWizard.php:794
 msgid "Roles: "
 msgstr ""
 
-#: classes/Views/SetupWizard.php:562
+#: classes/Views/SetupWizard.php:711
 msgid ""
 "Note: you can change the WordPress activity log privileges settings at any "
 "time from the plugin settings."
 msgstr ""
 
-#: classes/Views/SetupWizard.php:576
+#: classes/Views/SetupWizard.php:725
 msgid ""
 "The WordPress activity log contains sensitive data such as who logged in, "
 "from where, when, and what they did."
 msgstr ""
 
-#: classes/Views/SetupWizard.php:621
+#: classes/Views/SetupWizard.php:770
 msgid ""
 "The plugin will keep a log of everything that happens on your WordPress "
 "website. If you would like to exclude a particular user, users with a role "
@@ -2460,43 +2540,43 @@ msgid ""
 "button."
 msgstr ""
 
-#: classes/Views/SetupWizard.php:664
+#: classes/Views/SetupWizard.php:813
 msgid "IP Address: "
 msgstr ""
 
-#: classes/Views/SetupWizard.php:682
+#: classes/Views/SetupWizard.php:831
 msgid "Note: You can change these exclusions anytime from the plugin settings."
 msgstr ""
 
-#: classes/Views/SetupWizard.php:696
+#: classes/Views/SetupWizard.php:845
 msgid ""
 "The WordPress activity log contains sensitive data such as who logged in, "
 "from where, when and what they did."
 msgstr ""
 
-#: classes/Views/SetupWizard.php:729
+#: classes/Views/SetupWizard.php:878
 msgid ""
 "Your plugin is all set and it is ready to start keeping a record of "
 "everything that is happening on your WordPress in a WordPress activity log."
 msgstr ""
 
-#: classes/Views/SetupWizard.php:730
+#: classes/Views/SetupWizard.php:879
 msgid "Below are a few useful links you might need to refer to:"
 msgstr ""
 
-#: classes/Views/SetupWizard.php:735
+#: classes/Views/SetupWizard.php:884
 msgid "Getting started with the WP Security Audit Log plugin"
 msgstr ""
 
-#: classes/Views/SetupWizard.php:740
+#: classes/Views/SetupWizard.php:889
 msgid "Knowledge Base & Support Documents"
 msgstr ""
 
-#: classes/Views/SetupWizard.php:745
+#: classes/Views/SetupWizard.php:894
 msgid "Benefits of keeping a WordPress activity log"
 msgstr ""
 
-#: classes/Views/SetupWizard.php:750
+#: classes/Views/SetupWizard.php:899
 msgid ""
 "We trust this plugin meets all your activity log requirements. Should you "
 "encounter any problems, have feature requests or would like to share some "
@@ -2508,23 +2588,23 @@ msgstr ""
 msgid "Enable/Disable Events"
 msgstr ""
 
-#: classes/Views/ToggleAlerts.php:184
+#: classes/Views/ToggleAlerts.php:196
 msgid "Log Level: "
 msgstr ""
 
-#: classes/Views/ToggleAlerts.php:189
+#: classes/Views/ToggleAlerts.php:201
 msgid "Basic"
 msgstr ""
 
-#: classes/Views/ToggleAlerts.php:194
+#: classes/Views/ToggleAlerts.php:206
 msgid "Geek"
 msgstr ""
 
-#: classes/Views/ToggleAlerts.php:197
+#: classes/Views/ToggleAlerts.php:209
 msgid "Custom"
 msgstr ""
 
-#: classes/Views/ToggleAlerts.php:201
+#: classes/Views/ToggleAlerts.php:213
 msgid ""
 "Use the Log level drop down menu above to use one of our preset log levels. "
 "Alternatively you can enable or disable any of the individual events from "
@@ -2534,212 +2614,270 @@ msgid ""
 "on all the events the plugin can keep a log of."
 msgstr ""
 
-#: classes/Views/ToggleAlerts.php:209 defaults.php:485
+#: classes/Views/ToggleAlerts.php:221 defaults.php:485
 msgid "Third Party Plugins"
 msgstr ""
 
-#: classes/Views/ToggleAlerts.php:212
-msgid "Visitor Events"
+#: classes/Views/ToggleAlerts.php:223
+msgid "Front-end Events"
 msgstr ""
 
-#: classes/Views/ToggleAlerts.php:264 classes/Views/ToggleAlerts.php:271
-#: classes/Views/ToggleAlerts.php:321 defaults.php:489
+#: classes/Views/ToggleAlerts.php:274 classes/Views/ToggleAlerts.php:281
+#: classes/Views/ToggleAlerts.php:331 defaults.php:489
 msgid "BBPress Forum"
 msgstr ""
 
-#: classes/Views/ToggleAlerts.php:265 classes/Views/ToggleAlerts.php:278
-#: classes/Views/ToggleAlerts.php:334 defaults.php:564
+#: classes/Views/ToggleAlerts.php:275 classes/Views/ToggleAlerts.php:288
+#: classes/Views/ToggleAlerts.php:344 defaults.php:564
 msgid "WooCommerce"
 msgstr ""
 
-#: classes/Views/ToggleAlerts.php:266 classes/Views/ToggleAlerts.php:279
-#: classes/Views/ToggleAlerts.php:334 classes/Views/ToggleAlerts.php:342
+#: classes/Views/ToggleAlerts.php:276 classes/Views/ToggleAlerts.php:289
+#: classes/Views/ToggleAlerts.php:344 classes/Views/ToggleAlerts.php:352
 #: defaults.php:519
 msgid "WooCommerce Products"
 msgstr ""
 
-#: classes/Views/ToggleAlerts.php:267 classes/Views/ToggleAlerts.php:286
-#: classes/Views/ToggleAlerts.php:349 defaults.php:616
+#: classes/Views/ToggleAlerts.php:277 classes/Views/ToggleAlerts.php:296
+#: classes/Views/ToggleAlerts.php:359 defaults.php:616
 msgid "Yoast SEO"
 msgstr ""
 
-#: classes/Views/ToggleAlerts.php:268 classes/Views/ToggleAlerts.php:293
-#: classes/Views/ToggleAlerts.php:362 defaults.php:467
+#: classes/Views/ToggleAlerts.php:278 classes/Views/ToggleAlerts.php:303
+#: classes/Views/ToggleAlerts.php:372 defaults.php:467
 msgid "MultiSite"
 msgstr ""
 
-#: classes/Views/ToggleAlerts.php:309
+#: classes/Views/ToggleAlerts.php:319
 msgid "Code"
 msgstr ""
 
-#: classes/Views/ToggleAlerts.php:311 classes/WidgetManager.php:83
+#: classes/Views/ToggleAlerts.php:321 classes/WidgetManager.php:83
 msgid "Description"
 msgstr ""
 
-#: classes/Views/ToggleAlerts.php:314 classes/Views/ToggleAlerts.php:478
-#: classes/Views/ToggleAlerts.php:606
+#: classes/Views/ToggleAlerts.php:324 classes/Views/ToggleAlerts.php:488
+#: classes/Views/ToggleAlerts.php:583
 msgid "File Changes"
 msgstr ""
 
-#: classes/Views/ToggleAlerts.php:315 defaults.php:197
+#: classes/Views/ToggleAlerts.php:325 defaults.php:197
 msgid "Content"
 msgstr ""
 
-#: classes/Views/ToggleAlerts.php:318
+#: classes/Views/ToggleAlerts.php:328
 msgid ""
 "<strong>Note:</strong> Post refers to any type of content, i.e. blog post, "
 "page or a post with a custom post type."
 msgstr ""
 
-#: classes/Views/ToggleAlerts.php:325
+#: classes/Views/ToggleAlerts.php:335
 msgid ""
 "The plugin BBPress is not installed on your website so these events have "
 "been disabled."
 msgstr ""
 
-#: classes/Views/ToggleAlerts.php:331
+#: classes/Views/ToggleAlerts.php:341
 msgid "Forums"
 msgstr ""
 
-#: classes/Views/ToggleAlerts.php:338
+#: classes/Views/ToggleAlerts.php:348
 msgid ""
 "The plugin WooCommerce is not installed on your website so these events have "
 "been disabled."
 msgstr ""
 
-#: classes/Views/ToggleAlerts.php:345
+#: classes/Views/ToggleAlerts.php:355
 msgid "Products"
 msgstr ""
 
-#: classes/Views/ToggleAlerts.php:353
+#: classes/Views/ToggleAlerts.php:363
 msgid ""
 "The plugin Yoast SEO is not installed on your website so these events have "
 "been disabled."
 msgstr ""
 
-#: classes/Views/ToggleAlerts.php:359
+#: classes/Views/ToggleAlerts.php:369
 msgid "Post Changes"
 msgstr ""
 
-#: classes/Views/ToggleAlerts.php:366
+#: classes/Views/ToggleAlerts.php:376
 msgid ""
 "Your website is a single site so the multisite events have been disabled."
 msgstr ""
 
-#: classes/Views/ToggleAlerts.php:372 defaults.php:171
+#: classes/Views/ToggleAlerts.php:382 defaults.php:171
 msgid "User Profiles"
 msgstr ""
 
-#: classes/Views/ToggleAlerts.php:375 defaults.php:152
+#: classes/Views/ToggleAlerts.php:385 defaults.php:152
 msgid "Other User Activity"
 msgstr ""
 
-#: classes/Views/ToggleAlerts.php:378
+#: classes/Views/ToggleAlerts.php:388
 msgid "Logins & Logouts"
 msgstr ""
 
-#: classes/Views/ToggleAlerts.php:395
+#: classes/Views/ToggleAlerts.php:407
 msgid "Not Implemented"
 msgstr ""
 
-#: classes/Views/ToggleAlerts.php:398
+#: classes/Views/ToggleAlerts.php:410
 msgid "Not Available"
 msgstr ""
 
-#: classes/Views/ToggleAlerts.php:408
+#: classes/Views/ToggleAlerts.php:420
 msgid "User Sessions"
 msgstr ""
 
-#: classes/Views/ToggleAlerts.php:410
+#: classes/Views/ToggleAlerts.php:422
 msgid "Files"
 msgstr ""
 
-#: classes/Views/ToggleAlerts.php:414
+#: classes/Views/ToggleAlerts.php:426
 msgid "Post Settings"
 msgstr ""
 
-#: classes/Views/ToggleAlerts.php:416
+#: classes/Views/ToggleAlerts.php:428
 msgid "Tags"
 msgstr ""
 
-#: classes/Views/ToggleAlerts.php:418 classes/Views/ToggleAlerts.php:436
+#: classes/Views/ToggleAlerts.php:430 classes/Views/ToggleAlerts.php:448
 msgid "Categories"
 msgstr ""
 
-#: classes/Views/ToggleAlerts.php:420
+#: classes/Views/ToggleAlerts.php:432
 msgid "Custom Fields"
 msgstr ""
 
-#: classes/Views/ToggleAlerts.php:422
+#: classes/Views/ToggleAlerts.php:434
 msgid "Sites"
 msgstr ""
 
-#: classes/Views/ToggleAlerts.php:426
+#: classes/Views/ToggleAlerts.php:438
 msgid "Topics"
 msgstr ""
 
-#: classes/Views/ToggleAlerts.php:428 classes/Views/ToggleAlerts.php:444
+#: classes/Views/ToggleAlerts.php:440 classes/Views/ToggleAlerts.php:456
 msgid "User Profile"
 msgstr ""
 
-#: classes/Views/ToggleAlerts.php:430
+#: classes/Views/ToggleAlerts.php:442
 msgid "Product Admin"
 msgstr ""
 
-#: classes/Views/ToggleAlerts.php:432
+#: classes/Views/ToggleAlerts.php:444
 msgid "Product Attribute"
 msgstr ""
 
-#: classes/Views/ToggleAlerts.php:434
+#: classes/Views/ToggleAlerts.php:446
 msgid "Store Admin"
 msgstr ""
 
-#: classes/Views/ToggleAlerts.php:438
+#: classes/Views/ToggleAlerts.php:450
 msgid "Attributes"
 msgstr ""
 
-#: classes/Views/ToggleAlerts.php:440
+#: classes/Views/ToggleAlerts.php:452
 msgid "Coupons"
 msgstr ""
 
-#: classes/Views/ToggleAlerts.php:442
+#: classes/Views/ToggleAlerts.php:454
 msgid "Orders"
 msgstr ""
 
-#: classes/Views/ToggleAlerts.php:446
+#: classes/Views/ToggleAlerts.php:458
 msgid "Website Changes"
 msgstr ""
 
-#: classes/Views/ToggleAlerts.php:448
+#: classes/Views/ToggleAlerts.php:460
 msgid "Plugin Settings"
 msgstr ""
 
-#: classes/Views/ToggleAlerts.php:454
+#: classes/Views/ToggleAlerts.php:466
 msgid "File Changes Scanning"
 msgstr ""
 
-#: classes/Views/ToggleAlerts.php:510 classes/Views/ToggleAlerts.php:543
+#: classes/Views/ToggleAlerts.php:520 classes/Views/ToggleAlerts.php:662
 msgid ""
 "Capture 404 requests to file (the log file are created in the /wp-content/"
 "uploads/wp-security-audit-log/404s/ directory)"
 msgstr ""
 
-#: classes/Views/ToggleAlerts.php:518 classes/Views/ToggleAlerts.php:551
+#: classes/Views/ToggleAlerts.php:528 classes/Views/ToggleAlerts.php:666
 msgid "Purge log files older than one month"
 msgstr ""
 
-#: classes/Views/ToggleAlerts.php:523
+#: classes/Views/ToggleAlerts.php:533
 msgid ""
 "Number of 404 Requests to Log. By default the plugin keeps up to 99 requests "
 "to non-existing pages from the same IP address. Increase the value in this "
 "setting to the desired amount to keep a log of more or less requests."
 msgstr ""
 
-#: classes/Views/ToggleAlerts.php:528 classes/Views/ToggleAlerts.php:561
+#: classes/Views/ToggleAlerts.php:538 classes/Views/ToggleAlerts.php:674
 msgid "Record the referrer that generated the 404 error."
 msgstr ""
 
-#: classes/Views/ToggleAlerts.php:556
+#: classes/Views/ToggleAlerts.php:550 classes/Views/ToggleAlerts.php:563
+msgid ""
+"Number of login attempts to log. Enter 0 to log all failed login attempts. "
+"(By default the plugin only logs up to 10 failed login because the process "
+"can be very resource intensive in case of a brute force attack)"
+msgstr ""
+
+#: classes/Views/ToggleAlerts.php:576
+msgid ""
+"Log all stock changes. Disable this setting to only keep a log of stock "
+"changes done manually via the WooCommerce dashboard. Therefore automated "
+"stock changes typically done via customers placing orders or via other "
+"plugins will not be logged."
+msgstr ""
+
+#: classes/Views/ToggleAlerts.php:598
+msgid "Configure the file integrity scan settings."
+msgstr ""
+
+#: classes/Views/ToggleAlerts.php:619
+msgid ""
+"This plugin keeps a log of what your website users are doing when they are "
+"logged in. On top of that it can also keep a log of some important events of "
+"(non logged in) website visitors. Use the below settings to enable / disable "
+"any of the front-end sensors:"
+msgstr ""
+
+#: classes/Views/ToggleAlerts.php:624
+msgid "Front-end users registrations"
+msgstr ""
+
+#: classes/Views/ToggleAlerts.php:630
+msgid ""
+"Keep a log when a visitor registers a user on the website. Only enable this "
+"if you allow visitors to register as users on your website. User "
+"registration is disabled by default in WordPress."
+msgstr ""
+
+#: classes/Views/ToggleAlerts.php:635
+msgid "Front-end users logins"
+msgstr ""
+
+#: classes/Views/ToggleAlerts.php:641
+msgid ""
+"Keep a log when users login to the website from other login pages / forms "
+"other than the default WordPress login page."
+msgstr ""
+
+#: classes/Views/ToggleAlerts.php:646
+msgid "Website visitors 404 errors"
+msgstr ""
+
+#: classes/Views/ToggleAlerts.php:652
+msgid ""
+"Event ID 6023: Keep a log when a website visitor requests a non-existing URL "
+"(HTTP 404 response error)."
+msgstr ""
+
+#: classes/Views/ToggleAlerts.php:670
 msgid ""
 "Number of 404 Requests to Log. By default the plugin keeps up to 99 requests "
 "to non-existing pages from the same IP address. Increase the value in this "
@@ -2748,79 +2886,50 @@ msgid ""
 "scanned the plugin will consume more resources to log all the requests."
 msgstr ""
 
-#: classes/Views/ToggleAlerts.php:573 classes/Views/ToggleAlerts.php:586
+#: classes/Views/ToggleAlerts.php:678
+msgid "Front-end WooCommerce activity"
+msgstr ""
+
+#: classes/Views/ToggleAlerts.php:684
 msgid ""
-"Number of login attempts to log. Enter 0 to log all failed login attempts. "
-"(By default the plugin only logs up to 10 failed login because the process "
-"can be very resource intensive in case of a brute force attack)"
+"Keep a log of product stocks and orders changes done by website visitors "
+"(non-logged in). Regardless of the state of this setting, the plugin always "
+"keeps a log of changes done by logged in users."
 msgstr ""
 
-#: classes/Views/ToggleAlerts.php:599
-msgid ""
-"Log all stock changes. Disable this setting to only keep a log of stock "
-"changes done manually via the WooCommerce dashboard. Therefore automated "
-"stock changes typically done via customers placing orders or via other "
-"plugins will not be logged."
-msgstr ""
-
-#: classes/Views/ToggleAlerts.php:621
-msgid "Configure the file integrity scan settings."
-msgstr ""
-
-#: classes/Views/ToggleAlerts.php:636
-msgid ""
-"The plugin also keeps a log of some events that website visitors (non-logged "
-"in users) do because it is typically required by site admins. You can "
-"disable these events from here:"
-msgstr ""
-
-#: classes/Views/ToggleAlerts.php:638
-msgid "Enable website visitors events"
-msgstr ""
-
-#: classes/Views/ToggleAlerts.php:644
-msgid "Enable"
-msgstr ""
-
-#: classes/Views/ToggleAlerts.php:649
-msgid ""
-"Below is the list of the events which are disabled when the above option is "
-"disabled:"
-msgstr ""
-
-#: classes/Views/ToggleAlerts.php:664
+#: classes/Views/ToggleAlerts.php:690
 msgid "Save Changes"
 msgstr ""
 
-#: classes/Views/ToggleAlerts.php:671
+#: classes/Views/ToggleAlerts.php:697
 msgid "Log Level Updated"
 msgstr ""
 
 #. translators: Alerts log level.
-#: classes/Views/ToggleAlerts.php:675
+#: classes/Views/ToggleAlerts.php:701
 #, php-format
 msgid "The %s log level has been successfully loaded and applied."
 msgstr ""
 
-#: classes/Views/ToggleAlerts.php:679
+#: classes/Views/ToggleAlerts.php:705
 msgid "OK"
 msgstr ""
 
-#: classes/Views/ToggleAlerts.php:694
+#: classes/Views/ToggleAlerts.php:720
 msgid "Enable File Integrity Scanner"
 msgstr ""
 
-#: classes/Views/ToggleAlerts.php:696
+#: classes/Views/ToggleAlerts.php:722
 msgid ""
 "The file integrity scanner is switched off. To enable this event it has to "
 "be switched on."
 msgstr ""
 
-#: classes/Views/ToggleAlerts.php:700
+#: classes/Views/ToggleAlerts.php:726
 msgid "SWITCH ON"
 msgstr ""
 
-#: classes/Views/ToggleAlerts.php:701
+#: classes/Views/ToggleAlerts.php:727
 msgid "DISABLE EVENT"
 msgstr ""
 
@@ -6263,27 +6372,27 @@ msgid "%Status% the advanced settings for authors in the Yoast SEO settings."
 msgstr ""
 
 #. translators: Username
-#: wp-security-audit-log.php:715 wp-security-audit-log.php:742
+#: wp-security-audit-log.php:755 wp-security-audit-log.php:782
 #, php-format
 msgid "Hey %1$s"
 msgstr ""
 
-#: wp-security-audit-log.php:716
+#: wp-security-audit-log.php:756
 msgid ""
 "Never miss an important update! Opt-in to our security and feature updates "
 "notifications, and non-sensitive diagnostic tracking with freemius.com."
 msgstr ""
 
-#: wp-security-audit-log.php:717 wp-security-audit-log.php:745
+#: wp-security-audit-log.php:757 wp-security-audit-log.php:785
 msgid "Note: "
 msgstr ""
 
-#: wp-security-audit-log.php:718 wp-security-audit-log.php:746
+#: wp-security-audit-log.php:758 wp-security-audit-log.php:786
 msgid "NO AUDIT LOG ACTIVITY & DATA IS SENT BACK TO OUR SERVERS."
 msgstr ""
 
 #. translators: 1: Plugin name. 2: Freemius link.
-#: wp-security-audit-log.php:744
+#: wp-security-audit-log.php:784
 #, php-format
 msgid ""
 "Please help us improve %2$s! If you opt-in, some non-sensitive data about "
@@ -6292,7 +6401,7 @@ msgid ""
 msgstr ""
 
 #. translators: Plugin name
-#: wp-security-audit-log.php:766
+#: wp-security-audit-log.php:806
 #, php-format
 msgid ""
 "Get a free 7-day trial of the premium edition of %s. No credit card "
@@ -6300,124 +6409,150 @@ msgid ""
 msgstr ""
 
 #. Plugin Name of the plugin/theme
-#: wp-security-audit-log.php:767
+#: wp-security-audit-log.php:807
 msgid "WP Security Audit Log"
 msgstr ""
 
-#: wp-security-audit-log.php:771
+#: wp-security-audit-log.php:811
 msgid "Start free trial"
 msgstr ""
 
-#: wp-security-audit-log.php:838
+#: wp-security-audit-log.php:878
 #, php-format
 msgid ""
 "The license is limited to %s sub-sites. You need to upgrade your license to "
 "cover all the sub-sites on this network."
 msgstr ""
 
-#: wp-security-audit-log.php:936
+#: wp-security-audit-log.php:977
 msgid ""
 "Error: You do not have sufficient permissions to disable this custom field."
 msgstr ""
 
-#: wp-security-audit-log.php:972
+#: wp-security-audit-log.php:1010
+#, php-format
+msgid ""
+"Custom Field %1$s is no longer being monitored.<br />Enable the monitoring "
+"of this custom field again from the"
+msgstr ""
+
+#: wp-security-audit-log.php:1010
+msgid "Excluded Objects"
+msgstr ""
+
+#: wp-security-audit-log.php:1010
+msgid " tab in the plugin settings"
+msgstr ""
+
+#: wp-security-audit-log.php:1022
 msgid "Error: You do not have sufficient permissions to disable this alert."
 msgstr ""
 
-#: wp-security-audit-log.php:1093
+#: wp-security-audit-log.php:1046
+#, php-format
+msgid "Alert %1$s is no longer being monitored.<br /> %2$s"
+msgstr ""
+
+#: wp-security-audit-log.php:1046
+msgid ""
+"You can enable this alert again from the Enable/Disable Alerts node in the "
+"plugin menu."
+msgstr ""
+
+#: wp-security-audit-log.php:1142
 #, php-format
 msgid ""
 "You are using a version of PHP that is older than %s, which is no longer "
 "supported."
 msgstr ""
 
-#: wp-security-audit-log.php:1095
+#: wp-security-audit-log.php:1144
 msgid ""
 "Contact us on <a href=\"mailto:plugins@wpwhitesecurity.com"
 "\">plugins@wpwhitesecurity.com</a> to help you switch the version of PHP you "
 "are using."
 msgstr ""
 
-#: wp-security-audit-log.php:1097
+#: wp-security-audit-log.php:1146
 msgid ""
 "The WP Security Audit Log plugin is a multisite network tool, so it has to "
 "be activated at network level."
 msgstr ""
 
-#: wp-security-audit-log.php:1099
+#: wp-security-audit-log.php:1148
 msgid "Redirect me to the network dashboard"
 msgstr ""
 
-#: wp-security-audit-log.php:1104
+#: wp-security-audit-log.php:1153
 #, php-format
 msgid "Please install the %s plugin on the MainWP dashboard."
 msgstr ""
 
-#: wp-security-audit-log.php:1104
+#: wp-security-audit-log.php:1153
 msgid "Activity Log for MainWP"
 msgstr ""
 
-#: wp-security-audit-log.php:1106
+#: wp-security-audit-log.php:1155
 #, php-format
 msgid ""
 "The WP Security Audit Log should be installed on the child sites only. Refer "
 "to the %s for more information."
 msgstr ""
 
-#: wp-security-audit-log.php:1106
+#: wp-security-audit-log.php:1155
 msgid "getting started guide"
 msgstr ""
 
-#: wp-security-audit-log.php:1199
+#: wp-security-audit-log.php:1241
 msgid ""
 "This plugin uses 3 tables in the WordPress database to store the activity "
 "log and settings. It seems that these tables were not created."
 msgstr ""
 
-#: wp-security-audit-log.php:1201
+#: wp-security-audit-log.php:1243
 msgid ""
 "This could happen because the database user does not have the right "
 "privileges to create the tables in the database. We recommend you to update "
 "the privileges and try enabling the plugin again."
 msgstr ""
 
-#: wp-security-audit-log.php:1203
+#: wp-security-audit-log.php:1245
 #, php-format
 msgid ""
 "If after doing so you still have issues, please send us an email on %s for "
 "assistance."
 msgstr ""
 
-#: wp-security-audit-log.php:1203
+#: wp-security-audit-log.php:1245
 msgid "support@wpsecurityauditlog.com"
 msgstr ""
 
-#: wp-security-audit-log.php:1863
+#: wp-security-audit-log.php:1872
 msgid "Every 6 hours"
 msgstr ""
 
-#: wp-security-audit-log.php:1867
+#: wp-security-audit-log.php:1876
 msgid "Every 45 minutes"
 msgstr ""
 
-#: wp-security-audit-log.php:1871
+#: wp-security-audit-log.php:1880
 msgid "Every 30 minutes"
 msgstr ""
 
-#: wp-security-audit-log.php:1875
+#: wp-security-audit-log.php:1884
 msgid "Every 15 minutes"
 msgstr ""
 
-#: wp-security-audit-log.php:1879
+#: wp-security-audit-log.php:1888
 msgid "Every 10 minutes"
 msgstr ""
 
-#: wp-security-audit-log.php:1883
+#: wp-security-audit-log.php:1892
 msgid "Every 1 minute"
 msgstr ""
 
 #. translators: 1. Deprecated method name 2. Version since deprecated
-#: wp-security-audit-log.php:1897
+#: wp-security-audit-log.php:1906
 #, php-format
 msgid "Method %1$s is deprecated since version %2$s!"
 msgstr ""
