@@ -160,7 +160,6 @@ class WSAL_Settings {
 	 * Enable Geek Mode.
 	 */
 	public function set_geek_mode() {
-		$this->_plugin->SetGlobalOption( 'disable-visitor-events', 'no' ); // Set disable visitor events to no.
 		$this->SetDisabledAlerts( array() ); // Disable alerts of geek mode.
 	}
 
@@ -2243,5 +2242,39 @@ class WSAL_Settings {
 		}
 
 		return false;
+	}
+
+	/**
+	 * Get WSAL's frontend events option.
+	 *
+	 * @return array
+	 */
+	public function get_frontend_events() {
+		// Option defaults.
+		$default = array(
+			'register'    => false,
+			'login'       => false,
+			'system'      => false,
+			'woocommerce' => WpSecurityAuditLog::is_woocommerce_active(),
+		);
+
+		// Get the option.
+		$event_opt = 'wsal-frontend-events';
+		$value     = ! is_multisite() ? get_option( $event_opt, $default ) : get_network_option( get_main_network_id(), $event_opt, $default );
+
+		// Check for WooCommerce in case it is not stored.
+		$value['woocommerce'] = ! isset( $value['woocommerce'] ) ? WpSecurityAuditLog::is_woocommerce_active() : $value['woocommerce'];
+		return $value;
+	}
+
+	/**
+	 * Set WSAL's frontend events option.
+	 *
+	 * @param array $value - Option values.
+	 * @return bool
+	 */
+	public function set_frontend_events( $value = array() ) {
+		$event_opt = 'wsal-frontend-events';
+		return ! is_multisite() ? update_option( $event_opt, $value ) : update_network_option( get_main_network_id(), $event_opt, $value );
 	}
 }
