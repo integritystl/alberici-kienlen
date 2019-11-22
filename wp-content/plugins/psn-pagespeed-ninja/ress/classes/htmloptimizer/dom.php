@@ -236,7 +236,7 @@ class Ressio_HtmlOptimizer_Dom extends Ressio_HtmlOptimizer_Base
      */
     public function appendStyleDeclaration($content, $attribs = null, $head = true)
     {
-            /** @var Ressio_HtmlOptimizer_Dom_Element $cssNode */
+        /** @var Ressio_HtmlOptimizer_Dom_Element $cssNode */
         if ($this->lastCssNode !== null) {
             $cssNode = $this->dom->addChild('style');
         } else {
