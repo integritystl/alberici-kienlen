@@ -48,7 +48,6 @@ class WSAL_ViewManager {
 	 * Method: Constructor.
 	 *
 	 * @param  WpSecurityAuditLog $plugin - Instance of WpSecurityAuditLog.
-	 * @author Ashar Irfan
 	 * @since  1.0.0
 	 */
 	public function __construct( WpSecurityAuditLog $plugin ) {
@@ -80,16 +79,6 @@ class WSAL_ViewManager {
 		 */
 		if ( file_exists( $this->_plugin->GetBaseDir() . 'classes/Views/SetupWizard.php' ) ) {
 			$skip_views[] = $this->_plugin->GetBaseDir() . 'classes/Views/SetupWizard.php';
-		}
-
-		/**
-		 * Add frontend setup wizard page to skip views. It will only be initialized
-		 * one time.
-		 *
-		 * @since 3.5
-		 */
-		if ( file_exists( $this->_plugin->GetBaseDir() . 'classes/Views/FrontendSetupWizard.php' ) ) {
-			$skip_views[] = $this->_plugin->GetBaseDir() . 'classes/Views/FrontendSetupWizard.php';
 		}
 
 		/**
@@ -130,11 +119,6 @@ class WSAL_ViewManager {
 			new WSAL_Views_SetupWizard( $plugin );
 		}
 
-		// Initialize setup frontend wizard.
-		if ( 'no' === $this->_plugin->GetGlobalOption( 'front-end-setup-complete', 'no' ) ) {
-			new WSAL_Views_FrontendSetupWizard( $plugin );
-		}
-
 		// Reorder WSAL submenu.
 		add_filter( 'custom_menu_order', array( $this, 'reorder_wsal_submenu' ), 10, 1 );
 
@@ -164,7 +148,12 @@ class WSAL_ViewManager {
 	 * @param string $class Class name.
 	 */
 	public function AddFromClass( $class ) {
-		$this->AddInstance( new $class( $this->_plugin ) );
+		$view = new $class( $this->_plugin );
+		// only load WSAL_AbstractView instances to prevent lingering classes
+		// that did not impliment this from throwing fatals by being autoloaded.
+		if ( is_a( $view, '\WSAL_AbstractView' ) ) {
+			$this->AddInstance( $view );
+		}
 	}
 
 	/**
@@ -245,8 +234,7 @@ class WSAL_ViewManager {
 						$view->GetName(),
 						'read', // No capability requirement.
 						$view->GetSafeViewName(),
-						array( $this, 'RenderViewBody' ),
-						$view->GetIcon()
+						array( $this, 'RenderViewBody' )
 					);
 				}
 			}
