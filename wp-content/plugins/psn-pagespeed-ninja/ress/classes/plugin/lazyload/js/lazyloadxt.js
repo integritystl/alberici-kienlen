@@ -1,6 +1,6 @@
-/*! Lazy Load XT v2.0.0 2017-09-27
+/*! Lazy Load XT v2.0.0 2019-05-12
  * http://ressio.github.io/lazy-load-xt
- * (C) 2013-2018 RESS.io
+ * (C) 2013-2019 RESSIO
  * Licensed under MIT */
 
 (function (window, document, undefined) {
@@ -162,7 +162,9 @@
      * @param {boolean} [remove]
      */
     function changeClass(el, classes, remove) {
-        if (!classes) return;
+        if (!classes) {
+            return;
+        }
         var i = 0,
             origValue = ' ' + el.className.replace(/[\t\r\n\f]/g, ' ') + ' ',
             value = origValue,

@@ -252,7 +252,7 @@ class PagespeedNinja_Cache
             isset($_COOKIE['woocommerce_items_in_cart']) ||
 
             // a commenter
-            isset($_COOKIE['comment_author_' . COOKIEHASH])
+            (defined('COOKIEHASH') && isset($_COOKIE['comment_author_' . COOKIEHASH]))
             ;
     }
 
