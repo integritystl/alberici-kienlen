@@ -3,8 +3,8 @@
 Contributors: pagespeed
 Tags: page speed, optimizer, minification, gzip, render blocking css
 Requires at least: 4.0.1
-Tested up to: 5.2
-Stable tag: 0.9.38
+Tested up to: 5.3
+Stable tag: 0.9.39
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 
@@ -80,6 +80,11 @@ None
 
 
 == Changelog ==
+
+= 0.9.39 Beta Release [13 November 2019]
+- Fixed compatibility with WP 5.3
+- Fixed URL parsing in "Optimize integrations"
+- Fixed lazy image loading
 
 = 0.9.38 Beta Release [30 April 2019]
 - Fixed issue with exclusion of JavaScript files

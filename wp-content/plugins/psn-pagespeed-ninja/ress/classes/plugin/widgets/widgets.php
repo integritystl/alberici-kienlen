@@ -4,7 +4,7 @@
  * RESSIO Responsive Server Side Optimizer
  * https://github.com/ressio/
  *
- * @copyright   Copyright (C) 2013-2018 Kuneri, Ltd. All rights reserved.
+ * @copyright   Copyright (C) 2013-2019 Kuneri Ltd., PageSpeed Ninja Team. All rights reserved.
  * @license     GNU General Public License version 2
  */
 
@@ -44,7 +44,7 @@ class Ressio_Plugin_Widgets extends Ressio_Plugin
      */
     public function __construct($di, $params = null)
     {
-        $params = $this->loadConfig(dirname(__FILE__) . '/config.json', $params);
+        $params = $this->loadConfig(__DIR__ . '/config.json', $params);
 
         parent::__construct($di, $params);
 
@@ -55,8 +55,8 @@ class Ressio_Plugin_Widgets extends Ressio_Plugin
     }
 
     /**
-     * @param $optimizer IRessio_HtmlOptimizer
-     * @param $node IRessio_HtmlNode
+     * @param IRessio_HtmlOptimizer $optimizer
+     * @param IRessio_HtmlNode $node
      */
     private function injectJsLoader($optimizer, $node)
     {
@@ -69,9 +69,9 @@ class Ressio_Plugin_Widgets extends Ressio_Plugin
     }
 
     /**
-     * @param $event Ressio_Event
-     * @param $optimizer IRessio_HtmlOptimizer
-     * @param $node IRessio_HtmlNode
+     * @param Ressio_Event $event
+     * @param IRessio_HtmlOptimizer $optimizer
+     * @param IRessio_HtmlNode $node
      */
     public function onHtmlIterateTagSCRIPTBefore($event, $optimizer, $node)
     {
@@ -107,11 +107,16 @@ class Ressio_Plugin_Widgets extends Ressio_Plugin
             }
 
             $anchor = false;
-            $pos1 = strpos($src, '?');
-            $pos2 = strpos($src, '#');
-            $pos = ($pos1 === false) ? $pos2 : ($pos2 === false ? $pos1 : min($pos1, $pos2));
+            $pos = strpos($src, '#');
             if ($pos !== false) {
                 $anchor = substr($src, $pos + 1);
+                $src = substr($src, 0, $pos);
+            }
+
+            $query = false;
+            $pos = strpos($src, '?');
+            if ($pos !== false) {
+                $query = substr($src, $pos + 1);
                 $src = substr($src, 0, $pos);
             }
 
@@ -132,6 +137,10 @@ class Ressio_Plugin_Widgets extends Ressio_Plugin
 
                 if ($lang !== false) {
                     $newSrc = str_replace('/%LANG%/', $lang, $newSrc);
+                }
+
+                if ($query !== false) {
+                    $newSrc .= '?' . $query;
                 }
 
                 if ($anchor !== false) {
@@ -273,6 +282,10 @@ class Ressio_Plugin_Widgets extends Ressio_Plugin
         , true);
     }
 
+    /**
+     * @param string $s
+     * @return string
+     */
     private function re_quote($s)
     {
         $regex = preg_quote($s, '#');
@@ -290,12 +303,18 @@ class Ressio_Plugin_Widgets extends Ressio_Plugin
         return str_replace('%SRC%', $this->src_regex, $regex);
     }
 
+    /**
+     * @return string
+     */
     private function re_or()
     {
         $args = func_get_args();
         return '(?:' . implode('|', $args) . ')';
     }
 
+    /**
+     * @return string
+     */
     private function re_shuffle()
     {
         switch (func_num_args()) {

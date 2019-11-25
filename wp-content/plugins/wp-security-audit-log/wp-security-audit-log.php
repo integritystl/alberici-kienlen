@@ -4,7 +4,7 @@
  * Plugin URI: http://www.wpsecurityauditlog.com/
  * Description: Identify WordPress security issues before they become a problem. Keep track of everything happening on your WordPress including WordPress users activity. Similar to Windows Event Log and Linux Syslog, WP Security Audit Log generates a security alert for everything that happens on your WordPress blogs and websites. Use the Audit Log Viewer included in the plugin to see all the security alerts.
  * Author: WP White Security
- * Version: 3.5
+ * Version: 3.5.1.1
  * Text Domain: wp-security-audit-log
  * Author URI: http://www.wpwhitesecurity.com/
  * License: GPL2
@@ -46,7 +46,7 @@ if ( ! function_exists( 'wsal_freemius' ) ) {
 		 *
 		 * @var string
 		 */
-		public $version = '3.5';
+		public $version = '3.5.1.1';
 
 		// Plugin constants.
 		const PLG_CLS_PRFX    = 'WSAL_';
@@ -671,11 +671,6 @@ if ( ! function_exists( 'wsal_freemius' ) ) {
 				exit();
 			}
 
-			if ( get_option( 'wsal-redirect-to-frontend-wizard', false ) ) {
-				delete_option( 'wsal-redirect-to-frontend-wizard' );
-				wp_safe_redirect( add_query_arg( 'page', 'wsal-front-setup', admin_url( 'index.php' ) ) );
-				exit();
-			}
 		}
 
 		/**
@@ -1063,7 +1058,7 @@ if ( ! function_exists( 'wsal_freemius' ) ) {
 			);
 
 			// Check if plugin is premium and live events are enabled.
-			$is_premium          = wsal_freemius()->can_use_premium_code() || wsal_freemius()->is_plan__premium_only( 'starter' );
+			$is_premium          = ( function_exists( 'wsal_freemius' ) ) && ( wsal_freemius()->can_use_premium_code() || wsal_freemius()->is_plan__premium_only( 'starter' ) );
 			$live_events_enabled = $is_premium && $this->settings->is_admin_bar_notif() && 'real-time' === $this->settings->get_admin_bar_notif_updates();
 
 			// Set data array for common script.
@@ -1447,7 +1442,6 @@ if ( ! function_exists( 'wsal_freemius' ) ) {
 					}
 
 					$this->settings->set_frontend_events( $frontend_events );
-					add_option( 'wsal-redirect-to-frontend-wizard', true );
 				}
 			}
 		}
