@@ -55,7 +55,7 @@
     "react": "^15.6.2",
     "react-debounce-input": "^3.2.0",
     "react-dom": "^15.5.3",
-    "webpack-dev-server": "^2.4.2",
+    "webpack-dev-server": "^2.11.5",
     "whatwg-fetch": "^2.0.4"
   }
 }
