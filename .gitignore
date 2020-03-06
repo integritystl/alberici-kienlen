@@ -60,3 +60,4 @@ production.env
 
 #Code Editor Junk
 .idea/*
+package-lock.json
