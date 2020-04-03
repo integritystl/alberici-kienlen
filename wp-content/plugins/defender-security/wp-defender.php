@@ -3,7 +3,7 @@
 /**
  * Plugin Name: Defender
  * Plugin URI: https://premium.wpmudev.org/project/wp-defender/
- * Version:     2.2.6
+ * Version:     2.2.7
  * Description: Get regular security scans, vulnerability reports, safety recommendations and customized hardening for your site in just a few clicks. Defender is the analyst and enforcer who never sleeps.
  * Author:      WPMU DEV
  * Author URI:  http://premium.wpmudev.org/
@@ -12,7 +12,7 @@
  * Network: true
  */
 class WP_Defender_Free {
-
+	
 	/**
 	 * Store the WP_Defender object for singleton implement
 	 *
@@ -23,21 +23,21 @@ class WP_Defender_Free {
 	 * @var string
 	 */
 	private $plugin_path;
-
+	
 	/**
 	 * @return string
 	 */
 	public function getPluginPath() {
 		return $this->plugin_path;
 	}
-
+	
 	/**
 	 * @return string
 	 */
 	public function getPluginUrl() {
 		return $this->plugin_url;
 	}
-
+	
 	/**
 	 * @var string
 	 */
@@ -46,12 +46,12 @@ class WP_Defender_Free {
 	 * @var string
 	 */
 	public $domain = 'defender-security';
-
+	
 	/**
 	 * @var string
 	 */
-	public $version = "1.5";
-
+	public $version = "2.2.7";
+	
 	/**
 	 * @var string
 	 */
@@ -64,11 +64,11 @@ class WP_Defender_Free {
 	 * @var string
 	 */
 	public $plugin_slug = 'defender-security/wp-defender.php';
-
-	public $db_version = "2.1.1";
-
+	
+	public $db_version = "2.2.1";
+	
 	public $whiteLabel = 0;
-
+	
 	/**
 	 * @var int
 	 */
@@ -89,7 +89,7 @@ class WP_Defender_Free {
 	 * @var bool
 	 */
 	public $changeFooter = false;
-
+	
 	/**
 	 * @return WP_Defender_Free
 	 */
@@ -97,10 +97,10 @@ class WP_Defender_Free {
 		if ( ! is_object( self::$_instance ) ) {
 			self::$_instance = new WP_Defender_Free();
 		}
-
+		
 		return self::$_instance;
 	}
-
+	
 	/**
 	 * WP_Defender constructor.
 	 */
@@ -135,11 +135,11 @@ class WP_Defender_Free {
 //			}
 //		);
 	}
-
+	
 	public function loadTextDomain() {
 		load_plugin_textdomain( $this->domain, false, basename( __DIR__ ) . '/languages' );
 	}
-
+	
 	/**
 	 * Init values
 	 */
@@ -147,7 +147,7 @@ class WP_Defender_Free {
 		$this->plugin_path = plugin_dir_path( __FILE__ );
 		$this->plugin_url  = plugin_dir_url( __FILE__ );
 	}
-
+	
 	/**
 	 * Including vendors
 	 */
@@ -162,17 +162,17 @@ class WP_Defender_Free {
 		//load gettext helper
 		include_once $this->plugin_path . 'vendor' . DIRECTORY_SEPARATOR . 'gettext' . DIRECTORY_SEPARATOR . 'gettext' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'autoloader.php';
 		include_once $this->plugin_path . 'vendor' . DIRECTORY_SEPARATOR . 'gettext' . DIRECTORY_SEPARATOR . 'languages' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'autoloader.php';
-
+		
 		require_once __DIR__ . '/recommended-plugins-notice/notice.php';
 	}
-
+	
 	/**
 	 * Register the autoload
 	 */
 	private function autoload() {
 		spl_autoload_register( array( &$this, '_autoload' ) );
 	}
-
+	
 	public function adminBodyClasses( $classes ) {
 		$pages = [
 			'wp-defender',
@@ -188,37 +188,37 @@ class WP_Defender_Free {
 			return $classes;
 		}
 		$classes .= ' sui-2-4-1 ';
-
+		
 		return $classes;
 	}
-
+	
 	/**
 	 * Register globally css, js will be load on each module
 	 */
 	public function register_styles() {
 		wp_enqueue_style( 'defender-menu', $this->getPluginUrl() . 'assets/css/defender-icon.css' );
-
+		
 		$css_files = array(
 			'defender' => $this->plugin_url . 'assets/css/styles.css'
 		);
-
+		
 		foreach ( $css_files as $slug => $file ) {
 			wp_register_style( $slug, $file, array(), $this->version );
 		}
-
-		$is_min   = !defined( 'SCRIPT_DEBUG' ) ? '.min' : '';
+		
+		$is_min   = ! defined( 'SCRIPT_DEBUG' ) ? '.min' : '';
 		$js_files = array(
 			'wpmudev-sui' => $this->plugin_url . 'assets/js/shared-ui.js',
 			'defender'    => $this->plugin_url . 'assets/js/scripts.js',
-			'vue'         => $this->plugin_url . 'assets/js/vendor/vue.runtime' . $is_min . '.js',
+			'def-vue'     => $this->plugin_url . 'assets/js/vendor/vue.runtime' . $is_min . '.js',
 		);
-
+		
 		foreach ( $js_files as $slug => $file ) {
 			wp_register_script( $slug, $file, array(), $this->version, true );
 		}
-
-
-		wp_localize_script( 'vue', 'defender', array(
+		
+		
+		wp_localize_script( 'def-vue', 'defender', array(
 			'whitelabel'   => \WP_Defender\Behavior\WPMUDEV::instance()->whiteLabelStatus(),
 			'misc'         => [
 				'high_contrast' => \WP_Defender\Behavior\WPMUDEV::instance()->maybeHighContrast(),
@@ -232,14 +232,14 @@ class WP_Defender_Free {
 		) );
 		do_action( 'defender_enqueue_assets' );
 	}
-
+	
 	/**
 	 * @param $class
 	 */
 	public function _autoload( $class ) {
 		$base_path = __DIR__ . DIRECTORY_SEPARATOR;
 		$pools     = explode( '\\', $class );
-
+		
 		if ( $pools[0] != 'WP_Defender' ) {
 			return;
 		}
@@ -248,7 +248,7 @@ class WP_Defender_Free {
 		} else {
 			$pools[0] = 'App';
 		}
-
+		
 		//build the path
 		$path = implode( DIRECTORY_SEPARATOR, $pools );
 		$path = $base_path . strtolower( str_replace( '_', '-', $path ) ) . '.php';
@@ -262,7 +262,7 @@ if ( ! function_exists( 'wp_defender' ) ) {
 	if ( ! function_exists( 'is_plugin_active' ) ) {
 		include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 	}
-
+	
 	if ( is_plugin_active( 'wp-defender/wp-defender.php' ) ) {
 		return;
 	}
@@ -273,10 +273,10 @@ if ( ! function_exists( 'wp_defender' ) ) {
 	function wp_defender() {
 		return WP_Defender_Free::instance();
 	}
-
+	
 	//init
 	wp_defender();
-
+	
 	function wp_defender_deactivate() {
 		//we disable any cron running
 		wp_clear_scheduled_hook( 'processScanCron' );
@@ -286,18 +286,18 @@ if ( ! function_exists( 'wp_defender' ) ) {
 		wp_clear_scheduled_hook( 'scanReportCron' );
 		wp_clear_scheduled_hook( 'tweaksSendNotification' );
 	}
-
+	
 	function wp_defender_activate() {
 		$phpVersion = phpversion();
 		if ( version_compare( $phpVersion, '5.3', '>=' ) ) {
 			wp_defender()->global['bootstrap']->activationHook();
 		}
-
+		
 		$hs            = \WP_Defender\Module\Hardener\Model\Settings::instance();
 		$hs->last_seen = time();
 		$hs->save();
 	}
-
+	
 	register_deactivation_hook( __FILE__, 'wp_defender_deactivate' );
 	register_activation_hook( __FILE__, 'wp_defender_activate' );
 }
