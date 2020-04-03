@@ -40,7 +40,7 @@ if ( $settings->uninstall_data == 'remove' ) {
 
 	$sql = "DROP TABLE IF EXISTS $tableName1, $tableName2;";
 	$wpdb->query( $sql );
-
+	
 	\WP_Defender\Behavior\Utils::instance()->removeDir( \WP_Defender\Behavior\Utils::instance()->getDefUploadDir() );
 }
 
@@ -50,7 +50,7 @@ if ( $settings->uninstall_settings == 'reset' ) {
 	foreach ( $tweakFixed as $rule ) {
 		$rule->getService()->revert();
 	}
-
+	
 	( new \WP_Defender\Module\Scan\Component\Scanning() )->flushCache();
 
 	$cache = \Hammer\Helper\WP_Helper::getCache();
@@ -70,4 +70,13 @@ if ( $settings->uninstall_settings == 'reset' ) {
 	delete_option( 'wp_defender' );
 	delete_option( 'wd_db_version' );
 	delete_site_option( 'wd_db_version' );
+	delete_site_transient( 'wp_defender_free_is_activated' );
+	delete_site_transient( 'wp_defender_is_activated' );
+	delete_transient( 'wp_defender_free_is_activated' );
+	delete_transient( 'wp_defender_is_activated' );
+	
+	delete_site_option( 'wp_defender_free_is_activated' );
+	delete_site_option( 'wp_defender_is_activated' );
+	delete_option( 'wp_defender_free_is_activated' );
+	delete_option( 'wp_defender_is_activated' );
 }

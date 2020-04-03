@@ -6,8 +6,8 @@ Author URI: http://premium.wpmudev.org/
 Contributors: WPMUDEV
 Tags: wordpress security plugin, security, firewall, vulnerability, brute force attacks, sql injections, XSS, malware, malware scanner, two-factor authentication, scheduled malware scans, audit logs
 Requires at least: 5.0
-Tested up to: 5.3
-Stable tag: 2.2.6
+Tested up to: 5.4
+Stable tag: 2.2.7
 License: GPL v2 - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 
 WordPress security plugin with malware scans, IP blocking, audit logs, firewall, login security & more.
@@ -157,6 +157,9 @@ WPMU DEV's expert support will restore and clean up your site after it’s been 
 
 
 == Changelog ==
+
+= 2.2.7 =
+- Fix: Audit Logging sometime triggers a fatal error on some setups.
 
 = 2.2.6 =
 - Improvement: Frequency of Security Tweak notifications reduced to 7 days

@@ -337,7 +337,7 @@ class Main extends Controller {
 			wp_enqueue_style( 'wpmudev-sui' );
 			wp_enqueue_style( 'defender' );
 			wp_register_script( 'defender-iplockout', wp_defender()->getPluginUrl() . 'assets/app/ip-lockout.js', array(
-				'vue',
+				'def-vue',
 				'defender',
 				'wp-i18n'
 			), wp_defender()->version, true );
