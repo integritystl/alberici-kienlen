@@ -5,10 +5,16 @@
         @include grid-media($small-min) {
           grid-column: 1 / span 6;
         }
+        @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+          width: 48%;
+        }
       }
       .select {
         @include grid-media($small-min) {
           grid-column: 7 / span 6;
+        }
+        @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+          width: 48%;
         }
       }
 
