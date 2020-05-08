@@ -66,7 +66,6 @@ class WSAL_ViewManager {
 			$skip_views[] = $this->_plugin->GetBaseDir() . 'classes/Views/EmailNotifications.php';
 			$skip_views[] = $this->_plugin->GetBaseDir() . 'classes/Views/Search.php';
 			$skip_views[] = $this->_plugin->GetBaseDir() . 'classes/Views/ExternalDB.php';
-			$skip_views[] = $this->_plugin->GetBaseDir() . 'classes/Views/Licensing.php';
 			$skip_views[] = $this->_plugin->GetBaseDir() . 'classes/Views/LogInUsers.php';
 			$skip_views[] = $this->_plugin->GetBaseDir() . 'classes/Views/Reports.php';
 		}
@@ -80,6 +79,15 @@ class WSAL_ViewManager {
 		if ( file_exists( $this->_plugin->GetBaseDir() . 'classes/Views/SetupWizard.php' ) ) {
 			$skip_views[] = $this->_plugin->GetBaseDir() . 'classes/Views/SetupWizard.php';
 		}
+
+		/**
+		 * Removed in version 4.0.3 however some upgrade methods result in the
+		 * file being left behind and `AddFromFile()` tries to load it as a
+		 * class resulting in a fatal error because of it not existing.
+		 *
+		 * @since 4.0.4
+		 */
+		$skip_views[] = $this->_plugin->GetBaseDir() . 'classes/Views/Licensing.php';
 
 		/**
 		 * Skipped Views.
