@@ -123,7 +123,21 @@ final class WSAL_Views_SetupWizard {
 	 * Add setup admin page.
 	 */
 	public function admin_menus() {
+		// this is an empty title because we do not want it to display.
 		add_dashboard_page( '', '', 'manage_options', 'wsal-setup', '' );
+		// hide it via CSS as well so screen readers pass over it.
+		add_action(
+			'admin_head',
+			function() {
+				?>
+				<style>
+				.wp-submenu a[href="wsal-setup"]{
+					display: none !important;
+				}
+				</style>
+				<?php
+			}
+		);
 	}
 
 	/**
@@ -257,8 +271,8 @@ final class WSAL_Views_SetupWizard {
 			'ajaxURL'           => admin_url( 'admin-ajax.php' ),
 			'installing'        => __( 'Installing, please wait', 'wp-security-audit-log' ),
 			'already_installed' => __( 'Already installed', 'wp-security-audit-log' ),
-			'installed'         => __( 'Add-on installed', 'wp-security-audit-log' ),
-			'activated'         => __( 'Add-on activated', 'wp-security-audit-log' ),
+			'installed'         => __( 'Extension installed', 'wp-security-audit-log' ),
+			'activated'         => __( 'Extension activated', 'wp-security-audit-log' ),
 			'failed'            => __( 'Install failed', 'wp-security-audit-log' ),
 		);
 		wp_localize_script( 'wsal-common', 'wsalCommonData', $installer_script_data );
@@ -289,7 +303,7 @@ final class WSAL_Views_SetupWizard {
 		<head>
 			<meta name="viewport" content="width=device-width" />
 			<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-			<title><?php esc_html_e( 'WP Security Audit Log &rsaquo; Setup Wizard', 'wp-security-audit-log' ); ?></title>
+			<title><?php esc_html_e( 'WP Activity Log &rsaquo; Setup Wizard', 'wp-security-audit-log' ); ?></title>
 			<?php wp_print_scripts( 'wsal-wizard-js' ); ?>
 			<?php wp_print_scripts( 'wsal-common' ); ?>
 
@@ -297,7 +311,7 @@ final class WSAL_Views_SetupWizard {
 			<?php do_action( 'admin_head' ); ?>
 		</head>
 		<body class="wsal-setup wp-core-ui">
-			<h1 id="wsal-logo"><a href="https://wpsecurityauditlog.com/?utm_source=plugin&utm_medium=referral&utm_campaign=WSAL&utm_content=wizard+configuration" target="_blank"><img src="<?php echo esc_url( $this->wsal->GetBaseUrl() ); ?>/img/wsal-logo-full.png" alt="WP Security Audit Log" /></a></h1>
+			<h1 id="wsal-logo"><a href="https://wpactivitylog.com/?utm_source=plugin&utm_medium=referral&utm_campaign=WSAL&utm_content=wizard+configuration" target="_blank"><img src="<?php echo esc_url( $this->wsal->GetBaseUrl() ); ?>/img/wsal-logo-full.png" alt="WP Activity Log" /></a></h1>
 		<?php
 	}
 
@@ -414,8 +428,8 @@ final class WSAL_Views_SetupWizard {
 	 */
 	private function wsal_step_welcome() {
 		// Dismiss the setup modal on audit log.
-		if ( 'no' === $this->wsal->GetGlobalOption( 'wsal-setup-modal-dismissed', 'no' ) ) {
-			$this->wsal->SetGlobalOption( 'wsal-setup-modal-dismissed', 'yes' );
+		if ( 'no' === $this->wsal->options_helper->get_option_value( 'setup-modal-dismissed', 'no' ) ) {
+			$this->wsal->options_helper->set_option_value( 'setup-modal-dismissed', 'yes' );
 		}
 		?>
 		<p><?php esc_html_e( 'This wizard helps you configure the basic plugin settings. All these settings can be changed at a later stage from the plugin settings.', 'wp-security-audit-log' ); ?></p>
@@ -678,7 +692,7 @@ final class WSAL_Views_SetupWizard {
 			<em>
 				<?php
 				// Step help text.
-				$step_help = __( 'The plugin stores the data in the WordPress database in a very efficient way, though the more data you keep the more hard disk space it will consume. If you need need to retain a lot of data we would recommend you to <a href="https://www.wpsecurityauditlog.com/premium-features/?utm_source=plugin&utm_medium=referral&utm_campaign=WSAL&utm_content=wizard+configuration" target="_blank">upgrade to Premium</a> and use the Database tools to store the WordPress activity log in an external database.', 'wp-security-audit-log' );
+				$step_help = __( 'The plugin stores the data in the WordPress database in a very efficient way, though the more data you keep the more hard disk space it will consume. If you need need to retain a lot of data we would recommend you to <a href="https://wpactivitylog.com/features/?utm_source=plugin&utm_medium=referral&utm_campaign=WSAL&utm_content=wizard+configuration" target="_blank">upgrade to Premium</a> and use the Database tools to store the WordPress activity log in an external database.', 'wp-security-audit-log' );
 
 				if ( wsal_freemius()->is__premium_only() ) {
 					// Change the help text if premium version of the plugin is active.
@@ -755,23 +769,23 @@ final class WSAL_Views_SetupWizard {
 
 		<ul>
 			<li>
-				<a href="https://www.wpsecurityauditlog.com/support-documentation/getting-started-wp-security-audit-log/?utm_source=plugin&utm_medium=referral&utm_campaign=WSAL&utm_content=wizard+configuration" target="_blank">
-					<?php esc_html_e( 'Getting started with the WP Security Audit Log plugin', 'wp-security-audit-log' ); ?>
+				<a href="https://wpactivitylog.com/support/kb/getting-started-wp-activity-log/?utm_source=plugin&utm_medium=referral&utm_campaign=WSAL&utm_content=wizard+configuration" target="_blank">
+					<?php esc_html_e( 'Getting started with the WP Activity Log plugin', 'wp-security-audit-log' ); ?>
 				</a>
 			</li>
 			<li>
-				<a href="https://www.wpsecurityauditlog.com/support-documentation/?utm_source=plugin&utm_medium=referral&utm_campaign=WSAL&utm_content=wizard+configuration" target="_blank">
+				<a href="https://wpactivitylog.com/support/?utm_source=plugin&utm_medium=referral&utm_campaign=WSAL&utm_content=wizard+configuration" target="_blank">
 					<?php esc_html_e( 'Knowledge Base & Support Documents', 'wp-security-audit-log' ); ?>
 				</a>
 			</li>
 			<li>
-				<a href="https://www.wpsecurityauditlog.com/benefits-wordpress-activity-log/?utm_source=plugin&utm_medium=referral&utm_campaign=WSAL&utm_content=wizard+configuration" target="_blank">
+				<a href="https://wpactivitylog.com/benefits-wordpress-activity-log/?utm_source=plugin&utm_medium=referral&utm_campaign=WSAL&utm_content=wizard+configuration" target="_blank">
 					<?php esc_html_e( 'Benefits of keeping a WordPress activity log', 'wp-security-audit-log' ); ?>
 				</a>
 			</li>
 		</ul>
 
-		<p><?php echo wp_kses( __( 'We trust this plugin meets all your activity log requirements. Should you encounter any problems, have feature requests or would like to share some feedback, <a href="https://www.wpsecurityauditlog.com/contact/?utm_source=plugin&utm_medium=referral&utm_campaign=WSAL&utm_content=wizard+configuration" target="_blank">please get in touch!</a>', 'wp-security-audit-log' ), $this->wsal->allowed_html_tags ); ?></p>
+		<p><?php echo wp_kses( __( 'We trust this plugin meets all your activity log requirements. Should you encounter any problems, have feature requests or would like to share some feedback, <a href="https://wpactivitylog.com/contact/?utm_source=plugin&utm_medium=referral&utm_campaign=WSAL&utm_content=wizard+configuration" target="_blank">please get in touch!</a>', 'wp-security-audit-log' ), $this->wsal->allowed_html_tags ); ?></p>
 
 		<form method="post" class="wsal-setup-form">
 			<?php wp_nonce_field( 'wsal-step-finish' ); ?>
@@ -807,7 +821,7 @@ final class WSAL_Views_SetupWizard {
 	function wsal_add_wizard_step( $wizard_steps ) {
 		$new_wizard_steps = array(
 			'test'        => array(
-				'name'    => __( 'Third Party Add-ons', 'wp-security-audit-log' ),
+				'name'    => __( 'Third Party Extensions', 'wp-security-audit-log' ),
 				'content' => array( $this, 'addons_step' ),
 				'save'    => array( $this, 'addons_step_save' ),
 			),
@@ -834,7 +848,7 @@ final class WSAL_Views_SetupWizard {
 		<form method="post" class="wsal-setup-form">
 			<?php wp_nonce_field( 'wsal-step-addon' ); ?>
 			<h4><?php esc_html_e( 'Monitoring changes done in third party plugins', 'wp-security-audit-log' ); ?></h4>
-			<p><?php esc_html_e( 'We noticed that the below plugins are installed on this website. You can install our add-ons to also keep a log of changes users do on these plugins.', 'wp-security-audit-log' ); ?></p>
+			<p><?php esc_html_e( 'We noticed that the below plugins are installed on this website. You can install our extensions to also keep a log of changes users do on these plugins.', 'wp-security-audit-log' ); ?></p>
 			<?php
 			// Create a nonce to pass through via data attr.
 			$nonce = wp_create_nonce( 'wsal-install-addon' );
@@ -849,16 +863,16 @@ final class WSAL_Views_SetupWizard {
 				<div class="addon-wrapper">
 					<img src="<?php echo esc_url( trailingslashit( WSAL_BASE_URL ) . 'img/addons/' . $details['image_filename'] ); ?>">
 					<div class="addon-content">
-						<h5><?php esc_html_e( 'Add-on for ', 'wp-security-audit-log' ); ?><?php echo esc_html( $details['title'] ); ?></h5>
+						<h5><?php esc_html_e( 'Extension for ', 'wp-security-audit-log' ); ?><?php echo esc_html( $details['title'] ); ?></h5>
 						<p><?php echo sanitize_text_field( $details['plugin_description'] ); ?></p>
 						<p><button class="install-addon button button-primary <?php echo esc_attr( $disable_button ); ?>" data-nonce="<?php echo esc_attr( $nonce ); ?>" data-plugin-slug="<?php echo esc_attr( $details['plugin_slug'] ); ?>" data-plugin-download-url="<?php echo esc_url( $details['plugin_url'] ); ?>" data-plugin-event-tab-id="<?php echo esc_attr( $details['event_tab_id'] ); ?>">
 							<?php
 							if ( WSAL_PluginInstallAndActivate::is_plugin_installed( $details['plugin_slug'] ) && ! is_plugin_active( $details['plugin_slug'] ) ) {
-								esc_html_e( 'Add-on installed, activate now?', 'wp-security-audit-log' );
+								esc_html_e( 'Extension installed, activate now?', 'wp-security-audit-log' );
 							} elseif ( WSAL_PluginInstallAndActivate::is_plugin_installed( $details['plugin_slug'] ) && is_plugin_active( $details['plugin_slug'] ) ) {
-								esc_html_e( 'Add-on installed', 'wp-security-audit-log' );
+								esc_html_e( 'Extension installed', 'wp-security-audit-log' );
 							} else {
-									esc_html_e( 'Install Add-on', 'wp-security-audit-log' );
+									esc_html_e( 'Install Extension', 'wp-security-audit-log' );
 							}
 							?>
 						</button><span class="spinner" style="display: none; visibility: visible; float: none; margin: 0 0 0 8px;"></span></p>

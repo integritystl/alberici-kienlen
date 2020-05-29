@@ -88,7 +88,7 @@ function wsaldefaults_wsal_init() {
 				__( 'User Activity', 'wp-security-audit-log' ) => array(
 					array( 1000, WSAL_LOW, __( 'User logged in', 'wp-security-audit-log' ), '', 'user', 'login' ),
 					array( 1001, WSAL_LOW, __( 'User logged out', 'wp-security-audit-log' ), '', 'user', 'logout' ),
-					array( 1002, WSAL_MEDIUM, __( 'Login failed', 'wp-security-audit-log' ), '', 'user', 'failed-login' ),
+					array( 1002, WSAL_MEDIUM, __( 'Login failed', 'wp-security-audit-log' ), '%Attempts% failed login(s) %LineBreak% %LogFileText%', 'user', 'failed-login' ),
 					array( 1003, WSAL_LOW, __( 'Login failed  / non existing user', 'wp-security-audit-log' ), __( '%Attempts% failed login(s) %LineBreak% %LogFileText%', 'wp-security-audit-log' ), 'system', 'failed-login' ),
 					array( 1004, WSAL_MEDIUM, __( 'Login blocked', 'wp-security-audit-log' ), __( 'Login blocked because other session(s) already exist for this user. %LineBreak% IP address: %ClientIP%', 'wp-security-audit-log' ), 'user', 'blocked' ),
 					array( 1005, WSAL_LOW, __( 'User logged in with existing session(s)', 'wp-security-audit-log' ), __( 'User logged in however there are other session(s) already exist for this user. %LineBreak% IP address: %IPAddress%', 'wp-security-audit-log' ), 'user', 'login' ),
@@ -359,12 +359,12 @@ function wsaldefaults_wsal_init() {
 					array( 0004, E_CRITICAL, __( 'PHP exception', 'wp-security-audit-log' ), __( '%Message%.', 'wp-security-audit-log' ) ),
 					array( 0005, E_CRITICAL, __( 'PHP shutdown error', 'wp-security-audit-log' ), __( '%Message%.', 'wp-security-audit-log' ) ),
 					array( 6004, WSAL_MEDIUM, __( 'WordPress was updated', 'wp-security-audit-log' ), __( 'Updated WordPress %LineBreak% Previous version: %OldVersion% %LineBreak% New version: %NewVersion%', 'wp-security-audit-log' ), 'system', 'updated' ),
-					array( 9999, E_CRITICAL, __( 'Advertising Add-ons', 'wp-security-audit-log' ), __( '%PromoName% %PromoMessage%', 'wp-security-audit-log' ) ),
+					array( 9999, E_CRITICAL, __( 'Advertising Extensions', 'wp-security-audit-log' ), __( '%PromoName% %PromoMessage%', 'wp-security-audit-log' ) ),
 				),
 
 				__( 'Activity log plugin', 'wp-security-audit-log' ) => array(
 					array( 6000, WSAL_INFORMATIONAL, __( 'Events automatically pruned by system', 'wp-security-audit-log' ), __( 'System automatically deleted %EventCount% event(s)', 'wp-security-audit-log' ), 'activity-logs', 'deleted' ),
-					array( 6006, WSAL_MEDIUM, __( 'Reset plugin\'s settings to default', 'wp-security-audit-log' ), __( 'Reset the WP Security Audit Log plugin settings to default', 'wp-security-audit-log' ), 'plugin', 'modified' ),
+					array( 6006, WSAL_MEDIUM, __( 'Reset plugin\'s settings to default', 'wp-security-audit-log' ), __( 'Reset the WP Activity Log plugin settings to default', 'wp-security-audit-log' ), 'plugin', 'modified' ),
 					array( 6034, WSAL_CRITICAL, __( 'Purged the activity log', 'wp-security-audit-log' ), __( 'Purged the activity log', 'wp-security-audit-log' ), 'activity-logs', 'deleted' ),
 				),
 
