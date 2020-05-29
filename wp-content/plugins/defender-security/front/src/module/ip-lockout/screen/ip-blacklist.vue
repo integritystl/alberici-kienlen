@@ -52,8 +52,15 @@
                             </span>
 						</div>
 						<div class="sui-notice">
+ <div class="sui-notice-content">
+                    <div class="sui-notice-message">
+                        <i class="sui-notice-icon sui-icon-info sui-md" aria-hidden="true"></i>
+
 							<p v-html="user_ip_notice"></p>
-						</div>
+
+                    </div>
+                </div>
+</div>
 					</div>
 				</div>
 				<div class="sui-box-settings-row">
@@ -65,10 +72,19 @@
 					</div>
 					<div class="sui-box-settings-col-2">
 						<div class="sui-notice sui-notice-info margin-bottom-10">
+ <div class="sui-notice-content">
+                    <div class="sui-notice-message">
+                        <i class="sui-notice-icon sui-icon-info sui-md" aria-hidden="true"></i>
+
 							<p v-html="log_status"></p>
-						</div>
-						<button v-show="blacklist.count > 0" type="button" class="sui-button sui-button-gray"
-						        data-a11y-dialog-show="ips-modal">
+
+                    </div>
+                </div>
+</div>
+						<button v-show="blacklist.count > 0" type="button"
+								class="sui-button sui-button-gray"
+								data-modal-open="ips-modal"
+						>
 							{{__("Unlock ips")}}
 						</button>
 					</div>
@@ -76,34 +92,55 @@
 				<div class="sui-box-settings-row">
 					<div class="sui-box-settings-col-1">
 						<span class="sui-settings-label">{{__("Locations")}}</span>
-						<span class="sui-description">{{__("Use this feature to ban any countries you don't expect/want traffic from to protect your site entirely from unwanted hackers and bots.")}}</span>
+						<span class="sui-description">{{__("Ban countries you don't expect/want traffic from to protect your site from unwanted hackers and bots in a specific location.")}}</span>
 					</div>
-					<div class="sui-box-settings-col-2 geo-ip-block">
+					<div v-if="misc.geo_requirement===false" class="sui-box-settings-col-2">
+						<div class="sui-notice sui-notice-warning">
+ <div class="sui-notice-content">
+                    <div class="sui-notice-message">
+                        <i class="sui-notice-icon sui-icon-info sui-md" aria-hidden="true"></i>
+
+							<p>
+								{{__("This feature requires PHP 5.4 or newer. Please upgrade your PHP version if you wish to use location banning.")}}
+							</p>
+
+                    </div>
+                </div>
+</div>
+					</div>
+					<div v-else class="sui-box-settings-col-2 geo-ip-block">
 						<div v-if="misc.geo_db_downloaded===false">
-							<div class="sui-notice sui-notice-info sui-notice-global">
+							<div class="sui-notice sui-notice-info margin-bottom-10">
+ <div class="sui-notice-content">
+                    <div class="sui-notice-message">
+                        <i class="sui-notice-icon sui-icon-info sui-md" aria-hidden="true"></i>
+
 								<p>
-									{{__("To use this feature you must follow the steps described below to download the latest Geo IP Database.")}}
+									{{__("Follow the steps below to activate the Locations feature and download the latest Geo IP Database.")}}
 								</p>
-							</div>
+
+                    </div>
+                </div>
+</div>
 							<div class="sui-border-frame">
 								<div class="download-instruction" v-html="this.geodb_download_instruction"></div>
 								<div class="sui-form-field">
 									<label class="sui-label">
-										{{__("API Key")}}
+										{{__("License Key")}}
 									</label>
 									<div>
 										<span class="sui-field-prefix"><i class="sui-icon-key"></i></span>
-										<input placeholder="Place the API key here"
+										<input :placeholder="__('Place license key here')" :style="{'paddingLeft':'5px'}"
 										       class="sui-form-control sui-field-has-prefix" type="text"
 										       v-model="api_key"/>
 									</div>
 								</div>
 								<div class="sui-notice-buttons">
 									<submit-button :disabled="!geo_downloadable" id="download-geodb" type="button"
-									               css-class="sui-button-ghost"
-									               @click="download_geodb"
-									               :state="state">
-										<i class="sui-icon-download-cloud" aria-hidden="true"></i>
+										css-class="sui-button-ghost"
+										@click="download_geodb"
+										:state="state">
+										<i class="sui-icon-download" aria-hidden="true"></i>
 										<i class="sui-screen-reader-text">{{__("Download")}}</i>
 										{{__("Download")}}
 									</submit-button>
@@ -113,10 +150,17 @@
 						<div v-else>
 							<div v-if="misc.current_country===false">
 								<div class="sui-notice sui-notice-warning">
+ <div class="sui-notice-content">
+                    <div class="sui-notice-message">
+                        <i class="sui-notice-icon sui-icon-info sui-md" aria-hidden="true"></i>
+
 									<p>
 										{{__("Can't detect current country, it seem your site setup in localhost environment")}}
 									</p>
-								</div>
+
+                    </div>
+                </div>
+</div>
 							</div>
 							<div v-else>
 								<strong>{{__("Blacklist")}}</strong>
@@ -159,10 +203,7 @@
 										{{__("Note: your whitelist will override any country ban, but will still follow your 404 and login lockout rules.")}}
 									</p>
 								</div>
-								<p class="sui-description">
-									This product includes GeoLite2 data created by MaxMind, available from
-									<a href="https://www.maxmind.com">https://www.maxmind.com</a>.
-								</p>
+								<p class="sui-description" v-html="maxmind_product_description"></p>
 							</div>
 						</div>
 					</div>
@@ -334,9 +375,9 @@
 				} else if (this.blacklist.count === 0) {
 					return this.__("There are no IP addresses being blocked at the moment.")
 				} else if (this.blacklist.count === 1) {
-					return this.__("There is one IP address being blocked temporary.")
+					return this.__("1 IP address is currently blocked from viewing your site.")
 				} else {
-					return this.vsprintf(this.__("There are %d IP address being blocked temporary."), this.blacklist.count)
+					return this.vsprintf(this.__("%d IP addresses are currently blocked from viewing your site."), this.blacklist.count)
 				}
 			},
 			demo_link: function () {
@@ -346,13 +387,17 @@
 				return this.vsprintf(this.__("%s results"), this.blacklist.count)
 			},
 			export_url: function () {
-				return this.adminUrl('admin.php?page=wdf-ip-lockout&view=export&_wpnonce=' + this.nonces['exportIps'])
+				return this.adminUrl('admin.php?page=wdf-ip-lockout&view=export&_wpnonce=' + this.nonces['exportIPs'])
 			},
 			geodb_download_instruction: function () {
-				let strings = '<span class="sui-description">' + this.vsprintf(this.__("1. <a target='_blank' href='%s'>Sign up</a> for GeoLite2 Downloadable Databases."), "https://www.maxmind.com/en/geolite2/signup") + '</span>'
-				strings += '<span class="sui-description">' + this.vsprintf(this.__('2. Login to your account and follow <a target="_blank" href="%s">this link</a> to copy the API key.'), "https://www.maxmind.com/en/accounts/current/license-key") + '</span>'
-				strings += '<span class="sui-description">' + this.__('3. Place the API key in the input below and click the download button.') + '</span>'
+				let strings = '<span class="sui-description">' + this.vsprintf(this.__("1. <a target='_blank' href='%s'>Sign up for a free account</a> with MaxMind for access to the free GeoLite2 Database."), "https://www.maxmind.com/en/geolite2/signup") + '</span>'
+				strings += '<span class="sui-description">' + this.vsprintf(this.__('2. Visit <a target="_blank" href="%s">https://www.maxmind.com/en/accounts/current/license-key</a>.'), "https://www.maxmind.com/en/accounts/current/license-key") + '</span>'
+				strings += '<span class="sui-description">' + this.__("3. Create a new key or use an existing license key. Note: A license key is displayed, in full, only once to the person that generates the key.") + '</span>'
+				strings += '<span class="sui-description">' + this.__('4. Paste the license key below and click the download button.') + '</span>'
 				return strings;
+			},
+			maxmind_product_description: function () {
+				return this.vsprintf(this.__("This product includes GeoLite2 data created by MaxMind, available from <a target='_blank' href='%s'>https://www.maxmind.com</a>.", "https://www.maxmind.com"));
 			}
 		},
 		watch: {

@@ -10,7 +10,7 @@
             </div>
         </div>
         <div class="sui-box-body sui-upsell-items">
-            <div class="sui-box-settings-row no-margin-bottom no-padding-bottom">
+            <div class="sui-padding-left sui-padding-right sui-padding-top">
                 <p>
                     {{__("Automatically check if you’re on Google’s blacklist every 6 hours. If something’s wrong, we’ll let you know via email.")}}
                 </p>
@@ -19,9 +19,11 @@
                 <img class="sui-image sui-upsell-image"
                      :src="assetUrl('assets/img/dashboard-blacklist.svg')">
                 <div class="sui-upsell-notice">
-                    <p>
-                        {{__("Defender will warn you if your site has been flagged as unsafe. Get blacklist Monitor as part of a WPMU DEV membership.")}}<br/> <a class="premium-button sui-button sui-button-purple" target='_blank' :href="campaign_url('defender_dash_blacklist_upgrade_button')">{{__("Try Pro Free Today")}}</a>.
-                    </p>
+                    <div>
+                        <p>
+                            {{__("Defender will warn you if your site has been flagged as unsafe. Get blacklist Monitor as part of a WPMU DEV membership.")}}<br/> <a class="premium-button sui-button sui-button-purple" target='_blank' :href="campaign_url('defender_dash_blacklist_upgrade_button')">{{__("Try Pro Free Today")}}</a>.
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>

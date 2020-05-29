@@ -62,25 +62,40 @@
 										</h3>
 									</div>
 									<div class="sui-form-field">
-										<label class="sui-label">{{__("Frequency")}}</label>
-										<select class="report-selector" v-model="model.frequency" name="frequency">
+										<label for="scan_report_frequency"
+											id="label_scan_report_frequency" class="sui-label">
+											{{__("Frequency")}}
+										</label>
+										<select id="scan_report_frequency"
+												aria-labelledby="label_scan_report_frequency" class="report-selector"
+												v-model="model.frequency" name="frequency">
 											<option value="1">{{__("Daily")}}</option>
 											<option value="7">{{__("Weekly")}}</option>
 											<option value="30">{{__("Monthly")}}</option>
 										</select>
 									</div>
 									<div class="sui-form-field" v-show="model.frequency > 1">
-										<label class="sui-label">{{__("Day of the week")}}</label>
-										<select class="report-selector" name="day" v-model="model.day">
+										<label for="scan_report_day_week"
+											id="label_scan_report_day_week" class="sui-label">
+											{{__("Day of the week")}}
+										</label>
+										<select id="scan_report_day_week"
+												aria-labelledby="label_scan_report_day_week" class="report-selector"
+												name="day" v-model="model.day">
 											<option v-for="day in days_of_week" :value="day.toLowerCase()">{{day}}
 											</option>
 										</select>
 									</div>
 									<div class="sui-form-field">
-										<label class="sui-label">{{__("Time of day")}}</label>
-										<select class="sui-select report-selector" name="time" v-model="model.time">
+										<label for="scan_report_day_time"
+											id="label_scan_report_day_time" class="sui-label">
+											{{__("Time of day")}}
+										</label>
+										<select id="scan_report_day_time"
+												aria-labelledby="label_scan_report_day_time" class="sui-select report-selector"
+												name="time" v-model="model.time">
 											<option v-for="(display,time) in times_of_day"
-											        :value="time">{{display}}
+												:value="time">{{display}}
 											</option>
 										</select>
 									</div>

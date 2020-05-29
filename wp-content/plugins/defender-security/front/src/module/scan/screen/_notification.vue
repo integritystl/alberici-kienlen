@@ -68,8 +68,12 @@
                                                         {{__("When an issue is found")}}
                                                     </strong>
                                                 </label>
-                                                <button data-a11y-dialog-show="issue-found" type="button"
-                                                        class="sui-button-icon">
+                                                <button
+                                                        data-modal-open="issue-found"
+                                                        data-modal-mask="true"
+                                                        data-esc-close="false"
+                                                        class="sui-button-icon"
+                                                >
                                                     <i class="sui-icon-pencil" aria-hidden="true"></i>
                                                 </button>
                                             </div>
@@ -79,8 +83,12 @@
                                                         {{__("When no issues are found")}}
                                                     </strong>
                                                 </label>
-                                                <button data-a11y-dialog-show="all-ok" type="button"
-                                                        class="sui-button-icon">
+                                                <button
+                                                        data-modal-open="all-ok"
+                                                        data-modal-mask="true"
+                                                        data-esc-close="false"
+                                                        class="sui-button-icon"
+                                                >
                                                     <i class="sui-icon-pencil" aria-hidden="true"></i>
                                                 </button>
                                             </div>
@@ -101,10 +109,15 @@
                 </div>
             </div>
         </form>
-        <div class="sui-dialog" aria-hidden="true" tabindex="-1" id="all-ok">
-            <div class="sui-dialog-overlay" data-a11y-dialog-hide></div>
-            <div class="sui-dialog-content" aria-labelledby="dialogTitle" aria-describedby="dialogDescription"
-                 role="dialog">
+        <div class="sui-modal sui-modal-lg">
+            <div
+                    role="dialog"
+                    id="all-ok"
+                    class="sui-modal-content"
+                    aria-modal="true"
+                    aria-labelledby="modal-title-unique-id"
+                    aria-describedby="modal-description-unique-id"
+            >
                 <div class="sui-box" role="document">
                     <form method="post" @submit.prevent="updateEmailTemplate(['email_subject','email_all_ok'])">
                         <div class="sui-box-header">
@@ -112,8 +125,10 @@
                                 {{__("Edit Template")}}
                             </h3>
                             <div class="sui-actions-right">
-                                <button type="button" data-a11y-dialog-hide class="sui-dialog-close"
-                                        aria-label="Close this dialog window"></button>
+                                <button data-modal-close="" class="sui-button-icon"
+                                        aria-label="Close this dialog window">
+                                    <i class="sui-icon-close"></i>
+                                </button>
                             </div>
                         </div>
 
@@ -156,7 +171,7 @@
 
                         <div class="sui-box-footer">
                             <div class="sui-actions-left">
-                                <button class="sui-button" type="button" data-a11y-dialog-hide="issue-found">
+                                <button class="sui-button" type="button" data-modal-close="">
                                     {{__("Cancel")}}
                                 </button>
                             </div>
@@ -169,23 +184,29 @@
                         </div>
                     </form>
                 </div>
-
             </div>
         </div>
-        <div class="sui-dialog" aria-hidden="true" tabindex="-1" id="issue-found">
-            <div class="sui-dialog-overlay" data-a11y-dialog-hide></div>
-            <div class="sui-dialog-content" aria-labelledby="dialogTitle" aria-describedby="dialogDescription"
-                 role="dialog">
+        <div class="sui-modal sui-modal-lg">
 
+            <div
+                    role="dialog"
+                    id="issue-found"
+                    class="sui-modal-content"
+                    aria-modal="true"
+                    aria-labelledby="modal-title-unique-id"
+                    aria-describedby="modal-description-unique-id"
+            >
                 <div class="sui-box" role="document">
-                    <form method="post" @submit.prevent="updateEmailTemplate(['email_subject','email_has_issue'])">
+                    <form method="post" @submit.prevent="updateEmailTemplate(['email_subject_issue','email_has_issue'])">
                         <div class="sui-box-header">
                             <h3 class="sui-box-title">
                                 {{__("Edit Template")}}
                             </h3>
                             <div class="sui-actions-right">
-                                <button type="button" data-a11y-dialog-hide class="sui-dialog-close"
-                                        aria-label="Close this dialog window"></button>
+                                <button data-modal-close="" class="sui-button-icon"
+                                        aria-label="Close this dialog window">
+                                    <i class="sui-icon-close"></i>
+                                </button>
                             </div>
                         </div>
 
@@ -199,8 +220,8 @@
                                         <label class="sui-label">
                                             {{__("Subject")}}
                                         </label>
-                                        <input type="text" class="sui-form-control" name="email_subject"
-                                               v-model="model.email_subject">
+                                        <input type="text" class="sui-form-control" name="email_subject_issue"
+                                               v-model="model.email_subject_issue">
                                     </div>
                                 </div>
                             </div>
@@ -228,7 +249,7 @@
 
                         <div class="sui-box-footer">
                             <div class="sui-actions-left">
-                                <button type="button" class="sui-button" data-a11y-dialog-hide="issue-found">
+                                <button type="button" class="sui-button" data-modal-close="">
                                     {{__("Cancel")}}
                                 </button>
                             </div>
@@ -270,8 +291,9 @@
             updateSettings: function () {
                 let data = this.model;
                 delete data.email_subject;
+                delete data.email_subject_issue;
+                delete data.email_all_ok;
                 delete data.email_has_issue;
-                delete data.email_has_issue
 
                 this.httpPostRequest('updateSettings', {
                     'data': JSON.stringify(data)
@@ -287,8 +309,7 @@
                     'data': JSON.stringify(data)
                 }, function () {
                     self.$nextTick(() => {
-                        SUI.dialogs['issue-found'].hide();
-                        SUI.dialogs['all-ok'].hide();
+                       SUI.closeModal()
                     })
                 })
             }

@@ -19,13 +19,6 @@ use WP_Defender\Module\Hardener\Component\Prevent_Enum_Users;
 use WP_Defender\Module\Hardener\Component\Prevent_Php;
 use WP_Defender\Module\Hardener\Component\Protect_Information;
 use WP_Defender\Module\Hardener\Component\Security_Key;
-use WP_Defender\Module\Hardener\Component\Sh_Content_Security;
-use WP_Defender\Module\Hardener\Component\Sh_Content_Type_Options;
-use WP_Defender\Module\Hardener\Component\Sh_Feature_Policy;
-use WP_Defender\Module\Hardener\Component\Sh_Referrer_Policy;
-use WP_Defender\Module\Hardener\Component\Sh_Strict_Transport;
-use WP_Defender\Module\Hardener\Component\Sh_X_Frame;
-use WP_Defender\Module\Hardener\Component\Sh_XSS_Protection;
 use WP_Defender\Module\Hardener\Component\WP_Rest_Api;
 use WP_Defender\Module\Hardener\Component\WP_Version;
 use WP_Defender\Module\Hardener\Rule;
@@ -373,14 +366,6 @@ class Settings extends \Hammer\WP\Settings {
 			Login_Duration::$slug          => $init == true ? new Login_Duration() : Login_Duration::getClassName(),
 			Disable_Xml_Rpc::$slug         => $init == true ? new Disable_Xml_Rpc() : Disable_Xml_Rpc::getClassName(),
 			//WP_Rest_Api::$slug             => $init == true ? new WP_Rest_Api() : WP_Rest_Api::getClassName(),
-			//============SECURITY HEADERS===================
-			Sh_X_Frame::$slug              => $init == true ? new Sh_X_Frame() : Sh_X_Frame::getClassName(),
-			Sh_XSS_Protection::$slug       => $init == true ? new Sh_XSS_Protection() : Sh_XSS_Protection::getClassName(),
-			Sh_Feature_Policy::$slug       => $init == true ? new Sh_Feature_Policy() : Sh_Feature_Policy::getClassName(),
-			Sh_Referrer_Policy::$slug      => $init == true ? new Sh_Referrer_Policy() : Sh_Referrer_Policy::getClassName(),
-			Sh_Strict_Transport::$slug     => $init == true ? new Sh_Strict_Transport() : Sh_Strict_Transport::getClassName(),
-			Sh_Content_Type_Options::$slug => $init == true ? new Sh_Content_Type_Options() : Sh_Content_Type_Options::getClassName(),
-			//Sh_Content_Security::$slug     => $init == true ? new Sh_Content_Security() : Sh_Content_Security::getClassName(),
 		);
 	}
 	

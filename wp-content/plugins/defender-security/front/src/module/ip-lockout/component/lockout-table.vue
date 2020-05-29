@@ -103,10 +103,17 @@
 				<tr>
 					<td>
 						<div class="sui-notice">
+ <div class="sui-notice-content">
+                    <div class="sui-notice-message">
+                        <i class="sui-notice-icon sui-icon-info sui-md" aria-hidden="true"></i>
+
 							<p>
 								{{__("No lockout events have been logged within the selected time period.")}}
 							</p>
-						</div>
+
+                    </div>
+                </div>
+</div>
 					</td>
 				</tr>
 			</table>
@@ -116,10 +123,17 @@
 				<tr>
 					<td>
 						<div class="sui-notice">
+ <div class="sui-notice-content">
+                    <div class="sui-notice-message">
+                        <i class="sui-notice-icon sui-icon-info sui-md" aria-hidden="true"></i>
+
 							<p>
 								{{__("Loading logs....")}}
 							</p>
-						</div>
+
+                    </div>
+                </div>
+</div>
 					</td>
 				</tr>
 			</table>

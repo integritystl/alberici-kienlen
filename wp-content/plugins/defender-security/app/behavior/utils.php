@@ -10,7 +10,7 @@ use Hammer\Helper\Log_Helper;
 use Hammer\Helper\WP_Helper;
 use WP_Defender\Component\Error_Code;
 use WP_Defender\Component\Jed;
-use WP_Defender\Module\Advanced_Tools\Model\Auth_Settings;
+use WP_Defender\Module\Two_Factor\Model\Auth_Settings;
 use WP_Defender\Module\Hardener\Model\Settings;
 use WP_Defender\Module\IP_Lockout\Component\Login_Protection_Api;
 use WP_Defender\Module\Scan\Component\Scan_Api;
@@ -1124,7 +1124,9 @@ class Utils extends Behavior {
 	}
 	
 	public function parseDomain( $domain ) {
-		if ( ! filter_var( $domain, FILTER_VALIDATE_DOMAIN ) ) {
+		//FILTER_VALIDATE_DOMAIN filter will be added in PHP 7
+		$filter_domain = version_compare( PHP_VERSION, '7.0', '>=' ) ? FILTER_VALIDATE_DOMAIN : FILTER_VALIDATE_URL;
+		if ( ! filter_var( $domain, $filter_domain ) ) {
 			return false;
 		}
 		$suffix = $this->getDomainSuffix( $domain );
