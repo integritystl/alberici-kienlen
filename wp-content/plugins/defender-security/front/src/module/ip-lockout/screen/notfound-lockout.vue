@@ -20,7 +20,7 @@
 		</div>
 	</div>
 	<div class="sui-box" v-else-if="(model.detect_404===true || model.detect_404===1)" data-tab="notfound_lockout">
-		<form method="post" id="settings-frm" class="ip-frm" @submit.prevent="updateSettings">
+		<form method="post" id="lockout-notfound-frm" class="ip-frm" @submit.prevent="updateSettings">
 			<div class="sui-box-header">
 				<h3 class="sui-box-title">
 					{{__("404 Detection")}}
@@ -32,31 +32,36 @@
 				</p>
 				<div :class="{'sui-notice-error':summary_data.nf.day > 0,'sui-notice-info':summary_data.nf.day===0}"
 				     class="sui-notice">
-					<p v-html="notification">
-					</p>
+					<div class="sui-notice-content">
+						<div class="sui-notice-message">
+							<i class="sui-icon-info sui-notice-icon sui-md"></i>
+							<p v-html="notification">
+							</p>
+						</div>
+					</div>
 				</div>
 				<div class="sui-box-settings-row">
 					<div class="sui-box-settings-col-1">
 						<span class="sui-settings-label">{{__("Threshold")}}</span>
 						<span class="sui-description">
-                            {{__("Specify how many 404 errors within a specific time period will trigger a lockout.")}}
-                        </span>
+							{{__("Specify how many 404 errors within a specific time period will trigger a lockout.")}}
+						</span>
 					</div>
 					<div class="sui-box-settings-col-2">
 						<div class="sui-row">
-							<div class="sui-col-md-2">
+							<div class="sui-col-md-3">
 								<label class="sui-label">{{__("404 hits")}}</label>
 								<input size="8" v-model="model.detect_404_threshold" type="text"
-								       class="sui-form-control sui-input-sm sui-field-has-suffix"
-								       id="detect_404_threshold"
-								       name="detect_404_threshold"/>
+									class="sui-form-control sui-input-sm"
+									id="detect_404_threshold"
+									name="detect_404_threshold"/>
 							</div>
 							<div class="sui-col">
 								<label class="sui-label">{{__("Timeframe")}}</label>
 								<input size="8" v-model="model.detect_404_timeframe"
-								       id="detect_404_timeframe"
-								       name="detect_404_timeframe" type="text"
-								       class="sui-form-control sui-input-sm sui-field-has-suffix">
+									id="detect_404_timeframe"
+									name="detect_404_timeframe" type="text"
+									class="sui-form-control sui-input-sm sui-field-has-suffix">
 								<span class="sui-field-suffix">{{__("seconds")}}</span>
 							</div>
 						</div>
@@ -71,44 +76,48 @@
 						<div class="sui-side-tabs">
 							<div class="sui-tabs-menu">
 								<label for="nf_timeframe"
-								       :class="{active:model.detect_404_lockout_ban===false}"
-								       class="sui-tab-item">
+									:class="{active:model.detect_404_lockout_ban===false}"
+									class="sui-tab-item">
 									<input type="radio" name="detect_404_lockout_ban" :value="false"
-									       id="nf_timeframe"
-									       data-tab-menu="nf-timeframe-box"
-									       v-model="model.detect_404_lockout_ban">
+										id="nf_timeframe"
+										data-tab-menu="nf-timeframe-box"
+										v-model="model.detect_404_lockout_ban">
 									{{__("Timeframe")}}
 								</label>
 								<label for="nf_permanent"
-								       :class="{active:model.detect_404_lockout_ban===true}"
-								       class="sui-tab-item">
+									:class="{active:model.detect_404_lockout_ban===true}"
+									class="sui-tab-item">
 									<input type="radio" name="detect_404_lockout_ban" :value="true"
-									       data-tab-menu=""
-									       id="nf_permanent" v-model="model.detect_404_lockout_ban">
+										data-tab-menu=""
+										id="nf_permanent" v-model="model.detect_404_lockout_ban">
 									{{__("Permanent")}}
 								</label>
 							</div>
 
 							<div class="sui-tabs-content">
 								<div class="sui-tab-content sui-tab-boxed"
-								     :class="{active:model.detect_404_lockout_ban===false}"
-								     id="nf-timeframe-box"
-								     data-tab-content="nf-timeframe-box">
+									:class="{active:model.detect_404_lockout_ban===false}"
+									id="nf-timeframe-box"
+									data-tab-content="nf-timeframe-box">
 									<div class="sui-row">
 										<div class="sui-col-md-3">
+											<label for="detect_404_lockout_duration" id="label_detect_404_lockout_duration" class="sui-label">{{__("Duration")}}</label>
 											<input v-model="model.detect_404_lockout_duration"
-											       size="4"
-											       name="detect_404_lockout_duration"
-											       id="detect_404_lockout_duration" type="text"
-											       class="sui-form-control"/>
+												size="4"
+												name="detect_404_lockout_duration"
+												id="detect_404_lockout_duration" type="text"
+												aria-labelledby="label_detect_404_lockout_duration"
+												class="sui-form-control sui-input-sm"/>
 										</div>
 										<div class="sui-col-md-4">
+											<label for="detect_404_lockout_duration_unit" id="label_detect_404_lockout_duration_unit" class="sui-label">&nbsp;</label>
 											<select
-													id="detect_404_lockout_duration_unit"
-													name="detect_404_lockout_duration_unit"
-													class="jquery-select sui-select"
-													data-minimum-results-for-search="Infinity"
-													v-model="model.detect_404_lockout_duration_unit">
+												id="detect_404_lockout_duration_unit"
+												aria-labelledby="label_detect_404_lockout_duration_unit"
+												name="detect_404_lockout_duration_unit"
+												class="jquery-select sui-select"
+												data-minimum-results-for-search="Infinity"
+												v-model="model.detect_404_lockout_duration_unit">
 												<option value="seconds">{{__("Seconds")}}</option>
 												<option value="minutes">{{__("Minutes")}}</option>
 												<option value="hours">{{__("Hours")}}</option>
@@ -127,22 +136,21 @@
 					</div>
 					<div class="sui-box-settings-col-2">
 						<div class="sui-form-field">
-                    <textarea name="detect_404_lockout_message" class="sui-form-control"
-                              id="detect_404_lockout_message"
-                              v-model="model.detect_404_lockout_message"></textarea>
-							<span class="sui-description" v-html="demo_link">
-                            </span>
+							<textarea name="detect_404_lockout_message" class="sui-form-control"
+								id="detect_404_lockout_message"
+								v-model="model.detect_404_lockout_message"></textarea>
+							<span class="sui-description" v-html="demo_link"></span>
 						</div>
 					</div>
 				</div>
 				<div class="sui-box-settings-row">
 					<div class="sui-box-settings-col-1">
-                    <span class="sui-settings-label">
-                        {{__("Files & Folders")}}
-                    </span>
+						<span class="sui-settings-label">
+							{{__("Files & Folders")}}
+						</span>
 						<span class="sui-description">
-                        {{__("Choose specific files and folders that you want to automatically ban users/bots from accessing, or whitelist access to.")}}
-                        </span>
+							{{__("Choose specific files and folders that you want to automatically ban users/bots from accessing, or whitelist access to.")}}
+						</span>
 					</div>
 					<div class="sui-box-settings-col-2">
 						<strong>{{__("Blacklist")}}</strong>
@@ -152,12 +160,12 @@
 						<div class="sui-border-frame">
 							<label class="sui-label">{{__("Blaclisted files & folders")}}</label>
 							<textarea class="sui-form-control"
-							          name="detect_404_blacklist"
-							          v-model="model.detect_404_blacklist"
-							          rows="8"></textarea>
+								name="detect_404_blacklist"
+								v-model="model.detect_404_blacklist"
+								rows="8"></textarea>
 							<span class="sui-description">
-                                {{__("One URL per line. You must list the full path beginning with a /.")}}
-                            </span>
+								{{__("One URL per line. You must list the full path beginning with a /.")}}
+							</span>
 						</div>
 						<strong>{{__("Whitelist")}}</strong>
 						<p class="sui-description">
@@ -166,23 +174,23 @@
 						<div class="sui-border-frame">
 							<label class="sui-label">{{__("Whitelisted files & folders")}}</label>
 							<textarea class="sui-form-control"
-							          id="detect_404_whitelist" name="detect_404_whitelist"
-							          v-model="model.detect_404_whitelist"
-							          rows="8"></textarea>
+								id="detect_404_whitelist" name="detect_404_whitelist"
+								v-model="model.detect_404_whitelist"
+								rows="8"></textarea>
 							<span class="sui-description">
-                                {{__("One URL per line. You must list the full path beginning with a /.")}}
-                            </span>
+								{{__("One URL per line. You must list the full path beginning with a /.")}}
+							</span>
 						</div>
 					</div>
 				</div>
 				<div class="sui-box-settings-row">
 					<div class="sui-box-settings-col-1">
-                        <span class="sui-settings-label">
-                        {{__("Filetypes & Extensions")}}
-                        </span>
+						<span class="sui-settings-label">
+							{{__("Filetypes & Extensions")}}
+						</span>
 						<span class="sui-description">
-                        {{__("Choose which types of files or extentions you want to auto-ban or whitelist.")}}
-                        </span>
+							{{__("Choose which types of files or extentions you want to auto-ban or whitelist.")}}
+						</span>
 					</div>
 					<div class="sui-box-settings-col-2">
 						<strong>{{__("Blacklist")}}</strong>
@@ -192,9 +200,9 @@
 						<div class="sui-border-frame">
 							<label class="sui-label">{{__("Blaclisted filetypes & extensions")}}</label>
 							<textarea class="sui-form-control"
-							          name="detect_404_filetypes_blacklist"
-							          v-model="model.detect_404_filetypes_blacklist"
-							          rows="8"></textarea>
+								name="detect_404_filetypes_blacklist"
+								v-model="model.detect_404_filetypes_blacklist"
+								rows="8"></textarea>
 						</div>
 						<strong>{{__("Whitelist")}}</strong>
 						<p class="sui-description">
@@ -203,29 +211,29 @@
 						<div class="sui-border-frame">
 							<label class="sui-label">{{__("Whitelisted filetypes & extentions")}}</label>
 							<textarea class="sui-form-control"
-							          id="detect_404_blacklist" name="detect_404_ignored_filetypes"
-							          v-model="model.detect_404_ignored_filetypes"
-							          rows="8"></textarea>
+								id="detect_404_blacklist" name="detect_404_ignored_filetypes"
+								v-model="model.detect_404_ignored_filetypes"
+								rows="8"></textarea>
 						</div>
 					</div>
 				</div>
 				<div class="sui-box-settings-row">
 					<div class="sui-box-settings-col-1">
-                        <span class="sui-settings-label">
-                        {{__("Exclusions")}}
-                        </span>
+						<span class="sui-settings-label">
+							{{__("Exclusions")}}
+						</span>
 						<span class="sui-description">
-                            {{__("By default, Defender will monitor all interactions with your website but you can choose to disable 404 detection for specific areas of your site.")}}
-                        </span>
+							{{__("By default, Defender will monitor all interactions with your website but you can choose to disable 404 detection for specific areas of your site.")}}
+						</span>
 					</div>
 					<div class="sui-box-settings-col-2">
 						<div class="sui-form-field">
 							<label class="sui-toggle">
 								<input id="detect_404_logged" v-model="model.detect_404_logged"
-								       type="checkbox"
-								       true-value="true"
-								       false-value="false"
-								       name="detect_404_logged">
+									type="checkbox"
+									true-value="true"
+									false-value="false"
+									name="detect_404_logged">
 								<span class="sui-toggle-slider"></span>
 							</label>
 							<label for="detect_404_logged" class="sui-toggle-label">
@@ -236,16 +244,16 @@
 				</div>
 				<div class="sui-box-settings-row">
 					<div class="sui-box-settings-col-1">
-                        <span class="sui-settings-label">
-                        {{__("Deactivate")}}
-                        </span>
+						<span class="sui-settings-label">
+							{{__("Deactivate")}}
+						</span>
 						<span class="sui-description">
-                       {{__("If you no longer want to use this feature you can turn it off at any time.")}}
-                        </span>
+							{{__("If you no longer want to use this feature you can turn it off at any time.")}}
+						</span>
 					</div>
 					<div class="sui-box-settings-col-2">
 						<submit-button type="button" @click="toggle(false,'detect_404')"
-						               css-class="sui-button-ghost" :state="state">
+							css-class="sui-button-ghost" :state="state">
 							{{__("Deactivate")}}
 						</submit-button>
 					</div>

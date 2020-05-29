@@ -84,8 +84,12 @@
                     </div>
 
                     <div class="sui-box-settings-col-2">
-                        <button type="button" data-a11y-dialog-show="reset-data-confirm"
-                                class="sui-button-ghost sui-button">
+                        <button
+                                class="sui-button sui-button-ghost"
+                                data-modal-open="reset-data-confirm"
+                                data-modal-mask="true"
+                                data-esc-close="true"
+                        >
                             <i class="sui-icon-undo" aria-hidden="true"></i>
                             {{__("Reset Settings")}}
                         </button>
@@ -104,18 +108,24 @@
                 </div>
             </div>
         </form>
-        <div class="sui-dialog sui-dialog-sm" aria-hidden="true" tabindex="-1" id="reset-data-confirm">
-            <div class="sui-dialog-overlay" data-a11y-dialog-hide></div>
-            <div class="sui-dialog-content" aria-labelledby="dialogTitle" aria-describedby="dialogDescription"
-                 role="dialog">
+        <div class="sui-modal sui-modal-md">
+            <div
+                    role="dialog"
+                    id="reset-data-confirm"
+                    class="sui-modal-content"
+                    aria-modal="true"
+                    aria-labelledby="Reset Data"
+            >
                 <div class="sui-box" role="document">
                     <div class="sui-box-header">
                         <h3 class="sui-box-title">
                             {{__("Reset Settings")}}
                         </h3>
                         <div class="sui-actions-right">
-                            <button data-a11y-dialog-hide class="sui-dialog-close"
-                                    aria-label="Close this dialog window"></button>
+                            <button data-modal-close="" class="sui-button-icon"
+                                    aria-label="Close this dialog window">
+                                <i class="sui-icon-close"></i>
+                            </button>
                         </div>
                     </div>
 
@@ -170,7 +180,7 @@
                 this.httpGetRequest('resetSettings', {}, function (response) {
                     if (response.success === true) {
                         self.$nextTick(() => {
-                            SUI.dialogs['reset-data-confirm'].hide();
+                            SUI.closeModal()
                         })
                     }
                 });

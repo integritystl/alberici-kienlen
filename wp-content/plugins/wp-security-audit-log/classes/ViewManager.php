@@ -122,7 +122,7 @@ class WSAL_ViewManager {
 		// Initialize setup wizard.
 		if (
 			'no' === $this->_plugin->GetGlobalOption( 'wsal-setup-complete', 'no' )
-			|| 'no' === $this->_plugin->GetGlobalOption( 'wsal-setup-modal-dismissed', 'no' )
+			|| 'no' === $this->_plugin->options_helper->get_option_value( 'setup-modal-dismissed', 'no' )
 		) {
 			new WSAL_Views_SetupWizard( $plugin );
 		}
@@ -210,8 +210,8 @@ class WSAL_ViewManager {
 		if ( $this->_plugin->settings->CurrentUserCan( 'view' ) && count( $this->views ) ) {
 			// Add main menu.
 			$this->views[0]->hook_suffix = add_menu_page(
-				'WP Security Audit Log',
-				'Audit Log',
+				'WP Activity Log',
+				'WP Activity Log',
 				'read', // No capability requirement.
 				$this->views[0]->GetSafeViewName(),
 				array( $this, 'RenderViewBody' ),
@@ -390,7 +390,7 @@ class WSAL_ViewManager {
 				}
 				break;
 			case 'wsal-loginusers':
-				if ( class_exists( 'WSAL_User_Management_Plugin' ) ) {
+				if ( class_exists( 'WSAL_UserSessions_Plugin' ) ) {
 					$not_show = true;
 				}
 				break;

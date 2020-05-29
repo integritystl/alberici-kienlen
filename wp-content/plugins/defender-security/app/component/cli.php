@@ -206,23 +206,7 @@ class Cli {
 								$prefix              = strtolower( trim( fgets( STDIN ) ) );
 								$service->new_prefix = $prefix;
 								break;
-							case 'sh-xframe':
-								$service->mode = 'sameorigin';
-								break;
-							case 'sh-xss-protection':
-								$service->mode = 'sanitize';
-								break;
-							case 'sh-feature-policy':
-								$service->mode = 'self';
-								break;
-							case 'sh-referrer-policy':
-								$service->mode = 'origin-when-cross-origin';
-								break;
-							case 'sh-content-type-options':
-								$service->mode = 'nosniff';
-								break;
-							case 'sh-strict-transport':
-								$service->hsts_cache_duration = '7 days';
+							default:
 								break;
 						}
 						$ret = $service->process();

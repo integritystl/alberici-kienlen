@@ -10,6 +10,7 @@ use Hammer\Helper\HTTP_Helper;
 use WP_Defender\Behavior\Utils;
 use WP_Defender\Controller;
 use WP_Defender\Module\Setting;
+use WP_Defender\Module\Two_Factor\Model\Auth_Settings;
 
 class Rest extends Controller {
 	public function __construct() {
@@ -32,9 +33,8 @@ class Rest extends Controller {
 			return;
 		}
 
-		$tweakFixed = \WP_Defender\Module\Hardener\Model\Settings::instance()->getFixed();
-
-		foreach ( $tweakFixed as $rule ) {
+		$hardener_settings = \WP_Defender\Module\Hardener\Model\Settings::instance();
+		foreach ( $hardener_settings->getFixed() as $rule ) {
 			$rule->getService()->revert();
 		}
 
@@ -48,11 +48,18 @@ class Rest extends Controller {
 		if ( class_exists( '\WP_Defender\Module\Audit\Model\Settings' ) ) {
 			\WP_Defender\Module\Audit\Model\Settings::instance()->delete();
 		}
-		\WP_Defender\Module\Hardener\Model\Settings::instance()->delete();
+		$hardener_settings->delete();
 		\WP_Defender\Module\IP_Lockout\Model\Settings::instance()->delete();
-		\WP_Defender\Module\Advanced_Tools\Model\Auth_Settings::instance()->delete();
+		Auth_Settings::instance()->delete();
 		\WP_Defender\Module\Advanced_Tools\Model\Mask_Settings::instance()->delete();
-		Setting\Model\Settings::instance()->delete();
+		\WP_Defender\Module\Advanced_Tools\Model\Security_Headers_Settings::instance()->delete();
+		\WP_Defender\Module\Setting\Model\Settings::instance()->delete();
+
+		//Disabled  Blacklist Monitor
+		if ( ! wp_defender()->isFree && $this->hasMethod( 'toggleStatus' ) ) {
+			$this->toggleStatus( null, false );
+			delete_site_transient( \WP_Defender\Behavior\Blacklist::CACHE_KEY );
+		}
 		//clear old stuff
 		delete_site_option( 'wp_defender' );
 		delete_option( 'wp_defender' );
@@ -106,7 +113,8 @@ class Rest extends Controller {
 		$behaviors = array(
 			'utils'     => '\WP_Defender\Behavior\Utils',
 			'endpoints' => '\WP_Defender\Behavior\Endpoint',
-			'wpmudev'   => '\WP_Defender\Behavior\WPMUDEV'
+			'wpmudev'   => '\WP_Defender\Behavior\WPMUDEV',
+			'blacklist' => wp_defender()->isFree ? '\WP_Defender\Behavior\Blacklist_Free' : '\WP_Defender\Behavior\Blacklist',
 		);
 
 		return $behaviors;

@@ -20,7 +20,7 @@
         </div>
     </div>
     <div class="sui-box" v-else-if="(model.login_protection===true || model.login_protection===1)">
-        <form method="post" id="settings-frm" class="ip-frm" @submit.prevent="updateSettings">
+        <form method="post" id="lockout-login-frm" class="ip-frm" @submit.prevent="updateSettings">
             <div class="sui-box-header">
                 <h3 class="sui-box-title">
                     {{__("Login Protection")}}
@@ -31,10 +31,20 @@
                     {{__("Put a stop to hackers trying to randomly guess your login credentials. Defender will lock out users after a set number of failed login attempts.")}}
                 </p>
                 <div v-if="summary_data.ip.day > 0" class="sui-notice sui-notice-error">
-                    <p v-html="notification"></p>
+                    <div class="sui-notice-content">
+                        <div class="sui-notice-message">
+                            <i class="sui-icon-info sui-notice-icon sui-md"></i>
+                            <p v-html="notification"></p>
+                        </div>
+                    </div>
                 </div>
                 <div v-else class="sui-notice sui-notice-info">
-                    <p v-html="notification"></p>
+                    <div class="sui-notice-content">
+                        <div class="sui-notice-message">
+                            <i class="sui-icon-info sui-notice-icon sui-md"></i>
+                            <p v-html="notification"></p>
+                        </div>
+                    </div>
                 </div>
                 <div class="sui-box-settings-row">
                     <div class="sui-box-settings-col-1">
@@ -44,15 +54,15 @@
                     <div class="sui-box-settings-col-2">
                         <div class="sui-form-field">
                             <div class="sui-row">
-                                <div class="sui-col-md-2">
+                                <div class="sui-col-md-3">
                                     <label class="sui-label">{{__("Failed logins")}}</label>
                                     <input size="8" v-model="model.login_protection_login_attempt"
                                            type="text"
-                                           class="sui-form-control sui-input-sm sui-field-has-suffix"
+                                           class="sui-form-control sui-input-sm"
                                            id="login_protection_login_attempt"
                                            name="login_protection_login_attempt"/>
                                 </div>
-                                <div class="sui-col-md-3">
+                                <div class="sui-col">
                                     <label class="sui-label">
                                         {{__("Timeframe")}}
                                     </label>
@@ -100,14 +110,18 @@
                                      data-tab-content="timeframe-box">
                                     <div class="sui-row">
                                         <div class="sui-col-md-3">
+                                            <label for="login_protection_lockout_duration" id="label_login_protection_lockout_duration" class="sui-label">{{__("Duration")}}</label>
                                             <input v-model="model.login_protection_lockout_duration"
                                                    size="4"
                                                    name="login_protection_lockout_duration"
                                                    id="login_protection_lockout_duration" type="text"
-                                                   class="sui-form-control"/>
+                                                   aria-labelledby="label_login_protection_lockout_duration"
+                                                   class="sui-form-control sui-input-sm"/>
                                         </div>
                                         <div class="sui-col-md-4">
-                                            <select id="lockout-duration-unit" name="login_protection_lockout_duration_unit"
+                                            <label for="lockout-duration-unit" id="label_lockout_duration_unit" class="sui-label">&nbsp;</label>
+                                            <select id="lockout-duration-unit"
+                                                    aria-labelledby="label_lockout_duration_unit" name="login_protection_lockout_duration_unit"
                                                     class="jquery-select sui-select"
                                                     data-minimum-results-for-search="Infinity"
                                                     v-model="model.login_protection_lockout_duration_unit">
@@ -238,7 +252,7 @@
                 return this.vsprintf(this.__("We recommend adding the usernames <strong>admin</strong>, <strong>administrator</strong> and your hostname <strong>%s</strong> as these are common for bots to try logging in with. One username per line"), this.misc.host)
             },
             demo_link: function () {
-                return this.vsprintf(this.__("This message will be displayed across your website during the lockout period. See a quick preview <a href=\"%s\">here</a>."), this.siteUrl('?def-lockout-demo=1&type=demo'));
+                return this.vsprintf(this.__("This message will be displayed across your website during the lockout period. See a quick preview <a href=\"%s\">here</a>."), this.siteUrl('?def-lockout-demo=1&type=login'));
             }
         },
         mounted: function () {

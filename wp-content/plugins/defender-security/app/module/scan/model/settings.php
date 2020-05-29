@@ -73,8 +73,14 @@ class Settings extends \Hammer\WP\Settings {
 	 * @var int
 	 */
 	public $max_filesize = 1;
-	
+
 	/**
+	 * Subject for email with issues
+	 * @var string
+	 */
+	public $email_subject_issue = '';
+	/**
+	 * Subject for email without issues
 	 * @var string
 	 */
 	public $email_subject = '';
@@ -121,8 +127,8 @@ class Settings extends \Hammer\WP\Settings {
 	}
 	
 	public function __construct( $id, $is_multi ) {
-		$this->email_subject   = __( 'Scan of {SITE_URL} complete. {ISSUES_COUNT} issues found.', "defender-security" );
-		$this->email_has_issue = __( 'Hi {USER_NAME},
+		$this->email_subject_issue = __( 'Scan of {SITE_URL} complete. {ISSUES_COUNT} issues found.', "defender-security" );
+		$this->email_has_issue     = __( 'Hi {USER_NAME},
 
 WP Defender here, reporting back from the front.
 
@@ -132,7 +138,8 @@ I\'ve finished scanning {SITE_URL} for vulnerabilities and I found {ISSUES_COUNT
 Stay Safe,
 WP Defender
 Official WPMU DEV Superhero', "defender-security" );
-		$this->email_all_ok    = __( 'Hi {USER_NAME},
+		$this->email_subject       = __( 'Scan of {SITE_URL} complete. {ISSUES_COUNT} issues found.', "defender-security" );
+		$this->email_all_ok        = __( 'Hi {USER_NAME},
 
 WP Defender here, reporting back from the front.
 
@@ -347,6 +354,7 @@ Official WPMU DEV Superhero', "defender-security" );
 			'always_send_notification' => __( "Also send notification when no issues are detected.", "defender-security" ),
 			'recipients_notification'  => __( "Recipients for notification", "defender-security" ),
 			'email_subject'            => __( "Email Subject", "defender-security" ),
+			'email_subject_issue'      => __( "Email Subject", "defender-security" ),
 			'email_all_ok'             => __( "When no issues are found", "defender-security" ),
 			'email_has_issue'          => __( "When an issue is found", "defender-security" )
 		];

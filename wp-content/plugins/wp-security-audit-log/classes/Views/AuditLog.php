@@ -105,7 +105,7 @@ class WSAL_Views_AuditLog extends WSAL_AbstractView {
 			),
 			2 => array(
 				'head' => __( 'See who logged in on your site in real-time, generate reports, get SMS & email alerts of critical changes and more!', 'wp-security-audit-log' ),
-				'desc' => __( 'Unlock these and other powerful features with WP Security Audit Log Premium.', 'wp-security-audit-log' ),
+				'desc' => __( 'Unlock these and other powerful features with WP Activity Log Premium.', 'wp-security-audit-log' ),
 			),
 		);
 
@@ -131,7 +131,7 @@ class WSAL_Views_AuditLog extends WSAL_AbstractView {
 			&& ! class_exists( 'WSAL_Ext_Plugin' )
 			&& ! class_exists( 'WSAL_Rep_Plugin' )
 			&& ! class_exists( 'WSAL_SearchExtension' )
-			&& ! class_exists( 'WSAL_User_Management_Plugin' )
+			&& ! class_exists( 'WSAL_UserSessions_Plugin' )
 			&& 'anonymous' !== get_site_option( 'wsal_freemius_state', 'anonymous' ) // Anonymous mode option.
 		) {
 			$get_transient_fn         = $this->_plugin->IsMultisite() ? 'get_site_transient' : 'get_transient'; // Check for multisite.
@@ -165,8 +165,8 @@ class WSAL_Views_AuditLog extends WSAL_AbstractView {
 
 							// If user is not super admin and website is multisite then change the URL.
 							if ( $this->_plugin->IsMultisite() && ! is_super_admin() ) {
-								$buy_now    = 'https://www.wpsecurityauditlog.com/pricing/';
-								$trial_link = 'https://www.wpsecurityauditlog.com/pricing/';
+								$buy_now    = 'https://wpactivitylog.com/pricing/';
+								$trial_link = 'https://wpactivitylog.com/pricing/';
 							} elseif ( $this->_plugin->IsMultisite() && is_super_admin() ) {
 								$buy_now    = add_query_arg( 'page', 'wsal-auditlog-pricing', network_admin_url( 'admin.php' ) );
 								$trial_link = add_query_arg( $trial_args, network_admin_url( 'admin.php' ) );
@@ -179,7 +179,7 @@ class WSAL_Views_AuditLog extends WSAL_AbstractView {
 									'utm_campaign' => 'WSAL',
 									'utm_content'  => 'tell+me+more',
 								),
-								'https://www.wpsecurityauditlog.com/premium-features/'
+								'https://wpactivitylog.com/features/'
 							);
 							?>
 							<?php wp_nonce_field( 'wsal_dismiss_advert', 'wsal-dismiss-advert', false, true ); ?>
@@ -230,8 +230,8 @@ class WSAL_Views_AuditLog extends WSAL_AbstractView {
 				if ( ! is_multisite() || ( is_multisite() && is_network_admin() ) ) :
 					?>
 					<div class="notice notice-success">
-						<p><strong><?php esc_html_e( 'Help WP Security Audit Log improve.', 'wp-security-audit-log' ); ?></strong></p>
-						<p><?php echo esc_html__( 'Gathering non-sensitive diagnostic data about the plugin install helps us improve the plugin. When you opt-in, you also subscribe to our announcements (you can opt-out at any time). If you would rather opt-out, we will not collect any data.', 'wp-security-audit-log' ) . ' <a href="https://www.wpsecurityauditlog.com/support-documentation/non-sensitive-diagnostic-data/" target="_blank">' . esc_html__( 'Read more about what we collect.', 'wp-security-audit-log' ) . '</a>'; ?></p>
+						<p><strong><?php esc_html_e( 'Help WP Activity Log improve.', 'wp-security-audit-log' ); ?></strong></p>
+						<p><?php echo esc_html__( 'Gathering non-sensitive diagnostic data about the plugin install helps us improve the plugin. When you opt-in, you also subscribe to our announcements (you can opt-out at any time). If you would rather opt-out, we will not collect any data.', 'wp-security-audit-log' ) . ' <a href="https://wpactivitylog.com/support/kb/non-sensitive-diagnostic-data/" target="_blank">' . esc_html__( 'Read more about what we collect.', 'wp-security-audit-log' ) . '</a>'; ?></p>
 						<p>
 							<a href="javascript:;" class="button button-primary" onclick="wsal_freemius_opt_in(this)" data-opt="yes"><?php esc_html_e( 'Sure, opt-in', 'wp-security-audit-log' ); ?></a>
 							<a href="javascript:;" class="button" onclick="wsal_freemius_opt_in(this)" data-opt="no"><?php esc_html_e( 'No, thank you', 'wp-security-audit-log' ); ?></a>
@@ -349,7 +349,7 @@ class WSAL_Views_AuditLog extends WSAL_AbstractView {
 	 * Method: Get View Title.
 	 */
 	public function GetTitle() {
-		return __( 'Audit Log Viewer', 'wp-security-audit-log' );
+		return __( 'Activity Log Viewer', 'wp-security-audit-log' );
 	}
 
 	/**
@@ -376,7 +376,7 @@ class WSAL_Views_AuditLog extends WSAL_AbstractView {
 	 * Method: Get View Name.
 	 */
 	public function GetName() {
-		return __( 'Audit Log Viewer', 'wp-security-audit-log' );
+		return __( 'Activity Log Viewer', 'wp-security-audit-log' );
 	}
 
 	/**
@@ -574,12 +574,12 @@ class WSAL_Views_AuditLog extends WSAL_AbstractView {
 		<?php
 		if (
 			'no' === $this->_plugin->GetGlobalOption( 'wsal-setup-complete', 'no' )
-			&& 'no' === $this->_plugin->GetGlobalOption( 'wsal-setup-modal-dismissed', 'no' )
+			&& 'no' === $this->_plugin->options_helper->get_option_value( 'setup-modal-dismissed', 'no' )
 		) :
 			?>
 			<div data-remodal-id="wsal-setup-modal">
 				<button data-remodal-action="close" class="remodal-close"></button>
-				<p><?php esc_html_e( 'Thank you for installing WP Security Audit Log. Do you want to run the wizard to configure the basic plugin settings?', 'wp-security-audit-log' ); ?></p>
+				<p><?php esc_html_e( 'Thank you for installing WP Activity Log. Do you want to run the wizard to configure the basic plugin settings?', 'wp-security-audit-log' ); ?></p>
 				<br>
 				<button data-remodal-action="confirm" class="remodal-confirm"><?php esc_html_e( 'Yes', 'wp-security-audit-log' ); ?></button>
 				<button data-remodal-action="cancel" class="remodal-cancel"><?php esc_html_e( 'No', 'wp-security-audit-log' ); ?></button>
@@ -590,16 +590,16 @@ class WSAL_Views_AuditLog extends WSAL_AbstractView {
 					wsal_setup_modal.remodal().open();
 
 					jQuery(document).on('confirmation', wsal_setup_modal, function () {
-						<?php $this->_plugin->SetGlobalOption( 'wsal-setup-modal-dismissed', 'yes' ); ?>
+						<?php $this->_plugin->options_helper->set_option_value( 'setup-modal-dismissed', 'yes' ); ?>
 						window.location = '<?php echo esc_url( add_query_arg( 'page', 'wsal-setup', admin_url( 'index.php' ) ) ); ?>';
 					});
 
 					jQuery(document).on('cancellation', wsal_setup_modal, function () {
-						<?php $this->_plugin->SetGlobalOption( 'wsal-setup-modal-dismissed', 'yes' ); ?>
+						<?php $this->_plugin->options_helper->set_option_value( 'setup-modal-dismissed', 'yes' ); ?>
 					});
 
 					jQuery(document).on('closed', wsal_setup_modal, function () {
-						<?php $this->_plugin->SetGlobalOption( 'wsal-setup-modal-dismissed', 'yes' ); ?>
+						<?php $this->_plugin->options_helper->set_option_value( 'setup-modal-dismissed', 'yes' ); ?>
 					});
 				});
 			</script>
@@ -1068,7 +1068,7 @@ class WSAL_Views_AuditLog extends WSAL_AbstractView {
 		// Don't display notice if the wizard notice is showing.
 		if (
 			'no' === $this->_plugin->GetGlobalOption( 'wsal-setup-complete', 'no' )
-			&& 'no' === $this->_plugin->GetGlobalOption( 'wsal-setup-modal-dismissed', 'no' )
+			&& 'no' === $this->_plugin->options_helper->get_option_value( 'setup-modal-dismissed', 'no' )
 		) {
 			return;
 		}
@@ -1144,7 +1144,7 @@ class WSAL_Views_AuditLog extends WSAL_AbstractView {
 						'<h3> %s </h3> <p> %s </p> <p><strong>%s</strong></p>',
 						__( 'WordPress Activity Log', 'wp-security-audit-log' ),
 						__( 'When a user makes a change on your website the plugin will keep a record of that event here. Right now there is nothing because this is a new install.', 'wp-security-audit-log' ),
-						__( 'Thank you for using WP Security Audit Log', 'wp-security-audit-log' )
+						__( 'Thank you for using WP Activity Log', 'wp-security-audit-log' )
 					),
 					'position' => array(
 						'edge'  => 'left',

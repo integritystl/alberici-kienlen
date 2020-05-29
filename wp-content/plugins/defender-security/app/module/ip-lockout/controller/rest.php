@@ -30,6 +30,7 @@ class Rest extends Controller {
 			$namespace . '/emptyLogs'      => 'emptyLogs',
 			$namespace . '/queryLockedIps' => 'queryLockedIps',
 			$namespace . '/ipAction'       => 'ipAction',
+			$namespace . '/exportAsCsv'    => 'exportAsCsv'
 		];
 		
 		$this->registerEndpoints( $routes, IP_Lockout::getClassName() );
@@ -380,7 +381,48 @@ class Rest extends Controller {
 			) );
 		}
 	}
-	
+
+	/**
+	 * Csv exporter
+	 */
+	public function exportAsCsv() {
+		if ( ! $this->checkPermission() ) {
+			return;
+		}
+
+		if ( ! wp_verify_nonce( HTTP_Helper::retrieveGet( '_wpnonce' ), 'exportAsCsv' ) ) {
+			return;
+		}
+		$logs    = Log_Model::findAll();
+		$fp      = fopen( 'php://memory', 'w' );
+		$headers = array(
+			__( 'Log', "defender-security" ),
+			__( 'Date / Time', "defender-security" ),
+			__( 'Type', "defender-security" ),
+			__( 'IP address', "defender-security" ),
+			__( 'Status', "defender-security" )
+		);
+		fputcsv( $fp, $headers );
+		foreach ( $logs as $log ) {
+			$item = array(
+				$log->log,
+				$log->get_date(),
+				$log->get_type(),
+				$log->ip,
+				Login_Protection_Api::getIPStatusText( $log->ip )
+			);
+			fputcsv( $fp, $item );
+		}
+
+		$filename = 'wdf-lockout-logs-export-' . date( 'ymdHis' ) . '.csv';
+		fseek( $fp, 0 );
+		header( 'Content-Type: text/csv' );
+		header( 'Content-Disposition: attachment; filename="' . $filename . '";' );
+		// make php send the generated csv lines to the browser
+		fpassthru( $fp );
+		exit();
+	}
+
 	public function behaviors() {
 		$behaviors = array(
 			'utils' => '\WP_Defender\Behavior\Utils',

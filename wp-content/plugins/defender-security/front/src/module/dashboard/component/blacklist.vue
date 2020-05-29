@@ -13,13 +13,18 @@
             </div>
         </div>
         <div class="sui-box-body">
-            <div>
-                {{__("Automatically check if you’re on Google’s blacklist every 6 hours. If something’swrong, we’ll let you know via email.")}}
-            </div>
+            <p>
+                {{__("Automatically check if you’re on Google’s blacklist every 6 hours. If something’s wrong, we’ll let you know via email.")}}
+            </p>
             <div class="sui-notice sui-notice-info" v-if="status==='fetching'">
-                <p>
-                    {{__("Fetching your domain info...")}}
-                </p>
+                <div class="sui-notice-content">
+                    <div class="sui-notice-message">
+                        <i class="sui-notice-icon sui-icon-info sui-md" aria-hidden="true"></i>
+                        <p>
+                            {{__("Fetching your domain info...")}}
+                        </p>
+                    </div>
+                </div>
             </div>
             <form method="post" class="margin-top-30" v-else-if="status==='new'">
                 <submit-button type="button" css-class="sui-button-blue" :state="state" @click="toggle(true)">
@@ -27,19 +32,30 @@
                 </submit-button>
             </form>
             <div v-else-if="status==='blacklisted'" class="sui-notice sui-notice-error">
-                <p>
-                    {{__("Your domain is currently on Google’s blacklist. Check out the article below to find out how to fix up your domain.")}}
-                </p>
+                <div class="sui-notice-content">
+                    <div class="sui-notice-message">
+                        <i class="sui-notice-icon sui-icon-info sui-md" aria-hidden="true"></i>
+                        <p>
+                            {{__("Your domain is currently on Google’s blacklist. Check out the article below to find out how to fix up your domain.")}}
+                        </p>
+                    </div>
+                </div>
             </div>
             <div v-else-if="status==='good'" class="sui-notice sui-notice-success">
-                <p>
-                    {{__("Your domain is currently clean.")}}
-                </p>
+                <div class="sui-notice-content">
+                    <div class="sui-notice-message">
+                        <i class="sui-notice-icon sui-icon-info sui-md" aria-hidden="true"></i>
+                        <p>
+                            {{__("Your domain is currently clean.")}}
+                        </p>
+                    </div>
+                </div>
+
             </div>
             <div class="sui-center-box no-padding-bottom" v-if="status!=='new'">
                 <p class="sui-p-small">
-                    {{__("Want to know more about blacklisting?")}} <a
-                        href="https://premium.wpmudev.org/blog/get-off-googles-blacklist/">{{__("Read this article.")}}</a>
+                    {{__("Want to know more about blacklisting?")}} <a target="_blank"
+                                                                       href="https://premium.wpmudev.org/blog/get-off-googles-blacklist/">{{__("Read this article.")}}</a>
                 </p>
             </div>
         </div>

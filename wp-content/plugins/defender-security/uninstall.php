@@ -62,21 +62,13 @@ if ( $settings->uninstall_settings == 'reset' ) {
 	\WP_Defender\Module\Scan\Model\Settings::instance()->delete();
 	\WP_Defender\Module\Hardener\Model\Settings::instance()->delete();
 	\WP_Defender\Module\IP_Lockout\Model\Settings::instance()->delete();
+	\WP_Defender\Module\Two_Factor\Model\Auth_Settings::instance()->delete();
 	\WP_Defender\Module\Advanced_Tools\Model\Mask_Settings::instance()->delete();
-	\WP_Defender\Module\Advanced_Tools\Model\Auth_Settings::instance()->delete();
+	\WP_Defender\Module\Two_Factor\Model\Auth_Settings::instance()->delete();
 	\WP_Defender\Module\Setting\Model\Settings::instance()->delete();
 	//clear old stuff
 	delete_site_option( 'wp_defender' );
 	delete_option( 'wp_defender' );
 	delete_option( 'wd_db_version' );
 	delete_site_option( 'wd_db_version' );
-	delete_site_transient( 'wp_defender_free_is_activated' );
-	delete_site_transient( 'wp_defender_is_activated' );
-	delete_transient( 'wp_defender_free_is_activated' );
-	delete_transient( 'wp_defender_is_activated' );
-	
-	delete_site_option( 'wp_defender_free_is_activated' );
-	delete_site_option( 'wp_defender_is_activated' );
-	delete_option( 'wp_defender_free_is_activated' );
-	delete_option( 'wp_defender_is_activated' );
 }

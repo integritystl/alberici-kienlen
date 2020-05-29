@@ -22,7 +22,7 @@ class Notfound_Listener extends Controller {
 		if ( ! is_404() ) {
 			return;
 		}
-		
+
 		if ( is_user_logged_in() && current_user_can( 'edit_posts' ) ) {
 			//only track subscriber
 			return;
@@ -99,8 +99,8 @@ class Notfound_Listener extends Controller {
 			'type' => Log_Model::ERROR_404,
 			'date' => [ 'compare' => '>', 'value' => $window ]
 		] );
-		
-		if ( $attempts > $settings->detect_404_threshold ) {
+
+		if ( $attempts >= $settings->detect_404_threshold ) {
 			//lock it
 			$this->lock( $model, 'normal', $uri );
 			$this->log( $uri, Log_Model::LOCKOUT_404, sprintf( __( "Lockout occurred:  Too many 404 requests for %s" ), $uri ) );
@@ -130,9 +130,12 @@ class Notfound_Listener extends Controller {
 			$settings->addIpToList( $model->ip, 'blacklist' );
 		}
 		$model->lock_time = time();
-		
+
 		do_action( 'wd_404_lockout', $model, $scenario );
-		$this->email( $model, $uri );
+		//Only ip_lockout_notification is enabled
+		if ( isset( $settings->ip_lockout_notification ) && $settings->ip_lockout_notification ) {
+			$this->email($model, $uri);
+		}
 	}
 	
 	/**
