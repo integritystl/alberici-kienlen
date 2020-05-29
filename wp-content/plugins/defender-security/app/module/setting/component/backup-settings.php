@@ -6,13 +6,13 @@
 namespace WP_Defender\Module\Setting\Component;
 
 use WP_Defender\Behavior\Utils;
-use WP_Defender\Module\Advanced_Tools\Model\Auth_Settings;
 use WP_Defender\Module\Advanced_Tools\Model\Mask_Settings;
 use WP_Defender\Module\Hardener\Model\Settings;
+use WP_Defender\Module\Two_Factor\Model\Auth_Settings;
 
 class Backup_Settings {
 	const KEY = 'defender_last_settings';
-	
+
 	/**
 	 * Gather settings from all modules
 	 * @return array
@@ -39,12 +39,14 @@ class Backup_Settings {
 			'always_send_notification',
 			'recipients_notification',
 			'email_subject',
+			'email_subject_issue',
 			'email_all_ok',
 			'email_has_issue'
 		] );
 		if ( class_exists( '\WP_Defender\Module\Audit\Model\Settings' ) ) {
 			$audit_model = \WP_Defender\Module\Audit\Model\Settings::instance();
 			$audit       = $audit_model->exportByKeys( [
+				'enabled',
 				'notification',
 				'receipts',
 				'frequency',
@@ -96,7 +98,7 @@ class Backup_Settings {
 				'geoIP_db'
 			] );
 		$advanced_tools  = [
-			'two_factor' => Auth_Settings::instance()->export( [ 'is_conflict' ] ),
+			'two_factor' => \WP_Defender\Module\Two_Factor\Model\Auth_Settings::instance()->export( [ 'is_conflict' ] ),
 			'mask_login' => Mask_Settings::instance()->export( [ 'otps' ] )
 		];
 		$settings        = \WP_Defender\Module\Setting\Model\Settings::instance()->export();
@@ -110,10 +112,10 @@ class Backup_Settings {
 		if ( isset( $audit ) ) {
 			$ret['audit'] = $audit;
 		}
-		
+
 		return $ret;
 	}
-	
+
 	/**
 	 * Backup the previous data before we process new versioon
 	 */
@@ -131,7 +133,7 @@ class Backup_Settings {
 		$old_backup[ $version . '_' . time() ] = $data;
 		update_site_option( self::KEY, $old_backup );
 	}
-	
+
 	/**
 	 * @param $data
 	 */
@@ -149,7 +151,7 @@ class Backup_Settings {
 			}
 		}
 	}
-	
+
 	/**
 	 * @return array
 	 */
@@ -173,13 +175,13 @@ class Backup_Settings {
 				];
 			}
 		}
-		
+
 		return [
 			'configs' => $configs,
 			'labels'  => $labels,
 		];
 	}
-	
+
 	/**
 	 * @param $value
 	 *
@@ -203,17 +205,17 @@ class Backup_Settings {
 					$ret[] = $item;
 				}
 			}
-			
+
 			return implode( '; ', $ret );
 		}
 		//parse frequency
 		if ( $key == 'frequency' ) {
 			$value = Utils::instance()->frequencyToText( $value );
 		}
-		
+
 		return $value;
 	}
-	
+
 	/**
 	 * @param $module
 	 *
@@ -235,44 +237,47 @@ class Backup_Settings {
 				return Auth_Settings::instance();
 			case 'mask_login':
 				return Mask_Settings::instance();
+			case 'security_headers':
+				return \WP_Defender\Module\Advanced_Tools\Model\Security_Headers_Settings::instance();
 			default:
 				break;
 		}
 	}
-	
+
 	public static function resetSettings() {
-		$tweakFixed = \WP_Defender\Module\Hardener\Model\Settings::instance()->getFixed();
-		
-		foreach ( $tweakFixed as $rule ) {
+		$hardener_settings = \WP_Defender\Module\Hardener\Model\Settings::instance();
+
+		foreach ( $hardener_settings->getFixed() as $rule ) {
 			$rule->getService()->revert();
 		}
-		
+
 		$cache = \Hammer\Helper\WP_Helper::getCache();
 		$cache->delete( 'isActivated' );
 		$cache->delete( 'wdf_isActivated' );
 		$cache->delete( 'wdfchecksum' );
 		$cache->delete( 'cleanchecksum' );
-		
+
 		\WP_Defender\Module\Scan\Model\Settings::instance()->delete();
 		if ( class_exists( '\WP_Defender\Module\Audit\Model\Settings' ) ) {
 			\WP_Defender\Module\Audit\Model\Settings::instance()->delete();
 		}
-		\WP_Defender\Module\Hardener\Model\Settings::instance()->delete();
+		$hardener_settings->delete();
 		\WP_Defender\Module\IP_Lockout\Model\Settings::instance()->delete();
-		\WP_Defender\Module\Advanced_Tools\Model\Auth_Settings::instance()->delete();
+		\WP_Defender\Module\Two_Factor\Model\Auth_Settings::instance()->delete();
 		\WP_Defender\Module\Advanced_Tools\Model\Mask_Settings::instance()->delete();
+		\WP_Defender\Module\Advanced_Tools\Model\Security_Headers_Settings::instance()->delete();
 		\WP_Defender\Module\Setting\Model\Settings::instance()->delete();
 		//clear old stuff
 		delete_site_option( 'wp_defender' );
 		delete_option( 'wp_defender' );
 		delete_option( 'wd_db_version' );
 		delete_site_option( 'wd_db_version' );
-		
+
 		delete_site_transient( 'wp_defender_free_is_activated' );
 		delete_site_transient( 'wp_defender_is_activated' );
 		delete_transient( 'wp_defender_free_is_activated' );
 		delete_transient( 'wp_defender_is_activated' );
-		
+
 		delete_site_option( 'wp_defender_free_is_activated' );
 		delete_site_option( 'wp_defender_is_activated' );
 		delete_option( 'wp_defender_free_is_activated' );

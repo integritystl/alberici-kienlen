@@ -418,7 +418,7 @@ final class WSAL_AlertManager {
 			if ( isset( $this->_alerts[ $type ] ) ) {
 				add_action( 'admin_notices', array( $this, 'duplicate_event_notice' ) );
 				/* Translators: Event ID */
-				throw new Exception( sprintf( esc_html__( 'Event %s already registered with WP Security Audit Log.', 'wp-security-audit-log' ), $type ) );
+				throw new Exception( sprintf( esc_html__( 'Event %s already registered with WP Activity Log.', 'wp-security-audit-log' ), $type ) );
 			}
 
 			$this->_alerts[ $type ] = new WSAL_Alert( $type, $code, $catg, $subcatg, $desc, $mesg, $object, $event_type );
@@ -498,7 +498,7 @@ final class WSAL_AlertManager {
 			esc_attr( $class ),
 			'<span style="color:#dc3232; font-weight:bold;">' . esc_html__( 'ERROR:', 'wp-security-audit-log' ) . '</span>',
 			esc_html( $message ),
-			'<a href="https://www.wpsecurityauditlog.com/contact" target="_blank">' . esc_html__( 'Contact us', 'wp-security-audit-log' ) . '</a>'
+			'<a href="https://wpactivitylog.com/contact" target="_blank">' . esc_html__( 'Contact us', 'wp-security-audit-log' ) . '</a>'
 		);
 	}
 
@@ -576,14 +576,14 @@ final class WSAL_AlertManager {
 				$event_data['CurrentUserRoles'] = $current_user_roles;
 			}
 		}
-		// Check if the user management plugin is loaded and adds the SessionID.
-		if ( class_exists( 'WSAL_User_Management_Plugin' ) ) {
-			if ( function_exists( 'get_current_user_id' ) ) {
-				$session_tokens = get_user_meta( get_current_user_id(), 'session_tokens', true );
-				if ( ! empty( $session_tokens ) ) {
-					end( $session_tokens );
-					$event_data['SessionID'] = key( $session_tokens );
-				}
+
+		// If the user sessions plugin is loaded try attach the SessionID.
+		if ( ! isset( $event_data['SessionID'] ) && class_exists( 'WSAL_UserSessions_Helpers' ) ) {
+			// try get the session id generated from logged in cookie.
+			$session_id = WSAL_UserSessions_Helpers::get_session_id_from_logged_in_user_cookie();
+			// if we have a SessionID then add it to event_data.
+			if ( ! empty( $session_id ) ) {
+				$event_data['SessionID'] = $session_id;
 			}
 		}
 

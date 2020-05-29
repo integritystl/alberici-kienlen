@@ -3,7 +3,7 @@
         <div class="wp-defender" id="wp-defender">
             <div class="iplockout">
                 <div class="sui-header">
-                    <h1 class="sui-header-title">{{__("IP Lockout")}}</h1>
+                    <h1 class="sui-header-title">{{__("Firewall")}}</h1>
                     <doc-link link="https://premium.wpmudev.org/docs/wpmu-dev-plugins/defender/#ip-lockouts"></doc-link>
                 </div>
                 <summary-box>

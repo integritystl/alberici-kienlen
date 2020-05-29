@@ -6,7 +6,7 @@
         <div class="sui-footer" v-else>Made with <i class="sui-icon-heart"></i> by WPMU DEV</div>
 
         <div v-if="whitelabel.hide_doc_link===false">
-            <ul v-if="is_free" class="sui-footer-nav">
+            <ul v-if="is_free === 1" class="sui-footer-nav">
                 <li><a href="https://profiles.wordpress.org/wpmudev#content-plugins" target="_blank">Free
                     Plugins</a>
                 </li>
@@ -55,7 +55,7 @@
         data: function () {
             return {
                 whitelabel: defender.whitelabel,
-                is_free: defender.is_free
+                is_free: parseInt(defender.is_free)
             }
         }
     }

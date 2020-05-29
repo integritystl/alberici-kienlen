@@ -6,8 +6,8 @@ Author URI: http://premium.wpmudev.org/
 Contributors: WPMUDEV
 Tags: wordpress security plugin, security, firewall, vulnerability, brute force attacks, sql injections, XSS, malware, malware scanner, two-factor authentication, scheduled malware scans, audit logs
 Requires at least: 5.0
-Tested up to: 5.4
-Stable tag: 2.2.7
+Tested up to: 5.4.1
+Stable tag: 2.3
 License: GPL v2 - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 
 WordPress security plugin with malware scans, IP blocking, audit logs, firewall, login security & more.
@@ -157,6 +157,31 @@ WPMU DEV's expert support will restore and clean up your site after it’s been 
 
 
 == Changelog ==
+
+= 2.3 =
+- Improvement: Change the description for X-Content-Type-Options security header
+- Fix: The WAF widget and WAF page will be hidden when white label activated
+- Fix: Include Subdomain option for Strict Transport security header
+- Fix: Cron for Audit logs
+- Other minor enhancements and fixes
+
+= 2.2.9 =
+- New:  WPMU DEV’s Hosted Web Application Firewall (WAF) is a first layer of protection to block hackers and bot attacks before they ever reach your site. Websites hosted with WPMU DEV can now use this advanced WAF by enabling it via your site’s Security or Hosting tab in The Hub.
+- Improvement: Moved the security headers out of Security Tweaks and into their own section inside Advanced Tools.
+- Improvement: Relocated Two-Factor Authentication to it’s own menu item and area.
+- Improvement: Renamed a couple of modules to more accurately reflect what they do.
+- Fix - Minor bugs and improvements
+
+= 2.2.8 =
+- Improvement: Add plugin configuration import/export option for Hub
+- Improvement: HSTS Maximum age of Strict Transport Security header added 30 days, 2 years
+- Improvement: Update copy for MaxMind license key
+- Fix: Separate email subjects of templates for scan notifications
+- Fix: Warning open_basedir restriction in effect
+- Fix: 2FA required even if the role is unchecked
+- Fix: Preview for Lockout Custom Message doesn't work
+- Fix: Sending lockout emails even though they are disabled
+- Other minor enhancements and fixes
 
 = 2.2.7 =
 - Fix: Audit Logging sometime triggers a fatal error on some setups.

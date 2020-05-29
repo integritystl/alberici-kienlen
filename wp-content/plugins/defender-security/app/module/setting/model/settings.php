@@ -12,8 +12,8 @@ class Settings extends \Hammer\WP\Settings {
 	
 	public $translate;
 	public $usage_tracking = false;
-	public $uninstall_data = 'remove';
-	public $uninstall_settings = 'reset';
+	public $uninstall_data = 'keep';
+	public $uninstall_settings = 'preserve';
 	public $high_contrast_mode = false;
 	
 	public function behaviors() {

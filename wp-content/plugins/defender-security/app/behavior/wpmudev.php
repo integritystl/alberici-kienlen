@@ -40,11 +40,14 @@ class WPMUDEV extends Behavior {
 		if ( \WP_Defender\Behavior\Utils::instance()->getAPIKey() ) {
 			$site = \WPMUDEV_Dashboard::$site;
 			if ( is_object( $site ) ) {
-				$info = $site->get_wpmudev_branding( array() );
+				$info            = $site->get_wpmudev_branding( array() );
+				$info['enabled'] = $this->is_whitelabel_enabled();
+
 				return $info;
 			}
 		} else {
 			return [
+				'enabled'       => false,
 				'hide_branding' => false,
 				'hero_image'    => '',
 				'footer_text'   => '',
@@ -52,6 +55,22 @@ class WPMUDEV extends Behavior {
 				'hide_doc_link' => false
 			];
 		}
+	}
+
+	public function is_whitelabel_enabled() {
+		if ( \WP_Defender\Behavior\Utils::instance()->getAPIKey() ) {
+			$site     = \WPMUDEV_Dashboard::$site;
+			$settings = $site->get_whitelabel_settings();
+
+			return $settings['enabled'];
+		}
+
+		return false;
+	}
+
+	public function is_dev_dashboard_installed() {
+		var_dump( get_plugins() );
+		die;
 	}
 
 	/**

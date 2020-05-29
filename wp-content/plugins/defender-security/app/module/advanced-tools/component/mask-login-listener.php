@@ -8,6 +8,7 @@ namespace WP_Defender\Module\Advanced_Tools\Component;
 use Hammer\Helper\HTTP_Helper;
 use Hammer\WP\Component;
 use WP_Defender\Module\Advanced_Tools\Model\Mask_Settings;
+use WP_Defender\Module\Two_Factor\Component\Auth_API;
 
 class Mask_Login_Listener extends Component {
 	public function __construct() {

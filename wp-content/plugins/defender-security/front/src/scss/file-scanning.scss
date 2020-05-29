@@ -1,4 +1,13 @@
 .file-scanning {
+  @media (max-width: 782px) {
+	.sui-header {
+		.sui-actions-left ~ .sui-actions-right {
+			margin-right: 0;
+			margin-left: auto;
+		}
+	}
+  }
+
   #scanning-dialog {
 	.sui-box-body:not(.scanning-free):not(.scanning-blank) {
 	  position: relative;

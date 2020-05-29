@@ -126,7 +126,7 @@ class Main extends \WP_Defender\Controller {
 	 */
 	public function adminMenu() {
 		$cap = is_multisite() ? 'manage_network_options' : 'manage_options';
-		add_submenu_page( 'wp-defender', esc_html__( "File Scanning", "defender-security" ), esc_html__( "File Scanning", "defender-security" ), $cap, $this->slug, array(
+		add_submenu_page( 'wp-defender', esc_html__( "Malware Scanning", "defender-security" ), esc_html__( "Malware Scanning", "defender-security" ), $cap, $this->slug, array(
 			&$this,
 			'actionIndex'
 		) );
@@ -232,13 +232,14 @@ class Main extends \WP_Defender\Controller {
 				'SITE_URL'       => network_site_url(),
 			);
 			$params  = apply_filters( 'wd_notification_email_params', $params );
-			$subject = apply_filters( 'wd_notification_email_subject', $settings->email_subject );
-			$subject = stripslashes( $subject );
 			if ( $count == 0 ) {
+				$subject = apply_filters( 'wd_notification_email_subject', $settings->email_subject );
 				$email_content = $settings->email_all_ok;
 			} else {
+				$subject = apply_filters( 'wd_notification_email_subject_issue', $settings->email_subject_issue );
 				$email_content = $settings->email_has_issue;
 			}
+			$subject = stripslashes( $subject );
 			$email_content = apply_filters( 'wd_notification_email_content_before', $email_content, $model );
 			foreach ( $params as $key => $val ) {
 				$email_content = str_replace( '{' . $key . '}', $val, $email_content );
