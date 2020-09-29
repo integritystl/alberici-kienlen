@@ -5,7 +5,7 @@
 ## Team
 - Dev Lead: Julia Cramer
 - Devsigner: Jordan Fautley
-- Dev: Laura Kong
+- Dev: Laura Kong, Drew Newman
 - PM: Jamal Mclaughlin
 
 ## Links
