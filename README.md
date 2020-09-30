@@ -6,7 +6,7 @@
 - Dev Lead: Julia Cramer
 - Devsigner: Jordan Fautley
 - Dev: Laura Kong, Drew Newman
-- PM: Jamal Mclaughlin
+- PM: Jamal McLaughlin
 
 ## Links
 - Local: [http://albhillsdale.local](http://albhillsdale.local)
