@@ -3,10 +3,10 @@
 [ ![Codeship Status for integritystl/alberici-hillsdale](https://app.codeship.com/projects/685902a0-6c1c-0136-2086-5ef55451d790/status?branch=master)](https://app.codeship.com/projects/298413)
 
 ## Team
-- Dev Lead: Lindsay Hornsby
+- Dev Lead: Julia Cramer
 - Devsigner: Jordan Fautley
-- Dev: Laura Kong
-- PM: Jamal Mclaughlin
+- Dev: Laura Kong, Drew Newman
+- PM: Jamal McLaughlin
 
 ## Links
 - Local: [http://albhillsdale.local](http://albhillsdale.local)
