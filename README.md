@@ -1,6 +1,6 @@
-# Alberici Hillsdale Fabricators | Kienlan Constructors
+# Kienlan Constructors
 
-[ ![Codeship Status for integritystl/alberici-hillsdale](https://app.codeship.com/projects/685902a0-6c1c-0136-2086-5ef55451d790/status?branch=master)](https://app.codeship.com/projects/298413)
+[![Codeship Status for integritystl/alberici-kienlen](https://app.codeship.com/projects/a95ff7c0-e662-0138-202a-2695d3aa546b/status?branch=master)](https://app.codeship.com/projects/411781)
 
 ## Team
 - Dev Lead: Julia Cramer
@@ -9,17 +9,15 @@
 - PM: Jamal McLaughlin
 
 ## Links
-- Local: [http://albhillsdale.local](http://albhillsdale.local)
-- WP Engine Stage (Hillsdale): [http://albhillsdale.staging.wpengine.com](http://albhillsdale.staging.wpengine.com)
-- WP Engine Prod (Hillsdale): [http://albhillsdale.wpengine.com](http://albhillsdale.wpengine.com)
-- Live Site (Hillsdale): [http://hillsdalefabricators.com](http://hillsdalefabricators.com)
-- WP Engine Stage (Kienlen): [http://kienlen.staging.wpengine.com](http://kienlen.staging.wpengine.com)
-- Live Site (Kienlen): [https://www.kienlenconstructors.com/](https://www.kienlenconstructors.com/)
+- Local: [http://kienlen.local](http://kienlen.local)
+- WP Engine Stage: [http://kienlen.staging.wpengine.com](http://kienlen.staging.wpengine.com)
+- WP Engine Prod: [http://kienlen.wpengine.com](http://kienlen.wpengine.com)
+- Live Site: [https://www.kienlenconstructors.com/](https://www.kienlenconstructors.com/)
 
 
 ## Overview
 
-This is a WordPress site for Alberici Hillsdale Fabricators. It's built so that we can use it on more than 1 site. The other site this is built for is Kienlan Constructors.
+This is a WordPress site for Alberici Kienlan Constructors. It's built so that we can use it on more than 1 site. The other site this is built for is Hillsdale Fabricators.
 
 Because this repo is used on more than 1 site, you'll occasionally need to pull content data from one or the other. Saving a profile in Migrate DB Pro for each site helps speed this up a bit.
 
@@ -33,10 +31,10 @@ Because this repo is used on more than 1 site, you'll occasionally need to pull 
 
 **If you have the above installed, run these commands in order:**
 
-1. Create directory for a new project using a short name, ie: `albhillsdale.local`
+1. Create directory for a new project using a short name, ie: `kienlen.local`
 1. Download latest version of Wordpress from [latest.zip](http://wordpress.org/latest.zip)
 1. Clone this repo into project directory
-1. Create a database in Sequel Pro for the project, named something related to project ie: `albhillsdale`
+1. Create a database in Sequel Pro for the project, named something related to project ie: `kienlen`
 1. Pull from Migrate DB Pro in the WPAdmin of your local to get the latest Database from Staging
 1. Run `npm install` (this will install all node dependencies)
 1. When this is done, run `gulp` and it will watch for SASS/JS file changes. Put your JS files into `js/src` to have them compile into 1 file called `app.js`.
