@@ -1,4 +1,4 @@
-# Kienlan Constructors
+# Kienlen Constructors
 
 [![Codeship Status for integritystl/alberici-kienlen](https://app.codeship.com/projects/a95ff7c0-e662-0138-202a-2695d3aa546b/status?branch=master)](https://app.codeship.com/projects/411781)
 
@@ -17,7 +17,7 @@
 
 ## Overview
 
-This is a WordPress site for Alberici Kienlan Constructors.
+This is a WordPress site for Alberici Kienlen Constructors.
 
 ## :money_with_wings: Working with Code
 
