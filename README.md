@@ -3,10 +3,10 @@
 [![Codeship Status for integritystl/alberici-kienlen](https://app.codeship.com/projects/a95ff7c0-e662-0138-202a-2695d3aa546b/status?branch=master)](https://app.codeship.com/projects/411781)
 
 ## Team
-- Dev Lead: Julia Cramer
-- Devsigner: Jordan Fautley
-- Dev: Laura Kong, Drew Newman
-- PM: Jamal McLaughlin
+- Dev Lead: Julia Cramer (julia.cramer@integrityxd.com)
+- Devsigner: Jordan Fautley (jordan@integrityxd.com)
+- Developers: Laura Kong (laura.kong@integrityxd.com), Drew Newman (drew@integrityxd.com), Zach Corse (zach.corse@integrityxd.com)
+- PM: Jamal McLaughlin (jamal.mclaughlin@integrityxd.com)
 
 ## Links
 - Local: [http://kienlen.local](http://kienlen.local)
@@ -17,9 +17,7 @@
 
 ## Overview
 
-This is a WordPress site for Alberici Kienlan Constructors. It's built so that we can use it on more than 1 site. The other site this is built for is Hillsdale Fabricators.
-
-Because this repo is used on more than 1 site, you'll occasionally need to pull content data from one or the other. Saving a profile in Migrate DB Pro for each site helps speed this up a bit.
+This is a WordPress site for Alberici Kienlan Constructors.
 
 ## :money_with_wings: Working with Code
 
@@ -40,11 +38,6 @@ Because this repo is used on more than 1 site, you'll occasionally need to pull 
 1. When this is done, run `gulp` and it will watch for SASS/JS file changes. Put your JS files into `js/src` to have them compile into 1 file called `app.js`.
 1. If you're working on a React component, run `npm run start` for compiling those changes in Webpack.
 1. Start coding!
-
-### Deployment and Site Configuration ###
-Because this theme is being used on 2 different sites, there are 4 deployment scripts. You'll find these in the `scripts` directory. The staging scripts will run when code is merged into `develop`; the production ones when code is merged to `master`.
-
-We've set up a configuration to change the site's CSS styles in an ACF Option under `Global Settings` of the WP Admin. However, ***all code changes will push regardless of which site the code change was created for.*** Keep this in mind if changes need to only apply to a specific site.
 
 ### WorkFlow from LOCAL to STAGING
 1. Create a new branch off the `develop` branch.
