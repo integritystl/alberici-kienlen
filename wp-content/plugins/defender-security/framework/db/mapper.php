@@ -73,7 +73,7 @@ class Mapper extends Component {
 		global $wpdb;
 		if ( 2 === count( $args ) ) {
 			list( $key, $value ) = $args;
-			$this->where[] = $wpdb->prepare( "`$key` = " . $this->guess_var_type( $value ), $value );
+			$this->where[]       = $wpdb->prepare( "`$key` = " . $this->guess_var_type( $value ), $value );
 
 			return $this;
 		}
@@ -84,9 +84,8 @@ class Mapper extends Component {
 			return $this;
 		}
 		if ( in_array( strtolower( $operator ), array( 'in', 'not in' ), true ) ) {
-			$tmp           = $key . " {$operator} (" . implode( ', ',
-					array_fill( 0, count( $value ), $this->guess_var_type( $value ) ) ) . ')';
-			$sql           = call_user_func_array(
+			$tmp = $key . " {$operator} (" . implode( ', ', array_fill( 0, count( $value ), $this->guess_var_type( $value ) ) ) . ')';
+			$sql = call_user_func_array(
 				array(
 					$wpdb,
 					'prepare',
@@ -95,8 +94,11 @@ class Mapper extends Component {
 			);
 			$this->where[] = $sql;
 		} elseif ( 'between' === strtolower( $operator ) ) {
-			$this->where[] = $wpdb->prepare( "{$key} {$operator} {$this->guess_var_type($value[0])} AND {$this->guess_var_type($value[1])}",
-				$value[0], $value[1] );
+			$this->where[] = $wpdb->prepare(
+				"{$key} {$operator} {$this->guess_var_type($value[0])} AND {$this->guess_var_type($value[1])}",
+				$value[0],
+				$value[1]
+			);
 		} else {
 			$this->where[] = $wpdb->prepare( "`$key` $operator {$this->guess_var_type($value)}", $value );
 		}
@@ -138,28 +140,38 @@ class Mapper extends Component {
 	}
 
 	/**
-	 * @param $order_by
-	 * @param $order
+	 * @param string $order_by
+	 * @param string $order
 	 *
 	 * @return $this
 	 */
 	public function order_by( $order_by, $order = 'asc' ) {
+		global $wpdb;
 		if ( ! in_array( $order, array( 'asc', 'desc' ) ) ) {
 			// fall it back
 			$order = 'asc';
 		}
-		$this->order = "ORDER BY $order_by $order";
+		$this->order = str_replace(
+			"'",
+			"",
+			$wpdb->prepare( "ORDER BY %s %s", $order_by, $order )
+		);
 
 		return $this;
 	}
 
 	/**
-	 * @param $offset
+	 * @param int|string $offset
 	 *
 	 * @return $this
 	 */
 	public function limit( $offset ) {
-		$this->limit = 'LIMIT ' . $offset;
+		global $wpdb;
+		$this->limit = str_replace(
+			"'",
+			"",
+			$wpdb->prepare( 'LIMIT ' . $this->guess_var_type( $offset ), $offset )
+		);
 
 		return $this;
 	}
@@ -196,7 +208,7 @@ class Mapper extends Component {
 	 * @return array
 	 */
 	public function get() {
-		$sql = $this->query_build();
+		$sql                 = $this->query_build();
 		$this->saved_queries = $sql;
 		global $wpdb;
 		$data = $wpdb->get_results( $sql, ARRAY_A );
@@ -262,10 +274,8 @@ class Mapper extends Component {
 			// bind this for later use
 			$model->id = $wpdb->insert_id;
 		}
-		if ( false === $ret ) {
-			// error_log( $wpdb->last_error );
-			// error_log( $this->saved_queries );
 
+		if ( false === $ret ) {
 			return false;
 		}
 
@@ -294,6 +304,21 @@ class Mapper extends Component {
 
 		$where = implode( ' AND ', $this->where );
 		$sql   = "DELETE FROM $table WHERE $where";
+
+		return $wpdb->query( $sql );
+	}
+
+	/**
+	 * @return int|bool
+	 */
+	public function delete_by_limit() {
+		$table = self::table();
+		global $wpdb;
+
+		$where = implode( ' AND ', $this->where );
+		$limit = $this->limit;
+		$order = $this->order;
+		$sql   = "DELETE FROM $table WHERE $where $order $limit";
 
 		return $wpdb->query( $sql );
 	}
@@ -343,7 +368,8 @@ class Mapper extends Component {
 	}
 
 	/**
-	 * Join the stuff on the table to make a full query statement
+	 * Join the stuff on the table to make a full query statement.
+	 * SQL params e.g. WHERE, ORDER or LIMIT were escaped on separate methods
 	 *
 	 * @param string $select
 	 *
